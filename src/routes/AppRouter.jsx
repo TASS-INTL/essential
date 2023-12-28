@@ -1,31 +1,36 @@
 import React, { useEffect } from "react";
-// import { useContextChatApp } from "../context/useContext";
-
-// import { Loader } from "../components";
-// import { PrivateRouter } from "./PrivateRouter";
-import { Login } from "../pages/auth/Login";
-import { PublicRouter } from "./PublicRouter";
 import { Route, Routes } from "react-router-dom";
 
+import { Loader } from "../Components";
+import { PublicRouter } from "./PublicRouter";
+import { userStore } from "../store/userStore";
+import { PrivateRouter } from "./PrivateRouter";
+import { AuthProvider } from "../auth/authProvider";
+
 export const AppRouter = () => {
-  //   const { verifyToken, auth } = useContextChatApp().useAuthContext;
+  const {
+    userData: { logged, checking, ...state },
+    setUserData,
+  } = userStore();
 
-  //   useEffect(() => {
-  //     verifyToken();
-  //   }, [verifyToken]);
+  const { verifyToken } = AuthProvider();
 
-  //   if (auth.checking) {
-  //     return <Loader />;
-  //   }
+  useEffect(() => {
+    verifyToken(state, setUserData);
+  }, []);
+
+  if (checking) return <Loader />;
 
   return (
     <Routes>
-      <Route path="*" element={<PublicRouter isAuthenticated={false} />} />
-      {/* 
       <Route
-        path="/chat"
-        element={<PrivateRouter isAuthenticated={auth.logged} />}
-      /> */}
+        path="/auth/*"
+        element={<PublicRouter isAuthenticated={logged} />}
+      />
+      <Route
+        path="/dashboard"
+        element={<PrivateRouter isAuthenticated={logged} />}
+      />
     </Routes>
   );
 };

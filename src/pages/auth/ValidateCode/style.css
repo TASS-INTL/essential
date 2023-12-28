@@ -1,16 +1,11 @@
 .container {
-      background: linear-gradient(#040e23, #03255a);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
       height: 100vh;
-      
-}
-.contentTitles {
-   flex-direction: column;
-   width: 100%;
-   margin-bottom: 1rem;
-}
-.card {
-   width: 80%;
-   scroll-behavior: auto;
+      width: 100vw;
+      background: linear-gradient(#040e23, #03255a);
 }
 .title {
       font-size: 3rem;
@@ -26,12 +21,9 @@
       color: #fff;
       margin-bottom: 0.5rem;
 }
-.content {
-   width: 100%;
-   margin: auto;
-}
 .contentButton {
       display: flex;
       justify-content: center;
       align-items: center;
+      margin-top: 1rem;
 }

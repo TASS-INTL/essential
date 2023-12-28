@@ -1,23 +1,21 @@
 .container {
       background: linear-gradient(#040e23, #03255a);
       height: 100vh;
-      
-}
-.contentTitles {
-   flex-direction: column;
-   width: 100%;
-   margin-bottom: 1rem;
+      height: fit-content;
 }
 .card {
    width: 80%;
    scroll-behavior: auto;
 }
+.box-title {
+ display: flex;
+}
 .title {
-      font-size: 3rem;
+      font-size: 2rem;
       font-weight: 700;
       color: #fff;
       margin-bottom: 0.5rem;
-      text-align: center;
+      text-align: left;
    }
 .subtitle {
    text-align: center;
@@ -26,12 +24,24 @@
       color: #fff;
       margin-bottom: 0.5rem;
 }
-.content {
-   width: 100%;
-   margin: auto;
-}
 .contentButton {
       display: flex;
       justify-content: center;
       align-items: center;
+}
+.label {
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: #fff;
+}
+.box-label {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
+      margin-bottom: 1rem;
+}
+.terms {
+   color: #fff;
 }

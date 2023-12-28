@@ -1,55 +1,54 @@
 import "./style.css";
-import { useState } from "react";
-import { Input } from "../../../Components";
-
-const initialState = {
-  email: "",
-  password: "",
-};
+import { Link } from "react-router-dom";
+import { useAuth } from "../hooks/useLogin";
+import { Input, InputSubmit } from "../../../Components";
 
 export const Login = () => {
-  const [input, setInput] = useState(initialState);
-
-  const onChangeInput = (e) => {
-    const { name, value } = e.target;
-    setInput((prevState) => ({ ...prevState, [name]: value }));
-  };
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    console.log(input);
-  };
+  const { valuesLogin, handleValuesLogin, submitFormLogin } = useAuth();
 
   return (
-    <>
-      <div className="container">
-        <header>
-          <h1 className="title">TASS INTL </h1>
-          <h2 className="subtitle">Login</h2>
-        </header>
-        <body>
-          <div className="card">
-            <form action="" onSubmit={onSubmit}>
-              <Input
-                label={"email"}
-                name={"email"}
-                type={"text"}
-                value={input.email}
-                onChange={onChangeInput}
-                error={"Ocurrio un error en el email"}
-              />
-              <Input
-                label={"password"}
-                name={"password"}
-                type={"password"}
-                value={input.password}
-                onChange={onChangeInput}
-                error={"Ocurrio un error en el password"}
-              />
-            </form>
+    <div className="container">
+      <div className="card">
+        <div className="contentTitles d-f j-c a-c">
+          <h1 className="title">TASS INTERNATIONAL </h1>
+          <h2 className="subtitle">Inicia sesion</h2>
+        </div>
+        <div className="content">
+          <form action="" onSubmit={submitFormLogin}>
+            <Input
+              label={"email"}
+              name={"email"}
+              type={"email"}
+              value={valuesLogin.email}
+              onChange={handleValuesLogin}
+              error={"Ocurrio un error en el email"}
+            />
+            <Input
+              label={"Contraseña"}
+              name={"password"}
+              type={"password"}
+              value={valuesLogin.password}
+              onChange={handleValuesLogin}
+              error={"Ocurrio un error en el email"}
+            />
+            <div className="contentButton">
+              <InputSubmit text="Siguiente" />
+            </div>
+          </form>
+          <div className="d-f j-c a-c f-d-c">
+            <p className="">
+              <Link to={"/auth/register"}>
+                No tienes una cuenta? Registrate
+              </Link>
+            </p>
+            <p className="">
+              <Link to={"/auth/forgot-password"}>
+                ¿Ha olvidado la contraseña?
+              </Link>
+            </p>
           </div>
-        </body>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
