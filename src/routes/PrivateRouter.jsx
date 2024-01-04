@@ -1,6 +1,7 @@
-import { Navigate } from "react-router-dom";
-import { Dasboard } from "../pages/dashboard";
+import { Navigate } from 'react-router-dom'
+
+import { Dasboard } from '../pages/dashboard'
 
 export const PrivateRouter = ({ isAuthenticated }) => {
-  return isAuthenticated ? <Dasboard /> : <Navigate to="/auth/login" />;
-};
+	return isAuthenticated ? <Dasboard /> : <Navigate to='/auth/login' />
+}

@@ -1,204 +1,216 @@
-import { useEffect, useState } from "react";
-import { showToast } from "../../../helpers/toast";
-import { userStore } from "../../../store/userStore";
-import { AuthProvider } from "../../../auth/authProvider";
+import { useEffect, useState } from 'react'
+
+import { AuthProvider } from '../../../auth/authProvider'
+import { showToast } from '../../../helpers/toast'
+import { userStore } from '../../../store/userStore'
 
 const initialStateLogin = {
-  email: "",
-  password: "",
-};
+	email: '',
+	password: ''
+}
 
 const initialStateRegister = {
-  email: "",
-  username: "",
-};
+	email: '',
+	username: ''
+}
 
 const initialStateValidateCode = {
-  code: "",
-};
+	code: ''
+}
 
 const initialStatePersonalData = {
-  name: "",
-  key: "",
-  city: "",
-  email: "",
-  region: "",
-  country: "",
-  address: "",
-  username: "",
-  phone_number: {
-    code: "",
-    number: "",
-  },
-  code_postal: "",
-  state_province: "",
-  number_document_company: 0,
-  number_document_personal: "",
-  type_person: "natural",
-  terms_conditions: false,
-  type_document_company: "NN",
-  type_document_personal: "CC",
-};
+	name: '',
+	key: '',
+	city: '',
+	email: '',
+	region: '',
+	country: '',
+	address: '',
+	username: '',
+	phone_number: {
+		code: '',
+		number: ''
+	},
+	code_postal: '',
+	state_province: '',
+	number_document_company: 0,
+	number_document_personal: '',
+	type_person: 'natural',
+	terms_conditions: false,
+	type_document_company: 'NN',
+	type_document_personal: 'CC'
+}
 
 export const useAuth = () => {
-  const {
-    login,
-    ValidateCodeApi,
-    registerPersonalData,
-    registerNameAndUserName,
-  } = AuthProvider();
-  const state = userStore((state) => state);
-  const [valueValidateCode, setValueValidateCode] = useState(
-    initialStateValidateCode
-  );
-  const [valuePersonalData, setValuePersonalData] = useState(
-    initialStatePersonalData
-  );
-  const [valuesLogin, setValuesLogin] = useState(initialStateLogin);
-  const [valuesRegister, setValuesRegister] = useState(initialStateRegister);
+	const { login, ValidateCodeApi, registerPersonalData, registerNameAndUserName } = AuthProvider()
+	const state = userStore((state) => state)
+	const [valuesLogin, setValuesLogin] = useState(initialStateLogin)
+	const [valuesRegister, setValuesRegister] = useState(initialStateRegister)
+	const [valueValidateCode, setValueValidateCode] = useState(initialStateValidateCode)
+	const [valuePersonalData, setValuePersonalData] = useState(initialStatePersonalData)
 
-  useEffect(() => {
-    setValuePersonalData({
-      ...valuePersonalData,
-      email: state?.userData.email,
-      username: state?.userData.userName,
-    });
-  }, []);
+	useEffect(() => {
+		setValuePersonalData({
+			...valuePersonalData,
+			email: state?.userData.email,
+			username: state?.userData.userName
+		})
+	}, [])
 
-  // Login
-  const handleValuesLogin = (key, value) => {
-    setValuesLogin({
-      ...valuesLogin,
-      [key]: value,
-    });
-  };
+	// Login
+	const handleValuesLogin = (key, value) => {
+		setValuesLogin({
+			...valuesLogin,
+			[key]: value
+		})
+	}
 
-  const submitFormLogin = async (e) => {
-    e.preventDefault();
+	const submitFormLogin = async (e) => {
+		e.preventDefault()
 
-    if (Object.values(valuesLogin).some((value) => value === ""))
-      return showToast("❌ Debes ingresar el correo", "error");
+		if (Object.values(valuesLogin).some((value) => value === '')) {
+			return showToast('❌ Debes ingresar el correo', 'error')
+		}
 
-    const { email, password } = valuesLogin;
+		const { email, password } = valuesLogin
 
-    const response = await login({
-      email,
-      password,
-    });
-    console.log(response);
+		const response = await login({
+			email,
+			password
+		})
+		console.log(response)
 
-    if (response?.error)
-      return showToast("❌ Algo ha salido mal " + response?.message, "error");
+		if (response?.error) {
+			return showToast('❌ Algo ha salido mal ' + response?.message, 'error')
+		}
 
-    if (response?.completed)
-      return showToast("Validacion de manera exitosa", "success");
+		if (response?.completed) {
+			return showToast('Validacion de manera exitosa', 'success')
+		}
 
-    //  setInput(initialState);
-  };
+		//  setInput(initialState);
+	}
 
-  // Validate Code
-  const handleFormValidateCode = (key, value) => {
-    setValueValidateCode({
-      ...valueValidateCode,
-      [key]: value,
-    });
-  };
+	// Validate Code
+	const handleFormValidateCode = (key, value) => {
+		setValueValidateCode({
+			...valueValidateCode,
+			[key]: value
+		})
+	}
 
-  const submitFormValidateCode = async (event, screen) => {
-    event.preventDefault();
+	const submitFormValidateCode = async (event, screen) => {
+		event.preventDefault()
 
-    if (Object.values(valueValidateCode).some((value) => value === ""))
-      return showToast("❌ Debes ingresar el codigo de verificacion", "error");
+		if (Object.values(valueValidateCode).some((value) => value === '')) {
+			return showToast('❌ Debes ingresar el codigo de verificacion', 'error')
+		}
 
-    const { code } = valueValidateCode;
+		const { code } = valueValidateCode
 
-    const response = await ValidateCodeApi(state, {
-      code,
-      screen,
-    });
+		const response = await ValidateCodeApi(state, {
+			code,
+			screen
+		})
 
-    if (response?.error)
-      return showToast("Algo ha salido mal " + response?.message, "error");
+		if (response?.error) {
+			return showToast('Algo ha salido mal ' + response?.message, 'error')
+		}
 
-    if (response.success)
-      return showToast(
-        "Codigo ingresado con exito " + response?.message,
-        "success"
-      );
+		if (response.success) {
+			return showToast('Codigo ingresado con exito ' + response?.message, 'success')
+		}
 
-    //  setInput(initialState);
-  };
+		//  setInput(initialState);
+	}
 
-  // Register
-  const handleRegister = (key, value) => {
-    setValuesRegister({
-      ...valuesRegister,
-      [key]: value,
-    });
-  };
+	// Register
+	const handleRegister = (key, value) => {
+		setValuesRegister({
+			...valuesRegister,
+			[key]: value
+		})
+	}
 
-  const submitFormRegister = async (event) => {
-    event.preventDefault();
+	const submitFormRegister = async (event) => {
+		event.preventDefault()
 
-    if (Object.values(valuesRegister).some((value) => value === ""))
-      return showToast("❌ Debes ingresar todos los campos", "error");
+		if (Object.values(valuesRegister).some((value) => value === '')) {
+			return showToast('❌ Debes ingresar todos los campos', 'error')
+		}
 
-    const { email, username } = valuesRegister;
+		const { email, username } = valuesRegister
 
-    const response = await registerNameAndUserName(state, {
-      email,
-      username,
-    });
+		const response = await registerNameAndUserName(state, {
+			email,
+			username
+		})
 
-    if (response?.error)
-      return showToast("❌ Algo ha salido mal " + response?.message, "error");
+		if (response?.error) {
+			return showToast('❌ Algo ha salido mal ' + response?.message, 'error')
+		}
 
-    if (response?.completed)
-      return showToast("Validacion de manera exitosa", "success");
+		if (response?.completed) {
+			return showToast('Validacion del correo de manera exitosa', 'success')
+		}
 
-    //  setInput(initialState);
-  };
+		//  setInput(initialState);
+	}
 
-  // Personal Data
-  const handlePersonalData = (key, value) => {
-    setValuePersonalData({
-      ...valuePersonalData,
-      [key]: value,
-    });
-  };
+	const ResendCode = async () => {
+		// const response = await sendCodeApi(state);
+		const response = { completed: true }
 
-  const submitFormValidateData = async (event) => {
-    event.preventDefault();
+		if (response?.error) {
+			return showToast('❌ Algo ha salido mal ' + response?.message, 'error')
+		}
 
-    if (Object.values(valuePersonalData).some((value) => value === ""))
-      return showToast("❌ Debes ingresar todos los campos", "error");
+		if (response?.completed) {
+			return showToast('Validacion del correo de manera exitosa', 'success')
+		}
+	}
 
-    const response = await registerPersonalData(state, valuePersonalData);
+	// Personal Data
+	const handlePersonalData = (key, value) => {
+		setValuePersonalData({
+			...valuePersonalData,
+			[key]: value
+		})
+	}
 
-    if (response?.error)
-      return showToast("❌ Algo ha salido mal " + response?.message, "error");
+	const submitFormValidateData = async (event) => {
+		event.preventDefault()
 
-    if (response?.completed)
-      return showToast(
-        "Se a completado de manera exitos el registro",
-        "success"
-      );
+		if (Object.values(valuePersonalData).some((value) => value === '')) {
+			return showToast('❌ Debes ingresar todos los campos', 'error')
+		}
 
-    //  setInput(initialState);
-  };
+		const response = await registerPersonalData(state, valuePersonalData)
 
-  return {
-    valuesLogin,
-    valuesRegister,
-    valueValidateCode,
-    valuePersonalData,
-    submitFormLogin,
-    submitFormRegister,
-    submitFormValidateData,
-    submitFormValidateCode,
-    handleValuesLogin,
-    handleRegister,
-    handlePersonalData,
-    handleFormValidateCode,
-  };
-};
+		if (response?.error) {
+			return showToast('❌ Algo ha salido mal ' + response?.message, 'error')
+		}
+
+		if (response?.completed) {
+			return showToast('Se a completado de manera exitos el registro', 'success')
+		}
+
+		//  setInput(initialState);
+	}
+
+	return {
+		ResendCode,
+		valuesLogin,
+		valuesRegister,
+		valueValidateCode,
+		valuePersonalData,
+		submitFormLogin,
+		submitFormRegister,
+		submitFormValidateData,
+		submitFormValidateCode,
+		handleValuesLogin,
+		handleRegister,
+		handlePersonalData,
+		handleFormValidateCode
+	}
+}

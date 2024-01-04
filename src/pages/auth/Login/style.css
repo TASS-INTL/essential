@@ -1,37 +1,39 @@
-.container {
-      background: linear-gradient(#040e23, #03255a);
-      height: 100vh;
-      
+.container-login {
+	background: linear-gradient(#040e23, #03255a);
+	height: 100vh;
+	width: 100vw;
+}
+.card-login {
+	width: 50%;
+	scroll-behavior: auto;
+	margin: auto;
 }
 .contentTitles {
-   flex-direction: column;
-   width: 100%;
-   margin-bottom: 1rem;
+	flex-direction: column;
+	width: 100%;
+	margin-bottom: 1rem;
 }
-.card {
-   width: 80%;
-   scroll-behavior: auto;
-}
+
 .title {
-      font-size: 3rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.5rem;
-      text-align: center;
-   }
+	font-size: 3rem;
+	font-weight: 700;
+	color: #fff;
+	margin-bottom: 0.5rem;
+	text-align: center;
+}
 .subtitle {
-   text-align: center;
-      font-size: 1.4rem;
-      font-weight: 400;
-      color: #fff;
-      margin-bottom: 0.5rem;
+	text-align: center;
+	font-size: 1.4rem;
+	font-weight: 400;
+	color: #fff;
+	margin-bottom: 0.5rem;
 }
 .content {
-   width: 100%;
-   margin: auto;
+	width: 100%;
+	margin: auto;
 }
 .contentButton {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

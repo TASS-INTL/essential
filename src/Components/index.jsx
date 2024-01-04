@@ -1,3 +1,3 @@
-export { Input } from "./Input";
-export { InputSubmit } from "./InputSubmit";
-export { Loader } from "./Loader";
+export { Input } from './Input'
+export { Loader } from './Loader'
+export { InputSubmit } from './InputSubmit'
