@@ -2,9 +2,11 @@ import { useNavigate } from 'react-router-dom'
 
 import api from '../Api/api'
 import { constantsApi } from '../Api/constantsApi'
+import { userStore } from '../store/userStore'
 
-export const AuthProvider = () => {
+export const useAuthProvider = () => {
 	const navigate = useNavigate()
+	const { setUserData, userData } = userStore((state) => state)
 
 	const login = async ({ email, password }) => {
 		const response = await api(constantsApi.POST, 'auth2/login', {
@@ -12,20 +14,38 @@ export const AuthProvider = () => {
 			password
 		})
 
-		if (response.completed) {
-			navigate('/auth/validate-code', { state: { screen: 'login' } })
+		if (response?.completed) {
+			if (response?.type_ === 'USER_HAS_SESSION') {
+				localStorage.setItem('token', response.data[0].token)
+				setUserData({
+					...userData,
+					uid: response.data[0].token,
+					checking: false,
+					logged: true,
+					name: 'camilo rodriguez',
+					email: 'camilo@gore.com',
+					tokenSesion: response.data[0].token
+				})
+			} else {
+				navigate('/auth/validate-code', { state: { screen: 'login' } })
+			}
 		}
 		return response
 	}
 
-	const ValidateCodeApi = async (state, { code, screen }) => {
-		const { userData, setUserData } = state
-		const response = await api(constantsApi.POST, 'singup/start/code', {
-			code,
-			email: userData.email
-		})
+	const ValidateCodeApi = async ({ code, screen }) => {
+		const { email, tokenSesion } = userData
 
-		if (response.completed) {
+		const response = await api(
+			constantsApi.POST,
+			screen === 'login' ? `auth2/login/validateCode/?to=${tokenSesion}` : 'singup/start/code',
+			{
+				code,
+				email
+			}
+		)
+
+		if (response?.completed) {
 			if (screen === 'login') {
 				localStorage.setItem('token', response.data[0].token)
 				setUserData({
@@ -47,10 +67,8 @@ export const AuthProvider = () => {
 		return response
 	}
 
-	const registerPersonalData = async (state, personalData) => {
-		const {
-			userData: { tokenRegister }
-		} = state
+	const registerPersonalData = async (personalData) => {
+		const { tokenRegister } = userData
 		const response = await api(constantsApi.POST, `singup/finalized/?to=${tokenRegister}`, personalData)
 		if (response.completed) {
 			navigate('/auth/login')
@@ -58,19 +76,15 @@ export const AuthProvider = () => {
 		return response
 	}
 
-	const registerNameAndUserName = async (state, { email, username }) => {
-		const { setUserData } = state
+	const registerNameAndUserName = async ({ email, username }) => {
 		const response = await api(constantsApi.POST, 'singup/start/email', {
 			email,
 			username
 		})
 
-		if (response.completed) {
+		if (response?.completed) {
 			setUserData({
-				uid: null,
-				checking: false,
-				logged: false,
-				name: '',
+				...userData,
 				email,
 				userName: username
 			})
@@ -81,7 +95,6 @@ export const AuthProvider = () => {
 
 	const verifyToken = async (state, setUserData) => {
 		//  const token = await localStorage.getItem('token')
-
 		setUserData({
 			...state,
 			checking: false
@@ -126,6 +139,16 @@ export const AuthProvider = () => {
 		//  return;
 	}
 
+	const resendCode = async () => {
+		const { email, userName } = userData
+		const response = await api(constantsApi.POST, 'singup/start/email', {
+			email,
+			username: userName
+		})
+
+		return response
+	}
+
 	const logout = (setUserData) => {
 		localStorage.removeItem('token')
 		setUserData({
@@ -133,7 +156,8 @@ export const AuthProvider = () => {
 			checking: false,
 			logged: false,
 			name: null,
-			email: null
+			email: null,
+			tokenSesion: null
 		})
 	}
 
@@ -142,6 +166,7 @@ export const AuthProvider = () => {
 		ValidateCodeApi,
 		verifyToken,
 		logout,
+		resendCode,
 		registerNameAndUserName,
 		registerPersonalData
 	}
