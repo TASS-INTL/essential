@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 
-import { AuthProvider } from '../../../auth/authProvider'
-import { showToast } from '../../../helpers/toast'
-import { userStore } from '../../../store/userStore'
+import { showToast } from '@/helpers/toast'
+import { userStore } from '@/store/userStore'
+
+import { useAuthProvider } from '../../../auth/useAuthProvider'
 
 const initialStateLogin = {
 	email: '',
@@ -41,19 +42,27 @@ const initialStatePersonalData = {
 	type_document_personal: 'CC'
 }
 
+const initialStateForgotPassword = {
+	email: ''
+}
+
 export const useAuth = () => {
-	const { login, ValidateCodeApi, registerPersonalData, registerNameAndUserName } = AuthProvider()
-	const state = userStore((state) => state)
+	const { login, ValidateCodeApi, registerPersonalData, registerNameAndUserName, resendCode, forgotPassword } =
+		useAuthProvider()
+	const {
+		userData: { email, userName }
+	} = userStore((state) => state)
 	const [valuesLogin, setValuesLogin] = useState(initialStateLogin)
 	const [valuesRegister, setValuesRegister] = useState(initialStateRegister)
 	const [valueValidateCode, setValueValidateCode] = useState(initialStateValidateCode)
 	const [valuePersonalData, setValuePersonalData] = useState(initialStatePersonalData)
+	const [valuesForgot, setValuesForgot] = useState(initialStateForgotPassword)
 
 	useEffect(() => {
 		setValuePersonalData({
 			...valuePersonalData,
-			email: state?.userData.email,
-			username: state?.userData.userName
+			email,
+			username: userName
 		})
 	}, [])
 
@@ -78,17 +87,13 @@ export const useAuth = () => {
 			email,
 			password
 		})
-		console.log(response)
 
 		if (response?.error) {
+			setValuesLogin(initialStateLogin)
 			return showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 		}
 
-		if (response?.completed) {
-			return showToast('Validacion de manera exitosa', 'success')
-		}
-
-		//  setInput(initialState);
+		response?.completed && showToast('Validacion de manera exitosa', 'success')
 	}
 
 	// Validate Code
@@ -108,20 +113,13 @@ export const useAuth = () => {
 
 		const { code } = valueValidateCode
 
-		const response = await ValidateCodeApi(state, {
+		const response = await ValidateCodeApi({
 			code,
 			screen
 		})
 
-		if (response?.error) {
-			return showToast('Algo ha salido mal ' + response?.message, 'error')
-		}
-
-		if (response.success) {
-			return showToast('Codigo ingresado con exito ' + response?.message, 'success')
-		}
-
-		//  setInput(initialState);
+		response?.error && showToast('Algo ha salido mal ' + response?.message, 'error')
+		response.success && showToast('Codigo ingresado con exito ' + response?.message, 'success')
 	}
 
 	// Register
@@ -141,33 +139,23 @@ export const useAuth = () => {
 
 		const { email, username } = valuesRegister
 
-		const response = await registerNameAndUserName(state, {
+		const response = await registerNameAndUserName({
 			email,
 			username
 		})
 
-		if (response?.error) {
-			return showToast('❌ Algo ha salido mal ' + response?.message, 'error')
-		}
-
-		if (response?.completed) {
-			return showToast('Validacion del correo de manera exitosa', 'success')
-		}
-
-		//  setInput(initialState);
+		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
+		response?.completed && showToast('Validacion del correo de manera exitosa', 'success')
 	}
 
-	const ResendCode = async () => {
-		// const response = await sendCodeApi(state);
-		const response = { completed: true }
+	// resend code
+	const submitResendCode = async () => {
+		const response = await resendCode()
+		console.log(response)
 
-		if (response?.error) {
-			return showToast('❌ Algo ha salido mal ' + response?.message, 'error')
-		}
-
-		if (response?.completed) {
-			return showToast('Validacion del correo de manera exitosa', 'success')
-		}
+		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
+		response?.completed &&
+			showToast('Se a reenviado el codigo de validacion al correo de manera exitosa', 'success')
 	}
 
 	// Personal Data
@@ -185,32 +173,53 @@ export const useAuth = () => {
 			return showToast('❌ Debes ingresar todos los campos', 'error')
 		}
 
-		const response = await registerPersonalData(state, valuePersonalData)
+		const response = await registerPersonalData(valuePersonalData)
 
-		if (response?.error) {
-			return showToast('❌ Algo ha salido mal ' + response?.message, 'error')
+		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
+		response?.completed && showToast('Se a completado de manera exitos el registro', 'success')
+	}
+
+	// Forgot Password
+	const handleForgotPassword = (key, value) => {
+		setValuesForgot({
+			...valuesForgot,
+			[key]: value
+		})
+	}
+
+	const submitFormForgotPassword = async (event) => {
+		event.preventDefault()
+
+		if (Object.values(valuesForgot).some((value) => value === '')) {
+			return showToast('❌ Debes ingresar todos los campos', 'error')
 		}
 
-		if (response?.completed) {
-			return showToast('Se a completado de manera exitos el registro', 'success')
-		}
+		const { email } = valuesForgot
 
-		//  setInput(initialState);
+		const response = await forgotPassword({
+			email
+		})
+
+		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
+		response?.completed && showToast('Te enviamos la nueva contraseña al correo', 'success')
 	}
 
 	return {
-		ResendCode,
 		valuesLogin,
 		valuesRegister,
 		valueValidateCode,
 		valuePersonalData,
+		valuesForgot,
 		submitFormLogin,
+		submitResendCode,
 		submitFormRegister,
 		submitFormValidateData,
 		submitFormValidateCode,
-		handleValuesLogin,
+		submitFormForgotPassword,
 		handleRegister,
+		handleValuesLogin,
 		handlePersonalData,
-		handleFormValidateCode
+		handleFormValidateCode,
+		handleForgotPassword
 	}
 }

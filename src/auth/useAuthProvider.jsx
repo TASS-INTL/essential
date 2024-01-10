@@ -19,14 +19,21 @@ export const useAuthProvider = () => {
 				localStorage.setItem('token', response.data[0].token)
 				setUserData({
 					...userData,
-					uid: response.data[0].token,
+					id: response.data[0].id,
 					checking: false,
 					logged: true,
-					name: 'camilo rodriguez',
-					email: 'camilo@gore.com',
+					name: response.data[0].name,
+					email: response.data[0].email,
 					tokenSesion: response.data[0].token
 				})
 			} else {
+				localStorage.setItem('token', response.data[0].token)
+				setUserData({
+					...userData,
+					checking: false,
+					email,
+					tokenSesion: response.data[0].token
+				})
 				navigate('/auth/validate-code', { state: { screen: 'login' } })
 			}
 		}
@@ -35,6 +42,7 @@ export const useAuthProvider = () => {
 
 	const ValidateCodeApi = async ({ code, screen }) => {
 		const { email, tokenSesion } = userData
+		console.log(userData)
 
 		const response = await api(
 			constantsApi.POST,
@@ -71,6 +79,12 @@ export const useAuthProvider = () => {
 		const { tokenRegister } = userData
 		const response = await api(constantsApi.POST, `singup/finalized/?to=${tokenRegister}`, personalData)
 		if (response.completed) {
+			setUserData({
+				...userData,
+				email: '',
+				userName: '',
+				tokenRegister: ''
+			})
 			navigate('/auth/login')
 		}
 		return response
@@ -149,6 +163,14 @@ export const useAuthProvider = () => {
 		return response
 	}
 
+	const forgotPassword = async ({ email }) => {
+		const response = await api(constantsApi.GET, `auth2/resetPassword/${email}`, {
+			email
+		})
+
+		return response
+	}
+
 	const logout = (setUserData) => {
 		localStorage.removeItem('token')
 		setUserData({
@@ -163,11 +185,12 @@ export const useAuthProvider = () => {
 
 	return {
 		login,
-		ValidateCodeApi,
-		verifyToken,
 		logout,
 		resendCode,
-		registerNameAndUserName,
-		registerPersonalData
+		verifyToken,
+		forgotPassword,
+		ValidateCodeApi,
+		registerPersonalData,
+		registerNameAndUserName
 	}
 }

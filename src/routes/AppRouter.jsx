@@ -2,30 +2,26 @@ import React, { useEffect } from 'react'
 
 import { Route, Routes } from 'react-router-dom'
 
-import { AuthProvider } from '../auth/authProvider'
+import { useAuthProvider } from '../auth/useAuthProvider'
 import { Loader } from '../Components'
 import { userStore } from '../store/userStore'
 import { PrivateRouter } from './PrivateRouter'
 import { PublicRouter } from './PublicRouter'
 
 export const AppRouter = () => {
-	const {
-		userData: { logged, checking, ...state },
-		setUserData
-	} = userStore()
-
-	const { verifyToken } = AuthProvider()
+	const { userData, setUserData } = userStore()
+	const { verifyToken } = useAuthProvider()
 
 	useEffect(() => {
-		verifyToken(state, setUserData)
+		verifyToken(userData, setUserData)
 	}, [])
 
-	if (checking) return <Loader />
+	if (userData.checking) return <Loader />
 
 	return (
 		<Routes>
-			<Route path='/auth/*' element={<PublicRouter isAuthenticated={logged} />} />
-			<Route path='/dashboard' element={<PrivateRouter isAuthenticated={logged} />} />
+			<Route path='/auth/*' element={<PublicRouter isAuthenticated={userData.logged} />} />
+			<Route path='/dashboard' element={<PrivateRouter isAuthenticated={userData.logged} />} />
 		</Routes>
 	)
 }

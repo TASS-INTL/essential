@@ -1,11 +1,9 @@
-import { AuthProvider } from '../../auth/authProvider'
+import { useAuthProvider } from '../../auth/useAuthProvider'
 import { userStore } from '../../store/userStore'
-
-import './style.css'
 
 export const Dasboard = () => {
 	const { userData, setUserData } = userStore((state) => state)
-	const { logout } = AuthProvider()
+	const { logout } = useAuthProvider()
 
 	return (
 		<div>

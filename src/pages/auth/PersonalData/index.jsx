@@ -1,26 +1,25 @@
-import './style.css'
-
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import 'react-phone-number-input/style.css'
 
 import { Input, InputSubmit } from '@/Components'
+import { SelectComponent } from '@/Components/Select'
 import PhoneInput from 'react-phone-number-input'
 
 import { useAuth } from '../hooks/useLogin'
 
-const typeDocument = {
-	CC: 'CC',
-	CE: 'CE',
-	TI: 'TI',
-	RC: 'RC',
-	PA: 'PA',
-	NIT: 'NIT',
-	SSN: 'SSN',
-	NUIP: 'NUIP',
-	DNI: 'DNI',
-	NN: 'NN'
-}
+const typeDocument = [
+	{ id: 1, name: 'CC' },
+	{ id: 2, name: 'CE' },
+	{ id: 3, name: 'TI' },
+	{ id: 4, name: 'RC' },
+	{ id: 5, name: 'PA' },
+	{ id: 6, name: 'NIT' },
+	{ id: 7, name: 'SSN' },
+	{ id: 8, name: 'NUIP' },
+	{ id: 9, name: 'DNI' },
+	{ id: 10, name: 'NN' }
+]
 
 const stylesInput = {
 	backgroundColor: '#03091e',
@@ -37,6 +36,11 @@ const stylesInput = {
 	width: '100%'
 }
 
+const arrayOptions = [
+	{ id: 1, name: 'Natural' },
+	{ id: 2, name: 'Juridica' }
+]
+
 export const PersonalData = () => {
 	const { valuePersonalData, handlePersonalData, submitFormValidateData } = useAuth()
 	const [flagInput, setFlagInput] = useState(false)
@@ -44,15 +48,19 @@ export const PersonalData = () => {
 
 	const [chekInput, setChekInput] = useState(valuePersonalData.terms_conditions)
 
+	useEffect(() => {
+		valuePersonalData.type_person === 'Juridica' ? setFlagInput(true) : setFlagInput(false)
+	}, [valuePersonalData.type_person])
+
 	return (
-		<div className='container-Personal'>
-			<div className='card-personal'>
-				<div className='box-title'>
-					<h1 className='title'>TASS INTL</h1>
-				</div>
-				<div>
-					<div className='card-form'>
-						<form action='' onSubmit={submitFormValidateData}>
+		<div className='bg-gradient-to-r from-cyan-500 to-blue-500 w-full min-h-screen  items-center justify-center  space-x-6'>
+			<div className='min-h-screen flex  flex-row justify-center'>
+				<div className=' w-7/12 '>
+					<div className='mt-9'>
+						<h1 className='text-xl  font-bold text-white text-center'>REGISTRO DE DATOS PERSONALES</h1>
+					</div>
+					<form action='' className=' ' onSubmit={submitFormValidateData}>
+						<div className='grid grid-cols-2  gap-2'>
 							<Input
 								label={'nombre'}
 								name={'name'}
@@ -61,101 +69,21 @@ export const PersonalData = () => {
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el email'}
 							/>
-							<div className='box-label'>
-								<label className='label' htmlFor=''>
-									Tipo de persona
-								</label>
-								<select
-									onChange={(event) => {
-										handlePersonalData('type_person', event.target.value)
-										if (event.target.value === 'Juridica') {
-											setFlagInput(true)
-										} else {
-											setFlagInput(false)
-										}
-									}}
-									value={valuePersonalData.type_person}
-									name='select-type-person'
-								>
-									<option value='Natural'>Natural</option>
-									<option value='Juridica'>Juridica</option>
-								</select>
-							</div>
-							<div className='box-label'>
-								<label className='label' htmlFor=''>
-									Tipo de documento
-								</label>
-								<select
-									onChange={(event) => {
-										handlePersonalData('type_document_personal', event.target.value)
-									}}
-									value={valuePersonalData.type_document_personal}
-									name='select'
-								>
-									<option value={typeDocument.CC}>{typeDocument.CC}</option>
-									<option value={typeDocument.CE}>{typeDocument.CE}</option>
-									<option value={typeDocument.TI}>{typeDocument.TI}</option>
-									<option value={typeDocument.RC}>{typeDocument.RC}</option>
-									<option value={typeDocument.PA}>{typeDocument.PA}</option>
-									<option value={typeDocument.NIT}>{typeDocument.NIT}</option>
-									<option value={typeDocument.SSN}>{typeDocument.SSN}</option>
-									<option value={typeDocument.NUIP}>{typeDocument.NUIP}</option>
-									<option value={typeDocument.DNI}>{typeDocument.DNI}</option>
-									<option value={typeDocument.NN}>{typeDocument.NN}</option>
-								</select>
-							</div>
 							<Input
-								label={'numero de documento'}
-								name={'number_document_personal'}
+								label={'email'}
+								name={'email'}
 								type={'text'}
-								value={valuePersonalData.number_document_personal}
+								value={valuePersonalData.email}
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el email'}
 							/>
-							{flagInput && (
-								<>
-									<div className='box-label'>
-										<label className='label' htmlFor=''>
-											Tipo de documento de la empresa
-										</label>
-										<select
-											onChange={(event) => {
-												handlePersonalData('type_document_company', event.target.value)
-											}}
-											value={valuePersonalData.type_document_company}
-											name='select-type-document-company'
-										>
-											<option value={typeDocument.CC}>{typeDocument.CC}</option>
-											<option value={typeDocument.CE}>{typeDocument.CE}</option>
-											<option value={typeDocument.TI}>{typeDocument.TI}</option>
-											<option value={typeDocument.RC}>{typeDocument.RC}</option>
-											<option value={typeDocument.PA}>{typeDocument.PA}</option>
-											<option value={typeDocument.NIT}>{typeDocument.NIT}</option>
-											<option value={typeDocument.SSN}>{typeDocument.SSN}</option>
-											<option value={typeDocument.NUIP}>{typeDocument.NUIP}</option>
-											<option value={typeDocument.DNI}>{typeDocument.DNI}</option>
-											<option value={typeDocument.NN}>{typeDocument.NN}</option>
-										</select>
-									</div>
-									<Input
-										label={'numero de documento de la compañia'}
-										name={'number_document_company'}
-										type={'text'}
-										value={valuePersonalData.number_document_company}
-										onChange={handlePersonalData}
-										error={'Ocurrio un error en el email'}
-									/>
-								</>
-							)}
-
-							<PhoneInput
-								international
-								countryCallingCodeEditable={false}
-								defaultCountry='US'
-								placeholder='Enter phone number'
-								value={value}
-								onChange={setValue}
-								style={stylesInput}
+							<Input
+								label={'username'}
+								name={'username'}
+								type={'text'}
+								value={valuePersonalData.username}
+								onChange={handlePersonalData}
+								error={'Ocurrio un error en el username'}
 							/>
 							<Input
 								label={'country'}
@@ -205,21 +133,61 @@ export const PersonalData = () => {
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el email'}
 							/>
+							<SelectComponent
+								label='Tipo de persona'
+								handlePersonalData={handlePersonalData}
+								value={valuePersonalData.type_person}
+								name='select-type-person'
+								arrayOptions={arrayOptions}
+								valueChange={'type_person'}
+							/>
+							<SelectComponent
+								label='Tipo de documento'
+								handlePersonalData={handlePersonalData}
+								value={valuePersonalData.type_document_personal}
+								name='select-type_document_personal'
+								arrayOptions={typeDocument}
+								valueChange={'type_document_personal'}
+							/>
+
 							<Input
-								label={'email'}
-								name={'email'}
+								label={'numero de documento'}
+								name={'number_document_personal'}
 								type={'text'}
-								value={valuePersonalData.email}
+								value={valuePersonalData.number_document_personal}
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el email'}
 							/>
-							<Input
-								label={'username'}
-								name={'username'}
-								type={'text'}
-								value={valuePersonalData.username}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el username'}
+
+							{flagInput && (
+								<>
+									<SelectComponent
+										label='Tipo de documento de la empresa'
+										handlePersonalData={handlePersonalData}
+										value={valuePersonalData.type_document_company}
+										name='select-type_document_company'
+										arrayOptions={typeDocument}
+										valueChange={'type_document_company'}
+									/>
+									<Input
+										label={'numero de documento de la compañia'}
+										name={'number_document_company'}
+										type={'text'}
+										value={valuePersonalData.number_document_company}
+										onChange={handlePersonalData}
+										error={'Ocurrio un error en el email'}
+									/>
+								</>
+							)}
+
+							<PhoneInput
+								international
+								countryCallingCodeEditable={false}
+								defaultCountry='US'
+								placeholder='Enter phone number'
+								value={value}
+								onChange={setValue}
+								style={stylesInput}
 							/>
 							<Input
 								label={'password'}
@@ -229,26 +197,28 @@ export const PersonalData = () => {
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el password'}
 							/>
-							<div>
-								<input
-									type='checkbox'
-									name='terminos'
-									id='terminos'
-									value={chekInput}
-									onChange={(e) => {
-										handlePersonalData('terms_conditions', chekInput)
-										setChekInput(!chekInput)
-									}}
-								/>
-								<label htmlFor='terminos' className='terms'>
-									Acepto los terminos y condiciones de uso de TASS INTL y la politica de privacidad
-								</label>
-							</div>
-							<div className='contentButton'>
-								<InputSubmit text='Siguiente' />
-							</div>
-						</form>
-					</div>
+						</div>
+
+						<div className='py-3 px-6 flex flex-row justify-center content-center'>
+							<input
+								type='checkbox'
+								name='terminos'
+								id='terminos'
+								className='mr-2 w-4 h-9'
+								value={chekInput}
+								onChange={(e) => {
+									handlePersonalData('terms_conditions', chekInput)
+									setChekInput(!chekInput)
+								}}
+							/>
+							<label htmlFor='terminos' className=' text-white'>
+								Acepto los terminos y condiciones de uso de TASS INTL y la politica de privacidad
+							</label>
+						</div>
+						<div className=' flex flex-row justify-center mb-9'>
+							<InputSubmit text='Finalizar' />
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
