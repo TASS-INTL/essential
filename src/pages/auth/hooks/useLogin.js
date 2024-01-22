@@ -151,7 +151,6 @@ export const useAuth = () => {
 	// resend code
 	const submitResendCode = async () => {
 		const response = await resendCode()
-		console.log(response)
 
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 		response?.completed &&

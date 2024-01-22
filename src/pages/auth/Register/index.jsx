@@ -8,7 +8,7 @@ export const Register = () => {
 
 	return (
 		<div className='w-full min-h-screen  items-center justify-center  space-x-6'>
-			<div className='bg-gradient-to-r from-cyan-500 to-blue-500 min-h-screen p-6 flex flex-col items-center justify-center'>
+			<div className='bg-dark-purple min-h-screen p-6 flex flex-col items-center justify-center'>
 				<div className='w-1/1 md:w-1/3 '>
 					<div className='mb-7'>
 						<h1 className='text-4xl font-bold text-white text-center'>Registro</h1>

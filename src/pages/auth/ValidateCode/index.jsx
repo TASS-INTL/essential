@@ -12,7 +12,7 @@ export const ValidateCode = () => {
 	} = useLocation()
 
 	return (
-		<div className='bg-gradient-to-r from-cyan-500 to-blue-500 w-full min-h-screen  items-center justify-center  space-x-6'>
+		<div className='bg-dark-purple min-h-screen  items-center justify-center  space-x-6'>
 			<div className='min-h-screen p-6 flex flex-col items-center justify-center'>
 				<div className='w-1/1 md:w-1/3'>
 					<div className='mb-7'>
