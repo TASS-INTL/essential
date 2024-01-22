@@ -11,8 +11,10 @@ export const userStore = create(
 				userName: '',
 				logged: false,
 				checking: true,
+				state: null,
 				tokenRegister: null,
-				tokenSesion: null
+				tokenSesion: null,
+				modules: null
 			},
 			setUserData: (value) => set(() => ({ userData: value }))
 		}),
