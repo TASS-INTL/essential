@@ -5,33 +5,26 @@ export default {
 	theme: {
 		extend: {
 			display: ['Inter', 'system-ui', 'sans-serif'],
-			body: ['Inter', 'system-ui', 'sans-serif']
-		}
-	},
-	colors: {
-		primary: {
-			50: '#eff6ff',
-			100: '#dbeafe',
-			200: '#bfdbfe',
-			300: '#93c5fd',
-			400: '#60a5fa',
-			500: '#3b82f6',
-			600: '#2563eb',
-			700: '#1d4ed8',
-			800: '#1e40af',
-			900: '#1e3a8a'
+			body: ['Inter', 'system-ui', 'sans-serif'],
+			colors: {
+				'dark-purple': '#081A51',
+				'light-white': 'rgba(255, 255, 255, 0.17)',
+				primary: '#00040f',
+				secondary: '#00f6ff',
+				dimWhite: 'rgba(255, 255, 255, 0.7)',
+				dimBlue: 'rgba(9, 151, 124, 0.1)'
+			},
+			fontFamily: {
+				poppins: ['Poppins', 'sans-serif']
+			}
 		},
-		secondary: {
-			50: '#f8fafc',
-			100: '#f1f5f9',
-			200: '#e2e8f0',
-			300: '#cbd5e1',
-			400: '#94a3b8',
-			500: '#64748b',
-			600: '#475569',
-			700: '#334155',
-			800: '#1e293b',
-			900: '#0f172a'
+		screens: {
+			xs: '480px',
+			ss: '620px',
+			sm: '768px',
+			md: '1060px',
+			lg: '1200px',
+			xl: '1700px'
 		}
 	},
 	plugins: []
