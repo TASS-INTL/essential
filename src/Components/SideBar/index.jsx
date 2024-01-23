@@ -66,6 +66,20 @@ export const SideBar = () => {
 							</li>
 						</Link>
 					))}
+					<li
+						className={`flex  
+                            rounded-md p-2 cursor-pointer 
+                            hover:bg-light-white 
+                            text-gray-300 
+                            text-sm 
+                            items-center 
+                            gap-x-4  mt-9 } 
+                            ${selectButton === true && 'bg-light-white'} `}
+						onClick={logout}
+					>
+						<img src={`../src/assets/img/${Menus[1].src}.png`} />
+						<span className={`${!open && 'hidden'} origin-left duration-200`}>cerrar sesion</span>
+					</li>
 				</ul>
 			</div>
 		</div>

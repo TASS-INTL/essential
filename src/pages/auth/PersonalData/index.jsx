@@ -8,7 +8,7 @@ import PhoneInput from 'react-phone-number-input'
 
 import { useAuth } from '../hooks/useLogin'
 
-const typeDocument = [
+export const typeDocument = [
 	{ id: 1, name: 'CC' },
 	{ id: 2, name: 'CE' },
 	{ id: 3, name: 'TI' },

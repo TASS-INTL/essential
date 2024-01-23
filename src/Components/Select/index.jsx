@@ -2,12 +2,13 @@ import React from 'react'
 
 export const SelectComponent = ({ name, value, label, handlePersonalData, arrayOptions, valueChange }) => {
 	return (
-		<div className=''>
+		<>
 			<label className='mt-2 block text-sm font-medium leading-6 text-white' htmlFor=''>
 				{label}
 			</label>
 			<div className='relative rounded-md shadow-sm'>
 				<select
+					key={arrayOptions.name}
 					onChange={(event) => {
 						handlePersonalData(valueChange, event.target.value)
 					}}
@@ -17,13 +18,13 @@ export const SelectComponent = ({ name, value, label, handlePersonalData, arrayO
 				>
 					{arrayOptions.map((option) => {
 						return (
-							<option key={option.id} value={option.name}>
+							<option key={option._id} value={option.name}>
 								{option.name}
 							</option>
 						)
 					})}
 				</select>
 			</div>
-		</div>
+		</>
 	)
 }

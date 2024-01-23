@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 
+import { useNavigate } from 'react-router-dom'
+
 import { close, logo, menu } from '../../../assets/assetsLandin'
 import { navLinks } from '../constants'
 
 export const Navbar = () => {
+	const navigate = useNavigate()
+
 	const [active, setActive] = useState('Home')
 	const [toggle, setToggle] = useState(false)
 	return (
@@ -17,7 +21,10 @@ export const Navbar = () => {
 						className={`font-poppins font-normal cursor-pointer text-[16px] ${
 							active === nav.title ? 'text-white' : 'text-dimWhite'
 						} ${index === navLinks.length - 1 ? 'mr-0' : 'mr-10'}`}
-						onClick={() => setActive(nav.title)}
+						onClick={() => {
+							setActive(nav.title)
+							nav.title === 'Login' && navigate('auth/login')
+						}}
 					>
 						<a href={`#${nav.id}`}>{nav.title}</a>
 					</li>
@@ -44,7 +51,10 @@ export const Navbar = () => {
 								className={`font-poppins font-medium cursor-pointer text-[16px] ${
 									active === nav.title ? 'text-white' : 'text-dimWhite'
 								} ${index === navLinks.length - 1 ? 'mb-0' : 'mb-4'}`}
-								onClick={() => setActive(nav.title)}
+								onClick={() => {
+									setActive(nav.title)
+									nav.title === 'Login' && navigate('auth/login')
+								}}
 							>
 								<a href={`#${nav.id}`}>{nav.title}</a>
 							</li>
