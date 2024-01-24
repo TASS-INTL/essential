@@ -1,9 +1,7 @@
 import React from 'react'
 
 import styles from '../../styles'
-import Hero from './components/Hero'
-import { Navbar } from './components/Navbar'
-import Stats from './components/Stats'
+import { Billing, Business, CardDeal, Clients, CTA, Footer, Hero, Navbar, Stats, Testimonials } from './components'
 
 export const Landing = () => {
 	return (
@@ -22,13 +20,13 @@ export const Landing = () => {
 			<div className={`bg-primary ${styles.paddingX} ${styles.flexCenter}`}>
 				<div className={`${styles.boxWidth}`}>
 					<Stats />
-					{/* <Business /> */}
-					{/* <Billing /> */}
-					{/* <CardDeal /> */}
-					{/* <Testimonials /> */}
-					{/* <Clients /> */}
-					{/* <CTA /> */}
-					{/* <Footer /> */}
+					<Business />
+					<Billing />
+					<CardDeal />
+					<Testimonials />
+					<Clients />
+					<CTA />
+					<Footer />
 				</div>
 			</div>
 		</div>

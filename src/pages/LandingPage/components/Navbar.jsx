@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { close, logo, menu } from '../../../assets/assetsLandin'
 import { navLinks } from '../constants'
 
-export const Navbar = () => {
+const Navbar = () => {
 	const navigate = useNavigate()
 
 	const [active, setActive] = useState('Home')
@@ -65,3 +65,5 @@ export const Navbar = () => {
 		</nav>
 	)
 }
+
+export default Navbar
