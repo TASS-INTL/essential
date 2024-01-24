@@ -4,13 +4,8 @@ import { persist } from 'zustand/middleware'
 export const usersStore = create(
 	persist(
 		(set) => ({
-			dataUsers: {
-				users: null,
-				policy: null,
-				policies: null,
-				types_profiles: null
-			},
-			setUserData: (value) => set(() => ({ dataUsers: value }))
+			modal: false,
+			setModalVisible: (value) => set(() => ({ modal: value }))
 		}),
 		{ name: 'users-storage' }
 	)

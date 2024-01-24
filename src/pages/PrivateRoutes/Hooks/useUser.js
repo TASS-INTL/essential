@@ -2,9 +2,10 @@ import { useState } from 'react'
 
 import api from '@/Api/api'
 import { constantsApi } from '@/Api/constantsApi'
+import { showToast } from '@/helpers/toast'
+import { queryClient } from '@/main'
+import { usersStore } from '@/store/usersStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
-
-import { queryClient } from '../../../main'
 
 const initialStateEmpty = {
 	name: '',
@@ -27,6 +28,7 @@ const initialStateEmpty = {
 
 export const useUsers = () => {
 	const [inputs, setInputs] = useState(initialStateEmpty)
+	const setModalVisible = usersStore((state) => state.setModalVisible)
 
 	const handleValuesCreateUser = (key, value) => {
 		setInputs({
@@ -59,18 +61,30 @@ export const useUsers = () => {
 	const handleCreateUser = async (event) => {
 		event.preventDefault()
 		const newUser = inputs
-		await createUser.mutateAsync(newUser)
+		const response = await createUser.mutateAsync(newUser)
+		if (response.completed) {
+			showToast('Se a Creado el usuario de manera exitosa', 'success')
+			setModalVisible(false)
+		}
+		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 	}
 
 	const handleDeleteUser = async (idUserDelete) => {
-		await deleteUser.mutateAsync(idUserDelete)
+		const response = await deleteUser.mutateAsync(idUserDelete)
+		response.completed && showToast('Se a Eliminado el usuario de manera exitosa', 'success')
+		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 	}
 
 	const handleUpdateUser = async (event) => {
 		event.preventDefault()
 		delete inputs.created_at
 		delete inputs.updated_at
-		await updateUser.mutateAsync({ idUser: inputs._id, data: inputs })
+		const response = await updateUser.mutateAsync({ idUser: inputs._id, data: inputs })
+		if (response.completed) {
+			showToast('Se a Actualizado el usuario de manera exitosa', 'success')
+			setModalVisible(false)
+		}
+		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 	}
 
 	return {

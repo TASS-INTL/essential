@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { useAuthProvider } from '../../auth/useAuthProvider'
 import { userStore } from '../../store/userStore'
 
 const Menus = [
-	{ title: 'Inicio', src: 'Chart_fill', to: 'dashboard' },
+	{ title: 'Inicio', src: 'Chart_fill', to: 'dashboard', pathname: '/user/users' },
 	{ title: 'Chat', src: 'Chat', to: 'chat' },
 	{ title: 'Usuarios', src: 'User', to: 'Users' },
 	{ title: 'Dispositivos', src: 'Calendar', to: 'devices' },
@@ -19,10 +19,11 @@ const Menus = [
 ]
 
 export const SideBar = () => {
-	const [open, setOpen] = useState(true)
-	const { userData } = userStore((state) => state)
+	const [open, setOpen] = useState(false)
+	const userData = userStore((state) => state.userData)
 	const { logout } = useAuthProvider()
 	const [selectButton, setSelectButton] = useState(0)
+	const { pathname } = useLocation()
 
 	return (
 		<div className='flex'>
@@ -55,7 +56,7 @@ export const SideBar = () => {
                             items-center 
                             gap-x-4 
                             ${Menu.gap ? 'mt-9' : 'mt-2'} 
-                            ${index === selectButton && 'bg-light-white'} `}
+                            ${Menu.pathName === pathname && 'bg-light-white'} `}
 								onClick={() => {
 									Menu.title === 'Cerrar sesion' && logout()
 									setSelectButton(index)

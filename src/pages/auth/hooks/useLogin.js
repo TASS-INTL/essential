@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 
+import { useAuthProvider } from '@/auth/useAuthProvider'
 import { showToast } from '@/helpers/toast'
 import { userStore } from '@/store/userStore'
-
-import { useAuthProvider } from '../../../auth/useAuthProvider'
 
 const initialStateLogin = {
 	email: '',
@@ -76,23 +75,18 @@ export const useAuth = () => {
 
 	const submitFormLogin = async (e) => {
 		e.preventDefault()
-
 		if (Object.values(valuesLogin).some((value) => value === '')) {
 			return showToast('❌ Debes ingresar el correo', 'error')
 		}
-
 		const { email, password } = valuesLogin
-
 		const response = await login({
 			email,
 			password
 		})
-
 		if (response?.error) {
 			setValuesLogin(initialStateLogin)
 			return showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 		}
-
 		response?.completed && showToast('Validacion de manera exitosa', 'success')
 	}
 

@@ -6,7 +6,8 @@ import { userStore } from '../store/userStore'
 
 export const useAuthProvider = () => {
 	const navigate = useNavigate()
-	const { setUserData, userData } = userStore((state) => state)
+	const userData = userStore((state) => state.userData)
+	const setUserData = userStore((state) => state.setUserData)
 
 	const login = async ({ email, password }) => {
 		const response = await api(constantsApi.POST, 'auth2/login', {
@@ -62,7 +63,7 @@ export const useAuthProvider = () => {
 					...userData,
 					logged: true,
 					checking: false,
-					uid: response.data[0].id,
+					uid: response.data[0]._id,
 					name: response.data[0].name,
 					email: response.data[0].email,
 					state: response.data[0].state,
@@ -115,11 +116,6 @@ export const useAuthProvider = () => {
 
 	const verifyToken = async (state, setUserData) => {
 		//  const token = await localStorage.getItem('token')
-		setUserData({
-			...state,
-			checking: false
-		})
-
 		//   if (!token) {
 		//     setUserData({
 		//       uid: null,
@@ -128,12 +124,9 @@ export const useAuthProvider = () => {
 		//       name: null,
 		//       email: null,
 		//     });
-
 		//    return false;
 		//  }
-
 		//  const res = await fetchWitchToken("/auth/renow");
-
 		//  if (!res.ok) {
 		//    setAuth({
 		//      uid: null,
@@ -142,12 +135,9 @@ export const useAuthProvider = () => {
 		//      name: null,
 		//      email: null,
 		//    });
-
 		//    return false;
 		//  }
-
 		//  localStorage.setItem("token", res.token);
-
 		//  setAuth({
 		//    uid: res.user.uid,
 		//    checking: false,
@@ -155,15 +145,14 @@ export const useAuthProvider = () => {
 		//    name: res.user.name,
 		//    email: res.user.email,
 		//  });
-
 		//  return;
 	}
 
 	const resendCode = async () => {
-		const { email, userName } = userData
-		const response = await api(constantsApi.POST, 'singup/start/email', {
+		const { email, tokenSesion } = userData
+		const response = await api(constantsApi.POST, 'auth2/login/resendCode', {
 			email,
-			username: userName
+			token: tokenSesion
 		})
 
 		return response
@@ -204,7 +193,3 @@ export const useAuthProvider = () => {
 		registerNameAndUserName
 	}
 }
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImVtYWlsIjoiY2FtaWxvZ29yZTk5QGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJzdGF0dXMiOnRydWUsImlkIjoiNjVhODAxOTRjYmIzODBhZWM4NGE5NWNkIiwiaWRfbWFzdGVyIjoiNjVhODAxOTRjYmIzODBhZWM4NGE5NWNkIiwiZXhpc3QiOmZhbHNlfSwiZXhwIjoxNzA1Njc4OTY1LCJpYXQiOjE3MDU2NzUzNjV9.CdMjY_m9vFHvWA9EWdFnhzRBkmLCDJ2_toG4nO4s-00
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImVtYWlsIjoiY2FtaWxvZ29yZTk5QGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJzdGF0dXMiOnRydWUsImlkIjoiNjVhODAxOTRjYmIzODBhZWM4NGE5NWNkIiwiaWRfbWFzdGVyIjoiNjVhODAxOTRjYmIzODBhZWM4NGE5NWNkIiwiZXhpc3QiOmZhbHNlfSwiZXhwIjoxNzA1Njc5ODg4LCJpYXQiOjE3MDU2NzYyODh9.QJyzxD-8KZ3--7GGUF7UHSkQu4VWntnhCosxGrPScjM

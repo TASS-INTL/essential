@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 
+import { Input, InputSubmit } from '@/Components'
+import { Modal } from '@/Components/Modal'
 import { SelectComponent } from '@/Components/Select'
+import { usersStore } from '@/store/usersStore'
 
-import { Input, InputSubmit } from '../../../Components'
-import { Modal } from '../../../Components/Modal'
 import { typeDocument } from '../../auth/PersonalData'
 import { useUsers } from '../Hooks/useUser'
 
@@ -17,9 +18,11 @@ export const Users = () => {
 		handleDeleteUser,
 		handleUpdateUser
 	} = useUsers()
+
 	const fetchUserList = fetchDataUser()
-	const [flag, setFlag] = useState(false)
 	const [methodForm, setMethodForm] = useState(true)
+	const modalVisible = usersStore((state) => state.modal)
+	const setModalVisible = usersStore((state) => state.setModalVisible)
 
 	if (fetchUserList.isLoading) return <div>loading .....</div>
 
@@ -27,19 +30,21 @@ export const Users = () => {
 		const userUpdate = fetchUserList?.data?.data[0]?.users?.find((element) => element._id === idUserUpdate)
 		setInputs(userUpdate)
 		setMethodForm(false)
-		setFlag(true)
+		setModalVisible(true)
+	}
+
+	const onPressCreateUser = () => {
+		setMethodForm(true)
+		setModalVisible(true)
 	}
 
 	return (
 		<div className='w-full bg-gray-100 bg-opacity-100'>
 			<div className=' w-5/6 m-auto mt-8 bg-white rounded-1xl '>
 				<div className='flex justify-between px-8 py-4'>
-					<div className=' text-pretty text-xl text'>Usuarios</div>
+					<h4 className=' text-pretty text-xl'>Usuarios</h4>
 					<button
-						onClick={() => {
-							setMethodForm(true)
-							setFlag(!flag)
-						}}
+						onClick={onPressCreateUser}
 						className='bg-dark-purple shadow-lg shadow-dark-purple p2-4 px-5 rounded-sm text-white'
 					>
 						+ Craer
@@ -86,12 +91,9 @@ export const Users = () => {
 					</tbody>
 				</table>
 			</div>
-			{flag && (
-				<Modal
-					closeModal={() => setFlag(!flag)}
-					textModal={methodForm ? 'Creacion de nuevo Usuario' : 'Actlializacion de usuario'}
-				>
-					<form action='' onSubmit={methodForm ? handleCreateUser : handleUpdateUser}>
+			{modalVisible && (
+				<Modal textModal={methodForm ? 'Creacion de nuevo Usuario' : 'Actlializacion de usuario'}>
+					<form onSubmit={methodForm ? handleCreateUser : handleUpdateUser}>
 						<div className='grid grid-cols-2'>
 							<Input
 								type='text'
