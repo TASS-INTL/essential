@@ -53,7 +53,7 @@ export const PersonalData = () => {
 	}, [valuePersonalData.type_person])
 
 	return (
-		<div className='bg-gradient-to-r from-cyan-500 to-blue-500 w-full min-h-screen  items-center justify-center  space-x-6'>
+		<div className='bg-primary w-full min-h-screen  items-center justify-center  space-x-6'>
 			<div className='min-h-screen flex  flex-row justify-center'>
 				<div className=' w-7/12 '>
 					<div className='mt-9'>

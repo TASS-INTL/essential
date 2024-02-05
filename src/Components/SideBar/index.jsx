@@ -19,7 +19,7 @@ const Menus = [
 ]
 
 export const SideBar = () => {
-	const [open, setOpen] = useState(false)
+	const [open, setOpen] = useState(true)
 	const userData = userStore((state) => state.userData)
 	const { logout } = useAuthProvider()
 	const [selectButton, setSelectButton] = useState(0)

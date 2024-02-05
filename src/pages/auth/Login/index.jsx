@@ -8,7 +8,7 @@ export const Login = () => {
 
 	return (
 		<div className='w-full min-h-screen  items-center justify-center  space-x-6'>
-			<div className=' bg-dark-purple min-h-screen p-6 flex flex-col items-center justify-center'>
+			<div className=' bg-primary min-h-screen p-6 flex flex-col items-center justify-center'>
 				<div className='w-1/1 md:w-1/3 '>
 					<div className='mb-7'>
 						<h1 className='text-2xl font-bold text-white text-center'>TASS INTERNATIONAL</h1>
@@ -41,10 +41,6 @@ export const Login = () => {
 					<p className='text-md font-normal  text-white py-2 text-center'>
 						<Link to={'/auth/forgot-password'}>¿Ha olvidado la contraseña?</Link>
 					</p>
-					{/* BORRAR */}
-					{/* <p className='text-md font-normal  text-white py-2 text-center'>
-						<Link to={'/dashboard'}>¿Ha olvidado la contraseña?</Link>
-					</p> */}
 				</div>
 			</div>
 		</div>

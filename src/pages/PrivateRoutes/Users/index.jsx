@@ -39,58 +39,55 @@ export const Users = () => {
 	}
 
 	return (
-		<div className='w-full bg-gray-100 bg-opacity-100'>
-			<div className=' w-5/6 m-auto mt-8 bg-white rounded-1xl '>
-				<div className='flex justify-between px-8 py-4'>
-					<h4 className=' text-pretty text-xl'>Usuarios</h4>
+		<div className='w-full bg-opacity-100'>
+			<div className=' w-11/12 m-auto mt-8 bg-zinc-200 rounded-1xl '>
+				<div className='flex justify-between px-0 py-4 pt-10'>
+					<h4 className=' text-pretty text-2xl'>Usuarios</h4>
 					<button
 						onClick={onPressCreateUser}
-						className='bg-dark-purple shadow-lg shadow-dark-purple p2-4 px-5 rounded-sm text-white'
+						className='bg-dark-purple shadow-lg  p2-4 px-8 rounded-md text-white'
 					>
 						+ Craer
 					</button>
 				</div>
-				<table className=' bg-slate-400 w-full p-16 justify-between'>
-					<thead className=''>
-						<tr className=''>
-							<th className=''>Nombre</th>
-							<th>Rol</th>
-							<th>Actualizacion</th>
-							<th>Actualizar</th>
-							<th>Eliminar</th>
-						</tr>
-					</thead>
-					<tbody>
-						{fetchUserList?.data?.data[0]?.users?.map((list, index) => {
-							return (
-								<tr key={list._id} className=' bg-blue-500'>
-									<td>{list.name} </td>
-									<td>{list.email}</td>
-									<td>{list.updated_at}</td>
-									<td>
-										<button
-											onClick={() => {
-												onPressUpdateUser(list._id)
-											}}
-											className=' bg-yellow-300 shadow-lg  p2-4 px-5 rounded-sm text-white'
-										>
-											Actualizar
-										</button>
-									</td>
-									<td>
-										<button
-											onClick={() => handleDeleteUser(list._id)}
-											className=' bg-red-500 shadow-lg  p2-4 px-5 rounded-sm text-white'
-										>
-											eliminar
-										</button>
-									</td>
-								</tr>
-							)
-						})}
-					</tbody>
-				</table>
+				<div className=' flex justify-between items-center px-6 '>
+					<strong className=''>Nombre</strong>
+					<strong>Correo</strong>
+					<strong>U.Actualizacion</strong>
+					<strong></strong>
+					<strong></strong>
+				</div>
+				<div className=''>
+					{fetchUserList?.data?.data[0]?.users?.map((list, index) => {
+						return (
+							<div key={index} className=' flex flex-row '>
+								<div className=' w-1/5 flex justify-start border-2 border-black'>{list.name} </div>
+								<div className=' w-2/5 flex justify-start border-2 border-black'>{list.email}</div>
+								<div className=' w-2/5 flex justify-start border-2 border-black'>{list.updated_at}</div>
+								<div className=' w-1/5 flex justify-start border-2 border-black'>
+									<button
+										onClick={() => {
+											onPressUpdateUser(list._id)
+										}}
+										className=' bg-yellow-300 shadow-lg  p2-4 px-5 rounded-sm text-white'
+									>
+										Actualizar
+									</button>
+								</div>
+								<div className=' w-1/5 flex justify-start border-2 border-black'>
+									<button
+										onClick={() => handleDeleteUser(list._id)}
+										className=' bg-red-500 shadow-lg  p2-4 px-5 rounded-sm text-white'
+									>
+										eliminar
+									</button>
+								</div>
+							</div>
+						)
+					})}
+				</div>
 			</div>
+
 			{modalVisible && (
 				<Modal textModal={methodForm ? 'Creacion de nuevo Usuario' : 'Actlializacion de usuario'}>
 					<form onSubmit={methodForm ? handleCreateUser : handleUpdateUser}>
@@ -104,52 +101,52 @@ export const Users = () => {
 								error='Ocurrio un error en el address'
 							/>
 							<Input
-								label={'Nombre de usuaria'}
-								name={'username'}
-								type={'text'}
+								label='Nombre de usuaria'
+								name='username'
+								type='text'
 								value={inputs.username}
 								onChange={handleValuesCreateUser}
-								error={'Ocurrio un error en el address'}
+								error='Ocurrio un error en el address'
 							/>
 							<Input
-								label={'Correo electronico'}
-								name={'email'}
-								type={'email'}
+								label='Correo electronico'
+								name='email'
+								type='email'
 								value={inputs.email}
 								onChange={handleValuesCreateUser}
-								error={'Ocurrio un error en el email'}
+								error='Ocurrio un error en el email'
 							/>
 							<Input
-								label={'Direccion'}
-								name={'address'}
-								type={'text'}
+								label='Direccion'
+								name='address'
+								type='text'
 								value={inputs.address}
 								onChange={handleValuesCreateUser}
-								error={'Ocurrio un error en el address'}
+								error='Ocurrio un error en el address'
 							/>
 							<Input
-								label={'Pais'}
-								name={'country'}
-								type={'text'}
+								label='Pais'
+								name='country'
+								type='text'
 								value={inputs.country}
 								onChange={handleValuesCreateUser}
-								error={'Ocurrio un error en el email'}
+								error='Ocurrio un error en el email'
 							/>
 							<Input
-								label={'Region'}
-								name={'region'}
-								type={'text'}
+								label='Region'
+								name='region'
+								type='text'
 								value={inputs.region}
 								onChange={handleValuesCreateUser}
-								error={'Ocurrio un error en el address'}
+								error='Ocurrio un error en el address'
 							/>
 							<Input
-								label={'Ciudad'}
-								name={'city'}
-								type={'text'}
+								label='Ciudad'
+								name='city'
+								type='text'
 								value={inputs.city}
 								onChange={handleValuesCreateUser}
-								error={'Ocurrio un error en el email'}
+								error='Ocurrio un error en el email'
 							/>
 							<div>
 								<label className='mt-2 block text-sm font-medium leading-6 text-white' htmlFor=''>
@@ -206,20 +203,20 @@ export const Users = () => {
 								valueChange={'type_document_personal'}
 							/>
 							<Input
-								label={'Numero documento personal'}
-								name={'number_document_personal'}
-								type={'text'}
+								label='Numero documento personal'
+								name='number_document_personal'
+								type='text'
 								value={inputs.number_document_personal}
 								onChange={handleValuesCreateUser}
-								error={'Ocurrio un error en el number_document_personal'}
+								error='Ocurrio un error en el number_document_personal'
 							/>
 							<Input
-								label={'Contraseña'}
-								name={'key'}
-								type={'password'}
+								label='Contraseña'
+								name='key'
+								type='password'
 								value={inputs.key}
 								onChange={handleValuesCreateUser}
-								error={'Ocurrio un error en el number_document_personal'}
+								error='Ocurrio un error en el number_document_personal'
 							/>
 						</div>
 						<div className='my-3 flex flex-row justify-center items-center'>
