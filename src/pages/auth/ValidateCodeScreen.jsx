@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { Input, InputSubmit } from '@/Components'
+import { InputComponent, InputSubmitComponent } from '@/Components'
 import { useLocation } from 'react-router-dom'
 
-import { useAuth } from '../hooks/useLogin'
+import { useAuth } from './hooks/useLogin'
 
-export const ValidateCode = () => {
+export const ValidateCodeScreen = () => {
 	const { valueValidateCode, handleFormValidateCode, submitFormValidateCode, submitResendCode } = useAuth()
 	const {
 		state: { screen }
@@ -20,7 +20,7 @@ export const ValidateCode = () => {
 						<h2 className='text-2xl font-bold text-white text-center'>ingresa el codigo</h2>
 					</div>
 					<form action='flex flex-col' onSubmit={(event) => submitFormValidateCode(event, screen)}>
-						<Input
+						<InputComponent
 							label='Validacion de codigo'
 							name='code'
 							type='number'
@@ -29,7 +29,7 @@ export const ValidateCode = () => {
 							error={'Ocurrio un error en el codigo de verificacion'}
 						/>
 						<div className='my-3 flex flex-row justify-center items-center'>
-							<InputSubmit text='Comprobar' />
+							<InputSubmitComponent text='Comprobar' />
 						</div>
 					</form>
 					<p

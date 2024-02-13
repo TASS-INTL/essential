@@ -1,41 +1,48 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-import { SideBar } from '../Components/SideBar'
-import { AccountComponent } from '../pages/PrivateRoutes/Account'
-import { ChatComponent } from '../pages/PrivateRoutes/Chat'
-import { Dashboard } from '../pages/PrivateRoutes/dashboard'
-import { DevicesComponent } from '../pages/PrivateRoutes/Devices'
-import { Groups } from '../pages/PrivateRoutes/Groups'
-import { SettingsComponents } from '../pages/PrivateRoutes/Settings'
-import { Users } from '../pages/PrivateRoutes/Users'
+import {
+	AccountScreen,
+	ChatScreen,
+	DashboardScreen,
+	DevicesScreen,
+	GroupScreen,
+	NotificationScreen,
+	SettingsScreen,
+	UsersScreen
+} from '../pages/PrivateRoutes'
+import { SocketProvider } from '../pages/PrivateRoutes/socketNotification/socketProvider'
 
 export const PrivateRouter = ({ isAuthenticated }) => {
-	return isAuthenticated ? <RoutesPrivate /> : <Navigate to='/auth/login' />
+	return isAuthenticated ? <RoutesPrivate /> : <Navigate to='/auth/login-screen' />
 }
 
 const routesPrivate = {
-	chat: 'chat',
-	Users: 'Users',
-	groups: 'groups',
-	account: 'account',
-	devices: 'devices',
-	settings: 'settings',
-	dashboard: 'dashboard'
+	chatScreen: 'chatScreen',
+	UsersScreen: 'UsersScreen',
+	groupScreen: 'groupScreen',
+	accountScreen: 'accountScreen',
+	devicesScreen: 'devicesScreen',
+	settingsScreen: 'settingsScreen',
+	dashboardScreen: 'dashboardScreen',
+	NotificationScreen: 'NotificationScreen'
 }
 
 export const RoutesPrivate = () => {
 	return (
-		<div className='flex'>
-			<SideBar />
-			<Routes>
-				<Route path={routesPrivate.Users} element={<Users />} />
-				<Route path={routesPrivate.groups} element={<Groups />} />
-				<Route path={routesPrivate.chat} element={<ChatComponent />} />
-				<Route path={routesPrivate.dashboard} element={<Dashboard />} />
-				<Route path={routesPrivate.account} element={<AccountComponent />} />
-				<Route path={routesPrivate.devices} element={<DevicesComponent />} />
-				<Route path={routesPrivate.settings} element={<SettingsComponents />} />
-			</Routes>
-		</div>
+		<SocketProvider>
+			<div className='flex'>
+				<SideBar />
+				<Routes>
+					<Route path={routesPrivate.chatScreen} element={<ChatScreen />} />
+					<Route path={routesPrivate.UsersScreen} element={<UsersScreen />} />
+					<Route path={routesPrivate.groupScreen} element={<GroupScreen />} />
+					<Route path={routesPrivate.accountScreen} element={<AccountScreen />} />
+					<Route path={routesPrivate.devicesScreen} element={<DevicesScreen />} />
+					<Route path={routesPrivate.settingsScreen} element={<SettingsScreen />} />
+					<Route path={routesPrivate.dashboardScreen} element={<DashboardScreen />} />
+					<Route path={routesPrivate.NotificationScreen} element={<NotificationScreen />} />
+				</Routes>
+			</div>
+		</SocketProvider>
 	)
 }

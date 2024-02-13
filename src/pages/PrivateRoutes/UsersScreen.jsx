@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
 
-import { Input, InputSubmit } from '@/Components'
-import { Modal } from '@/Components/Modal'
-import { SelectComponent } from '@/Components/Select'
 import { usersStore } from '@/store/usersStore'
 
-import { typeDocument } from '../../auth/PersonalData'
-import { useUsers } from '../Hooks/useUser'
+import { InputComponent, ModalComponent, SelectComponent } from '../../Components'
+import { typeDocument } from '../auth/PersonalDataScreen'
+import { useUsers } from './Hooks/useUser'
 
-export const Users = () => {
+export const UsersScreen = () => {
 	const {
 		inputs,
 		setInputs,
@@ -40,7 +38,7 @@ export const Users = () => {
 
 	return (
 		<div className='w-full bg-opacity-100'>
-			<div className=' w-11/12 m-auto mt-8 bg-zinc-200 rounded-1xl '>
+			<div className=' w-11/12 m-auto mt-8  rounded-1xl '>
 				<div className='flex justify-between px-0 py-4 pt-10'>
 					<h4 className=' text-pretty text-2xl'>Usuarios</h4>
 					<button
@@ -50,49 +48,51 @@ export const Users = () => {
 						+ Craer
 					</button>
 				</div>
-				<div className=' flex justify-between items-center px-6 '>
-					<strong className=''>Nombre</strong>
-					<strong>Correo</strong>
-					<strong>U.Actualizacion</strong>
-					<strong></strong>
-					<strong></strong>
-				</div>
-				<div className=''>
-					{fetchUserList?.data?.data[0]?.users?.map((list, index) => {
-						return (
-							<div key={index} className=' flex flex-row '>
-								<div className=' w-1/5 flex justify-start border-2 border-black'>{list.name} </div>
-								<div className=' w-2/5 flex justify-start border-2 border-black'>{list.email}</div>
-								<div className=' w-2/5 flex justify-start border-2 border-black'>{list.updated_at}</div>
-								<div className=' w-1/5 flex justify-start border-2 border-black'>
-									<button
-										onClick={() => {
-											onPressUpdateUser(list._id)
-										}}
-										className=' bg-yellow-300 shadow-lg  p2-4 px-5 rounded-sm text-white'
-									>
-										Actualizar
-									</button>
-								</div>
-								<div className=' w-1/5 flex justify-start border-2 border-black'>
+				<div className='bg-zinc-100 py-5 '>
+					<div className=' flex justify-between items-center px-6 '>
+						<strong className=''>Nombre</strong>
+						<strong>Correo</strong>
+						<strong>U.Actualizacion</strong>
+						<strong></strong>
+						<strong></strong>
+					</div>
+					<div className='border-2 border-l-blue-600 border-black mt-3 py-3 px-3 '>
+						{fetchUserList?.data?.data[0]?.users?.map((list, index) => {
+							return (
+								<div key={index} className=' flex flex-row '>
+									<div className=' w-1/5 flex justify-start '>{list.name} </div>
+									<div className=' w-2/5 flex justify-start '>{list.email}</div>
+									<div className=' w-2/5 flex justify-start '>{list.updated_at}</div>
+									<div className=' w-1/5 flex justify-start '>
+										<button
+											onClick={() => {
+												onPressUpdateUser(list._id)
+											}}
+											className=' bg-white border-dark-purple border-2 p2-4 px-5 rounded-sm text-dark-purple'
+										>
+											Actualizar
+										</button>
+									</div>
+									{/* <div className=' w-1/5 flex justify-start border-2 border-black'>
 									<button
 										onClick={() => handleDeleteUser(list._id)}
 										className=' bg-red-500 shadow-lg  p2-4 px-5 rounded-sm text-white'
 									>
 										eliminar
 									</button>
+								</div> */}
 								</div>
-							</div>
-						)
-					})}
+							)
+						})}
+					</div>
 				</div>
 			</div>
 
 			{modalVisible && (
-				<Modal textModal={methodForm ? 'Creacion de nuevo Usuario' : 'Actlializacion de usuario'}>
+				<ModalComponent textModal={methodForm ? 'Creacion de nuevo Usuario' : 'Actlializacion de usuario'}>
 					<form onSubmit={methodForm ? handleCreateUser : handleUpdateUser}>
 						<div className='grid grid-cols-2'>
-							<Input
+							<InputComponent
 								type='text'
 								name='name'
 								label='Nombre'
@@ -100,7 +100,7 @@ export const Users = () => {
 								onChange={handleValuesCreateUser}
 								error='Ocurrio un error en el address'
 							/>
-							<Input
+							<InputComponent
 								label='Nombre de usuaria'
 								name='username'
 								type='text'
@@ -108,7 +108,7 @@ export const Users = () => {
 								onChange={handleValuesCreateUser}
 								error='Ocurrio un error en el address'
 							/>
-							<Input
+							<InputComponent
 								label='Correo electronico'
 								name='email'
 								type='email'
@@ -116,7 +116,7 @@ export const Users = () => {
 								onChange={handleValuesCreateUser}
 								error='Ocurrio un error en el email'
 							/>
-							<Input
+							<InputComponent
 								label='Direccion'
 								name='address'
 								type='text'
@@ -124,7 +124,7 @@ export const Users = () => {
 								onChange={handleValuesCreateUser}
 								error='Ocurrio un error en el address'
 							/>
-							<Input
+							<InputComponent
 								label='Pais'
 								name='country'
 								type='text'
@@ -132,7 +132,7 @@ export const Users = () => {
 								onChange={handleValuesCreateUser}
 								error='Ocurrio un error en el email'
 							/>
-							<Input
+							<InputComponent
 								label='Region'
 								name='region'
 								type='text'
@@ -140,7 +140,7 @@ export const Users = () => {
 								onChange={handleValuesCreateUser}
 								error='Ocurrio un error en el address'
 							/>
-							<Input
+							<InputComponent
 								label='Ciudad'
 								name='city'
 								type='text'
@@ -202,7 +202,7 @@ export const Users = () => {
 								arrayOptions={typeDocument}
 								valueChange={'type_document_personal'}
 							/>
-							<Input
+							<InputComponent
 								label='Numero documento personal'
 								name='number_document_personal'
 								type='text'
@@ -210,7 +210,7 @@ export const Users = () => {
 								onChange={handleValuesCreateUser}
 								error='Ocurrio un error en el number_document_personal'
 							/>
-							<Input
+							<InputComponent
 								label='Contraseña'
 								name='key'
 								type='password'
@@ -223,7 +223,7 @@ export const Users = () => {
 							<InputSubmit text='Siguiente' />
 						</div>
 					</form>
-				</Modal>
+				</ModalComponent>
 			)}
 		</div>
 	)

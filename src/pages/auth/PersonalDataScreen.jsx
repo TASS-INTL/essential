@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react'
 
 import 'react-phone-number-input/style.css'
 
-import { Input, InputSubmit } from '@/Components'
-import { SelectComponent } from '@/Components/Select'
+import { InputComponent, InputSubmitComponent, SelectComponent } from '@/Components'
 import PhoneInput from 'react-phone-number-input'
 
-import { useAuth } from '../hooks/useLogin'
+import { useAuth } from './hooks/useLogin'
 
 export const typeDocument = [
 	{ id: 1, name: 'CC' },
@@ -41,7 +40,7 @@ const arrayOptions = [
 	{ id: 2, name: 'Juridica' }
 ]
 
-export const PersonalData = () => {
+export const PersonalDataScreen = () => {
 	const { valuePersonalData, handlePersonalData, submitFormValidateData } = useAuth()
 	const [flagInput, setFlagInput] = useState(false)
 	const [value, setValue] = useState()
@@ -61,7 +60,7 @@ export const PersonalData = () => {
 					</div>
 					<form action='' className=' ' onSubmit={submitFormValidateData}>
 						<div className='grid grid-cols-2  gap-2'>
-							<Input
+							<InputComponent
 								label={'nombre'}
 								name={'name'}
 								type={'text'}
@@ -69,7 +68,7 @@ export const PersonalData = () => {
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el email'}
 							/>
-							<Input
+							<InputComponent
 								label={'email'}
 								name={'email'}
 								type={'text'}
@@ -77,7 +76,7 @@ export const PersonalData = () => {
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el email'}
 							/>
-							<Input
+							<InputComponent
 								label={'username'}
 								name={'username'}
 								type={'text'}
@@ -85,7 +84,7 @@ export const PersonalData = () => {
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el username'}
 							/>
-							<Input
+							<InputComponent
 								label={'country'}
 								name={'country'}
 								type={'text'}
@@ -93,7 +92,7 @@ export const PersonalData = () => {
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el email'}
 							/>
-							<Input
+							<InputComponent
 								label={'region'}
 								name={'region'}
 								type={'text'}
@@ -101,7 +100,7 @@ export const PersonalData = () => {
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el email'}
 							/>
-							<Input
+							<InputComponent
 								label={'city'}
 								name={'city'}
 								type={'text'}
@@ -109,7 +108,7 @@ export const PersonalData = () => {
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el email'}
 							/>
-							<Input
+							<InputComponent
 								label={'Direccion'}
 								name={'address'}
 								type={'text'}
@@ -117,7 +116,7 @@ export const PersonalData = () => {
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el address'}
 							/>
-							<Input
+							<InputComponent
 								label={'estado o provincia'}
 								name={'state_province'}
 								type={'text'}
@@ -125,7 +124,7 @@ export const PersonalData = () => {
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el state_province'}
 							/>
-							<Input
+							<InputComponent
 								label={'code_postal'}
 								name={'code_postal'}
 								type={'text'}
@@ -150,7 +149,7 @@ export const PersonalData = () => {
 								valueChange={'type_document_personal'}
 							/>
 
-							<Input
+							<InputComponent
 								label={'numero de documento'}
 								name={'number_document_personal'}
 								type={'text'}
@@ -189,7 +188,7 @@ export const PersonalData = () => {
 								onChange={setValue}
 								style={stylesInput}
 							/>
-							<Input
+							<InputComponent
 								label={'password'}
 								name={'key'}
 								type='password'
@@ -216,7 +215,7 @@ export const PersonalData = () => {
 							</label>
 						</div>
 						<div className=' flex flex-row justify-center mb-9'>
-							<InputSubmit text='Finalizar' />
+							<InputSubmitComponent text='Finalizar' />
 						</div>
 					</form>
 				</div>

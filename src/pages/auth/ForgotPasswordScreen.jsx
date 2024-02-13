@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { Input, InputSubmit } from '@/Components'
+import { InputComponent, InputSubmitComponent } from '@/Components'
 import { Link } from 'react-router-dom'
 
-import { useAuth } from '../hooks/useLogin'
+import { useAuth } from './hooks/useLogin'
 
-export const ForgotPassword = () => {
+export const ForgotPasswordScreen = () => {
 	const { valuesForgot, submitFormForgotPassword, handleForgotPassword } = useAuth()
 
 	return (
@@ -19,7 +19,7 @@ export const ForgotPassword = () => {
 						<h2 className='text-sm font-bold text-white text-center'>
 							Ingresa el correo electronico de la cuenta de la cual deseas recuperar la contraseña
 						</h2>
-						<Input
+						<InputComponent
 							label={'Correo electronico'}
 							name={'email'}
 							type={'text'}
@@ -28,11 +28,11 @@ export const ForgotPassword = () => {
 							error={'Ocurrio un error en el email'}
 						/>
 						<div className='my-3 flex flex-row justify-center items-center'>
-							<InputSubmit text='Enviar email' />
+							<InputSubmitComponent text='Enviar email' />
 						</div>
 					</form>
 					<p className='text-md font-normal text-white py-2 text-center'>
-						<Link to={'/auth/login'}>¿Te llego el correo? Inicia sesion</Link>
+						<Link to={'/auth/login-screen'}>¿Te llego el correo? Inicia sesion</Link>
 					</p>
 				</div>
 			</div>

@@ -1,6 +1,4 @@
-import './style.css'
-
-export const Loader = () => {
+export const LoaderComponent = () => {
 	return (
 		<div className='loader'>
 			<svg

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { usersStore } from '@/store/usersStore'
 
-export const Modal = ({ children, textModal }) => {
+export const ModalComponent = ({ children, textModal }) => {
 	const setModalVisible = usersStore((state) => state.setModalVisible)
 
 	return (

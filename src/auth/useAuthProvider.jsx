@@ -92,7 +92,7 @@ export const useAuthProvider = () => {
 				userName: '',
 				tokenRegister: ''
 			})
-			navigate('/auth/login')
+			navigate('/auth/login-screen')
 		}
 		return response
 	}

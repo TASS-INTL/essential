@@ -2,38 +2,39 @@ import React from 'react'
 
 import { Route, Routes, useLocation } from 'react-router-dom'
 
-import { ForgotPassword } from '../pages/auth/ForgotPassword'
-import { Login } from '../pages/auth/Login'
-import { PersonalData } from '../pages/auth/PersonalData'
-import { Register } from '../pages/auth/Register'
-import { ValidateCode } from '../pages/auth/ValidateCode'
+import {
+	ForgotPasswordScreen,
+	LoginScreen,
+	PersonalDataScreen,
+	RegisterScreen,
+	ValidateCodeScreen
+} from '../pages/auth'
 import { userStore } from '../store/userStore'
 
 const PublicRouter = {
-	login: 'login',
-	register: 'register',
-	PersonalData: 'personal-data',
-	validateCode: 'validate-code',
-	forgotPassword: 'forgot-password'
+	loginScreen: 'login-screen',
+	registerScreen: 'register-screen',
+	PersonalDataScreen: 'personalData-screen',
+	validateCodeScreen: 'validateCode-screen',
+	forgotPasswordScreen: 'forgotPassword-screen'
 }
 
 export const AuthRouter = () => {
 	const location = useLocation()
-	const {
-		userData: { tokenRegister }
-	} = userStore()
+	const { tokenRegister } = userStore((state) => state.userData)
 
+	console.log(location.pathname)
 	if (location.pathname === '/auth/personal-data' && tokenRegister === null) {
-		return <Login />
+		return <LoginScreen />
 	}
 
 	return (
 		<Routes>
-			<Route path={PublicRouter.login} element={<Login />} />
-			<Route path={PublicRouter.register} element={<Register />} />
-			<Route path={PublicRouter.validateCode} element={<ValidateCode />} />
-			<Route path={PublicRouter.PersonalData} element={<PersonalData />} />
-			<Route path={PublicRouter.forgotPassword} element={<ForgotPassword />} />
+			<Route path={PublicRouter.loginScreen} element={<LoginScreen />} />
+			<Route path={PublicRouter.registerScreen} element={<RegisterScreen />} />
+			<Route path={PublicRouter.validateCodeScreen} element={<ValidateCodeScreen />} />
+			<Route path={PublicRouter.PersonalDataScreen} element={<PersonalDataScreen />} />
+			<Route path={PublicRouter.forgotPasswordScreen} element={<ForgotPasswordScreen />} />
 		</Routes>
 	)
 }

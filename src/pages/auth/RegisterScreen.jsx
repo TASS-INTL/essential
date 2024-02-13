@@ -1,9 +1,9 @@
-import { Input, InputSubmit } from '@/Components'
+import { InputComponent, InputSubmitComponent } from '@/Components'
 import { Link } from 'react-router-dom'
 
-import { useAuth } from '../hooks/useLogin'
+import { useAuth } from './hooks/useLogin'
 
-export const Register = () => {
+export const RegisterScreen = () => {
 	const { valuesRegister, handleRegister, submitFormRegister } = useAuth()
 
 	return (
@@ -14,7 +14,7 @@ export const Register = () => {
 						<h1 className='text-4xl font-bold text-white text-center'>Registro</h1>
 					</div>
 					<form className='flex flex-col' action='' onSubmit={submitFormRegister}>
-						<Input
+						<InputComponent
 							label={'email'}
 							name={'email'}
 							type={'text'}
@@ -22,7 +22,7 @@ export const Register = () => {
 							onChange={handleRegister}
 							error={'Ocurrio un error en el email'}
 						/>
-						<Input
+						<InputComponent
 							label={'nombre de la cuenta'}
 							name={'username'}
 							type={'text'}
@@ -31,11 +31,11 @@ export const Register = () => {
 							error={'Ocurrio un error en el email'}
 						/>
 						<div className='my-3 flex flex-row justify-center items-center'>
-							<InputSubmit text='Verificar' />
+							<InputSubmitComponent text='Verificar' />
 						</div>
 					</form>
 					<p className='text-md font-normal text-white py-2 text-center'>
-						<Link to={'/auth/login'}>Iniciar sesion con una cuenta existente</Link>
+						<Link to={'/auth/login-screen'}>Iniciar sesion con una cuenta existente</Link>
 					</p>
 				</div>
 			</div>
