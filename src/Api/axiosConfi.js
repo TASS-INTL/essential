@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-const BASE_URL = 'http://ec2-15-228-13-62.sa-east-1.compute.amazonaws.com:8000/api/v1/'
+import { constantsApi } from './constantsApi'
 
 export const AXIOSINSTANCE = axios.create({
-	baseURL: BASE_URL
+	baseURL: constantsApi.API_URL
 })
 
 // Request interceptor for API calls
@@ -21,19 +21,3 @@ AXIOSINSTANCE.interceptors.request.use(
 		Promise.reject(error)
 	}
 )
-
-// AXIOSINSTANCE.interceptors.response.use(
-// 	(response) => {
-// 		return response
-// 	},
-// 	async function (error) {
-// 		const originalRequest = error.config
-// 		if (error.response.status === 403 && !originalRequest._retry) {
-// 			originalRequest._retry = true
-// 			const access_token = await refreshAccessToken()
-// 			axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token
-// 			return axiosApiInstance(originalRequest)
-// 		}
-// 		return Promise.reject(error)
-// 	}
-// )

@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 
 import api from '../Api/api'
 import { constantsApi } from '../Api/constantsApi'
+import { pathNavigation } from '../pages/auth/constants'
 import { userStore } from '../store/userStore'
 
 export const useAuthProvider = () => {
@@ -38,7 +39,7 @@ export const useAuthProvider = () => {
 					email,
 					tokenSesion: response.data[0].token
 				})
-				navigate('/auth/validate-code', { state: { screen: 'login' } })
+				navigate(pathNavigation.validateCode, { state: { screen: 'login' } })
 			}
 		}
 		return response
@@ -76,7 +77,7 @@ export const useAuthProvider = () => {
 					...userData,
 					tokenRegister: response.data[0].token
 				})
-				navigate('/auth/personal-data')
+				navigate(pathNavigation.personalData)
 			}
 		}
 		return response
@@ -92,7 +93,7 @@ export const useAuthProvider = () => {
 				userName: '',
 				tokenRegister: ''
 			})
-			navigate('/auth/login-screen')
+			navigate(pathNavigation.login)
 		}
 		return response
 	}
@@ -109,7 +110,7 @@ export const useAuthProvider = () => {
 				email,
 				userName: username
 			})
-			navigate('/auth/validate-code', { state: { screen: 'register' } })
+			navigate(pathNavigation.validateCode, { state: { screen: 'register' } })
 		}
 		return response
 	}

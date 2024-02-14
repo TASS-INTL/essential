@@ -1,6 +1,5 @@
 export const constantsApi = {
-	// API
-	API_URL: import.meta.env.API_URL_AMAZON,
+	API_URL: import.meta.env.VITE_URL_API_AWS,
 	GET: 'GET',
 	POST: 'POST',
 	PUT: 'PUT',

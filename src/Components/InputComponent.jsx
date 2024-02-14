@@ -3,7 +3,7 @@ import React from 'react'
 export const InputComponent = ({ label, name, type, value, onChange, placeholder }) => {
 	return (
 		<div>
-			<label for='input-group-1' className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+			<label htmlFor={value} className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
 				{label}
 			</label>
 			<div className='relative mb-6'>
@@ -25,7 +25,7 @@ export const InputComponent = ({ label, name, type, value, onChange, placeholder
 						type === 'number' ? onChange(name, e.target.valueAsNumber) : onChange(name, e.target.value)
 					}}
 					type={type}
-					id='input-group-1'
+					id={name}
 					className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
 					name={name}
 					placeholder={placeholder}

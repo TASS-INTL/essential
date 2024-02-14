@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { close, logo, menu } from '../../../assets/assetsLandin'
+import { pathNavigation } from '../../auth/constants'
 import { navLinks } from '../constants'
 
 const Navbar = () => {
@@ -22,7 +23,7 @@ const Navbar = () => {
 						} ${index === navLinks.length - 1 ? 'mr-0' : 'mr-10'}`}
 						onClick={() => {
 							setActive(nav.title)
-							nav.title === 'Login' && navigate('auth/login-screen')
+							nav.title === 'Login' && navigate(pathNavigation.login)
 						}}
 					>
 						<a href={`#${nav.id}`}>{nav.title}</a>
@@ -52,7 +53,7 @@ const Navbar = () => {
 								} ${index === navLinks.length - 1 ? 'mb-0' : 'mb-4'}`}
 								onClick={() => {
 									setActive(nav.title)
-									nav.title === 'Login' && navigate('auth/login-screen')
+									nav.title === 'Login' && navigate(pathNavigation.login)
 								}}
 							>
 								<a href={`#${nav.id}`}>{nav.title}</a>

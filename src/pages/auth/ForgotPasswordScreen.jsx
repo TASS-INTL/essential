@@ -3,6 +3,7 @@ import React from 'react'
 import { InputComponent, InputSubmitComponent } from '@/Components'
 import { Link } from 'react-router-dom'
 
+import { pathNavigation } from './constants'
 import { useAuth } from './hooks/useLogin'
 
 export const ForgotPasswordScreen = () => {
@@ -32,7 +33,7 @@ export const ForgotPasswordScreen = () => {
 						</div>
 					</form>
 					<p className='text-md font-normal text-white py-2 text-center'>
-						<Link to={'/auth/login-screen'}>¿Te llego el correo? Inicia sesion</Link>
+						<Link to={pathNavigation.login}>¿Te llego el correo? Inicia sesion</Link>
 					</p>
 				</div>
 			</div>

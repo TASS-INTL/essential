@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
+import { InputComponent, InputSubmitComponent, ModalComponent, SelectComponent } from '@/Components'
 import { usersStore } from '@/store/usersStore'
 
-import { InputComponent, ModalComponent, SelectComponent } from '../../Components'
 import { typeDocument } from '../auth/PersonalDataScreen'
 import { useUsers } from './Hooks/useUser'
 
@@ -220,7 +220,7 @@ export const UsersScreen = () => {
 							/>
 						</div>
 						<div className='my-3 flex flex-row justify-center items-center'>
-							<InputSubmit text='Siguiente' />
+							<InputSubmitComponent text='Siguiente' />
 						</div>
 					</form>
 				</ModalComponent>

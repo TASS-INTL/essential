@@ -9,22 +9,22 @@ import {
 	RegisterScreen,
 	ValidateCodeScreen
 } from '../pages/auth'
+import { pathNavigation } from '../pages/auth/constants'
 import { userStore } from '../store/userStore'
 
-const PublicRouter = {
+export const PublicRouter = {
 	loginScreen: 'login-screen',
 	registerScreen: 'register-screen',
-	PersonalDataScreen: 'personalData-screen',
-	validateCodeScreen: 'validateCode-screen',
-	forgotPasswordScreen: 'forgotPassword-screen'
+	PersonalDataScreen: 'personal-data-screen',
+	validateCodeScreen: 'validate-code-screen',
+	forgotPasswordScreen: 'forgot-password-screen'
 }
 
 export const AuthRouter = () => {
 	const location = useLocation()
 	const { tokenRegister } = userStore((state) => state.userData)
 
-	console.log(location.pathname)
-	if (location.pathname === '/auth/personal-data' && tokenRegister === null) {
+	if (location.pathname === pathNavigation.personalData && tokenRegister === null) {
 		return <LoginScreen />
 	}
 

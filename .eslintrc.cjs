@@ -3,6 +3,7 @@ module.exports = {
 		browser: true,
 		es2021: true
 	},
+	content: ['node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}'],
 	settings: {
 		react: {
 			version: 'detect'
@@ -24,7 +25,7 @@ module.exports = {
 		ecmaVersion: 'latest',
 		sourceType: 'module'
 	},
-	plugins: ['react', 'prettier'],
+	plugins: ['react', 'prettier', require('flowbite/plugin')],
 	rules: {
 		'react/react-in-jsx-scope': 'off',
 		'react/prop-types': 'off',

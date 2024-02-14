@@ -2,6 +2,7 @@ import { InputComponent, InputSubmitComponent } from '@/Components'
 import { Link } from 'react-router-dom'
 
 import { MouseColorComponente } from '../../Components'
+import { pathNavigation } from './constants'
 import { useAuth } from './hooks/useLogin'
 
 export const LoginScreen = () => {
@@ -39,10 +40,10 @@ export const LoginScreen = () => {
 						</form>
 
 						<p className='text-md font-normal text-white py-2 text-center'>
-							<Link to={'/auth/register'}>No tienes una cuenta? Registrate</Link>
+							<Link to={pathNavigation.register}>No tienes una cuenta? Registrate</Link>
 						</p>
 						<p className='text-md font-normal  text-white py-2 text-center'>
-							<Link to={'/auth/forgot-password'}>¿Ha olvidado la contraseña?</Link>
+							<Link to={pathNavigation.forgotPassword}>¿Ha olvidado la contraseña?</Link>
 						</p>
 					</div>
 				</div>
