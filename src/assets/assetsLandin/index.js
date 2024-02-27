@@ -14,6 +14,7 @@ import google from './google.svg'
 import instagram from './instagram.svg'
 import linkedin from './linkedin.svg'
 import logo from './logo.svg'
+import logotass from './logotass.svg'
 import menu from './menu.svg'
 import people01 from './people01.png'
 import people02 from './people02.png'
@@ -33,6 +34,7 @@ export {
 	coinbase,
 	dropbox,
 	logo,
+	logotass,
 	quotes,
 	robot,
 	send,

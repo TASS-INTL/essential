@@ -32,8 +32,8 @@ export const SideBarComponent = () => {
 				/>
 				<div className='h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800'>
 					<ul className='space-y-2 font-medium'>
-						{userData?.modules?.map((Menu, index) => (
-							<Link key={index} to={`${Menu.pathName}`}>
+						{userData?.modules?.map((menu, index) => (
+							<Link key={index} to={`${menu.pathName}`}>
 								<li
 									key={index}
 									className={` 
@@ -47,11 +47,10 @@ export const SideBarComponent = () => {
                             dark:hover:bg-gray-700 
                             gap-x-4
                              px-2
-                            ${Menu.gap ? 'mt-9' : 'mt-2'}
-									 ${Menu.pathName === pathname && 'bg-light-white'}`}
+                            ${menu.gap ? 'mt-9' : 'mt-2'}
+									 ${menu.pathName === pathname && 'bg-light-white'}`}
 									onClick={() => {
-										setNotification(null)
-										Menu.title === 'Cerrar sesion' && logout()
+										menu.title === 'Cerrar sesion' && logout()
 										setSelectButton(index)
 									}}
 								>
@@ -67,11 +66,11 @@ export const SideBarComponent = () => {
 											<path d='M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z' />
 										</svg>
 										<span className={`${!open && 'hidden'} origin-left duration-200 ms-3`}>
-											{Menu.title}
+											{menu.title}
 										</span>
 									</div>
 									<div className='flex items-end'>
-										{Menu.name === 'Notifications' && notification}
+										{menu.name === 'Notifications' && notification}
 									</div>
 								</li>
 							</Link>

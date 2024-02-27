@@ -1,6 +1,7 @@
 import { InputComponent, InputSubmitComponent } from '@/Components'
 import { Link } from 'react-router-dom'
 
+import { email, lock } from '../../assets/assetsplatform/index'
 import { MouseColorComponente } from '../../Components'
 import { pathNavigation } from './constants'
 import { useAuth } from './hooks/useLogin'
@@ -25,6 +26,7 @@ export const LoginScreen = () => {
 								type={'email'}
 								value={valuesLogin.email}
 								onChange={handleValuesLogin}
+								svg={email}
 								placeholder='name@gmail.com'
 							/>
 							<InputComponent
@@ -33,17 +35,19 @@ export const LoginScreen = () => {
 								type={'password'}
 								value={valuesLogin.password}
 								onChange={handleValuesLogin}
+								svg={lock}
+								placeholder='•••••••••••'
 							/>
 							<div className='my-3 flex flex-row justify-center items-center'>
 								<InputSubmitComponent text='Siguiente' />
 							</div>
 						</form>
 
-						<p className='text-md font-normal text-white py-2 text-center'>
+						<p className='text-md font-normal text-blue-500 underline py-2 text-center'>
 							<Link to={pathNavigation.register}>No tienes una cuenta? Registrate</Link>
 						</p>
-						<p className='text-md font-normal  text-white py-2 text-center'>
-							<Link to={pathNavigation.forgotPassword}>¿Ha olvidado la contraseña?</Link>
+						<p className='text-md font-normal text-blue-500 underline py-2 text-center'>
+							<Link to={pathNavigation.forgotPassword}>¿Has olvidado la contraseña?</Link>
 						</p>
 					</div>
 				</div>

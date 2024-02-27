@@ -1,7 +1,5 @@
 import React from 'react'
 
-import App from './App.jsx'
-
 import './index.css'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -10,15 +8,15 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 
+import { AppRouter } from './routes/AppRouter.jsx'
+
 export const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-	<React.StrictMode>
-		<QueryClientProvider client={queryClient}>
-			<BrowserRouter>
-				<App />
-				<ToastContainer />
-			</BrowserRouter>
-		</QueryClientProvider>
-	</React.StrictMode>
+	<QueryClientProvider client={queryClient}>
+		<BrowserRouter>
+			<AppRouter />
+			<ToastContainer />
+		</BrowserRouter>
+	</QueryClientProvider>
 )

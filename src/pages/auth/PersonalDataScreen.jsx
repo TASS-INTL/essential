@@ -51,6 +51,8 @@ export const PersonalDataScreen = () => {
 		valuePersonalData.type_person === 'Juridica' ? setFlagInput(true) : setFlagInput(false)
 	}, [valuePersonalData.type_person])
 
+	console.log(valuePersonalData)
+
 	return (
 		<div className='bg-primary w-full min-h-screen  items-center justify-center  space-x-6'>
 			<div className='min-h-screen flex  flex-row justify-center'>
@@ -58,8 +60,9 @@ export const PersonalDataScreen = () => {
 					<div className='mt-9'>
 						<h1 className='text-xl  font-bold text-white text-center'>REGISTRO DE DATOS PERSONALES</h1>
 					</div>
-					<form action='' className=' ' onSubmit={submitFormValidateData}>
-						<div className='grid grid-cols-2  gap-2'>
+
+					<form>
+						<div className='grid gap-6 mb-6 md:grid-cols-2'>
 							<InputComponent
 								label={'nombre'}
 								name={'name'}
@@ -68,6 +71,7 @@ export const PersonalDataScreen = () => {
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el email'}
 							/>
+
 							<InputComponent
 								label={'email'}
 								name={'email'}
@@ -84,54 +88,7 @@ export const PersonalDataScreen = () => {
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el username'}
 							/>
-							<InputComponent
-								label={'country'}
-								name={'country'}
-								type={'text'}
-								value={valuePersonalData.country}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el email'}
-							/>
-							<InputComponent
-								label={'region'}
-								name={'region'}
-								type={'text'}
-								value={valuePersonalData.region}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el email'}
-							/>
-							<InputComponent
-								label={'city'}
-								name={'city'}
-								type={'text'}
-								value={valuePersonalData.city}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el email'}
-							/>
-							<InputComponent
-								label={'Direccion'}
-								name={'address'}
-								type={'text'}
-								value={valuePersonalData.address}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el address'}
-							/>
-							<InputComponent
-								label={'estado o provincia'}
-								name={'state_province'}
-								type={'text'}
-								value={valuePersonalData.state_province}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el state_province'}
-							/>
-							<InputComponent
-								label={'code_postal'}
-								name={'code_postal'}
-								type={'text'}
-								value={valuePersonalData.code_postal}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el email'}
-							/>
+
 							<SelectComponent
 								label='Tipo de persona'
 								handlePersonalData={handlePersonalData}
@@ -140,6 +97,7 @@ export const PersonalDataScreen = () => {
 								arrayOptions={arrayOptions}
 								valueChange={'type_person'}
 							/>
+
 							<SelectComponent
 								label='Tipo de documento'
 								handlePersonalData={handlePersonalData}
@@ -157,7 +115,6 @@ export const PersonalDataScreen = () => {
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el email'}
 							/>
-
 							{flagInput && (
 								<>
 									<SelectComponent
@@ -168,7 +125,7 @@ export const PersonalDataScreen = () => {
 										arrayOptions={typeDocument}
 										valueChange={'type_document_company'}
 									/>
-									<Input
+									<InputComponent
 										label={'numero de documento de la compañia'}
 										name={'number_document_company'}
 										type={'text'}
@@ -179,6 +136,61 @@ export const PersonalDataScreen = () => {
 								</>
 							)}
 
+							<InputComponent
+								label={'country'}
+								name={'country'}
+								type={'text'}
+								value={valuePersonalData.country}
+								onChange={handlePersonalData}
+								error={'Ocurrio un error en el email'}
+							/>
+
+							<InputComponent
+								label={'region'}
+								name={'region'}
+								type={'text'}
+								value={valuePersonalData.region}
+								onChange={handlePersonalData}
+								error={'Ocurrio un error en el email'}
+							/>
+
+							<InputComponent
+								label={'city'}
+								name={'city'}
+								type={'text'}
+								value={valuePersonalData.city}
+								onChange={handlePersonalData}
+								error={'Ocurrio un error en el email'}
+							/>
+
+							<InputComponent
+								label={'Direccion'}
+								name={'address'}
+								type={'text'}
+								value={valuePersonalData.address}
+								onChange={handlePersonalData}
+								error={'Ocurrio un error en el address'}
+							/>
+
+							<InputComponent
+								label={'estado o provincia'}
+								name={'state_province'}
+								type={'text'}
+								value={valuePersonalData.state_province}
+								onChange={handlePersonalData}
+								error={'Ocurrio un error en el state_province'}
+							/>
+
+							<InputComponent
+								label={'codigo postal'}
+								name={'code_postal'}
+								type={'text'}
+								value={valuePersonalData.code_postal}
+								onChange={handlePersonalData}
+								error={'Ocurrio un error en el email'}
+							/>
+						</div>
+						<div className='mb-6'>
 							<PhoneInput
 								international
 								countryCallingCodeEditable={false}
@@ -188,6 +200,9 @@ export const PersonalDataScreen = () => {
 								onChange={setValue}
 								style={stylesInput}
 							/>
+						</div>
+
+						<div className='mb-6'>
 							<InputComponent
 								label={'password'}
 								name={'key'}
@@ -195,23 +210,36 @@ export const PersonalDataScreen = () => {
 								value={valuePersonalData.key}
 								onChange={handlePersonalData}
 								error={'Ocurrio un error en el password'}
+								placeholder='•••••••••'
 							/>
 						</div>
-
-						<div className='py-3 px-6 flex flex-row justify-center content-center'>
-							<input
+						<div className='flex items-start mb-6'>
+							<div className='flex items-center h-5'>
+								<input
+									id='remember'
+									type='checkbox'
+									value=''
+									className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800'
+									required
+								/>
+							</div>
+							<label
 								type='checkbox'
 								name='terminos'
 								id='terminos'
-								className='mr-2 w-4 h-9'
+								htmlFor='remember'
+								className='ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'
 								value={chekInput}
 								onChange={(e) => {
 									handlePersonalData('terms_conditions', chekInput)
 									setChekInput(!chekInput)
 								}}
-							/>
-							<label htmlFor='terminos' className=' text-white'>
-								Acepto los terminos y condiciones de uso de TASS INTL y la politica de privacidad
+							>
+								Acepto los terminos y condiciones de uso de TASS INTL y la{' '}
+								<a href='#' className='text-blue-600 hover:underline dark:text-blue-500'>
+									Politica de privacidad
+								</a>
+								.
 							</label>
 						</div>
 						<div className=' flex flex-row justify-center mb-9'>

@@ -1,86 +1,19 @@
-import { useCallback, useRef, useState } from 'react'
+import React, { Suspense, useRef, useState } from 'react'
 
-import { candado, discount, robot } from '../../../assets/assetsLandin'
+import { OrbitControls, Stage } from '@react-three/drei'
+import { Canvas, useFrame } from '@react-three/fiber'
+
+import { discount } from '../../../assets/assetsLandin'
 import styles from '../../../styles'
+import { EarthCanvas } from './EarthCanvas'
 import GetStarted from './GetStarted'
+import Model from './Model'
+import StarsCanvas from './Stars'
 
 const Hero = () => {
-	const [rotate, setRotate] = useState({ x: 0, y: 0 })
-	const divRef = useRef()
-	const [isFocused, setIsFocused] = useState(false)
-	const [position, setPosition] = useState({ x: 0, y: 0 })
-	const [opacity, setOpacity] = useState(0)
-
-	function throttle(func, delay) {
-		let lastCall = 0
-		return (...args) => {
-			const now = new Date().getTime()
-			if (now - lastCall < delay) {
-				return
-			}
-			lastCall = now
-			return func(...args)
-		}
-	}
-
-	const onMouseMove = useCallback(
-		throttle((e) => {
-			const card = e.currentTarget
-			const box = card.getBoundingClientRect()
-			const x = e.clientX - box.left
-			const y = e.clientY - box.top
-			const centerX = box.width / 2
-			const centerY = box.height / 2
-			const rotateX = (y - centerY) / 4
-			const rotateY = (centerX - x) / 4
-
-			setRotate({ x: rotateX, y: rotateY })
-		}, 100),
-		[]
-	)
-
-	const onMouseLeave = () => {
-		setRotate({ x: 0, y: 0 })
-	}
-
-	const handleMouseMove = (e) => {
-		if (!divRef.current || isFocused) return
-
-		const div = divRef.current
-		const rect = div.getBoundingClientRect()
-
-		setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top })
-	}
-
-	const handleFocus = () => {
-		setIsFocused(true)
-		setOpacity(1)
-	}
-
-	const handleBlur = () => {
-		setIsFocused(false)
-		setOpacity(0)
-	}
-
-	const handleMouseEnter = () => {
-		setOpacity(1)
-	}
-
-	const handleMouseLeave = () => {
-		setOpacity(0)
-	}
-
+	const ref = useRef()
 	return (
-		<section
-			ref={divRef}
-			onMouseMove={handleMouseMove}
-			onFocus={handleFocus}
-			onBlur={handleBlur}
-			onMouseEnter={handleMouseEnter}
-			onMouseLeave={handleMouseLeave}
-			id='home'
-			className={`flex md:flex-row flex-col ${styles.paddingY}`}
-		>
+		<section className={`flex md:flex-row flex-col ${styles.paddingY}`}>
 			<div className={`flex-1 ${styles.flexStart} flex-col xl:px-0 sm:px-16 px-6`}>
 				<div className='flex flex-row items-center py-[6px] px-4 bg-discount-gradient rounded-[10px] mb-2'>
 					<img src={discount} alt='discount' className='w-[32px] h-[32px]' />
@@ -111,25 +44,26 @@ const Hero = () => {
 				</p>
 			</div>
 
-			<div className={`flex-1 flex ${styles.flexCenter} md:my-0 my-10 relative `}>
-				<div className='card relative w-[90%] h-[90%] ' onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}>
+			<div className={`flex-1 flex ${styles.flexCenter} md:my-0 my-10 relative`}>
+				<div className='card relative w-[90%] h-[90%] '>
 					<div className='group relative flex h-full w-full select-none items-center justify-center   ç  text-sm font-light text-slate-300'>
-						<div className='duration-600 absolute -inset-0.5 -z-10  bg-gradient-to-b from-[#c7d2fe] to-[#f2f0ff] opacity-0 blur transition group-hover:opacity-75' />
-						<span className='text-md bg-gradient-to-t from-neutral-400 to-white bg-clip-text font-bold text-transparent'>
-							<img
-								src={candado}
-								alt='billing'
-								className='w-[100%] h-[100%] relative z-[5] rounded-xl  transition-[all_400ms_cubic-bezier(0.03,0.98,0.52,0.99)_0s] will-change-transform'
-								style={{
-									transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) scale3d(1, 1, 1)`,
-									transition: 'all 400ms cubic-bezier(0.03, 0.98, 0.52, 0.99) 0s'
-								}}
-							/>
-						</span>
+						<div className='duration-600  -inset-0.5 z-0  bg-gradient-to-b from-[#c7d2fe] to-[#f2f0ff] opacity-0 blur transition group-hover:opacity-75' />
+						<div className=' w-full h-full relative'>
+							{/* <StarsCanvas />
+							<EarthCanvas /> */}
+
+							<Canvas shadows dpr={[1, 2]} camera={{ fov: 50 }}>
+								<Suspense fallback={null}>
+									<Stage controls={ref} preset='rembrandt' intensity={1} environment='city'>
+										<Model />
+									</Stage>
+								</Suspense>
+								<OrbitControls ref={ref} />
+							</Canvas>
+						</div>
 					</div>
 				</div>
 			</div>
-
 			<div className={`ss:hidden ${styles.flexCenter}`}>
 				<GetStarted />
 			</div>

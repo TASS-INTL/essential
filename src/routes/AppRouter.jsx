@@ -9,12 +9,12 @@ import { PrivateRouter } from './PrivateRouter'
 import { PublicRouter } from './PublicRouter'
 
 export const AppRouter = () => {
-	const userData = userStore((state) => state.userData)
+	const { logged } = userStore((state) => state.userData)
 	return (
 		<Routes>
 			<Route path={pathRoutes.landing} element={<Landing />} />
-			<Route path={pathRoutes.auth} element={<PublicRouter isAuthenticated={userData.logged} />} />
-			<Route path={pathRoutes.user} element={<PrivateRouter isAuthenticated={userData.logged} />} />
+			<Route path={pathRoutes.auth} element={<PublicRouter isAuthenticated={logged} />} />
+			<Route path={pathRoutes.user} element={<PrivateRouter isAuthenticated={logged} />} />
 		</Routes>
 	)
 }

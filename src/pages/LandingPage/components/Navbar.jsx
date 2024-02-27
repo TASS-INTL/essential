@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { close, logo, menu } from '../../../assets/assetsLandin'
+import { close, logotass, menu } from '../../../assets/assetsLandin'
 import { pathNavigation } from '../../auth/constants'
 import { navLinks } from '../constants'
 
@@ -12,8 +12,8 @@ const Navbar = () => {
 	const [active, setActive] = useState('Home')
 	const [toggle, setToggle] = useState(false)
 	return (
-		<nav className='w-full flex py-6 justify-between items-center navbar sticky'>
-			{/* <img src={logo} alt='hoobank' className='w-[124px] h-[32px]' /> */}
+		<nav className='w-full flex py-6 justify-between items-center navbar '>
+			<img src={logotass} alt='hoobank' className='w-[124px] h-[32px]' />
 			<ul className='list-none sm:flex hidden justify-end items-center flex-1'>
 				{navLinks.map((nav, index) => (
 					<li

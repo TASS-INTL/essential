@@ -1,23 +1,35 @@
-import React, { createContext, useEffect } from 'react'
+import React, { createContext, useCallback, useEffect, useState } from 'react'
 
-import { userStore } from '../../../store/userStore'
-import { useSocket } from '../Hooks/useSocket'
+import { io } from 'socket.io-client'
 
 export const SocketContext = createContext()
 
+const urlSocket = import.meta.env.VITE_URL_SOCKET_NOTIFICATION
+
 export const SocketProvider = ({ children }) => {
-	const { logged } = userStore((state) => state.userData)
+	const [socket, setSocket] = useState(null)
+	const [online, setOnline] = useState(false)
 
-	const { socket, online, connnectSocket, disconnectSocket } = useSocket()
-
-	useEffect(() => {
-		if (logged) {
-			connnectSocket()
-		}
+	const connnectSocket = useCallback(() => {
+		const socketTemp = io(urlSocket, {
+			reconnectionDelayMax: 1000,
+			transports: ['websocket'],
+			autoConnect: true
+		})
+		return socketTemp
 	}, [])
 
+	const disconnectSocket = useCallback(() => {
+		socket?.disconnect()
+	}, [socket])
+
 	useEffect(() => {
-		if (!logged) {
+		setOnline(socket?.connected)
+	}, [socket])
+
+	useEffect(() => {
+		setSocket(connnectSocket(setSocket))
+		return () => {
 			disconnectSocket()
 		}
 	}, [])

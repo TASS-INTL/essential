@@ -73,21 +73,12 @@ export const UsersScreen = () => {
 											Actualizar
 										</button>
 									</div>
-									{/* <div className=' w-1/5 flex justify-start border-2 border-black'>
-									<button
-										onClick={() => handleDeleteUser(list._id)}
-										className=' bg-red-500 shadow-lg  p2-4 px-5 rounded-sm text-white'
-									>
-										eliminar
-									</button>
-								</div> */}
 								</div>
 							)
 						})}
 					</div>
 				</div>
 			</div>
-
 			{modalVisible && (
 				<ModalComponent textModal={methodForm ? 'Creacion de nuevo Usuario' : 'Actlializacion de usuario'}>
 					<form onSubmit={methodForm ? handleCreateUser : handleUpdateUser}>
@@ -148,6 +139,7 @@ export const UsersScreen = () => {
 								onChange={handleValuesCreateUser}
 								error='Ocurrio un error en el email'
 							/>
+
 							<div>
 								<label className='mt-2 block text-sm font-medium leading-6 text-white' htmlFor=''>
 									tipo de personas

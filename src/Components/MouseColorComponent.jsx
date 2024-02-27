@@ -47,7 +47,7 @@ export const MouseColorComponente = ({ children }) => {
 				className='pointer-events-none absolute -inset-px opacity-0 transition duration-300'
 				style={{
 					opacity,
-					background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(255,182,255,.1), transparent 40%)`
+					background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(155, 155, 155,.1), transparent 40%)`
 				}}
 			/>
 			{children}

@@ -2,8 +2,8 @@ import React from 'react'
 
 export const SelectComponent = ({ name, value, label, handlePersonalData, arrayOptions, valueChange }) => {
 	return (
-		<>
-			<label className='mt-2 block text-sm font-medium leading-6 text-white' htmlFor=''>
+		<div>
+			<label htmlFor={value} className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
 				{label}
 			</label>
 			<div className='relative rounded-md shadow-sm'>
@@ -14,7 +14,7 @@ export const SelectComponent = ({ name, value, label, handlePersonalData, arrayO
 					}}
 					value={value}
 					name={name}
-					className='block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+					className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
 				>
 					{arrayOptions.map((option) => {
 						return (
@@ -25,6 +25,6 @@ export const SelectComponent = ({ name, value, label, handlePersonalData, arrayO
 					})}
 				</select>
 			</div>
-		</>
+		</div>
 	)
 }

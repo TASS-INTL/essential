@@ -42,20 +42,22 @@ export const features = [
 	{
 		id: 'feature-1',
 		icon: star,
-		title: 'Rewards',
-		content: 'The best credit cards offer some tantalizing combinations of promotions and prizes'
+		title: 'Alta calidad',
+		content:
+			'Se distingue por su robustez y fiabilidad. Fabricado con materiales resistentes como acero endurecido o aleaciones de metales de alta calidad'
 	},
 	{
 		id: 'feature-2',
 		icon: shield,
-		title: '100% Secured',
-		content: 'We take proactive steps make sure your information and transactions are secure.'
+		title: '100% Seguro',
+		content:
+			'Nuestro diseño y material de fabricacion te permite tener la seguridad de que tu candado estara seguro'
 	},
 	{
 		id: 'feature-3',
 		icon: send,
-		title: 'Balance Transfer',
-		content: 'A balance transfer credit card can save you a lot of money in interest charges.'
+		title: 'Monitoreo en tiempo real',
+		content: 'Tenemos operadores las 24 horas del dia analizando y monitoreando la seguridad de los candados'
 	}
 ]
 
@@ -86,17 +88,17 @@ export const feedback = [
 export const stats = [
 	{
 		id: 'stats-1',
-		title: 'User Active',
+		title: 'Candados activos',
 		value: '3800+'
 	},
 	{
 		id: 'stats-2',
-		title: 'Trusted by Company',
+		title: 'Empresas activas',
 		value: '230+'
 	},
 	{
 		id: 'stats-3',
-		title: 'Transaction',
+		title: 'Usuarios activos',
 		value: '$230M+'
 	}
 ]

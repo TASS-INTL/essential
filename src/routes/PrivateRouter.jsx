@@ -13,20 +13,10 @@ import {
 	UsersScreen
 } from '../pages/PrivateRoutes'
 import { SocketProvider } from '../pages/PrivateRoutes/socketNotification/socketProvider'
+import { routesPrivate } from './constants'
 
 export const PrivateRouter = ({ isAuthenticated }) => {
 	return isAuthenticated ? <RoutesPrivate /> : <Navigate to={pathNavigation.login} />
-}
-
-const routesPrivate = {
-	chatScreen: 'chat-screen',
-	usersScreen: 'users-screen',
-	groupScreen: 'group-screen',
-	accountScreen: 'account-screen',
-	devicesScreen: 'devices-screen',
-	settingsScreen: 'settings-screen',
-	dashboardScreen: 'dashboard-screen',
-	notificationScreen: 'notification-screen'
 }
 
 export const RoutesPrivate = () => {
