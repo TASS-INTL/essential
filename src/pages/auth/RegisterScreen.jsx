@@ -1,7 +1,7 @@
 import { InputComponent, InputSubmitComponent } from '@/Components'
 import { Link } from 'react-router-dom'
 
-import { email, user } from '../../assets/assetsplatform/index'
+import { emailSvg, user } from '../../assets/assetsplatform/index'
 import { pathNavigation } from './constants'
 import { useAuth } from './hooks/useLogin'
 
@@ -23,7 +23,7 @@ export const RegisterScreen = () => {
 							value={valuesRegister.email}
 							onChange={handleRegister}
 							error={'Ocurrio un error en el email'}
-							svg={email}
+							svg={emailSvg}
 							placeholder='name@gmail.com'
 						/>
 

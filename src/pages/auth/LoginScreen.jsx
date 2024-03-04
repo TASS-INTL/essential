@@ -1,13 +1,20 @@
 import { InputComponent, InputSubmitComponent } from '@/Components'
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { email, lock } from '../../assets/assetsplatform/index'
+import { emailSvg, lock } from '../../assets/assetsplatform/index'
 import { MouseColorComponente } from '../../Components'
+import { showToast } from '../../helpers/toast'
 import { pathNavigation } from './constants'
 import { useAuth } from './hooks/useLogin'
 
 export const LoginScreen = () => {
-	const { valuesLogin, handleValuesLogin, submitFormLogin } = useAuth()
+	const { submitFormLogin } = useAuth()
+	const {
+		register,
+		handleSubmit,
+		formState: { errors }
+	} = useForm()
 
 	return (
 		<MouseColorComponente>
@@ -19,25 +26,38 @@ export const LoginScreen = () => {
 							<h2 className='text-md font-normal text-white py-2 text-center'>Inicia sesion</h2>
 						</div>
 
-						<form className='flex flex-col' action='' onSubmit={submitFormLogin}>
+						<form
+							className='flex flex-col'
+							action=''
+							onSubmit={handleSubmit((data, event) => {
+								submitFormLogin(data, event)
+							})}
+						>
 							<InputComponent
-								label={'Correo electronico'}
-								name={'email'}
-								type={'email'}
-								value={valuesLogin.email}
-								onChange={handleValuesLogin}
-								svg={email}
+								required
+								name='email'
+								type='email'
+								value='email'
+								svg={emailSvg}
+								register={register}
+								label='Correo electronico'
 								placeholder='name@gmail.com'
 							/>
+							{errors.email && showToast('❌ Ingresa correctamente el email ', 'error')}
+
 							<InputComponent
-								label={'Contraseña'}
-								name={'password'}
-								type={'password'}
-								value={valuesLogin.password}
-								onChange={handleValuesLogin}
+								label='Contraseña'
+								register={register}
+								name='password'
+								required
+								type='password'
+								value='password'
 								svg={lock}
 								placeholder='•••••••••••'
 							/>
+							{errors.password &&
+								showToast('❌ Debes ingresar de manera correcta la contraseña ', 'error')}
+
 							<div className='my-3 flex flex-row justify-center items-center'>
 								<InputSubmitComponent text='Siguiente' />
 							</div>

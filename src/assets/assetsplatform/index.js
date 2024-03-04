@@ -1,5 +1,5 @@
-import email from './email.svg'
+import emailSvg from './emailSvg.svg'
 import lock from './lock.svg'
 import user from './user.svg'
 
-export { user, email, lock }
+export { user, emailSvg, lock }

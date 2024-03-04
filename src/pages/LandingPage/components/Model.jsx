@@ -8,21 +8,21 @@ import { useGLTF } from '@react-three/drei'
 
 const Model = (props) => {
 	const group = useRef()
-	const { nodes, materials } = useGLTF('./planet/Unbenannt.gltf')
+	// const { nodes, materials } = useGLTF('./planet/Unbenannt.gltf')
 	// const { nodes, materials } = useGLTF(
 	// 	'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/low-poly-spaceship/model.gltf'
 	// )
 	console.log(materials)
 	return (
 		<group ref={group} {...props} dispose={null}>
-			<mesh
+			{/* <mesh
 				geometry={nodes.Assy_Barra_dentada1.children[0].geometry}
 				material={nodes.Assy_Barra_dentada1.children[0].material}
 			/>
 			<mesh
 				geometry={nodes.Assy_Barra_dentada1.children[1].geometry}
 				material={nodes.Assy_Barra_dentada1.children[1].material}
-			/>
+			/> */}
 			{/* <mesh geometry={nodes.Assy_Barra_dentada1.children[1].geometry} material={nodes.P1_Base1.material} />
 			<mesh geometry={nodes.Assy_Barra_dentada1.children[2].geometry} material={nodes.P1_Base1.material} />
 			<mesh geometry={nodes.Assy_Barra_dentada1.children[3].geometry} material={nodes.P1_Base1.material} />
@@ -60,9 +60,9 @@ const Model = (props) => {
 		</group>
 	)
 }
-useGLTF.preload(
-	'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/low-poly-spaceship/model1.gltf'
-)
+// useGLTF.preload(
+// 	'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/low-poly-spaceship/model1.gltf'
+// )
 // useGLTF.preload('./planet/model1.gltf')
 
 export default Model

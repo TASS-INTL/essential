@@ -3,11 +3,7 @@ import { useEffect, useState } from 'react'
 import { useAuthProvider } from '@/auth/useAuthProvider'
 import { showToast } from '@/helpers/toast'
 import { userStore } from '@/store/userStore'
-
-const initialStateLogin = {
-	email: '',
-	password: ''
-}
+import { useForm } from 'react-hook-form'
 
 const initialStateRegister = {
 	email: '',
@@ -48,14 +44,16 @@ const initialStateForgotPassword = {
 export const useAuth = () => {
 	const { login, ValidateCodeApi, registerPersonalData, registerNameAndUserName, resendCode, forgotPassword } =
 		useAuthProvider()
-	const {
-		userData: { email, userName }
-	} = userStore((state) => state)
-	const [valuesLogin, setValuesLogin] = useState(initialStateLogin)
+	const { email, userName } = userStore((state) => state.userData)
 	const [valuesRegister, setValuesRegister] = useState(initialStateRegister)
 	const [valueValidateCode, setValueValidateCode] = useState(initialStateValidateCode)
 	const [valuePersonalData, setValuePersonalData] = useState(initialStatePersonalData)
-	const [valuesForgot, setValuesForgot] = useState(initialStateForgotPassword)
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors }
+	} = useForm()
 
 	useEffect(() => {
 		setValuePersonalData({
@@ -66,26 +64,15 @@ export const useAuth = () => {
 	}, [])
 
 	// Login
-	const handleValuesLogin = (key, value) => {
-		setValuesLogin({
-			...valuesLogin,
-			[key]: value
-		})
-	}
-
-	const submitFormLogin = async (e) => {
+	const submitFormLogin = async (valuesLogin, e) => {
 		e.preventDefault()
-		if (Object.values(valuesLogin).some((value) => value === '')) {
-			return showToast('❌ Debes ingresar el correo', 'error')
-		}
 		const { email, password } = valuesLogin
 		const response = await login({
 			email,
 			password
 		})
 		if (response?.error) {
-			setValuesLogin(initialStateLogin)
-			return showToast('❌ Algo ha salido mal ' + response?.message, 'error')
+			return showToast('❌ Algo ha salido mal, revisa tu correo o tu contraseña ' + response?.message, 'error')
 		}
 		response?.completed && showToast('Validacion de manera exitosa', 'success')
 	}
@@ -173,36 +160,24 @@ export const useAuth = () => {
 	}
 
 	// Forgot Password
-	const handleForgotPassword = (key, value) => {
-		setValuesForgot({
-			...valuesForgot,
-			[key]: value
-		})
-	}
 
-	const submitFormForgotPassword = async (event) => {
+	const submitFormForgotPassword = async (valuesForgot, event) => {
+		console.log(valuesForgot)
 		event.preventDefault()
-
-		if (Object.values(valuesForgot).some((value) => value === '')) {
-			return showToast('❌ Debes ingresar todos los campos', 'error')
-		}
-
-		const { email } = valuesForgot
-
 		const response = await forgotPassword({
-			email
+			email: valuesForgot.email
 		})
-
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 		response?.completed && showToast('Te enviamos la nueva contraseña al correo', 'success')
 	}
 
 	return {
-		valuesLogin,
+		register,
+		handleSubmit,
+		errors,
 		valuesRegister,
 		valueValidateCode,
 		valuePersonalData,
-		valuesForgot,
 		submitFormLogin,
 		submitResendCode,
 		submitFormRegister,
@@ -210,9 +185,7 @@ export const useAuth = () => {
 		submitFormValidateCode,
 		submitFormForgotPassword,
 		handleRegister,
-		handleValuesLogin,
 		handlePersonalData,
-		handleFormValidateCode,
-		handleForgotPassword
+		handleFormValidateCode
 	}
 }

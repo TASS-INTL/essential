@@ -23,10 +23,13 @@ const Navbar = () => {
 						} ${index === navLinks.length - 1 ? 'mr-0' : 'mr-10'}`}
 						onClick={() => {
 							setActive(nav.title)
-							nav.title === 'Login' && navigate(pathNavigation.login)
 						}}
 					>
-						<a href={`#${nav.id}`}>{nav.title}</a>
+						{nav.title === 'Login' ? (
+							<span onClick={() => navigate(pathNavigation.login)}>{nav.title}</span>
+						) : (
+							<a href={`#${nav.id}`}>{nav.title}</a>
+						)}
 					</li>
 				))}
 			</ul>

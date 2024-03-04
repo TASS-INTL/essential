@@ -1,13 +1,23 @@
 import React from 'react'
 
 import { InputComponent, InputSubmitComponent } from '@/Components'
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
+import { emailSvg } from '../../assets/assetsplatform'
 import { pathNavigation } from './constants'
 import { useAuth } from './hooks/useLogin'
 
 export const ForgotPasswordScreen = () => {
-	const { valuesForgot, submitFormForgotPassword, handleForgotPassword } = useAuth()
+	const { submitFormForgotPassword } = useAuth()
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors }
+	} = useForm()
+
+	console.log(errors)
 
 	return (
 		<div className='bg-primary w-full min-h-screen  items-center justify-center  space-x-6'>
@@ -16,23 +26,31 @@ export const ForgotPasswordScreen = () => {
 					<div className='mb-7'>
 						<h1 className='text-4xl font-bold text-white text-center'>Recuperacion de contraseña</h1>
 					</div>
-					<form action='flex flex-col' onSubmit={submitFormForgotPassword}>
+					<form
+						action='flex flex-col'
+						onSubmit={handleSubmit((data, event) => {
+							submitFormForgotPassword(data, event)
+						})}
+					>
 						<h2 className='text-sm font-bold text-white text-center'>
 							Ingresa el correo electronico de la cuenta de la cual deseas recuperar la contraseña
 						</h2>
 						<InputComponent
-							label={'Correo electronico'}
-							name={'email'}
-							type={'text'}
-							value={valuesForgot.email}
-							onChange={handleForgotPassword}
-							error={'Ocurrio un error en el email'}
+							required
+							name='email'
+							type='email'
+							value='email'
+							svg={emailSvg}
+							register={register}
+							label='Correo electronico'
+							placeholder='name@gmail.com'
 						/>
+						{errors.email && showToast('❌ Ingresa correctamente el email ', 'error')}
 						<div className='my-3 flex flex-row justify-center items-center'>
 							<InputSubmitComponent text='Enviar email' />
 						</div>
 					</form>
-					<p className='text-md font-normal text-white py-2 text-center'>
+					<p className='text-md font-normal text-blue-500 underline  py-2 text-center'>
 						<Link to={pathNavigation.login}>¿Te llego el correo? Inicia sesion</Link>
 					</p>
 				</div>
