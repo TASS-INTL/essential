@@ -3,39 +3,32 @@ import { useState } from 'react'
 import api from '@/Api/api'
 import { constantsApi } from '@/Api/constantsApi'
 import { showToast } from '@/helpers/toast'
-import { queryClient } from '@/main'
 import { usersStore } from '@/store/usersStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
-const initialStateEmpty = {
-	name: '',
-	username: '',
-	email: '',
-	address: ' ',
-	country: '',
-	region: '',
-	city: '',
-	id_policies: '',
-	id_type_user: '',
-	type_document_personal: '',
-	number_document_personal: '',
-	key: '',
-	phone_number: {
-		code: '+57',
-		number: '123456789'
-	}
-}
+import { queryClient } from '../../../routes/AppRouter'
+
+// const initialStateEmpty = {
+// 	name: '',
+// 	username: '',
+// 	email: '',
+// 	address: ' ',
+// 	country: '',
+// 	region: '',
+// 	city: '',
+// 	id_policies: '',
+// 	id_type_user: '',
+// 	type_document_personal: '',
+// 	number_document_personal: '',
+// 	key: '',
+// 	phone_number: {
+// 		code: '+57',
+// 		number: '123456789'
+// 	}
+// }
 
 export const useUsers = () => {
-	const [inputs, setInputs] = useState(initialStateEmpty)
 	const setModalVisible = usersStore((state) => state.setModalVisible)
-
-	const handleValuesCreateUser = (key, value) => {
-		setInputs({
-			...inputs,
-			[key]: value
-		})
-	}
 
 	const fetchDataUser = () =>
 		useQuery({
@@ -58,9 +51,9 @@ export const useUsers = () => {
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['getUserList'] })
 	})
 
-	const handleCreateUser = async (event) => {
+	const handleCreateUser = async (data, event) => {
 		event.preventDefault()
-		const newUser = inputs
+		const newUser = data
 		const response = await createUser.mutateAsync(newUser)
 		if (response.completed) {
 			showToast('Se a Creado el usuario de manera exitosa', 'success')
@@ -75,11 +68,11 @@ export const useUsers = () => {
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 	}
 
-	const handleUpdateUser = async (event) => {
+	const handleUpdateUser = async (data, event) => {
 		event.preventDefault()
-		delete inputs.created_at
-		delete inputs.updated_at
-		const response = await updateUser.mutateAsync({ idUser: inputs._id, data: inputs })
+		console.log(data)
+
+		const response = await updateUser.mutateAsync({ idUser: data._id, data: data })
 		if (response.completed) {
 			showToast('Se a Actualizado el usuario de manera exitosa', 'success')
 			setModalVisible(false)
@@ -88,12 +81,9 @@ export const useUsers = () => {
 	}
 
 	return {
-		inputs,
 		fetchDataUser,
-		handleValuesCreateUser,
 		handleCreateUser,
 		handleDeleteUser,
-		setInputs,
 		handleUpdateUser
 	}
 }

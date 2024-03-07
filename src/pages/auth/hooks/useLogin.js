@@ -3,16 +3,6 @@ import { useEffect, useState } from 'react'
 import { useAuthProvider } from '@/auth/useAuthProvider'
 import { showToast } from '@/helpers/toast'
 import { userStore } from '@/store/userStore'
-import { useForm } from 'react-hook-form'
-
-const initialStateRegister = {
-	email: '',
-	username: ''
-}
-
-const initialStateValidateCode = {
-	code: ''
-}
 
 const initialStatePersonalData = {
 	name: '',
@@ -34,34 +24,24 @@ const initialStatePersonalData = {
 	type_person: 'natural',
 	terms_conditions: false,
 	type_document_company: 'NN',
-	type_document_personal: 'CC'
-}
-
-const initialStateForgotPassword = {
-	email: ''
+	type_document_personal: 'CC',
+	type_role: 'client'
+	// type_role: "factory"
 }
 
 export const useAuth = () => {
 	const { login, ValidateCodeApi, registerPersonalData, registerNameAndUserName, resendCode, forgotPassword } =
 		useAuthProvider()
 	const { email, userName } = userStore((state) => state.userData)
-	const [valuesRegister, setValuesRegister] = useState(initialStateRegister)
-	const [valueValidateCode, setValueValidateCode] = useState(initialStateValidateCode)
-	const [valuePersonalData, setValuePersonalData] = useState(initialStatePersonalData)
+	// const [valuePersonalData, setValuePersonalData] = useState(initialStatePersonalData)
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors }
-	} = useForm()
-
-	useEffect(() => {
-		setValuePersonalData({
-			...valuePersonalData,
-			email,
-			username: userName
-		})
-	}, [])
+	// useEffect(() => {
+	// 	setValuePersonalData({
+	// 		...valuePersonalData,
+	// 		email,
+	// 		username: userName
+	// 	})
+	// }, [])
 
 	// Login
 	const submitFormLogin = async (valuesLogin, e) => {
@@ -78,19 +58,8 @@ export const useAuth = () => {
 	}
 
 	// Validate Code
-	const handleFormValidateCode = (key, value) => {
-		setValueValidateCode({
-			...valueValidateCode,
-			[key]: value
-		})
-	}
-
-	const submitFormValidateCode = async (event, screen) => {
+	const submitFormValidateCode = async (valueValidateCode, event, screen) => {
 		event.preventDefault()
-
-		if (Object.values(valueValidateCode).some((value) => value === '')) {
-			return showToast('❌ Debes ingresar el codigo de verificacion', 'error')
-		}
 
 		const { code } = valueValidateCode
 
@@ -104,19 +73,8 @@ export const useAuth = () => {
 	}
 
 	// Register
-	const handleRegister = (key, value) => {
-		setValuesRegister({
-			...valuesRegister,
-			[key]: value
-		})
-	}
-
-	const submitFormRegister = async (event) => {
+	const submitFormRegister = async (valuesRegister, event) => {
 		event.preventDefault()
-
-		if (Object.values(valuesRegister).some((value) => value === '')) {
-			return showToast('❌ Debes ingresar todos los campos', 'error')
-		}
 
 		const { email, username } = valuesRegister
 
@@ -139,14 +97,7 @@ export const useAuth = () => {
 	}
 
 	// Personal Data
-	const handlePersonalData = (key, value) => {
-		setValuePersonalData({
-			...valuePersonalData,
-			[key]: value
-		})
-	}
-
-	const submitFormValidateData = async (event) => {
+	const submitFormValidateData = async (valuePersonalData, event) => {
 		event.preventDefault()
 
 		if (Object.values(valuePersonalData).some((value) => value === '')) {
@@ -160,9 +111,7 @@ export const useAuth = () => {
 	}
 
 	// Forgot Password
-
 	const submitFormForgotPassword = async (valuesForgot, event) => {
-		console.log(valuesForgot)
 		event.preventDefault()
 		const response = await forgotPassword({
 			email: valuesForgot.email
@@ -172,20 +121,11 @@ export const useAuth = () => {
 	}
 
 	return {
-		register,
-		handleSubmit,
-		errors,
-		valuesRegister,
-		valueValidateCode,
-		valuePersonalData,
 		submitFormLogin,
 		submitResendCode,
 		submitFormRegister,
 		submitFormValidateData,
 		submitFormValidateCode,
-		submitFormForgotPassword,
-		handleRegister,
-		handlePersonalData,
-		handleFormValidateCode
+		submitFormForgotPassword
 	}
 }

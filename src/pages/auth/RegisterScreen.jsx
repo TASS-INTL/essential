@@ -1,4 +1,5 @@
 import { InputComponent, InputSubmitComponent } from '@/Components'
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
 import { emailSvg, user } from '../../assets/assetsplatform/index'
@@ -6,7 +7,12 @@ import { pathNavigation } from './constants'
 import { useAuth } from './hooks/useLogin'
 
 export const RegisterScreen = () => {
-	const { valuesRegister, handleRegister, submitFormRegister } = useAuth()
+	const { submitFormRegister } = useAuth()
+	const {
+		register,
+		handleSubmit,
+		formState: { errors }
+	} = useForm()
 
 	return (
 		<div className='w-full min-h-screen  items-center justify-center  space-x-6'>
@@ -15,35 +21,37 @@ export const RegisterScreen = () => {
 					<div className='mb-7'>
 						<h1 className='text-4xl font-bold text-white text-center'>Registrate</h1>
 					</div>
-					<form className='flex flex-col' action='' onSubmit={submitFormRegister}>
+					<form
+						className='flex flex-col'
+						action=''
+						onSubmit={handleSubmit((data, event) => submitFormRegister(data, event))}
+					>
 						<InputComponent
-							label={'email'}
-							name={'email'}
-							type={'text'}
-							value={valuesRegister.email}
-							onChange={handleRegister}
-							error={'Ocurrio un error en el email'}
+							required
+							name='email'
+							type='text'
 							svg={emailSvg}
-							placeholder='name@gmail.com'
+							register={register}
+							label='Correo electronico'
+							placeholder='correo@gmail.com'
 						/>
 
 						<InputComponent
-							label={'nombre de la cuenta'}
-							name={'username'}
-							type={'text'}
-							value={valuesRegister.username}
-							onChange={handleRegister}
-							error={'Ocurrio un error en el email'}
+							required
+							label='Nombre de usuario'
+							name='username'
+							type='text'
 							svg={user}
 							placeholder='name123'
+							register={register}
 						/>
 
 						<div className='my-3 flex flex-row justify-center items-center'>
 							<InputSubmitComponent text='Verificar' />
 						</div>
 					</form>
-					<p className='text-md font-normal text-white py-2 text-center'>
-						<Link to={pathNavigation.login}>Iniciar sesion con una cuenta existente</Link>
+					<p className='text-md font-normal text-blue-500 underline py-2 text-center'>
+						<Link to={pathNavigation.login}> ¿Ya tienes una cuenta? Inicia sesion</Link>
 					</p>
 				</div>
 			</div>

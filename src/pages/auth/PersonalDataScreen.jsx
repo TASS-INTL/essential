@@ -3,22 +3,12 @@ import React, { useEffect, useState } from 'react'
 import 'react-phone-number-input/style.css'
 
 import { InputComponent, InputSubmitComponent, SelectComponent } from '@/Components'
-import PhoneInput from 'react-phone-number-input'
+import { useForm } from 'react-hook-form'
+import PhoneInput, { formatPhoneNumber } from 'react-phone-number-input'
 
+import { emailSvg } from '../../assets/assetsplatform'
+import { arrayOptions, typeDocument, typeUser } from './constants'
 import { useAuth } from './hooks/useLogin'
-
-export const typeDocument = [
-	{ id: 1, name: 'CC' },
-	{ id: 2, name: 'CE' },
-	{ id: 3, name: 'TI' },
-	{ id: 4, name: 'RC' },
-	{ id: 5, name: 'PA' },
-	{ id: 6, name: 'NIT' },
-	{ id: 7, name: 'SSN' },
-	{ id: 8, name: 'NUIP' },
-	{ id: 9, name: 'DNI' },
-	{ id: 10, name: 'NN' }
-]
 
 const stylesInput = {
 	backgroundColor: '#03091e',
@@ -27,7 +17,7 @@ const stylesInput = {
 	WebkitBoxSizing: 'borderBox',
 	MozBoxsizing: 'border-box',
 	boxSizing: 'border-box',
-	color: '#fff',
+	color: 'black',
 	fontSize: '1rem',
 	height: '2.5rem',
 	lineHeight: '1.5rem',
@@ -35,23 +25,15 @@ const stylesInput = {
 	width: '100%'
 }
 
-const arrayOptions = [
-	{ id: 1, name: 'Natural' },
-	{ id: 2, name: 'Juridica' }
-]
-
 export const PersonalDataScreen = () => {
-	const { valuePersonalData, handlePersonalData, submitFormValidateData } = useAuth()
-	const [flagInput, setFlagInput] = useState(false)
 	const [value, setValue] = useState()
-
-	const [chekInput, setChekInput] = useState(valuePersonalData.terms_conditions)
+	const [flagInput, setFlagInput] = useState(false)
+	const { submitFormValidateData } = useAuth()
+	const { register, handleSubmit, watch } = useForm()
 
 	useEffect(() => {
-		valuePersonalData.type_person === 'Juridica' ? setFlagInput(true) : setFlagInput(false)
-	}, [valuePersonalData.type_person])
-
-	console.log(valuePersonalData)
+		watch().type_person === 'Juridica' ? setFlagInput(true) : setFlagInput(false)
+	}, [watch().type_person])
 
 	return (
 		<div className='bg-primary w-full min-h-screen  items-center justify-center  space-x-6'>
@@ -60,134 +42,120 @@ export const PersonalDataScreen = () => {
 					<div className='mt-9'>
 						<h1 className='text-xl  font-bold text-white text-center'>REGISTRO DE DATOS PERSONALES</h1>
 					</div>
-
-					<form>
+					<form onSubmit={handleSubmit((data, event) => submitFormValidateData(data, event))}>
 						<div className='grid gap-6 mb-6 md:grid-cols-2'>
 							<InputComponent
-								label={'nombre'}
-								name={'name'}
-								type={'text'}
-								value={valuePersonalData.name}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el email'}
-							/>
-
-							<InputComponent
-								label={'email'}
-								name={'email'}
-								type={'text'}
-								value={valuePersonalData.email}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el email'}
+								svg={emailSvg}
+								required
+								register={register}
+								label='nombre'
+								name='name'
+								type='text'
+								placeholder='yondoe'
 							/>
 							<InputComponent
-								label={'username'}
-								name={'username'}
-								type={'text'}
-								value={valuePersonalData.username}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el username'}
+								svg={emailSvg}
+								required
+								register={register}
+								label='email'
+								name='email'
+								type='text'
+								placeholder='yondoe@gmail.com'
 							/>
-
+							<InputComponent
+								svg={emailSvg}
+								required
+								register={register}
+								label='username'
+								name='username'
+								type='text'
+								placeholder='yondoe'
+							/>
 							<SelectComponent
+								register={register}
 								label='Tipo de persona'
-								handlePersonalData={handlePersonalData}
-								value={valuePersonalData.type_person}
-								name='select-type-person'
+								name='type_person'
 								arrayOptions={arrayOptions}
-								valueChange={'type_person'}
 							/>
-
 							<SelectComponent
+								register={register}
 								label='Tipo de documento'
-								handlePersonalData={handlePersonalData}
-								value={valuePersonalData.type_document_personal}
-								name='select-type_document_personal'
+								name='type_document_personal'
 								arrayOptions={typeDocument}
-								valueChange={'type_document_personal'}
 							/>
-
 							<InputComponent
-								label={'numero de documento'}
-								name={'number_document_personal'}
-								type={'text'}
-								value={valuePersonalData.number_document_personal}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el email'}
+								svg={emailSvg}
+								required
+								register={register}
+								label='numero de documento'
+								name='number_document_personal'
+								type='text'
 							/>
 							{flagInput && (
 								<>
 									<SelectComponent
+										register={register}
 										label='Tipo de documento de la empresa'
-										handlePersonalData={handlePersonalData}
-										value={valuePersonalData.type_document_company}
-										name='select-type_document_company'
+										name='type_document_company'
 										arrayOptions={typeDocument}
-										valueChange={'type_document_company'}
 									/>
 									<InputComponent
-										label={'numero de documento de la compañia'}
-										name={'number_document_company'}
-										type={'text'}
-										value={valuePersonalData.number_document_company}
-										onChange={handlePersonalData}
-										error={'Ocurrio un error en el email'}
+										svg={emailSvg}
+										required
+										register={register}
+										label='numero de documento de la compañia'
+										name='number_document_company'
+										type='text'
 									/>
 								</>
 							)}
-
 							<InputComponent
-								label={'country'}
-								name={'country'}
-								type={'text'}
-								value={valuePersonalData.country}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el email'}
+								svg={emailSvg}
+								required
+								register={register}
+								label='country'
+								name='country'
+								type='text'
 							/>
-
 							<InputComponent
-								label={'region'}
-								name={'region'}
-								type={'text'}
-								value={valuePersonalData.region}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el email'}
+								svg={emailSvg}
+								required
+								register={register}
+								label='region'
+								name='region'
+								type='text'
 							/>
-
 							<InputComponent
-								label={'city'}
-								name={'city'}
-								type={'text'}
-								value={valuePersonalData.city}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el email'}
+								svg={emailSvg}
+								required
+								register={register}
+								label='city'
+								name='city'
+								type='text'
 							/>
-
 							<InputComponent
-								label={'Direccion'}
-								name={'address'}
-								type={'text'}
-								value={valuePersonalData.address}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el address'}
+								svg={emailSvg}
+								required
+								register={register}
+								label='Direccion'
+								name='address'
+								type='text'
 							/>
-
 							<InputComponent
-								label={'estado o provincia'}
-								name={'state_province'}
-								type={'text'}
-								value={valuePersonalData.state_province}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el state_province'}
+								svg={emailSvg}
+								required
+								register={register}
+								label='estado o provincia'
+								name='state_province'
+								type='text'
 							/>
-
 							<InputComponent
-								label={'codigo postal'}
-								name={'code_postal'}
-								type={'text'}
-								value={valuePersonalData.code_postal}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el email'}
+								svg={emailSvg}
+								required
+								register={register}
+								label='codigo postal'
+								name='code_postal'
+								type='text'
 							/>
 						</div>
 						<div className='mb-6'>
@@ -201,42 +169,36 @@ export const PersonalDataScreen = () => {
 								style={stylesInput}
 							/>
 						</div>
-
 						<div className='mb-6'>
 							<InputComponent
-								label={'password'}
-								name={'key'}
+								svg={emailSvg}
+								required
+								register={register}
+								label='password'
+								name='key'
 								type='password'
-								value={valuePersonalData.key}
-								onChange={handlePersonalData}
-								error={'Ocurrio un error en el password'}
 								placeholder='•••••••••'
+							/>
+							<SelectComponent
+								register={register}
+								label='Tipo de usuario'
+								name='type_role'
+								arrayOptions={typeUser}
 							/>
 						</div>
 						<div className='flex items-start mb-6'>
 							<div className='flex items-center h-5'>
 								<input
-									id='remember'
-									type='checkbox'
-									value=''
-									className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800'
 									required
+									type='checkbox'
+									{...register('terms_conditions')}
+									className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800'
 								/>
 							</div>
-							<label
-								type='checkbox'
-								name='terminos'
-								id='terminos'
-								htmlFor='remember'
-								className='ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'
-								value={chekInput}
-								onChange={(e) => {
-									handlePersonalData('terms_conditions', chekInput)
-									setChekInput(!chekInput)
-								}}
-							>
-								Acepto los terminos y condiciones de uso de TASS INTL y la{' '}
+							<label className='ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'>
+								Acepto los terminos y condiciones de uso de TASS INTL y la
 								<a href='#' className='text-blue-600 hover:underline dark:text-blue-500'>
+									{' '}
 									Politica de privacidad
 								</a>
 								.

@@ -17,29 +17,24 @@ export const ForgotPasswordScreen = () => {
 		formState: { errors }
 	} = useForm()
 
-	console.log(errors)
-
 	return (
 		<div className='bg-primary w-full min-h-screen  items-center justify-center  space-x-6'>
 			<div className='min-h-screen p-6 flex flex-col items-center justify-center'>
 				<div className='w-1/1 md:w-1/3'>
 					<div className='mb-7'>
-						<h1 className='text-4xl font-bold text-white text-center'>Recuperacion de contraseña</h1>
+						<h1 className='text-5xl font-bold text-white text-center'>Recuperacion de contraseña</h1>
 					</div>
 					<form
 						action='flex flex-col'
-						onSubmit={handleSubmit((data, event) => {
-							submitFormForgotPassword(data, event)
-						})}
+						onSubmit={handleSubmit((data, event) => submitFormForgotPassword(data, event))}
 					>
-						<h2 className='text-sm font-bold text-white text-center'>
-							Ingresa el correo electronico de la cuenta de la cual deseas recuperar la contraseña
+						<h2 className='text-sm font-bold text-white text-center pb-7'>
+							! Ingresa el correo electronico de la cuenta de la cual deseas recuperar la contraseña.
 						</h2>
 						<InputComponent
 							required
 							name='email'
 							type='email'
-							value='email'
 							svg={emailSvg}
 							register={register}
 							label='Correo electronico'

@@ -28,30 +28,24 @@ export const LoginScreen = () => {
 
 						<form
 							className='flex flex-col'
-							action=''
-							onSubmit={handleSubmit((data, event) => {
-								submitFormLogin(data, event)
-							})}
+							onSubmit={handleSubmit((data, event) => submitFormLogin(data, event))}
 						>
 							<InputComponent
 								required
 								name='email'
 								type='email'
-								value='email'
 								svg={emailSvg}
 								register={register}
 								label='Correo electronico'
 								placeholder='name@gmail.com'
 							/>
 							{errors.email && showToast('❌ Ingresa correctamente el email ', 'error')}
-
 							<InputComponent
 								label='Contraseña'
 								register={register}
 								name='password'
 								required
 								type='password'
-								value='password'
 								svg={lock}
 								placeholder='•••••••••••'
 							/>

@@ -50,7 +50,7 @@ export const useAuthProvider = () => {
 
 		const response = await api(
 			constantsApi.POST,
-			screen === 'login' ? `auth2/login/validateCode/?to=${tokenSesion}` : 'singup/start/code',
+			screen === 'login' ? `auth2/login/validateCode?to=${tokenSesion}` : 'singup/start/code',
 			{
 				code,
 				email

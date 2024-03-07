@@ -12,7 +12,6 @@ const Model = (props) => {
 	// const { nodes, materials } = useGLTF(
 	// 	'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/low-poly-spaceship/model.gltf'
 	// )
-	console.log(materials)
 	return (
 		<group ref={group} {...props} dispose={null}>
 			{/* <mesh

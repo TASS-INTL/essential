@@ -7,10 +7,10 @@ export const ModalComponent = ({ children, textModal }) => {
 
 	return (
 		<div className='fixed inset-0 bg-black bg-opacity-25  backdrop-blur-sm flex items-center justify-center'>
-			<div className='bg-white p-2 rounded w-3/5'>
+			<div className=' bg-emerald-950 p-2 rounded w-3/5'>
 				<button
 					onClick={() => setModalVisible(false)}
-					className='bg-dark-purple shadow-lg shadow-dark-purple p2-4 px-5 rounded-sm text-white'
+					className='bg-white shadow-lg shadow-dark-purple p2-4 px-5 rounded-sm text-black'
 				>
 					cerrar
 				</button>

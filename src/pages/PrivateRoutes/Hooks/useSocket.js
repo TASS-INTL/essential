@@ -7,28 +7,18 @@ import { userStore } from '../../../store/userStore'
 import { SocketContext } from '../socketNotification/socketProvider'
 
 export const useSocket = () => {
-	const { socket, online } = useContext(SocketContext)
 	const { uid, tokenSesion } = userStore((state) => state.userData)
-	const setNotification = usersStore((state) => state.setNotification)
-	const setArrayNotification = notificationStore((state) => state.setArrayNotification)
+	const { socket } = useContext(SocketContext)
 
-	useEffect(() => {
-		socket?.emit('join_room', {
+	const sendReadSocket = (id_notification) => {
+		socket?.emit('notification_read', {
 			id_user: uid,
-			id_room: tokenSesion,
-			type_join: 'room_session'
+			room: tokenSesion,
+			id_notification
 		})
-
-		socket?.on('my_event', (data) => {
-			showToast('❌ tienes una nueva notificacion', 'warning')
-			setNotification(data?.unread)
-			console.log(data)
-			setArrayNotification(data?.notifications)
-		})
-	}, [socket])
+	}
 
 	return {
-		socket,
-		online
+		sendReadSocket
 	}
 }

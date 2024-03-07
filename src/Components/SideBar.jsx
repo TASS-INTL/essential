@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Link, useLocation } from 'react-router-dom'
 
@@ -12,7 +12,6 @@ export const SideBarComponent = () => {
 	const [open, setOpen] = useState(true)
 	const userData = userStore((state) => state.userData)
 	const notification = usersStore((state) => state.notification)
-	const setNotification = usersStore((state) => state.setNotification)
 	const [selectButton, setSelectButton] = useState(0)
 
 	return (
@@ -70,7 +69,7 @@ export const SideBarComponent = () => {
 										</span>
 									</div>
 									<div className='flex items-end'>
-										{menu.name === 'Notifications' && notification}
+										{menu.name === 'Notifications' && notification && <>{`(${notification})`}</>}
 									</div>
 								</li>
 							</Link>
