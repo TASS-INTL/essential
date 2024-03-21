@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import api from '@/Api/api'
 import { constantsApi } from '@/Api/constantsApi'
 import { showToast } from '@/helpers/toast'
@@ -7,25 +5,6 @@ import { usersStore } from '@/store/usersStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { queryClient } from '../../../routes/AppRouter'
-
-// const initialStateEmpty = {
-// 	name: '',
-// 	username: '',
-// 	email: '',
-// 	address: ' ',
-// 	country: '',
-// 	region: '',
-// 	city: '',
-// 	id_policies: '',
-// 	id_type_user: '',
-// 	type_document_personal: '',
-// 	number_document_personal: '',
-// 	key: '',
-// 	phone_number: {
-// 		code: '+57',
-// 		number: '123456789'
-// 	}
-// }
 
 export const useUsers = () => {
 	const setModalVisible = usersStore((state) => state.setModalVisible)

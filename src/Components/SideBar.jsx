@@ -29,7 +29,7 @@ export const SideBarComponent = () => {
            border-2 rounded-full  ${!open && 'rotate-180'}`}
 					onClick={() => setOpen(!open)}
 				/>
-				<div className='h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800'>
+				<div className='h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 	border-r-2 border-gray'>
 					<ul className='space-y-2 font-medium'>
 						{userData?.modules?.map((menu, index) => (
 							<Link key={index} to={`${menu.pathName}`}>

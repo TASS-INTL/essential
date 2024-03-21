@@ -6,6 +6,7 @@ import { showToast } from '../../../helpers/toast'
 import { queryClient } from '../../../routes/AppRouter'
 
 export const useDevice = () => {
+	//
 	const createDevice = useMutation({
 		mutationFn: async (data) => await api(constantsApi.POST, 'module/device/assign', data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postDevice'] })
@@ -24,8 +25,28 @@ export const useDevice = () => {
 		}
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 	}
+	// Sincronizacion de dispositivo
+	const syncDevice = useMutation({
+		mutationFn: async (data) => await api(constantsApi.POST, 'module/device-factory/create', data),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postSyncDevice'] })
+	})
+
+	const handleSyncDevice = async (data, event) => {
+		event.preventDefault()
+		const syncDeviceData = data
+		const response = await syncDevice.mutateAsync(syncDeviceData)
+		console.log(response)
+		if (response.completed) {
+			showToast(
+				'Se a enviado la sincronizacion al sistema en un momento podra validar esa informacion en el apartado de Inventario',
+				'warning'
+			)
+		}
+		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
+	}
 
 	return {
-		handleCreateUser
+		handleCreateUser,
+		handleSyncDevice
 	}
 }

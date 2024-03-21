@@ -1,8 +1,5 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 
-import { showToast } from '../../../helpers/toast'
-import { notificationStore } from '../../../store/notificationStore'
-import { usersStore } from '../../../store/usersStore'
 import { userStore } from '../../../store/userStore'
 import { SocketContext } from '../socketNotification/socketProvider'
 

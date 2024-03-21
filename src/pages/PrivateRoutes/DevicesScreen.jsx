@@ -6,20 +6,8 @@ import { InputComponent, InputSubmitComponent, SelectComponent } from '../../Com
 import { typeStatus } from './constants'
 import { useDevice } from './Hooks/useDevices'
 
-const data = {
-	description: 'description',
-	did: 'did',
-	nickname: 'nickname',
-	status: 'active'
-}
-
 export const DevicesScreen = () => {
-	const {
-		register,
-		handleSubmit,
-		watch,
-		formState: { errors }
-	} = useForm()
+	const { register, handleSubmit } = useForm()
 
 	const { handleCreateUser } = useDevice()
 
