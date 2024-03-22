@@ -1,8 +1,14 @@
 import React, { useState } from 'react'
 
 export const PaginationComponent = ({ pageSelected, dataPagination, setPageSelected, setArray, array }) => {
-	let arrayItems =
-		dataPagination?.number_pages > 5 ? [1, 2, 3, 4, 5] : new Array(dataPagination?.number_pages).fill(null)
+	//
+	const fillArrayWithLastValue = (UltimoValor) => {
+		let array = []
+		for (let i = UltimoValor - 4; i <= UltimoValor; i++) {
+			array.push(i)
+		}
+		return array
+	}
 
 	return (
 		<nav aria-label='Page navigation example'>
@@ -16,11 +22,14 @@ export const PaginationComponent = ({ pageSelected, dataPagination, setPageSelec
 						Previous
 					</a>
 				</li>
-				{pageSelected > 5 && (
+				{pageSelected >= 5 && (
 					<>
 						<li>
 							<a
-								onClick={() => setPageSelected(1)}
+								onClick={() => {
+									setArray(fillArrayWithLastValue(5))
+									setPageSelected(1)
+								}}
 								href='#'
 								className={` flex items-center justify-center px-3 h-8 border-gray-300 ${
 									pageSelected === 1
@@ -31,18 +40,15 @@ export const PaginationComponent = ({ pageSelected, dataPagination, setPageSelec
 								1
 							</a>
 						</li>
-						<li>
-							<a
-								onClick={() => {}}
-								href='#'
-								className='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 '
-							>
-								...
-							</a>
-						</li>
+						{!array.includes(2) && (
+							<li>
+								<a className='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 '>
+									...
+								</a>
+							</li>
+						)}
 					</>
 				)}
-
 				{array.map((item, index) => {
 					return (
 						<li key={index}>
@@ -50,11 +56,8 @@ export const PaginationComponent = ({ pageSelected, dataPagination, setPageSelec
 								href='#'
 								onClick={() => {
 									setPageSelected(item)
-									console.log('item', item)
-									console.log('pageSelected', pageSelected)
-
 									if (item >= 5) {
-										if (!array.includes(dataPagination?.number_pages - 1)) {
+										if (!array.includes(dataPagination?.number_pages)) {
 											setArray(array.map((elemento) => elemento + 1))
 										}
 									}
@@ -75,20 +78,28 @@ export const PaginationComponent = ({ pageSelected, dataPagination, setPageSelec
 						</li>
 					)
 				})}
-				{dataPagination?.number_pages > 5 && (
+				{dataPagination?.number_pages > 5 && !array.includes(dataPagination?.number_pages) && (
 					<>
+						{!array.includes(dataPagination?.number_pages - 1) && (
+							<>
+								<li>
+									<a
+										onClick={() => {}}
+										href='#'
+										className='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 '
+									>
+										...
+									</a>
+								</li>
+							</>
+						)}
+
 						<li>
 							<a
-								onClick={() => {}}
-								href='#'
-								className='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 '
-							>
-								...
-							</a>
-						</li>
-						<li>
-							<a
-								onClick={() => setPageSelected(dataPagination?.number_pages)}
+								onClick={() => {
+									setArray(fillArrayWithLastValue(dataPagination?.number_pages))
+									setPageSelected(dataPagination?.number_pages)
+								}}
 								href='#'
 								className={` flex items-center justify-center px-3 h-8 border-gray-300 ${
 									pageSelected === dataPagination?.number_pages

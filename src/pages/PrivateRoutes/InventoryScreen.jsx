@@ -6,11 +6,13 @@ import { BoardComponent, InputSubmitComponent, LoaderComponent, PaginationCompon
 import { tableTitleInventory } from './constants'
 import { useInventory } from './Hooks/useInventory'
 
+const llenarArray = (array) => {
+	array?.map((elemento, index) => (elemento = index + 1))
+}
+
 export const InventoryScreen = () => {
 	const { register, handleSubmit } = useForm()
 	const [array, setArray] = useState([1, 2, 3, 4, 5])
-
-	console.log(array)
 
 	const { fetchDataInventory } = useInventory()
 	const [pageSelected, setPageSelected] = useState(1)

@@ -15,7 +15,7 @@ export const BoardComponent = ({ dataHeader, dataBody, functionOnClick }) => {
 						</tr>
 					</thead>
 					<tbody>
-						{dataBody.length === 0 ? (
+						{dataBody?.length === 0 ? (
 							<tr className=''>
 								<td>
 									<span>

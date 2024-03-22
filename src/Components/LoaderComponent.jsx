@@ -13,7 +13,7 @@ export const LoaderComponent = () => {
 				xmlSpace='preserve'
 				className='w-[100px] h-[100px] m-[20px] inline-block'
 			>
-				<circle fill='#b31818' stroke='none' cx='6' cy='50' r='6'>
+				<circle fill='#281b96' stroke='none' cx='6' cy='50' r='6'>
 					<animateTransform
 						attributeName='transform'
 						dur='1s'
@@ -23,7 +23,7 @@ export const LoaderComponent = () => {
 						begin='0.1'
 					/>
 				</circle>
-				<circle fill='#b31818' stroke='none' cx='30' cy='50' r='6'>
+				<circle fill='#281b96' stroke='none' cx='30' cy='50' r='6'>
 					<animateTransform
 						attributeName='transform'
 						dur='1s'
@@ -33,7 +33,7 @@ export const LoaderComponent = () => {
 						begin='0.2'
 					/>
 				</circle>
-				<circle fill='#b31818' stroke='none' cx='54' cy='50' r='6'>
+				<circle fill='#281b96' stroke='none' cx='54' cy='50' r='6'>
 					<animateTransform
 						attributeName='transform'
 						dur='1s'
