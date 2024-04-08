@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 
-import api from '../../../Api/api'
-import { constantsApi } from '../../../Api/constantsApi'
+import api from '../../../../Api/api'
+import { constantsApi } from '../../../../Api/constantsApi'
 
 export const useInventory = () => {
 	//

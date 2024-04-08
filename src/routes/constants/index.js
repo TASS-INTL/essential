@@ -15,5 +15,6 @@ export const routesPrivate = {
 	InventoryScreen: 'inventory-screen',
 	dashboardScreen: 'dashboard-screen',
 	notificationScreen: 'notifications-screen',
-	FactoryDevicesScreen: 'factory-devices-screen'
+	FactoryDevicesScreen: 'factory-devices-screen',
+	DetailInventoryScreen: 'detail-inventory-screen'
 }

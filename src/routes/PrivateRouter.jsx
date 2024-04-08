@@ -6,6 +6,7 @@ import {
 	AccountScreen,
 	ChatScreen,
 	DashboardScreen,
+	DetailInventoryScreen,
 	DevicesScreen,
 	FactoryDevicesScreen,
 	GroupScreen,
@@ -15,7 +16,13 @@ import {
 	TestingScreen,
 	UsersScreen
 } from '../pages/PrivateRoutes'
-import { SocketProvider } from '../pages/PrivateRoutes/socketNotification/socketProvider'
+import { Events } from '../pages/PrivateRoutes/Inventory/Events'
+import { General } from '../pages/PrivateRoutes/Inventory/General'
+import { TableInventory } from '../pages/PrivateRoutes/Inventory/TableInventory'
+import { Test } from '../pages/PrivateRoutes/Inventory/Test'
+import { Travels } from '../pages/PrivateRoutes/Inventory/Travels'
+import { conectionNameSpace, SocketForNameSpace } from '../pages/PrivateRoutes/sockets/socketForNameSpace'
+import { SocketProvider } from '../pages/PrivateRoutes/sockets/socketProvider'
 import { routesPrivate } from './constants'
 
 export const PrivateRouter = ({ isAuthenticated }) => {
@@ -34,7 +41,23 @@ export const RoutesPrivate = () => {
 					<Route path={routesPrivate.TestingScreen} element={<TestingScreen />} />
 					<Route path={routesPrivate.accountScreen} element={<AccountScreen />} />
 					<Route path={routesPrivate.devicesScreen} element={<DevicesScreen />} />
-					<Route path={routesPrivate.InventoryScreen} element={<InventoryScreen />} />
+
+					<Route
+						path={routesPrivate.InventoryScreen}
+						element={
+							<SocketForNameSpace type={conectionNameSpace.device}>
+								<InventoryScreen />
+							</SocketForNameSpace>
+						}
+					>
+						<Route index path='table' element={<TableInventory />} />
+						<Route index path='general' element={<General />} />
+						<Route path='test' element={<Test />} />
+						<Route path='events' element={<Events />} />
+						<Route path='travels' element={<Travels />} />
+						<Route path={routesPrivate.DetailInventoryScreen} element={<DetailInventoryScreen />} />
+					</Route>
+
 					<Route path={routesPrivate.settingsScreen} element={<SettingsScreen />} />
 					<Route path={routesPrivate.dashboardScreen} element={<DashboardScreen />} />
 					<Route path={routesPrivate.notificationScreen} element={<NotificationScreen />} />

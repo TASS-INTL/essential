@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { NavLink } from 'react-router-dom'
+
 export const BoardComponent = ({ dataHeader, dataBody, functionOnClick }) => {
 	return (
 		<div className='relative overflow-x-scrolling overflow-y-scrolling shadow-md sm:rounded-lg'>
@@ -18,9 +20,7 @@ export const BoardComponent = ({ dataHeader, dataBody, functionOnClick }) => {
 						{dataBody?.length === 0 ? (
 							<tr className=''>
 								<td>
-									<span>
-										Lo sentimos, no se han encontrado resultados Por favor modifique su búsqueda
-									</span>
+									<span>Lo sentimos, no se han encontrado resultados</span>
 								</td>
 							</tr>
 						) : (
@@ -45,13 +45,12 @@ export const BoardComponent = ({ dataHeader, dataBody, functionOnClick }) => {
 									<td className='px-6 py-4'>{item.type || item.lote}</td>
 									<td className='px-6 py-4'>{item.title || item.status}</td>
 									<td className='px-6 py-4'>
-										<a
-											onClick={() => functionOnClick(item._id)}
-											href='#'
-											className='font-medium text-blue-600  hover:underline'
+										<NavLink
+											to='/user/inventory-screen/general'
+											className='font-medium text-blue-600  hover:underline cursor-pointer'
 										>
 											ver
-										</a>
+										</NavLink>
 									</td>
 								</tr>
 							))

@@ -3,7 +3,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 
 import { InputComponent, InputSubmitComponent, SelectComponent } from '../../Components'
-import { typeStatus } from './constants'
+import { typeStatus } from './constants/constants'
 import { useDevice } from './Hooks/useDevices'
 
 export const DevicesScreen = () => {

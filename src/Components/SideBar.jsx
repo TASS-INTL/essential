@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
-import { Link, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 
 import { useAuthProvider } from '../auth/useAuthProvider'
 import { usersStore } from '../store/usersStore'
@@ -19,7 +19,7 @@ export const SideBarComponent = () => {
 			<aside
 				id='separator-sidebar'
 				className={`${
-					open ? 'w-72' : 'w-20 '
+					open ? 'w-72' : 'w-20'
 				} relative duration-300  top-0 left-0 z-40 h-screen transition-transform -translate-x-full sm:translate-x-0`}
 				aria-label='Sidebar'
 			>
@@ -32,10 +32,10 @@ export const SideBarComponent = () => {
 				<div className='h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 	border-r-2 border-gray'>
 					<ul className='space-y-2 font-medium'>
 						{userData?.modules?.map((menu, index) => (
-							<Link key={index} to={`${menu.pathName}`}>
+							<NavLink key={index} to={`${menu.pathName}`}>
 								<li
 									key={index}
-									className={` 
+									className={`
                             flex 
                             justify-between
                             p-2 
@@ -47,7 +47,7 @@ export const SideBarComponent = () => {
                             gap-x-4
                              px-2
                             ${menu.gap ? 'mt-9' : 'mt-2'}
-									 ${menu.pathName === pathname && 'bg-light-white'}`}
+									 ${pathname.includes(menu.pathName) && 'bg-light-white'}`}
 									onClick={() => {
 										menu.title === 'Cerrar sesion' && logout()
 										setSelectButton(index)
@@ -72,7 +72,7 @@ export const SideBarComponent = () => {
 										{menu.name === 'Notifications' && notification && <>{`(${notification})`}</>}
 									</div>
 								</li>
-							</Link>
+							</NavLink>
 						))}
 						<li
 							className={`
@@ -88,7 +88,7 @@ export const SideBarComponent = () => {
 							onClick={logout}
 						>
 							<svg
-								className=' w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
+								className='w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
 								aria-hidden='true'
 								xmlns='http://www.w3.org/2000/svg'
 								fill='none'
