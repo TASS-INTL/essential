@@ -4,7 +4,6 @@ import { DashboardScreen } from './DashboardScreen'
 import { DevicesScreen } from './DevicesScreen'
 import { FactoryDevicesScreen } from './FactoryDevicesScreen'
 import { GroupScreen } from './GroupScreen'
-import { DetailInventoryScreen } from './Inventory/DetailInventoryScreen'
 import { InventoryScreen } from './Inventory/InventoryScreen'
 import { NotificationScreen } from './NotificationScreen'
 import { SettingsScreen } from './SettingsScreen'
@@ -22,6 +21,5 @@ export {
 	DashboardScreen,
 	InventoryScreen,
 	NotificationScreen,
-	FactoryDevicesScreen,
-	DetailInventoryScreen
+	FactoryDevicesScreen
 }

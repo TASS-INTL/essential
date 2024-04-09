@@ -169,7 +169,8 @@ export const useAuthProvider = () => {
 
 	const logout = async () => {
 		const response = await api(constantsApi.POST, 'auth2/logout')
-		if (response?.completed) {
+
+		if (response?.completed || response?.type_ === 'UNAUTHORIZED') {
 			setUserData({
 				uid: null,
 				name: null,

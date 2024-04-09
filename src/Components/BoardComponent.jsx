@@ -2,7 +2,7 @@ import React from 'react'
 
 import { NavLink } from 'react-router-dom'
 
-export const BoardComponent = ({ dataHeader, dataBody, functionOnClick }) => {
+export const BoardComponent = ({ dataHeader, dataBody }) => {
 	return (
 		<div className='relative overflow-x-scrolling overflow-y-scrolling shadow-md sm:rounded-lg'>
 			<div className='overflow-scroll'>

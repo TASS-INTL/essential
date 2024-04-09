@@ -39,7 +39,11 @@ export const NotificationScreen = () => {
 						/>
 					</div>
 				</div>
-				<BoardComponent dataHeader={tableTitle} dataBody={arrayNotification} functionOnClick={sendReadSocket} />
+				<BoardComponent
+					dataHeader={tableTitle}
+					dataBody={arrayNotification.result}
+					functionOnClick={sendReadSocket}
+				/>
 				<div className='py-5 flex justify-center items-center'>
 					<nav aria-label='Page navigation example'>
 						<ul className='inline-flex -space-x-px text-sm'>

@@ -12,6 +12,7 @@ export const conectionNameSpace = {
 }
 
 export const SocketForNameSpace = ({ children, nameSpace }) => {
+	console.log(nameSpace)
 	const [socketForNameSpace, setSocketForNameSpace] = useState(null)
 	const { tokenSesion } = userStore((state) => state.userData)
 
@@ -19,19 +20,20 @@ export const SocketForNameSpace = ({ children, nameSpace }) => {
 		socketForNameSpace?.disconnect()
 	}, [socketForNameSpace])
 
-	const connnectSocketForNameSpace = useCallback(() => {
-		const socketTemp = io(`https://skolympo.tassintl.com/${nameSpace}`, {
-			reconnectionDelayMax: 1000,
-			transports: ['websocket'],
-			autoConnect: true,
-			auth: { x_access_token: tokenSesion }
-		})
+	// const connnectSocketForNameSpace = useCallback(() => {
+	// 	const socketTemp = io(`https://skolympo.tassintl.com/${nameSpace}`, {
+	// 		reconnectionDelayMax: 1000,
+	// 		// transports: ['websocket'],
+	// 		autoConnect: true,
+	// 		extraHeaders: { x_access_token: tokenSesion }
+	// 		// extraHeaders: { x_access_token: tokenSesion }
+	// 	})
 
-		return socketTemp
-	}, [nameSpace])
+	// 	return socketTemp
+	// }, [nameSpace])x
 
 	useEffect(() => {
-		setSocketForNameSpace(connnectSocketForNameSpace())
+		// setSocketForNameSpace(connnectSocketForNameSpace())
 		return () => {
 			disconnectSocket()
 		}

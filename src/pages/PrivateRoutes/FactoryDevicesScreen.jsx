@@ -23,18 +23,22 @@ export const FactoryDevicesScreen = () => {
 	const { handleSyncDevice } = useDevice()
 
 	return (
-		<div className='bg-gray-800 w-full py-5 px-8'>
+		<div className='w-full py-5 px-8'>
 			<div className='w-full max-w-6xl mx-auto'>
-				<form action='' onSubmit={handleSubmit((data, event) => handleSyncDevice(data, event))}>
-					<InputComponent required register={register} name='did' type='text' label='did' />
-					<InputComponent required register={register} name='fv' type='text' label='fv' />
-					<InputComponent required register={register} name='imei' type='text' label='imei' />
-					<InputComponent required register={register} name='lote' type='text' label='lote' />
-					<InputComponent required register={register} name='mac' type='text' label='mac' />
-					<InputComponent register={register} name='nickname' type='text' label='nickname' />
-					<InputComponent required register={register} name='simcard.iccid' type='text' label='iccid' />
-					<InputComponent required register={register} name='simcard.imsi' type='text' label='imsi' />
-					<div className=' flex flex-row justify-center mb-9'>
+				<form
+					action=''
+					onSubmit={handleSubmit((data, event) => handleSyncDevice(data, event))}
+					className=' w-2/3 m-auto'
+				>
+					<InputComponent color required register={register} name='did' type='text' label='did' />
+					<InputComponent color required register={register} name='fv' type='text' label='fv' />
+					<InputComponent color required register={register} name='imei' type='text' label='imei' />
+					<InputComponent color required register={register} name='lote' type='text' label='lote' />
+					<InputComponent color required register={register} name='mac' type='text' label='mac' />
+					<InputComponent color register={register} name='nickname' type='text' label='nickname' />
+					<InputComponent color required register={register} name='simcard.iccid' type='text' label='iccid' />
+					<InputComponent color required register={register} name='simcard.imsi' type='text' label='imsi' />
+					<div className=' flex flex-row justify-center mt-10'>
 						<InputSubmitComponent text='Enlazar' />
 					</div>
 				</form>

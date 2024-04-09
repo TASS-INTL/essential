@@ -6,7 +6,6 @@ import {
 	AccountScreen,
 	ChatScreen,
 	DashboardScreen,
-	DetailInventoryScreen,
 	DevicesScreen,
 	FactoryDevicesScreen,
 	GroupScreen,
@@ -45,17 +44,16 @@ export const RoutesPrivate = () => {
 					<Route
 						path={routesPrivate.InventoryScreen}
 						element={
-							<SocketForNameSpace type={conectionNameSpace.device}>
+							<SocketForNameSpace nameSpace={conectionNameSpace.device}>
 								<InventoryScreen />
 							</SocketForNameSpace>
 						}
 					>
 						<Route index path='table' element={<TableInventory />} />
-						<Route index path='general' element={<General />} />
+						<Route path='general' element={<General />} />
 						<Route path='test' element={<Test />} />
 						<Route path='events' element={<Events />} />
 						<Route path='travels' element={<Travels />} />
-						<Route path={routesPrivate.DetailInventoryScreen} element={<DetailInventoryScreen />} />
 					</Route>
 
 					<Route path={routesPrivate.settingsScreen} element={<SettingsScreen />} />

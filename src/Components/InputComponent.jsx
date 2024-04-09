@@ -1,9 +1,12 @@
 import React from 'react'
 
-export const InputComponent = ({ defaultValue, label, register, name, required, maxLength, svg, type }) => {
+export const InputComponent = ({ defaultValue, label, register, name, required, maxLength, svg, type, color }) => {
 	return (
 		<div>
-			<label htmlFor={name} className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+			<label
+				htmlFor={name}
+				className={`block mb-2 text-sm font-medium ${color ? 'text-gray-900' : 'text-white'}   `}
+			>
 				{label}
 			</label>
 			<div className='relative mb-1'>
@@ -16,7 +19,9 @@ export const InputComponent = ({ defaultValue, label, register, name, required, 
 					type={type}
 					{...register(name, { required, maxLength })}
 					defaultValue={defaultValue ? defaultValue : ''}
-					className='border text-sm rounded-lg  block w-full ps-10 p-2.5  bg-black border-gray-600 placeholder-gray-400 text-white focus:ring-offset-gray-400 '
+					className={`border text-sm rounded-lg  block w-full ps-10 p-2.5 ${
+						color ? ' bg-white text-black' : 'bg-black text-white'
+					}  border-gray-600 placeholder-gray-400 focus:ring-offset-gray-400`}
 				/>
 			</div>
 		</div>
