@@ -2,7 +2,9 @@ import React, { createContext, useCallback, useEffect, useState } from 'react'
 
 import { io } from 'socket.io-client'
 
+import { inventoryStore } from '../../../store/inventoryStore'
 import { userStore } from '../../../store/userStore'
+import { SOCKETS_ROOMS } from './constants'
 
 export const SocketContextForNameSpace = createContext()
 
@@ -12,44 +14,48 @@ export const conectionNameSpace = {
 }
 
 export const SocketForNameSpace = ({ children, nameSpace }) => {
-	console.log(nameSpace)
 	const [socketForNameSpace, setSocketForNameSpace] = useState(null)
-	const { tokenSesion } = userStore((state) => state.userData)
+	const { uid, tokenSesion } = userStore((state) => state.userData)
+	const setArrayTableInventory = inventoryStore((state) => state.setArrayTableInventory)
 
 	const disconnectSocket = useCallback(() => {
 		socketForNameSpace?.disconnect()
 	}, [socketForNameSpace])
 
-	// const connnectSocketForNameSpace = useCallback(() => {
-	// 	const socketTemp = io(`https://skolympo.tassintl.com/${nameSpace}`, {
-	// 		reconnectionDelayMax: 1000,
-	// 		// transports: ['websocket'],
-	// 		autoConnect: true,
-	// 		extraHeaders: { x_access_token: tokenSesion }
-	// 		// extraHeaders: { x_access_token: tokenSesion }
-	// 	})
+	const connnectSocketForNameSpace = useCallback(() => {
+		const socketTemp = io(`https://skolympo.tassintl.com/${nameSpace}`, {
+			reconnectionDelayMax: 1000,
+			transports: ['websocket', 'polling'],
+			autoConnect: true,
+			auth: { x_access_token: tokenSesion }
+		})
 
-	// 	return socketTemp
-	// }, [nameSpace])x
+		return socketTemp
+	}, [nameSpace])
 
 	useEffect(() => {
-		// setSocketForNameSpace(connnectSocketForNameSpace())
+		setSocketForNameSpace(connnectSocketForNameSpace())
 		return () => {
 			disconnectSocket()
 		}
 	}, [])
 
 	useEffect(() => {
-		// socket?.emit('join_room', {
-		// 	id_user: uid,
-		// 	id_room: tokenSesion,
-		// 	type_join: 'room_session'
-		// })
-		// socket?.on('my_event', (data) => {
-		// 	showToast(`❌ Tienes notificaciones nuevas`, 'warning')
-		// 	setNotification(data?.unread)
-		// 	setArrayNotification(data?.notifications)
-		// })
+		socketForNameSpace?.emit('join_room', {
+			id_user: uid,
+			id_room: tokenSesion,
+			type_join: SOCKETS_ROOMS.ROOM_INVENTORY,
+			x_access_token: tokenSesion
+		})
+
+		socketForNameSpace?.on('joined_room', (data) => {
+			// console.log(data)
+		})
+
+		socketForNameSpace?.on('r_tb_device_fac', (data) => {
+			console.log(data, 'table')
+			setArrayTableInventory(data?.data)
+		})
 	}, [socketForNameSpace])
 
 	const store = {

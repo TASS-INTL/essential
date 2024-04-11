@@ -25,6 +25,7 @@ export const FactoryDevicesScreen = () => {
 	return (
 		<div className='w-full py-5 px-8'>
 			<div className='w-full max-w-6xl mx-auto'>
+				<div className=' font-bold text-2xl flex justify-center'>Creacion de dispositivo de fabrica</div>
 				<form
 					action=''
 					onSubmit={handleSubmit((data, event) => handleSyncDevice(data, event))}

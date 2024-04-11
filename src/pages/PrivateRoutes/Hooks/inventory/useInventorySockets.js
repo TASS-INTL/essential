@@ -11,12 +11,22 @@ export const useInventorySocket = () => {
 		socketForNameSpace.emit('r_device_lock', { lock: true })
 	}
 
+	const paginationEmit = (page, dataSearch) => {
+		socketForNameSpace?.emit('tb_devices_fac', {
+			page,
+			search: dataSearch ? dataSearch : null,
+			id_user: uid,
+			id_room: tokenSesion,
+			x_access_token: tokenSesion
+		})
+	}
+
 	useEffect(() => {
 		socketForNameSpace?.emit('join_room', {
-			id_user: uid,
-			type_join: 'ROOM_DEVICE',
-			id_room: tokenSesion,
 			sid: null,
+			id_user: uid,
+			id_room: tokenSesion,
+			type_join: 'ROOM_DEVICE',
 			x_access_token: tokenSesion
 		})
 
@@ -25,5 +35,5 @@ export const useInventorySocket = () => {
 		})
 	}, [socketForNameSpace])
 
-	return { emmitToDevice }
+	return { emmitToDevice, paginationEmit }
 }

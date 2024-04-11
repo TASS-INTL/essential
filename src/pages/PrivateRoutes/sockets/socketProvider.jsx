@@ -6,6 +6,7 @@ import { showToast } from '../../../helpers/toast'
 import { notificationStore } from '../../../store/notificationStore'
 import { usersStore } from '../../../store/usersStore'
 import { userStore } from '../../../store/userStore'
+import { SOCKETS_ROOMS } from './constants'
 
 export const SocketContext = createContext()
 
@@ -41,14 +42,14 @@ export const SocketProvider = ({ children }) => {
 		socket?.emit('join_room', {
 			id_user: uid,
 			id_room: tokenSesion,
-			type_join: 'room_session',
+			type_join: SOCKETS_ROOMS.ROOM_SESSION,
 			x_access_token: tokenSesion
 		})
 
 		socket?.on('r_notificatio_receive', (data) => {
 			showToast(`❌ Tienes notificaciones nuevas`, 'warning')
 			setNotification(data?.unread)
-			setArrayNotification(data?.notifications?.result)
+			setArrayNotification(data)
 		})
 	}, [socket])
 

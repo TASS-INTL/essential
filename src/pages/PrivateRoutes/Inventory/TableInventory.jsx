@@ -1,20 +1,23 @@
-import React, { useContext, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
-import { BoardComponent, LoaderComponent, PaginationComponent } from '../../../Components'
+import { BoardComponent, PaginationComponent } from '../../../Components'
+import { inventoryStore } from '../../../store/inventoryStore'
 import { tableTitleInventory } from '../constants/constants'
-import { useInventory } from '../Hooks/inventory/useInventory'
+import { useInventorySocket } from '../Hooks/inventory/useInventorySockets'
 
 export const TableInventory = () => {
 	const { register, handleSubmit } = useForm()
-	const { fetchDataInventory } = useInventory()
+	const { paginationEmit } = useInventorySocket()
 	const [dataSearch, setDataSearch] = useState('')
 	const [pageSelected, setPageSelected] = useState(1)
 	const [array, setArray] = useState([1, 2, 3, 4, 5])
-	const dataInventory = fetchDataInventory(pageSelected, dataSearch)
+	const arrayTableInventory = inventoryStore((state) => state.arrayTableInventory)
 
-	if (dataInventory.isLoading) return <LoaderComponent />
+	useEffect(() => {
+		paginationEmit(pageSelected, dataSearch)
+	}, [pageSelected, dataSearch])
 
 	return (
 		<div>
@@ -22,6 +25,8 @@ export const TableInventory = () => {
 				<div className='relative'>
 					<form
 						onSubmit={handleSubmit((data) => {
+							setPageSelected(1)
+							setArray([1, 2, 3, 4, 5])
 							setDataSearch(data.search)
 						})}
 					>
@@ -54,13 +59,13 @@ export const TableInventory = () => {
 			</div>
 			<BoardComponent
 				dataHeader={tableTitleInventory}
-				dataBody={dataInventory?.data?.data?.results}
+				dataBody={arrayTableInventory?.results}
 				functionOnClick={() => {}}
 			/>
 			<div className='py-5 flex justify-center items-center'>
 				<PaginationComponent
 					pageSelected={pageSelected}
-					dataPagination={dataInventory?.data?.data?.info}
+					dataPagination={arrayTableInventory?.info}
 					setPageSelected={setPageSelected}
 					setArray={setArray}
 					array={array}

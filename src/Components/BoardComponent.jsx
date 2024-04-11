@@ -2,7 +2,7 @@ import React from 'react'
 
 import { NavLink } from 'react-router-dom'
 
-export const BoardComponent = ({ dataHeader, dataBody }) => {
+export const BoardComponent = ({ dataHeader, dataBody, to }) => {
 	return (
 		<div className='relative overflow-x-scrolling overflow-y-scrolling shadow-md sm:rounded-lg'>
 			<div className='overflow-scroll'>
@@ -46,7 +46,7 @@ export const BoardComponent = ({ dataHeader, dataBody }) => {
 									<td className='px-6 py-4'>{item.title || item.status}</td>
 									<td className='px-6 py-4'>
 										<NavLink
-											to='/user/inventory-screen/general'
+											to={to}
 											className='font-medium text-blue-600  hover:underline cursor-pointer'
 										>
 											ver
