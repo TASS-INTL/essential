@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 import api from '../../../../Api/api'
-import { constantsApi } from '../../../../Api/constantsApi'
+import { METHODS_API } from '../../../../Api/constantsApi'
 
 export const useInventory = () => {
 	//
@@ -10,7 +10,7 @@ export const useInventory = () => {
 			queryKey: ['getInventoryList', page, search],
 			queryFn: async () =>
 				await api(
-					constantsApi.GET,
+					METHODS_API.GET,
 					`module/device-factory/inventory?page=${page}${search !== '' ? `&search=${search}` : ''}`
 				)
 		})

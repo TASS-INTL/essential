@@ -1,5 +1,5 @@
 import api from '@/Api/api'
-import { constantsApi } from '@/Api/constantsApi'
+import { METHODS_API } from '@/Api/constantsApi'
 import { showToast } from '@/helpers/toast'
 import { usersStore } from '@/store/usersStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -12,21 +12,21 @@ export const useUsers = () => {
 	const fetchDataUser = () =>
 		useQuery({
 			queryKey: ['getUserList'],
-			queryFn: async () => await api(constantsApi.GET, 'module/users')
+			queryFn: async () => await api(METHODS_API.GET, 'module/users')
 		})
 
 	const createUser = useMutation({
-		mutationFn: async (data) => await api(constantsApi.POST, 'module/users/create', data),
+		mutationFn: async (data) => await api(METHODS_API.POST, 'module/users/create', data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['getUserList'] })
 	})
 
 	const deleteUser = useMutation({
-		mutationFn: async (idUser) => await api(constantsApi.DELETE, `module/users/delete/${idUser}`),
+		mutationFn: async (idUser) => await api(METHODS_API.DELETE, `module/users/delete/${idUser}`),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['getUserList'] })
 	})
 
 	const updateUser = useMutation({
-		mutationFn: async ({ idUser, data }) => await api(constantsApi.PUT, `module/users/update/${idUser}`, data),
+		mutationFn: async ({ idUser, data }) => await api(METHODS_API.PUT, `module/users/update/${idUser}`, data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['getUserList'] })
 	})
 
@@ -49,7 +49,6 @@ export const useUsers = () => {
 
 	const handleUpdateUser = async (data, event) => {
 		event.preventDefault()
-		console.log(data)
 
 		const response = await updateUser.mutateAsync({ idUser: data._id, data: data })
 		if (response.completed) {

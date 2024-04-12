@@ -22,7 +22,8 @@ import { Test } from '../pages/PrivateRoutes/Inventory/Test'
 import { Travels } from '../pages/PrivateRoutes/Inventory/Travels'
 import { DetailNotification } from '../pages/PrivateRoutes/Notification/DetailNotification'
 import { TableNotification } from '../pages/PrivateRoutes/Notification/TableNotification'
-import { conectionNameSpace, SocketForNameSpace } from '../pages/PrivateRoutes/sockets/socketForNameSpace'
+import { CONNECTION_NAME_SPACE } from '../pages/PrivateRoutes/sockets/constants'
+import { SocketForNameSpace } from '../pages/PrivateRoutes/sockets/socketForNameSpace'
 import { SocketProvider } from '../pages/PrivateRoutes/sockets/socketProvider'
 import { routesPrivate } from './constants'
 
@@ -46,7 +47,7 @@ export const RoutesPrivate = () => {
 					<Route
 						path={routesPrivate.InventoryScreen}
 						element={
-							<SocketForNameSpace nameSpace={conectionNameSpace.device}>
+							<SocketForNameSpace nameSpace={CONNECTION_NAME_SPACE.DEVICE}>
 								<InventoryScreen />
 							</SocketForNameSpace>
 						}

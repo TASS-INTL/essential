@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 
 import api from '../Api/api'
-import { constantsApi } from '../Api/constantsApi'
+import { METHODS_API } from '../Api/constantsApi'
 import { pathNavigation } from '../pages/auth/constants'
 import { userStore } from '../store/userStore'
 
@@ -11,7 +11,7 @@ export const useAuthProvider = () => {
 	const setUserData = userStore((state) => state.setUserData)
 
 	const login = async ({ email, password }) => {
-		const response = await api(constantsApi.POST, 'auth2/login', {
+		const response = await api(METHODS_API.POST, 'auth2/login', {
 			email,
 			password
 		})
@@ -49,7 +49,7 @@ export const useAuthProvider = () => {
 		const { email, tokenSesion } = userData
 
 		const response = await api(
-			constantsApi.POST,
+			METHODS_API.POST,
 			screen === 'login' ? `auth2/login/validateCode?to=${tokenSesion}` : 'singup/start/code',
 			{
 				code,
@@ -85,7 +85,7 @@ export const useAuthProvider = () => {
 
 	const registerPersonalData = async (personalData) => {
 		const { tokenRegister } = userData
-		const response = await api(constantsApi.POST, `singup/finalized/?to=${tokenRegister}`, personalData)
+		const response = await api(METHODS_API.POST, `singup/finalized/?to=${tokenRegister}`, personalData)
 		if (response.completed) {
 			setUserData({
 				...userData,
@@ -99,7 +99,7 @@ export const useAuthProvider = () => {
 	}
 
 	const registerNameAndUserName = async ({ email, username }) => {
-		const response = await api(constantsApi.POST, 'singup/start/email', {
+		const response = await api(METHODS_API.POST, 'singup/start/email', {
 			email,
 			username
 		})
@@ -151,7 +151,7 @@ export const useAuthProvider = () => {
 
 	const resendCode = async () => {
 		const { email, tokenSesion } = userData
-		const response = await api(constantsApi.POST, 'auth2/login/resendCode', {
+		const response = await api(METHODS_API.POST, 'auth2/login/resendCode', {
 			email,
 			token: tokenSesion
 		})
@@ -160,7 +160,7 @@ export const useAuthProvider = () => {
 	}
 
 	const forgotPassword = async ({ email }) => {
-		const response = await api(constantsApi.GET, `auth2/resetPassword/${email}`, {
+		const response = await api(METHODS_API.GET, `auth2/resetPassword/${email}`, {
 			email
 		})
 
@@ -168,7 +168,7 @@ export const useAuthProvider = () => {
 	}
 
 	const logout = async () => {
-		const response = await api(constantsApi.POST, 'auth2/logout')
+		const response = await api(METHODS_API.POST, 'auth2/logout')
 
 		if (response?.completed || response?.type_ === 'UNAUTHORIZED') {
 			setUserData({

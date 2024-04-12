@@ -1,24 +1,26 @@
 import { showToast } from '../helpers/toast'
-import { AXIOSINSTANCE } from './axiosConfi'
-import { constantsApi } from './constantsApi'
+import { AXIOS_INSTANCE } from './axiosConfi'
+import { METHODS_API } from './constantsApi'
 
-const api = async (method = constantsApi.GET, endpoint, body) => {
+const api = async (method = METHODS_API.GET, endpoint, body) => {
 	try {
-		if (method === constantsApi.GET) {
-			const response = await AXIOSINSTANCE.get(endpoint)
+		if (method === METHODS_API.GET) {
+			const response = await AXIOS_INSTANCE.get(endpoint)
 			return response.data
 		}
 
-		if (method === constantsApi.POST) {
-			const response = await AXIOSINSTANCE.post(endpoint, body)
+		if (method === METHODS_API.POST) {
+			const response = await AXIOS_INSTANCE.post(endpoint, body)
 			return response.data
 		}
-		if (method === constantsApi.DELETE) {
-			const response = await AXIOSINSTANCE.delete(endpoint)
+
+		if (method === METHODS_API.DELETE) {
+			const response = await AXIOS_INSTANCE.delete(endpoint)
 			return response.data
 		}
-		if (method === constantsApi.PUT) {
-			const response = await AXIOSINSTANCE.put(endpoint, body)
+
+		if (method === METHODS_API.PUT) {
+			const response = await AXIOS_INSTANCE.put(endpoint, body)
 			return response.data
 		}
 	} catch (error) {

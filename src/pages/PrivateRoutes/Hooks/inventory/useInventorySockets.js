@@ -1,6 +1,7 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 
 import { userStore } from '../../../../store/userStore'
+import { SOCKET_EVENTS } from '../../sockets/constants'
 import { SocketContextForNameSpace } from '../../sockets/socketForNameSpace'
 
 export const useInventorySocket = () => {
@@ -12,7 +13,7 @@ export const useInventorySocket = () => {
 	}
 
 	const paginationEmit = (page, dataSearch) => {
-		socketForNameSpace?.emit('tb_devices_fac', {
+		socketForNameSpace?.emit(SOCKET_EVENTS.TB_DEVICES_FAC, {
 			page,
 			search: dataSearch ? dataSearch : null,
 			id_user: uid,
@@ -20,20 +21,6 @@ export const useInventorySocket = () => {
 			x_access_token: tokenSesion
 		})
 	}
-
-	useEffect(() => {
-		socketForNameSpace?.emit('join_room', {
-			sid: null,
-			id_user: uid,
-			id_room: tokenSesion,
-			type_join: 'ROOM_DEVICE',
-			x_access_token: tokenSesion
-		})
-
-		socketForNameSpace?.on('r_device_info', (data) => {
-			console.log(data)
-		})
-	}, [socketForNameSpace])
 
 	return { emmitToDevice, paginationEmit }
 }

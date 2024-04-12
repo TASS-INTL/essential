@@ -4,34 +4,29 @@ import { io } from 'socket.io-client'
 
 import { inventoryStore } from '../../../store/inventoryStore'
 import { userStore } from '../../../store/userStore'
-import { SOCKETS_ROOMS } from './constants'
+import { SOCKET_EVENTS, SOCKETS_ROOMS, TRANSPORT_SOCKET } from './constants'
 
 export const SocketContextForNameSpace = createContext()
 
-export const conectionNameSpace = {
-	session: 'session',
-	device: 'device'
-}
-
 export const SocketForNameSpace = ({ children, nameSpace }) => {
-	const [socketForNameSpace, setSocketForNameSpace] = useState(null)
 	const { uid, tokenSesion } = userStore((state) => state.userData)
+	const [socketForNameSpace, setSocketForNameSpace] = useState(null)
 	const setArrayTableInventory = inventoryStore((state) => state.setArrayTableInventory)
-
-	const disconnectSocket = useCallback(() => {
-		socketForNameSpace?.disconnect()
-	}, [socketForNameSpace])
 
 	const connnectSocketForNameSpace = useCallback(() => {
 		const socketTemp = io(`https://skolympo.tassintl.com/${nameSpace}`, {
-			reconnectionDelayMax: 1000,
-			transports: ['websocket', 'polling'],
+			reconnectionDelayMax: 9000,
+			transports: [TRANSPORT_SOCKET.WEBSOCKET, TRANSPORT_SOCKET.POLLING],
 			autoConnect: true,
 			auth: { x_access_token: tokenSesion }
 		})
 
 		return socketTemp
 	}, [nameSpace])
+
+	const disconnectSocket = useCallback(() => {
+		socketForNameSpace?.disconnect()
+	}, [socketForNameSpace])
 
 	useEffect(() => {
 		setSocketForNameSpace(connnectSocketForNameSpace())
@@ -41,19 +36,18 @@ export const SocketForNameSpace = ({ children, nameSpace }) => {
 	}, [])
 
 	useEffect(() => {
-		socketForNameSpace?.emit('join_room', {
+		socketForNameSpace?.emit(SOCKET_EVENTS.JOIN_ROOM, {
 			id_user: uid,
 			id_room: tokenSesion,
 			type_join: SOCKETS_ROOMS.ROOM_INVENTORY,
 			x_access_token: tokenSesion
 		})
 
-		socketForNameSpace?.on('joined_room', (data) => {
-			// console.log(data)
-		})
+		// socketForNameSpace?.on(SOCKET_EVENTS.JOINED_ROOM, (data) => {
+		// 	console.log(data)
+		// })
 
-		socketForNameSpace?.on('r_tb_device_fac', (data) => {
-			console.log(data, 'table')
+		socketForNameSpace?.on(SOCKET_EVENTS.R_TB_DEVICE_FAC, (data) => {
 			setArrayTableInventory(data?.data)
 		})
 	}, [socketForNameSpace])

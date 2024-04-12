@@ -6,7 +6,7 @@ import { showToast } from '../../../helpers/toast'
 import { notificationStore } from '../../../store/notificationStore'
 import { usersStore } from '../../../store/usersStore'
 import { userStore } from '../../../store/userStore'
-import { SOCKETS_ROOMS } from './constants'
+import { SOCKET_EVENTS, SOCKETS_ROOMS, TRANSPORT_SOCKET } from './constants'
 
 export const SocketContext = createContext()
 
@@ -20,7 +20,7 @@ export const SocketProvider = ({ children }) => {
 
 	const connnectSocket = useCallback(() => {
 		const socketTemp = io(urlSocketSession, {
-			transports: ['websocket', 'polling'],
+			transports: [TRANSPORT_SOCKET.WEBSOCKET, TRANSPORT_SOCKET.POLLING],
 			auth: { x_access_token: tokenSesion }
 		})
 
@@ -39,14 +39,14 @@ export const SocketProvider = ({ children }) => {
 	}, [])
 
 	useEffect(() => {
-		socket?.emit('join_room', {
+		socket?.emit(SOCKET_EVENTS.JOIN_ROOM, {
 			id_user: uid,
 			id_room: tokenSesion,
 			type_join: SOCKETS_ROOMS.ROOM_SESSION,
 			x_access_token: tokenSesion
 		})
 
-		socket?.on('r_notificatio_receive', (data) => {
+		socket?.on(SOCKET_EVENTS.R_NOTIFICATION_RECEIVE, (data) => {
 			showToast(`❌ Tienes notificaciones nuevas`, 'warning')
 			setNotification(data?.unread)
 			setArrayNotification(data)

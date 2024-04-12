@@ -12,8 +12,6 @@ export const NotificationScreen = () => {
 
 	const { sendReadSocket } = useSocket()
 
-	console.log(arrayNotification)
-
 	return (
 		<div className='w-full'>
 			<div className='w-full max-w-6xl mx-auto rounded-1xl'>

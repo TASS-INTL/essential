@@ -1,13 +1,13 @@
 import axios from 'axios'
 
-import { constantsApi } from './constantsApi'
+import { API_URLS } from './constantsApi'
 
-export const AXIOSINSTANCE = axios.create({
-	baseURL: constantsApi.API_URL
+export const AXIOS_INSTANCE = axios.create({
+	baseURL: API_URLS.API_GATEWAY
 })
 
 // Request interceptor for API calls
-AXIOSINSTANCE.interceptors.request.use(
+AXIOS_INSTANCE.interceptors.request.use(
 	async (config) => {
 		const token = await localStorage.getItem('token')
 		config.headers = {
