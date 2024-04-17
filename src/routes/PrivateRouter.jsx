@@ -9,17 +9,20 @@ import {
 	DevicesScreen,
 	FactoryDevicesScreen,
 	GroupScreen,
-	InventoryScreen,
 	NotificationScreen,
 	SettingsScreen,
 	TestingScreen,
 	UsersScreen
 } from '../pages/PrivateRoutes'
-import { Events } from '../pages/PrivateRoutes/Inventory/Events'
-import { General } from '../pages/PrivateRoutes/Inventory/General'
-import { TableInventory } from '../pages/PrivateRoutes/Inventory/TableInventory'
-import { Test } from '../pages/PrivateRoutes/Inventory/Test'
-import { Travels } from '../pages/PrivateRoutes/Inventory/Travels'
+import {
+	Device,
+	Events,
+	General,
+	InventoryScreen,
+	TableInventory,
+	Test,
+	Travels
+} from '../pages/PrivateRoutes/Inventory'
 import { DetailNotification } from '../pages/PrivateRoutes/Notification/DetailNotification'
 import { TableNotification } from '../pages/PrivateRoutes/Notification/TableNotification'
 import { CONNECTION_NAME_SPACE } from '../pages/PrivateRoutes/sockets/constants'
@@ -43,7 +46,6 @@ export const RoutesPrivate = () => {
 					<Route path={routesPrivate.TestingScreen} element={<TestingScreen />} />
 					<Route path={routesPrivate.accountScreen} element={<AccountScreen />} />
 					<Route path={routesPrivate.devicesScreen} element={<DevicesScreen />} />
-
 					<Route
 						path={routesPrivate.InventoryScreen}
 						element={
@@ -53,10 +55,13 @@ export const RoutesPrivate = () => {
 						}
 					>
 						<Route index path='table' element={<TableInventory />} />
-						<Route path='general' element={<General />} />
-						<Route path='test' element={<Test />} />
-						<Route path='events' element={<Events />} />
-						<Route path='travels' element={<Travels />} />
+
+						<Route path='device/:idDevice' element={<Device />}>
+							<Route index path='general' element={<General />} />
+							<Route path='test' element={<Test />} />
+							<Route path='events' element={<Events />} />
+							<Route path='travels' element={<Travels />} />
+						</Route>
 					</Route>
 
 					<Route path={routesPrivate.settingsScreen} element={<SettingsScreen />} />

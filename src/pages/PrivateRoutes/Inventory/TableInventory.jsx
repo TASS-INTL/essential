@@ -5,19 +5,19 @@ import { useForm } from 'react-hook-form'
 import { BoardComponent, PaginationComponent } from '../../../Components'
 import { inventoryStore } from '../../../store/inventoryStore'
 import { tableTitleInventory } from '../constants/constants'
-import { useInventorySocket } from '../Hooks/inventory/useInventorySockets'
+import { useInventorySocket } from './Hooks/useInventorySockets'
 
 export const TableInventory = () => {
 	const { register, handleSubmit } = useForm()
-	const { paginationEmit } = useInventorySocket()
+	// const { paginationEmit } = useInventorySocket()
 	const [dataSearch, setDataSearch] = useState('')
 	const [pageSelected, setPageSelected] = useState(1)
 	const [array, setArray] = useState([1, 2, 3, 4, 5])
 	const arrayTableInventory = inventoryStore((state) => state.arrayTableInventory)
 
-	useEffect(() => {
-		paginationEmit(pageSelected, dataSearch)
-	}, [pageSelected, dataSearch])
+	// useEffect(() => {
+	// 	paginationEmit(pageSelected, dataSearch)
+	// }, [pageSelected, dataSearch])
 
 	return (
 		<div>
@@ -30,7 +30,7 @@ export const TableInventory = () => {
 							setDataSearch(data.search)
 						})}
 					>
-						<div className=' relative'>
+						<div className='relative'>
 							<div className='absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none'>
 								<svg
 									className='w-5 h-5 text-gray-500 '

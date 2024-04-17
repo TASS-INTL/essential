@@ -13,6 +13,7 @@ export const useDevice = () => {
 			queryFn: async () => await api(METHODS_API.GET, 'module/device-factory/get-info')
 		})
 	//
+
 	const createDevice = useMutation({
 		mutationFn: async (data) => await api(METHODS_API.POST, 'module/device/assign', data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postDevice'] })
@@ -31,6 +32,7 @@ export const useDevice = () => {
 		}
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 	}
+
 	// Sincronizacion de dispositivo
 	const syncDevice = useMutation({
 		mutationFn: async (data) => await api(METHODS_API.POST, 'module/device-factory/create', data),

@@ -46,7 +46,7 @@ export const BoardComponent = ({ dataHeader, dataBody, to }) => {
 									<td className='px-6 py-4'>{item.title || item.status}</td>
 									<td className='px-6 py-4'>
 										<NavLink
-											to={to}
+											to={`/user/inventory-screen/device/${item._id}/general`}
 											className='font-medium text-blue-600  hover:underline cursor-pointer'
 										>
 											ver

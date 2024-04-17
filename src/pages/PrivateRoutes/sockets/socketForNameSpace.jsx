@@ -43,9 +43,9 @@ export const SocketForNameSpace = ({ children, nameSpace }) => {
 			x_access_token: tokenSesion
 		})
 
-		// socketForNameSpace?.on(SOCKET_EVENTS.JOINED_ROOM, (data) => {
-		// 	console.log(data)
-		// })
+		socketForNameSpace?.on(SOCKET_EVENTS.JOINED_ROOM, (data) => {
+			// console.log(data)
+		})
 
 		socketForNameSpace?.on(SOCKET_EVENTS.R_TB_DEVICE_FAC, (data) => {
 			setArrayTableInventory(data?.data)
