@@ -58,6 +58,7 @@ export const useAuthProvider = () => {
 		)
 
 		if (response?.completed) {
+			console.log(response)
 			if (screen === 'login') {
 				localStorage.setItem('token', response.data[0].token)
 				setUserData({

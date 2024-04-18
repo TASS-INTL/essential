@@ -25,6 +25,7 @@ import {
 } from '../pages/PrivateRoutes/Inventory'
 import { DetailNotification } from '../pages/PrivateRoutes/Notification/DetailNotification'
 import { TableNotification } from '../pages/PrivateRoutes/Notification/TableNotification'
+import { CreateService, Services, Table } from '../pages/PrivateRoutes/Services'
 import { CONNECTION_NAME_SPACE } from '../pages/PrivateRoutes/sockets/constants'
 import { SocketForNameSpace } from '../pages/PrivateRoutes/sockets/socketForNameSpace'
 import { SocketProvider } from '../pages/PrivateRoutes/sockets/socketProvider'
@@ -41,6 +42,10 @@ export const RoutesPrivate = () => {
 				<SideBarComponent />
 				<Routes>
 					<Route path={routesPrivate.chatScreen} element={<ChatScreen />} />
+					<Route path={routesPrivate.ServicesScreen} element={<Services />}>
+						<Route index path='table' element={<Table />} />
+						<Route index path='create-service' element={<CreateService />} />
+					</Route>
 					<Route path={routesPrivate.usersScreen} element={<UsersScreen />} />
 					<Route path={routesPrivate.groupScreen} element={<GroupScreen />} />
 					<Route path={routesPrivate.TestingScreen} element={<TestingScreen />} />
@@ -63,7 +68,6 @@ export const RoutesPrivate = () => {
 							<Route path='travels' element={<Travels />} />
 						</Route>
 					</Route>
-
 					<Route path={routesPrivate.settingsScreen} element={<SettingsScreen />} />
 					<Route path={routesPrivate.dashboardScreen} element={<DashboardScreen />} />
 					<Route path={routesPrivate.notificationScreen} element={<NotificationScreen />}>

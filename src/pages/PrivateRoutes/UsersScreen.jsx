@@ -49,7 +49,7 @@ export const UsersScreen = () => {
 						<strong></strong>
 					</div>
 					<div className='border-2 border-l-blue-600 border-black mt-3 py-3 px-3 '>
-						{fetchUserList?.data?.data[0]?.users?.map((list, index) => {
+						{fetchUserList?.data?.data?.results?.users?.map((list, index) => {
 							return (
 								<div key={index} className=' flex flex-row '>
 									<div className=' w-1/5 flex justify-start '>{list.name} </div>

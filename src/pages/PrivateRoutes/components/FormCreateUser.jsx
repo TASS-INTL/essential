@@ -16,6 +16,8 @@ export const FormCreateUser = ({
 }) => {
 	const { register, handleSubmit } = useForm()
 
+	console.log(fetchUserList)
+
 	return (
 		<>
 			{modalVisible && (
@@ -102,14 +104,14 @@ export const FormCreateUser = ({
 								register={register}
 								label='Politicas'
 								name='id_policies'
-								arrayOptions={fetchUserList?.data?.data[0].policies}
+								arrayOptions={fetchUserList?.data?.data?.results?.policies}
 								valueId
 							/>
 							<SelectComponent
 								register={register}
 								label='Tipo de usuario'
 								name='id_type_user'
-								arrayOptions={fetchUserList?.data?.data[0].types_profiles}
+								arrayOptions={fetchUserList?.data?.data?.results?.types_profiles}
 								valueId
 							/>
 							<SelectComponent
