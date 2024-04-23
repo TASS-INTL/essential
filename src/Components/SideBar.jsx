@@ -74,6 +74,7 @@ export const SideBarComponent = () => {
 								</li>
 							</NavLink>
 						))}
+						<NavLink to='/user/services-screen/table'>Services</NavLink>
 						<li
 							className={`
                      flex 
