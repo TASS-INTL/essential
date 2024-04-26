@@ -1,8 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { GetPlaceCommand, LocationClient, SearchPlaceIndexForSuggestionsCommand } from '@aws-sdk/client-location'
-import { withAPIKey } from '@aws/amazon-location-utilities-auth-helper'
-import { placeToFeatureCollection } from '@aws/amazon-location-utilities-datatypes'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
@@ -10,122 +7,229 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { MapLibreSearchControl } from '@stadiamaps/maplibre-search-box'
 import { format } from 'date-fns'
 import dayjs from 'dayjs'
-import maplibregl from 'maplibre-gl'
 import { useForm } from 'react-hook-form'
 
-import '@stadiamaps/maplibre-search-box/dist/style.css'
-import 'maplibre-gl/dist/maplibre-gl.css'
+import { emailSvg } from '../../../assets/assetsplatform'
+import { InputSubmitComponent } from '../../../Components'
+import { InputComponent } from '../../../Components/InputComponent'
+import { Map } from '../components/Map'
+import { useMap } from '../Hooks/useMap'
 
-const apiKey =
-	'v1.public.eyJqdGkiOiI0NjIwOTNmZC0yNTczLTRkNGYtYTMzMy00ZDIxMjQyMjFhN2QifSdisRzSAXgylyOLTZlGfVKYs4S5XWyU-0aND7iXmXZtZ0OCDMQp0-1wE2N3tYnwisGA4xq2H-09At0ZjyZTfHo2wZMNVFizy1clnBh42I_t6re_y3y0TlncD7t5FqoOuXVVRwPcHggJV3MR2yqGKyD4Kx7Sl9hvx6hh_1R3JZ9DHD-ny-a_CPPnZ5SLMGjaccWNn8FWJIWYba5nr6NO6hORDltKHVM-2zbqAyoCojEEYlRLtVWcti2t5Y_R-8e4p1wOQTBoPqphDDesOryt79wAYYyrxvigW7T8L1B3fkjmS5Cgj-a6_zaW_KfXHj7pwLWKip3TCAImGEtghLg-N7I.ZTA0NDFlODYtNGY5Mi00NWU4LTk1MDgtMmY4YmViYWFhYjUz'
+const obj = {
+	date_end: '2022-01-01 00:00:00',
+	date_start: '2022-01-01 00:00:00',
+	driver: {
+		email: '',
+		license_plate: 'DSA234',
+		name: 'name',
+		number_document: '123123123',
+		phone: '300213123'
+	},
+	//
+	place_end: {
+		lat: '',
+		lng: '',
+		common_name: '',
+		country: '',
+		county: '',
+		region: '',
+		geo: {
+			type: 'circle',
+			coord: ''
+		}
+	},
+	place_start: {
+		lat: '',
+		lng: '',
+		common_name: '',
+		country: '',
+		county: '',
+		region: '',
+		geo: {
+			type: 'circle',
+			coord: ''
+		}
+	},
+	station: [
+		{
+			lat: '',
+			lng: '',
+			common_name: '',
+			country: '',
+			county: '',
+			region: '',
+			geo: {
+				type: 'circle',
+				coord: ''
+			}
+		}
+	],
+	remarks: 'remarks'
+}
 
 export const CreateService = () => {
 	const { register, handleSubmit } = useForm()
-	const [value, setValue] = useState(dayjs('2022-04-17T15:30'))
-	var formattedDate = format(value.$d, 'yyyy-MM-dd hh:mm:ss')
-
-	const [valueSum, setValueSum] = useState(0)
-
-	const mapContainer = useRef(null)
-	const map = useRef(null)
-	const [lng, setLng] = useState(null)
-	const [lat, setLat] = useState(null)
-	const [zoom] = useState(10)
-	const mapName = 'explore.map.Here'
-	const region = 'sa-east-1'
+	const { createCircleRadio, createMarkerMap } = useMap()
+	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
+	const [dateStart, setDateStart] = useState(dayjs('2024-04-17T15:30'))
 	const [mapGlobal, setMapGlobal] = useState(null)
+	const [dataGlobal, setDataGlobal] = useState(null)
+	const [valueFromAdress, setValueFromAdress] = useState(null)
+	const [countValueFill, setCountValueFill] = useState(0)
+	const [dataCoordinates, setDataCoordinates] = useState({ place_start: {}, place_end: {}, station: [] })
 
 	const control = new MapLibreSearchControl({
 		useMapFocusPoint: true,
+		mapFocusPointMinZoom: 5,
 		onResultSelected: (res) => {
-			console.log(res)
-			changeLatAndLng(res?.geometry?.coordinates[1], res?.geometry?.coordinates[0])
+			setValueFromAdress(res)
 		}
 	})
 
 	useEffect(() => {
-		const mapControl = (map.current = new maplibregl.Map({
-			container: mapContainer.current,
-			style: `https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${mapName}/style-descriptor?key=${apiKey}`,
-			center: [lng, lat],
-			zoom: zoom
-		}))
-
-		mapControl.on('click', (event) => {
-			setLng(event.lngLat.lng)
-			setLat(event.lngLat.lat)
+		mapGlobal?.addControl(control, 'top-left')
+		mapGlobal?.on('click', (e) => {
+			const { circle, layer, idLayer } = createCircleRadio(e.lngLat.lng, e.lngLat.lat, mapGlobal)
+			const newMarker = createMarkerMap(e.lngLat.lng, e.lngLat.lat, mapGlobal)
+			setCountValueFill((state) => state + 1)
+			setDataGlobal({ data: { circle, values: e.lngLat } })
+			newMarker.on('dragend', () => {
+				layer.removeLayer(idLayer)
+				const lngLat = newMarker.getLngLat()
+				const {
+					circle,
+					layer: newLayer,
+					idLayer: idNewLayer
+				} = createCircleRadio(lngLat.lng, lngLat.lat, mapGlobal)
+				setDataGlobal({ data: { circle, values: lngLat } })
+			})
 		})
-		mapControl.addControl(control, 'top-left')
-		setMapGlobal(mapControl)
-	}, [])
+	}, [mapGlobal])
 
 	useEffect(() => {
-		if (mapGlobal) {
-			new maplibregl.Marker({}).setLngLat([lng, lat]).addTo(mapGlobal)
+		if (valueFromAdress) {
+			const value = valueFromAdress.geometry.coordinates
+			const { circle, layer, idLayer } = createCircleRadio(value[0], value[1], mapGlobal)
+			const newMarker = createMarkerMap(value[0], value[1], mapGlobal)
+			setCountValueFill((state) => state + 1)
+			setDataGlobal({ data: { circle, values: valueFromAdress } })
+			newMarker.on('dragend', () => {
+				const lngLat = newMarker.getLngLat()
+				layer.removeLayer(idLayer)
+				const {
+					circle,
+					layer: newLayer,
+					idLayer: idNewLayer
+				} = createCircleRadio(lngLat.lng, lngLat.lat, mapGlobal)
+				setDataGlobal({ data: { circle, values: lngLat } })
+			})
 		}
-	}, [lng, lat])
+	}, [valueFromAdress])
 
-	const changeLatAndLng = (lat, lng) => {
-		setLng(lng)
-		setLat(lat)
-	}
+	useEffect(() => {
+		if (countValueFill > 0) {
+			const nameField = countValueFill === 1 ? 'place_start' : countValueFill === 2 ? 'place_end' : 'station'
+			if (nameField === 'station') {
+				setDataCoordinates((state) => ({ ...state, [nameField]: [...state.station, dataGlobal] }))
+			} else {
+				setDataCoordinates((state) => ({ ...state, [nameField]: dataGlobal }))
+			}
+		}
+	}, [countValueFill, dataGlobal])
 
 	return (
-		<div className='pt-10'>
+		<div className='pt-10 overflow-scroll  h-5/6 px-10'>
+			<h2 className='pb-5 text-center text-3xl'>Nuevo serivicio</h2>
 			<LocalizationProvider dateAdapter={AdapterDayjs}>
 				<DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
-					<DateTimePicker label='fecha de inicio' value={value} onChange={(newValue) => setValue(newValue)} />
-					<DateTimePicker label='fecha de final' value={value} onChange={(newValue) => setValue(newValue)} />
+					<DateTimePicker
+						label='fecha de inicio'
+						value={dateStart}
+						onChange={(newValue) => setDateStart(newValue)}
+					/>
+					<DateTimePicker
+						label='fecha de final'
+						value={dateEnd}
+						onChange={(newValue) => setDateEnd(newValue)}
+					/>
 				</DemoContainer>
 			</LocalizationProvider>
-			<form action=''>
-				<div>
-					<div className=' pt-32'>
-						<div className='map-wrap'>
-							<div ref={mapContainer} className='w-2/3 h-80 bg-black' />
-						</div>
-					</div>
+			<div className='pt-5'>
+				<h4 className='py-4'>Lugar de inicio</h4>
+				<Map setMapGlobal={setMapGlobal} />
+			</div>
+			<form
+				onSubmit={handleSubmit((data) => {
+					data.date_end = format(dateStart.$d, 'yyyy-MM-dd hh:mm:ss')
+					data.date_start = format(dateEnd.$d, 'yyyy-MM-dd hh:mm:ss')
+				})}
+			>
+				<h4 className=' py-5'>Datos del conductor</h4>
+				<InputComponent
+					required
+					name='driver.email'
+					type='email'
+					svg={emailSvg}
+					register={register}
+					label='Correo electronico'
+					placeholder='name@gmail.com'
+					color
+				/>
+				<InputComponent
+					color
+					required
+					name='driver.license_plate'
+					type='text'
+					svg={emailSvg}
+					register={register}
+					label='Placa'
+					placeholder='XXXXX'
+				/>
+				<InputComponent
+					color
+					required
+					name='driver.name'
+					type='text'
+					svg={emailSvg}
+					register={register}
+					label='Nombre'
+					placeholder='jhondue'
+				/>
+				<InputComponent
+					color
+					required
+					name='driver.number_document'
+					type='number'
+					svg={emailSvg}
+					register={register}
+					label='numero de documento'
+					placeholder='000 000 0000'
+				/>
+				<InputComponent
+					color
+					required
+					name='driver.phone'
+					type='number'
+					svg={emailSvg}
+					register={register}
+					label='numero de celular'
+					placeholder='000 000 0000'
+				/>
+				<div className='flex flex-col'>
+					<label htmlFor='story'>Quieres dar alguna indicacion adicional:</label>
+					<textarea
+						className='border-2 border-black p-3'
+						{...register('remarks', {
+							validate: {
+								pattern: (value) => !/[!]/.test(value)
+							}
+						})}
+					/>
+				</div>
+				<div className='flex justify-center pt-6'>
+					<InputSubmitComponent text='CREAR SERVICIO' />
 				</div>
 			</form>
 		</div>
 	)
 }
-
-// ;<InputComponent
-// 	required
-// 	name='email'
-// 	type='email'
-// 	svg={emailSvg}
-// 	register={register}
-// 	label='Correo electronico'
-// 	placeholder='name@gmail.com'
-// />
-// {
-// 	/* <InputComponent
-// 					required
-// 					name='license_plate'
-// 					type='text'
-// 					svg={emailSvg}
-// 					register={register}
-// 					label='Placa'
-// 					placeholder='XXXXX'
-// 				/>
-// 				<InputComponent
-// 					required
-// 					name='name'
-// 					type='text'
-// 					svg={emailSvg}
-// 					register={register}
-// 					label='Nombre'
-// 					placeholder='jhondue'
-// 				/>
-// 				<InputComponent
-// 					required
-// 					name='number_document'
-// 					type='number'
-// 					svg={emailSvg}
-// 					register={register}
-// 					label='numero de documento'
-// 					placeholder='000 000 0000'
-// 				/> */
-// }

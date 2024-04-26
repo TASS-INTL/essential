@@ -16,8 +16,6 @@ export const FormCreateUser = ({
 }) => {
 	const { register, handleSubmit } = useForm()
 
-	console.log(fetchUserList)
-
 	return (
 		<>
 			{modalVisible && (

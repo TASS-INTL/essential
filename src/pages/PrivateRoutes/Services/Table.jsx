@@ -19,8 +19,6 @@ export const Table = () => {
 
 	dataTableServices.isLoading && <LoaderComponent />
 
-	console.log(dataTableServices)
-
 	return (
 		<>
 			<div className='flex justify-between pt-5'>

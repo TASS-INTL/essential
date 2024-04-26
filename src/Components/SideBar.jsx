@@ -20,7 +20,7 @@ export const SideBarComponent = () => {
 				id='separator-sidebar'
 				className={`${
 					open ? 'w-72' : 'w-20'
-				} relative duration-300  top-0 left-0 z-40 h-screen transition-transform -translate-x-full sm:translate-x-0`}
+				} relative duration-300 top-0 left-0 z-40 h-screen transition-transform -translate-x-full sm:translate-x-0`}
 				aria-label='Sidebar'
 			>
 				<img
@@ -29,7 +29,7 @@ export const SideBarComponent = () => {
            border-2 rounded-full  ${!open && 'rotate-180'}`}
 					onClick={() => setOpen(!open)}
 				/>
-				<div className='h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 	border-r-2 border-gray'>
+				<div className='h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-black 	border-r-2 border-gray'>
 					<ul className='space-y-2 font-medium'>
 						{userData?.modules?.map((menu, index) => (
 							<NavLink key={index} to={`${menu.pathName}`}>
@@ -74,7 +74,9 @@ export const SideBarComponent = () => {
 								</li>
 							</NavLink>
 						))}
-						<NavLink to='/user/services-screen/table'>Services</NavLink>
+						<NavLink className='text-white' to='/user/services-screen/table'>
+							Services
+						</NavLink>
 						<li
 							className={`
                      flex 
