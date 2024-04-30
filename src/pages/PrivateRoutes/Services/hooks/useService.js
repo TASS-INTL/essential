@@ -10,7 +10,7 @@ export const useService = () => {
 			queryFn: async () =>
 				await api(
 					METHODS_API.GET,
-					`module/service/client?page=${page}${search !== '' ? `&search=${search}` : ''}`
+					`module/service/master?page=${page}${search !== '' ? `&search=${search}` : ''}`
 				)
 		})
 

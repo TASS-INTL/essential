@@ -15,9 +15,11 @@ export const Table = () => {
 	const [dataSearch, setDataSearch] = useState('')
 	const [array, setArray] = useState([1, 2, 3, 4, 5])
 
-	const dataTableServices = fetchDataService(page)
+	const dataTableServices = fetchDataService(page, '')
 
 	dataTableServices.isLoading && <LoaderComponent />
+
+	console.log(dataTableServices)
 
 	return (
 		<>

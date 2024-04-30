@@ -1,3 +1,5 @@
+import { emailSvg } from '../../../assets/assetsplatform'
+
 export const useMap = () => {
 	const createCircleRadio = (lng, lat, map) => {
 		const radius = 0.5 // kilometer
@@ -18,7 +20,7 @@ export const useMap = () => {
 			},
 			paint: {
 				'fill-color': '#8CCFFF',
-				'fill-opacity': 0.5
+				'fill-opacity': 0.3
 			}
 		})
 
