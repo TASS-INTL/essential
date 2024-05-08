@@ -103,20 +103,21 @@ export const FormCreateUser = ({
 								label='Politicas'
 								name='id_policies'
 								arrayOptions={fetchUserList?.data?.data?.results?.policies}
-								valueId
+								option='name'
 							/>
 							<SelectComponent
 								register={register}
 								label='Tipo de usuario'
 								name='id_type_user'
 								arrayOptions={fetchUserList?.data?.data?.results?.types_profiles}
-								valueId
+								option='name'
 							/>
 							<SelectComponent
 								register={register}
 								label='Tipo de documento'
 								name='type_document_personal'
 								arrayOptions={typeDocument}
+								option='name'
 							/>
 							<InputComponent
 								defaultValue={userUpdate?.number_document_personal}

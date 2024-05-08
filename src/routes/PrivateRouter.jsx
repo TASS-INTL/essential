@@ -2,33 +2,23 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { SideBarComponent } from '../Components'
 import { pathNavigation } from '../pages/auth/constants'
-import {
-	AccountScreen,
-	ChatScreen,
-	DashboardScreen,
-	DevicesScreen,
-	FactoryDevicesScreen,
-	GroupScreen,
-	NotificationScreen,
-	SettingsScreen,
-	TestingScreen,
-	UsersScreen
-} from '../pages/PrivateRoutes'
-import {
-	Device,
-	Events,
-	General,
-	InventoryScreen,
-	TableInventory,
-	Test,
-	Travels
-} from '../pages/PrivateRoutes/Inventory'
+import { DashboardScreen, DevicesScreen, NotificationScreen } from '../pages/PrivateRoutes'
+import { ChatScreen } from '../pages/PrivateRoutes/Chat/ChatScreen'
+import { FormAssignDevice, TableDevice } from '../pages/PrivateRoutes/Devices'
+import { FactoryDevicesScreen } from '../pages/PrivateRoutes/FactoryDevices/FactoryDevicesScreen'
+import { Device, Events, General, InventoryScreen, TableInventory, Test } from '../pages/PrivateRoutes/Inventory'
 import { DetailNotification } from '../pages/PrivateRoutes/Notification/DetailNotification'
 import { TableNotification } from '../pages/PrivateRoutes/Notification/TableNotification'
+import { ServicesClient, TableServiceClient } from '../pages/PrivateRoutes/ServiceClient'
 import { CreateService, Services, Table } from '../pages/PrivateRoutes/Services'
-import { CONNECTION_NAME_SPACE } from '../pages/PrivateRoutes/sockets/constants'
+import { SettingsScreen } from '../pages/PrivateRoutes/Settings/SettingsScreen'
+import { CONNECTION_NAME_SPACE, SOCKET_EVENTS, SOCKETS_ROOMS } from '../pages/PrivateRoutes/sockets/constants'
 import { SocketForNameSpace } from '../pages/PrivateRoutes/sockets/socketForNameSpace'
 import { SocketProvider } from '../pages/PrivateRoutes/sockets/socketProvider'
+import { TestingScreen } from '../pages/PrivateRoutes/Testing/TestingScreen'
+import { CreateTravel, TableTravels, Travels } from '../pages/PrivateRoutes/Travels'
+import { UsersScreen } from '../pages/PrivateRoutes/Users/UsersScreen'
+import { deviceStore } from '../store/deviceStore'
 import { routesPrivate } from './constants'
 
 export const PrivateRouter = ({ isAuthenticated }) => {
@@ -36,6 +26,7 @@ export const PrivateRouter = ({ isAuthenticated }) => {
 }
 
 export const RoutesPrivate = () => {
+	const setArrayTabledevice = deviceStore((state) => state.setArrayTabledevice)
 	return (
 		<SocketProvider>
 			<div className='flex'>
@@ -44,17 +35,41 @@ export const RoutesPrivate = () => {
 					<Route path={routesPrivate.chatScreen} element={<ChatScreen />} />
 					<Route path={routesPrivate.ServicesScreen} element={<Services />}>
 						<Route index path='table' element={<Table />} />
+					</Route>
+					<Route path={routesPrivate.ServicesClientScreen} element={<ServicesClient />}>
+						<Route index path='table' element={<TableServiceClient />} />
 						<Route index path='create-service' element={<CreateService />} />
 					</Route>
+					<Route path={routesPrivate.TravelsScreen} element={<Travels />}>
+						<Route index path='table' element={<TableTravels />} />
+						<Route index path='create-travel' element={<CreateTravel />} />
+					</Route>
 					<Route path={routesPrivate.usersScreen} element={<UsersScreen />} />
-					<Route path={routesPrivate.groupScreen} element={<GroupScreen />} />
 					<Route path={routesPrivate.TestingScreen} element={<TestingScreen />} />
-					<Route path={routesPrivate.accountScreen} element={<AccountScreen />} />
-					<Route path={routesPrivate.devicesScreen} element={<DevicesScreen />} />
+					<Route
+						path={routesPrivate.devicesScreen}
+						element={
+							<SocketForNameSpace
+								nameSpace={CONNECTION_NAME_SPACE.DEVICE}
+								typeJoin={'room_device_cli'}
+								socketsEvents={'r_tb_device_cli'}
+								functionListening={setArrayTabledevice}
+							>
+								<DevicesScreen />
+							</SocketForNameSpace>
+						}
+					>
+						<Route index path='table' element={<TableDevice />} />
+						<Route index path='assign-device' element={<FormAssignDevice />} />
+					</Route>
 					<Route
 						path={routesPrivate.InventoryScreen}
 						element={
-							<SocketForNameSpace nameSpace={CONNECTION_NAME_SPACE.DEVICE}>
+							<SocketForNameSpace
+								nameSpace={CONNECTION_NAME_SPACE.DEVICE}
+								typeJoin={SOCKETS_ROOMS.ROOM_INVENTORY}
+								socketsEvents={SOCKET_EVENTS.R_TB_DEVICE_FAC}
+							>
 								<InventoryScreen />
 							</SocketForNameSpace>
 						}

@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 
-import api from '../../../Api/api'
-import { METHODS_API } from '../../../Api/constantsApi'
-import { showToast } from '../../../helpers/toast'
-import { queryClient } from '../../../routes/AppRouter'
+import api from '../../../../Api/api'
+import { METHODS_API } from '../../../../Api/constantsApi'
+import { showToast } from '../../../../helpers/toast'
+import { queryClient } from '../../../../routes/AppRouter'
 
 export const useDevice = () => {
 	//
@@ -14,15 +14,15 @@ export const useDevice = () => {
 		})
 	//
 
-	const createDevice = useMutation({
+	const assignDeviceMutate = useMutation({
 		mutationFn: async (data) => await api(METHODS_API.POST, 'module/device/assign', data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postDevice'] })
 	})
 
-	const handleCreateUser = async (data, event) => {
+	const handleAssignDevice = async (data, event) => {
 		event.preventDefault()
 		const assignDevice = data
-		const response = await createDevice.mutateAsync(assignDevice)
+		const response = await assignDeviceMutate.mutateAsync(assignDevice)
 		if (response.completed) {
 			showToast(
 				'Se a enviado la asignacion al sistema en un momento podra validar esa informacion en el apartado de notificaciones',
@@ -53,7 +53,7 @@ export const useDevice = () => {
 	}
 
 	return {
-		handleCreateUser,
+		handleAssignDevice,
 		handleSyncDevice,
 		fetchTypeDevice
 	}

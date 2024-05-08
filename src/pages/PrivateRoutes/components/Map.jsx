@@ -29,23 +29,5 @@ export const Map = ({ setMapGlobal }) => {
 		setMapGlobal(mapControl)
 	}, [])
 
-	return <div ref={mapContainer} className='w-3/3 h-96 bg-black' />
+	return <div ref={mapContainer} className='w-3/3 h-96 my-3' />
 }
-
-// setDataCoordinates({
-// 	...dataCoordinates,
-// 	place_start: {
-// 		common_name: Value.properties.name,
-// 		lat: Value.geometry.coordinates[0],
-// 		lng: Value.geometry.coordinates[1],
-// 		country: Value.properties.country,
-// 		county: Value.properties.county,
-// 		region: Value.properties.region,
-// 		type: Value.geometry.type,
-// 		geo: {
-// 			properties: { radius },
-// 			type: circle.geometry.type,
-// 			coordinates: circle.geometry.coordinates
-// 		}
-// 	}
-// })

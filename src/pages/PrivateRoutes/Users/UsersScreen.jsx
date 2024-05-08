@@ -2,19 +2,22 @@ import React, { useState } from 'react'
 
 import { usersStore } from '@/store/usersStore'
 
-import { FormCreateUser } from './components'
-import { useUsers } from './Hooks/useUser'
+import { ErrorComponent, LoaderComponent } from '../../../Components'
+import { FormCreateUser } from '../components'
+import { useUsers } from '../Hooks/useUser'
 
 export const UsersScreen = () => {
-	const { fetchDataUser, handleCreateUser, handleUpdateUser } = useUsers()
-
+	//
+	const { fetchDataUser, handleCreateUser, handleUpdateUser, handleDeleteUser } = useUsers()
 	const fetchUserList = fetchDataUser()
 	const [methodForm, setMethodForm] = useState(true)
+	const [userUpdate, setUserUpdate] = useState(null)
 	const modalVisible = usersStore((state) => state.modal)
 	const setModalVisible = usersStore((state) => state.setModalVisible)
-	const [userUpdate, setUserUpdate] = useState(null)
 
-	if (fetchUserList.isLoading) return <div>loading .....</div>
+	if (fetchUserList.isLoading) return <LoaderComponent />
+
+	if (fetchUserList.isError) return <ErrorComponent />
 
 	const onPressUpdateUser = (idUserUpdate) => {
 		const userUpdate = fetchUserList?.data?.data[0]?.users?.find((element) => element._id === idUserUpdate)
@@ -30,7 +33,7 @@ export const UsersScreen = () => {
 
 	return (
 		<div className='w-full bg-opacity-100'>
-			<div className=' w-11/12 m-auto mt-8 rounded-1xl '>
+			<div className=' w-11/12 m-auto mt-8 rounded-1xl'>
 				<div className='flex justify-between px-0 py-4 pt-10'>
 					<h4 className=' text-pretty text-2xl'>Usuarios</h4>
 					<button
@@ -51,11 +54,11 @@ export const UsersScreen = () => {
 					<div className='border-2 border-l-blue-600 border-black mt-3 py-3 px-3 '>
 						{fetchUserList?.data?.data?.results?.users?.map((list, index) => {
 							return (
-								<div key={index} className=' flex flex-row '>
-									<div className=' w-1/5 flex justify-start '>{list.name} </div>
-									<div className=' w-2/5 flex justify-start '>{list.email}</div>
-									<div className=' w-2/5 flex justify-start '>{list.updated_at}</div>
-									<div className=' w-1/5 flex justify-start '>
+								<div key={index} className=' flex flex-row py-2 '>
+									<div className=' w-1/5 flex justify-start'>{list.name} </div>
+									<div className=' w-2/5 flex justify-start'>{list.email}</div>
+									<div className=' w-2/5 flex justify-start'>{list.updated_at}</div>
+									<div className=' w-1/5 flex justify-start'>
 										<button
 											onClick={() => {
 												onPressUpdateUser(list._id)
@@ -65,12 +68,25 @@ export const UsersScreen = () => {
 											Actualizar
 										</button>
 									</div>
+									<div className=' w-1/5 flex justify-start'>
+										<button
+											onClick={() => {
+												handleDeleteUser(list._id)
+											}}
+											className=' bg-red-600 border-dark-purple border-2 p2-4 px-5 rounded-sm text-white'
+										>
+											Eliminar
+										</button>
+									</div>
 								</div>
 							)
 						})}
 					</div>
 				</div>
 			</div>
+
+			{/* <BoardComponent dataHeader={tableHeaderService} dataBody={fetchUserList?.data?.data?.results?.users} /> */}
+
 			<FormCreateUser
 				userUpdate={userUpdate}
 				fetchUserList={fetchUserList}

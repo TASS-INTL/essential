@@ -1,4 +1,5 @@
 import { BoardComponent } from './BoardComponent'
+import { ErrorComponent } from './ErrorComponent'
 import { InputComponent } from './InputComponent'
 import { InputSubmitComponent } from './InputSubmitComponent'
 import { LoaderComponent } from './LoaderComponent'
@@ -17,5 +18,6 @@ export {
 	InputSubmitComponent,
 	MouseColorComponente,
 	BoardComponent,
-	PaginationComponent
+	PaginationComponent,
+	ErrorComponent
 }

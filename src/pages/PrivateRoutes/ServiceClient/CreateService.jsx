@@ -14,76 +14,21 @@ import { InputSubmitComponent } from '../../../Components'
 import { InputComponent } from '../../../Components/InputComponent'
 import { Map } from '../components/Map'
 import { useMap } from '../Hooks/useMap'
-
-const obj = {
-	date_end: '2022-01-01 00:00:00',
-	date_start: '2022-01-01 00:00:00',
-	driver: {
-		email: '',
-		license_plate: 'DSA234',
-		name: 'name',
-		number_document: '123123123',
-		phone: '300213123'
-	},
-	//
-	place_end: {
-		lat: '',
-		lng: '',
-		common_name: '',
-		country: '',
-		county: '',
-		region: '',
-		geo: {
-			type: 'circle',
-			coord: ''
-		}
-	},
-	place_start: {
-		lat: '',
-		lng: '',
-		common_name: '',
-		country: '',
-		county: '',
-		region: '',
-		geo: {
-			type: 'circle',
-			coord: ''
-		}
-	},
-	station: [
-		{
-			lat: '',
-			lng: '',
-			common_name: '',
-			country: '',
-			county: '',
-			region: '',
-			geo: {
-				type: 'circle',
-				coord: ''
-			}
-		}
-	],
-	remarks: 'remarks'
-}
+import { useServiceClient } from './hooks/useServiceClient'
 
 export const CreateService = () => {
 	const { register, handleSubmit } = useForm()
-	const { createCircleRadio, createMarkerMap } = useMap()
+	const { handleCreateServiceClient } = useServiceClient()
 	const [mapGlobal, setMapGlobal] = useState(null)
 	const [dataGlobal, setDataGlobal] = useState(null)
+	const { createCircleRadio, createMarkerMap } = useMap()
 	const [countValueFill, setCountValueFill] = useState(0)
+	const [idLayerDelete, setIdLayerDelete] = useState(null)
+	const [idsLayers, setIdsLayers] = useState({ marker: [] })
 	const [valueFromAdress, setValueFromAdress] = useState(null)
 	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
 	const [dateStart, setDateStart] = useState(dayjs('2024-04-17T15:30'))
 	const [dataCoordinates, setDataCoordinates] = useState({ place_start: {}, place_end: {}, station: [] })
-	const [idsLayers, setIdsLayers] = useState({ marker: [] })
-
-	const [latAndLongId, setlatAndLongId] = useState(null)
-
-	const [coordinatesById, setCoordinatesById] = useState({ place_start: '', place_end: '', station: '' })
-
-	const [idLayerDelete, setIdLayerDelete] = useState(null)
 
 	const control = new MapLibreSearchControl({
 		useMapFocusPoint: true,
@@ -111,7 +56,6 @@ export const CreateService = () => {
 			setCountValueFill((state) => state + 1)
 			setDataGlobal({ data: { circle, values: e.lngLat }, id: e.lngLat.lng })
 			setIdsLayers((state) => ({ ...state, [`marker-${e.lngLat.lng}`]: [...state.marker, idLayer] }))
-			setlatAndLongId(e.lngLat.lng)
 			newMarker.on('dragend', () => {
 				const lngLat = newMarker.getLngLat()
 				const { circle, idLayer: idNewLayer } = createCircleRadio(lngLat.lng, lngLat.lat, mapGlobal)
@@ -148,21 +92,50 @@ export const CreateService = () => {
 	}, [valueFromAdress])
 
 	useEffect(() => {
-		console.log(dataGlobal)
-
 		if (countValueFill > 0) {
+			const { data } = dataGlobal
+			const geo = {
+				type: data.circle.geometry.type,
+				coordinates: data.circle.geometry.coordinates,
+				properties: { radio: 0.5 }
+			}
+			const location = {
+				type: 'Point',
+				coordinates: [data.values.lng, data.values.lat]
+			}
 			const nameField = countValueFill === 1 ? 'place_start' : countValueFill === 2 ? 'place_end' : 'station'
 			// setCoordinatesById((state) => ({ ...state, [nameField]: latAndLongId }))
 
 			if (nameField === 'station') {
-				setDataCoordinates((state) => ({ ...state, [nameField]: [...state.station, dataGlobal] }))
+				setDataCoordinates((state) => ({
+					...state,
+					[nameField]: [
+						...state.station,
+						{
+							geo,
+							location,
+							region: 'region',
+							common_name: 'common_name',
+							country: 'country',
+							county: 'county'
+						}
+					]
+				}))
 			} else {
-				setDataCoordinates((state) => ({ ...state, [nameField]: dataGlobal }))
+				setDataCoordinates((state) => ({
+					...state,
+					[nameField]: {
+						location,
+						geo,
+						region: 'region',
+						common_name: 'common_name',
+						country: 'country',
+						county: 'county'
+					}
+				}))
 			}
 		}
 	}, [countValueFill, dataGlobal])
-
-	console.log(dataCoordinates.place_start.constructor === Object)
 
 	return (
 		<div className='pt-10 overflow-scroll h-5/6 px-10'>
@@ -183,17 +156,20 @@ export const CreateService = () => {
 			</LocalizationProvider>
 			<div className='pt-5'>
 				<div className='flex justify-between'>
-					<h4 className='py-4'>Lugar de inicio {dataCoordinates.place_start.length !== 0 ? '✅️' : '❌'}</h4>
-					<h4 className='py-4'>Lugar de fin {dataCoordinates.place_end ? '✅️' : '❌'}</h4>
-					<h4 className='py-4'>paradas {dataCoordinates.station.length !== 0 ? '✅️' : '❌'}</h4>
+					<h4 className='py-4'>Lugar de inicio {countValueFill > 0 ? '✅️' : '❌'}</h4>
+					<h4 className='py-4'>Lugar de fin {countValueFill > 1 ? '✅️' : '❌'}</h4>
+					<h4 className='py-4'>paradas {countValueFill > 2 ? '✅️' : '❌'}</h4>
 				</div>
 				<Map setMapGlobal={setMapGlobal} />
 			</div>
 			<form
 				onSubmit={handleSubmit((data) => {
-					console.log(format(dateStart.$d, 'yyyy-MM-dd hh:mm:ss'))
 					data.date_end = format(dateStart.$d, 'yyyy-MM-dd hh:mm:ss')
 					data.date_start = format(dateEnd.$d, 'yyyy-MM-dd hh:mm:ss')
+					data.place_end = dataCoordinates.place_end
+					data.place_start = dataCoordinates.place_start
+					data.station = dataCoordinates.station
+					handleCreateServiceClient(data)
 				})}
 			>
 				<h4 className=' py-5'>Datos del conductor</h4>

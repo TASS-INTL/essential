@@ -11,11 +11,13 @@ export const routesPrivate = {
 	TestingScreen: 'testing-screen',
 	accountScreen: 'account-screen',
 	devicesScreen: 'devices-screen',
+	TravelsScreen: 'travels-screen',
 	settingsScreen: 'settings-screen',
 	InventoryScreen: 'inventory-screen',
 	ServicesScreen: 'services-screen',
 	dashboardScreen: 'dashboard-screen',
 	notificationScreen: 'notifications-screen',
+	ServicesClientScreen: 'services-client-screen',
 	FactoryDevicesScreen: 'factory-devices-screen',
 	DetailInventoryScreen: 'detail-inventory-screen'
 }

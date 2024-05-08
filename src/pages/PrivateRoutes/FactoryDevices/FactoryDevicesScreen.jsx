@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
-import { InputComponent, InputSubmitComponent, LoaderComponent, SelectComponent } from '../../Components'
-import { useDevice } from './Hooks/useDevices'
+import { InputComponent, InputSubmitComponent, LoaderComponent } from '../../../Components'
+import { useDevice } from '../Devices/hooks/useDevices'
 
 const dataDevice = {
 	did: 'TA000211',

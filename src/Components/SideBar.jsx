@@ -30,6 +30,9 @@ export const SideBarComponent = () => {
 					onClick={() => setOpen(!open)}
 				/>
 				<div className='h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-black 	border-r-2 border-gray'>
+					<div className=''>
+						<h1 className='text-white gap-x-4 px-2'>{userData.userName}</h1>
+					</div>
 					<ul className='space-y-2 font-medium'>
 						{userData?.modules?.map((menu, index) => (
 							<NavLink key={index} to={`${menu.pathName}`}>
@@ -45,7 +48,6 @@ export const SideBarComponent = () => {
                             hover:bg-gray-100 
                             dark:hover:bg-gray-700 
                             gap-x-4
-                             px-2
                             ${menu.gap ? 'mt-9' : 'mt-2'}
 									 ${pathname.includes(menu.pathName) && 'bg-light-white'}`}
 									onClick={() => {
@@ -74,9 +76,6 @@ export const SideBarComponent = () => {
 								</li>
 							</NavLink>
 						))}
-						<NavLink className='text-white' to='/user/services-screen/table'>
-							Services
-						</NavLink>
 						<li
 							className={`
                      flex 
@@ -86,8 +85,7 @@ export const SideBarComponent = () => {
                      rounded-lg 
                      cursor-pointer 
                      hover:bg-light-white 
-                     gap-x-4  
-                     mt-2 ${selectButton === true && 'bg-light-white'} `}
+                     mt-1 ${selectButton === true && 'bg-light-white'} `}
 							onClick={logout}
 						>
 							<svg

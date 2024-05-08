@@ -1,27 +1,22 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { BoardComponent, LoaderComponent } from '../../../Components'
 import { InputSearch } from '../components'
-import { tableHeaderService } from './constants'
-import { useService } from './hooks/useService'
 
-export const Table = () => {
-	const [page, setPage] = useState(1)
-	const { fetchDataService } = useService()
+export const TableTravels = () => {
 	const { register, handleSubmit } = useForm()
-	const [dataSearch, setDataSearch] = useState('')
-	const [array, setArray] = useState([1, 2, 3, 4, 5])
-
-	const dataTableServices = fetchDataService(page, '')
-
-	dataTableServices.isLoading && <LoaderComponent />
 
 	return (
 		<>
 			<div className='flex justify-between pt-5 py-20'>
+				<Link
+					to='/user/travels-screen/create-travel'
+					className='p-2 bg-black text-white rounded-lg flex justify-center items-center'
+				>
+					Crear Viaje
+				</Link>
 				<form
 					onSubmit={handleSubmit((data) => {
 						setPageSelected(1)
@@ -32,7 +27,7 @@ export const Table = () => {
 					<InputSearch register={register} />
 				</form>
 			</div>
-			<BoardComponent dataHeader={tableHeaderService} dataBody={dataTableServices?.data?.data?.results} />
+			{/* <BoardComponent dataHeader={tableHeaderService} dataBody={dataTableServices?.data?.data?.results} /> */}
 			{/* <div className='py-5 flex justify-center items-center'>
 				<PaginationComponent
 					pageSelected={pageSelected}

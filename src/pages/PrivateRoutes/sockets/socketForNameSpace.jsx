@@ -8,7 +8,7 @@ import { SOCKET_EVENTS, SOCKETS_ROOMS, TRANSPORT_SOCKET } from './constants'
 
 export const SocketContextForNameSpace = createContext()
 
-export const SocketForNameSpace = ({ children, nameSpace }) => {
+export const SocketForNameSpace = ({ children, nameSpace, typeJoin, socketsEvents, functionListening }) => {
 	const { uid, tokenSesion } = userStore((state) => state.userData)
 	const [socketForNameSpace, setSocketForNameSpace] = useState(null)
 	const setArrayTableInventory = inventoryStore((state) => state.setArrayTableInventory)
@@ -29,24 +29,29 @@ export const SocketForNameSpace = ({ children, nameSpace }) => {
 	}, [socketForNameSpace])
 
 	useEffect(() => {
+		// Conexion al socket medianate namespace
 		setSocketForNameSpace(connnectSocketForNameSpace())
 		return () => {
+			// Desconexion del socket
 			disconnectSocket()
 		}
 	}, [])
 
 	useEffect(() => {
+		// Ingresar a las diferentes salas del socket
 		socketForNameSpace?.emit(SOCKET_EVENTS.JOIN_ROOM, {
 			id_user: uid,
 			id_room: tokenSesion,
-			type_join: SOCKETS_ROOMS.ROOM_INVENTORY,
+			type_join: typeJoin,
 			x_access_token: tokenSesion
 		})
 
+		// Validar que la conexion sea correcta
 		socketForNameSpace?.on(SOCKET_EVENTS.JOINED_ROOM, (data) => {})
 
-		socketForNameSpace?.on(SOCKET_EVENTS.R_TB_DEVICE_FAC, (data) => {
-			setArrayTableInventory(data?.data)
+		// Escuchar una sala en especifico
+		socketForNameSpace?.on(socketsEvents, (data) => {
+			functionListening(data?.data)
 		})
 	}, [socketForNameSpace])
 
