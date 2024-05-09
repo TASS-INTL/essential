@@ -31,6 +31,8 @@ export const UsersScreen = () => {
 		setModalVisible(true)
 	}
 
+	console.log(fetchUserList?.data?.data?.results?.users)
+
 	return (
 		<div className='w-full bg-opacity-100'>
 			<div className=' w-11/12 m-auto mt-8 rounded-1xl'>
@@ -84,9 +86,6 @@ export const UsersScreen = () => {
 					</div>
 				</div>
 			</div>
-
-			{/* <BoardComponent dataHeader={tableHeaderService} dataBody={fetchUserList?.data?.data?.results?.users} /> */}
-
 			<FormCreateUser
 				userUpdate={userUpdate}
 				fetchUserList={fetchUserList}

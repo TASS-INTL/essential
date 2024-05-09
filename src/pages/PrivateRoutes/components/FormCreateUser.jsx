@@ -27,8 +27,9 @@ export const FormCreateUser = ({
 								: handleUpdateUser({ ...data, _id: userUpdate._id }, event)
 						})}
 					>
-						<div className='grid grid-cols-2'>
+						<div className='grid grid-cols-2 gap-5 mx-10'>
 							<InputComponent
+								color
 								register={register}
 								defaultValue={userUpdate?.name}
 								required
@@ -39,6 +40,7 @@ export const FormCreateUser = ({
 								svg={emailSvg}
 							/>
 							<InputComponent
+								color
 								register={register}
 								defaultValue={userUpdate?.username}
 								required
@@ -49,6 +51,7 @@ export const FormCreateUser = ({
 								svg={emailSvg}
 							/>
 							<InputComponent
+								color
 								register={register}
 								required
 								label='Correo electronico'
@@ -59,6 +62,7 @@ export const FormCreateUser = ({
 								svg={emailSvg}
 							/>
 							<InputComponent
+								color
 								register={register}
 								required
 								defaultValue={userUpdate?.address}
@@ -69,6 +73,7 @@ export const FormCreateUser = ({
 								svg={emailSvg}
 							/>
 							<InputComponent
+								color
 								defaultValue={userUpdate?.country}
 								register={register}
 								required
@@ -79,6 +84,7 @@ export const FormCreateUser = ({
 								svg={emailSvg}
 							/>
 							<InputComponent
+								color
 								defaultValue={userUpdate?.region}
 								register={register}
 								required
@@ -89,6 +95,7 @@ export const FormCreateUser = ({
 								svg={emailSvg}
 							/>
 							<InputComponent
+								color
 								defaultValue={userUpdate?.city}
 								register={register}
 								required
@@ -120,6 +127,7 @@ export const FormCreateUser = ({
 								option='name'
 							/>
 							<InputComponent
+								color
 								defaultValue={userUpdate?.number_document_personal}
 								register={register}
 								required
@@ -130,6 +138,7 @@ export const FormCreateUser = ({
 								svg={emailSvg}
 							/>
 							<InputComponent
+								color
 								register={register}
 								required
 								label='Contraseña'
@@ -140,7 +149,7 @@ export const FormCreateUser = ({
 							/>
 						</div>
 						<div className='my-3 flex flex-row justify-center items-center'>
-							<InputSubmitComponent text='Siguiente' />
+							<InputSubmitComponent text='Crear usuario' />
 						</div>
 					</form>
 				</ModalComponent>

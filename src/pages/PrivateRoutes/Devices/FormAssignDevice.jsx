@@ -33,7 +33,7 @@ export const FormAssignDevice = () => {
 					option='name'
 				/>
 				<div className=' flex flex-row justify-center my-5'>
-					<InputSubmitComponent text='crear' />
+					<InputSubmitComponent text='Asignar' />
 				</div>
 			</form>
 		</div>
