@@ -15,11 +15,13 @@ export const Events = () => {
 
 	const arrayTableInventoryEvents = inventoryStore((state) => state.arrayTableInventoryEvents)
 
+	console.log(arrayTableInventoryEvents)
+
 	return (
 		<div>
 			<TapBottons location={location} idDevice={idDevice} />
 			<div className='pt-10'>
-				<h1 className=' text-2xl pb-5'>Tabla de eventos </h1>
+				<h1 className=' text-2xl pb-5'>Tabla de eventos</h1>
 				<BoardComponent dataHeader={tableTitleInventory} dataBody={arrayTableInventoryEvents} />
 			</div>
 		</div>

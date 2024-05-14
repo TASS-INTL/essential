@@ -8,7 +8,6 @@ import { SocketContextForNameSpace } from '../../sockets/socketForNameSpace'
 export const useInventorySocket = ({ idDevice }) => {
 	const { socketForNameSpace } = useContext(SocketContextForNameSpace)
 	const { uid, tokenSesion } = userStore((state) => state.userData)
-
 	const setDeviceInfo = inventoryStore((state) => state.setDeviceInfo)
 
 	const emmitToDevice = () => {
@@ -29,12 +28,11 @@ export const useInventorySocket = ({ idDevice }) => {
 		socketForNameSpace?.emit(SOCKET_EVENTS.JOIN_ROOM, {
 			id_user: uid,
 			id_room: idDevice,
-			type_join: SOCKETS_ROOMS.ROOM_DEVICE,
-			x_access_token: tokenSesion
+			x_access_token: tokenSesion,
+			type_join: SOCKETS_ROOMS.ROOM_DEVICE
 		})
 
-		// socketForNameSpace?.on(SOCKET_EVENTS.JOINED_ROOM, (data) => {
-		// })
+		// socketForNameSpace?.on(SOCKET_EVENTS.JOINED_ROOM, (data) => {})
 
 		socketForNameSpace?.on(SOCKET_EVENTS.R_DEVICE_INFO, (data) => {
 			setDeviceInfo(data?.data[0])

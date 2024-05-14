@@ -3,5 +3,5 @@ import { Navigate } from 'react-router-dom'
 import { AuthRouter } from './AuthRouter'
 
 export const PublicRouter = ({ isAuthenticated }) => {
-	return isAuthenticated ? <Navigate to='/user/dashboard' /> : <AuthRouter />
+	return isAuthenticated ? <Navigate to='/user/account-screen' /> : <AuthRouter />
 }

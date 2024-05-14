@@ -3,6 +3,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 
 export const BoardDevice = ({ dataBody }) => {
+	console.log()
 	return (
 		<div className='relative overflow-x-scrolling overflow-y-scrolling shadow-md sm:rounded-lg'>
 			<div className='overflow-scroll'>
@@ -19,13 +20,19 @@ export const BoardDevice = ({ dataBody }) => {
 								</tr>
 							</thead>
 							<tbody>
-								<tr className='bg-white border-b  hover:bg-gray-50 '>
-									{Object.values(dataBody[0])?.map((item) => (
-										<th key={item} scope='row' className='px-6 py-4 font-medium whitespace-nowrap '>
-											{item}
-										</th>
-									))}
-								</tr>
+								{dataBody.map((item, index) => (
+									<tr key={item} className='bg-white border-b  hover:bg-gray-50 '>
+										{Object.values(dataBody[index])?.map((item) => (
+											<th
+												key={item}
+												scope='row'
+												className='px-6 py-4 font-medium whitespace-nowrap '
+											>
+												{item}
+											</th>
+										))}
+									</tr>
+								))}
 							</tbody>
 						</table>
 					</>

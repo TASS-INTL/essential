@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { SideBarComponent } from '../Components'
 import { pathNavigation } from '../pages/auth/constants'
-import { DashboardScreen, DevicesScreen, NotificationScreen } from '../pages/PrivateRoutes'
+import { DevicesScreen, NotificationScreen } from '../pages/PrivateRoutes'
 import { ChatScreen } from '../pages/PrivateRoutes/Chat/ChatScreen'
 import { FormAssignDevice, TableDevice } from '../pages/PrivateRoutes/Devices'
 import { FactoryDevicesScreen } from '../pages/PrivateRoutes/FactoryDevices/FactoryDevicesScreen'
@@ -19,6 +19,7 @@ import { TestingScreen } from '../pages/PrivateRoutes/Testing/TestingScreen'
 import { CreateTravel, TableTravels, Travels } from '../pages/PrivateRoutes/Travels'
 import { UsersScreen } from '../pages/PrivateRoutes/Users/UsersScreen'
 import { deviceStore } from '../store/deviceStore'
+import { inventoryStore } from '../store/inventoryStore'
 import { routesPrivate } from './constants'
 
 export const PrivateRouter = ({ isAuthenticated }) => {
@@ -27,6 +28,8 @@ export const PrivateRouter = ({ isAuthenticated }) => {
 
 export const RoutesPrivate = () => {
 	const setArrayTabledevice = deviceStore((state) => state.setArrayTabledevice)
+	const setArrayTableInventory = inventoryStore((state) => state.setArrayTableInventory)
+
 	return (
 		<SocketProvider>
 			<div className='flex'>
@@ -69,13 +72,13 @@ export const RoutesPrivate = () => {
 								nameSpace={CONNECTION_NAME_SPACE.DEVICE}
 								typeJoin={SOCKETS_ROOMS.ROOM_INVENTORY}
 								socketsEvents={SOCKET_EVENTS.R_TB_DEVICE_FAC}
+								functionListening={setArrayTableInventory}
 							>
 								<InventoryScreen />
 							</SocketForNameSpace>
 						}
 					>
 						<Route index path='table' element={<TableInventory />} />
-
 						<Route path='device/:idDevice' element={<Device />}>
 							<Route index path='general' element={<General />} />
 							<Route path='test' element={<Test />} />
@@ -84,7 +87,7 @@ export const RoutesPrivate = () => {
 						</Route>
 					</Route>
 					<Route path={routesPrivate.settingsScreen} element={<SettingsScreen />} />
-					<Route path={routesPrivate.dashboardScreen} element={<DashboardScreen />} />
+					{/* <Route path={routesPrivate.dashboardScreen} element={<DashboardScreen />} /> */}
 					<Route path={routesPrivate.notificationScreen} element={<NotificationScreen />}>
 						<Route index path='table' element={<TableNotification />} />
 						<Route path=':idNotification' element={<DetailNotification />} />

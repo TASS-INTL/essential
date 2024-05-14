@@ -11,7 +11,7 @@ export const General = () => {
 	const location = useLocation()
 	const { idDevice } = useParams()
 
-	const { handleSendComand } = useInventory()
+	const { handleSendComand } = useInventory({ idDevice })
 
 	const { emmitToDevice } = useInventorySocket({ idDevice })
 	const deviceInfo = inventoryStore((state) => state.deviceInfo)
@@ -37,10 +37,16 @@ export const General = () => {
 					</span>
 				</div>
 				<div className='flex flex-row gap-6'>
-					<button onClick={() => handleSendCommand('open')} className='bg-lime-700 py-2 px-3 text-white'>
+					<button
+						onClick={() => handleSendCommand('open')}
+						className='bg-lime-700 py-2 px-5 text-white rounded-lg'
+					>
 						Abrir
 					</button>
-					<button onClick={() => handleSendCommand('close')} className='bg-red-700 py-2 px-3 text-white'>
+					<button
+						onClick={() => handleSendCommand('close')}
+						className='bg-red-700 py-2 px-5 text-white rounded-lg'
+					>
 						Cerrar
 					</button>
 				</div>

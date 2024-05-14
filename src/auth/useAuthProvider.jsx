@@ -19,11 +19,12 @@ export const useAuthProvider = () => {
 		if (response?.completed) {
 			if (response?.type_ === 'USER_HAS_SESSION') {
 				localStorage.setItem('token', response.data[0].token)
+				console.log(response, 'response login USER_HAS_SESSION')
 				setUserData({
 					...userData,
 					logged: true,
 					checking: false,
-					uid: response.data[0].id,
+					uid: response.data[0]._id,
 					name: response.data[0].name,
 					email: response.data[0].email,
 					state: response.data[0].state,
@@ -59,6 +60,8 @@ export const useAuthProvider = () => {
 
 		if (response?.completed) {
 			if (screen === 'login') {
+				console.log(response, 'response login ValidateCodeApi')
+
 				localStorage.setItem('token', response.data[0].token)
 				setUserData({
 					...userData,
