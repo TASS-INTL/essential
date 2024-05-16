@@ -7,8 +7,10 @@ export const inventoryStore = create(
 			deviceInfo: null,
 			arrayTableInventory: null,
 			arrayTableInventoryEvents: null,
+			arrayTableInventoryTest: null,
 			setDeviceInfo: (value) => set(() => ({ deviceInfo: value })),
 			setArrayTableInventory: (value) => set(() => ({ arrayTableInventory: value })),
+			setArrayTableInventoryTest: (value) => set(() => ({ arrayTableInventoryTest: value })),
 			setArrayTableInventoryEvents: (value) => set(() => ({ arrayTableInventoryEvents: value }))
 		}),
 		{ name: 'users-storage' }

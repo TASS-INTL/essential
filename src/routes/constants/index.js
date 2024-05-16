@@ -8,16 +8,16 @@ export const routesPrivate = {
 	chatScreen: 'chat-screen',
 	usersScreen: 'users-screen',
 	groupScreen: 'group-screen',
-	TestingScreen: 'testing-screen',
+	testingScreen: 'testing-screen',
 	accountScreen: 'account-screen',
 	devicesScreen: 'devices-screen',
-	TravelsScreen: 'travels-screen',
+	travelsScreen: 'travels-screen',
 	settingsScreen: 'settings-screen',
-	InventoryScreen: 'inventory-screen',
-	ServicesScreen: 'services-screen',
+	inventoryScreen: 'inventory-screen',
+	servicesScreen: 'services-screen',
 	dashboardScreen: 'dashboard-screen',
 	notificationScreen: 'notifications-screen',
-	ServicesClientScreen: 'services-client-screen',
-	FactoryDevicesScreen: 'factory-devices-screen',
-	DetailInventoryScreen: 'detail-inventory-screen'
+	servicesClientScreen: 'services-client-screen',
+	factoryDevicesScreen: 'factory-devices-screen',
+	detailInventoryScreen: 'detail-inventory-screen'
 }

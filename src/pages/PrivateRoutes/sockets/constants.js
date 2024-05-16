@@ -17,11 +17,15 @@ export const SOCKET_EVENTS = {
 	// NOTIFICATION
 	R_NOTIFICATION_RECEIVE: 'r_notificatio_receive',
 
-	// DEVICES
+	// DEVICES GENERAL
 	R_DEVICE_INFO: 'r_device_info',
 	R_TB_DEVICE_FAC: 'r_tb_device_fac',
 	TB_EVENTS_DEVICE: 'tb_events_device',
 	R_TB_EVENTS_DEVICE: 'r_tb_events_device',
+
+	// DEVICES TEST
+	TB_TESTINGS_DEVICE: 'tb_testings_device',
+	R_TB_TESTINGS_DEVICE: 'r_tb_testings_device',
 
 	//PAGINATION
 	TB_DEVICES_FAC: 'tb_devices_fac'

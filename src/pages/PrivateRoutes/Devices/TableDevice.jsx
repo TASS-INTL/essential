@@ -17,8 +17,6 @@ export const TableDevice = () => {
 	const [array, setArray] = useState([1, 2, 3, 4, 5])
 	const arrayTabledevice = deviceStore((state) => state.arrayTabledevice)
 
-	console.log(arrayTabledevice)
-
 	return (
 		<div>
 			<div className='flex justify-between px-0 py-10 pt-10'>

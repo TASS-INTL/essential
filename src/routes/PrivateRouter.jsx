@@ -3,7 +3,8 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { SideBarComponent } from '../Components'
 import { pathNavigation } from '../pages/auth/constants'
 import { DevicesScreen, NotificationScreen } from '../pages/PrivateRoutes'
-import { ChatScreen } from '../pages/PrivateRoutes/Chat/ChatScreen'
+import { Account } from '../pages/PrivateRoutes/Account'
+import { ChatScreen } from '../pages/PrivateRoutes/Chat'
 import { FormAssignDevice, TableDevice } from '../pages/PrivateRoutes/Devices'
 import { FactoryDevicesScreen } from '../pages/PrivateRoutes/FactoryDevices/FactoryDevicesScreen'
 import { Device, Events, General, InventoryScreen, TableInventory, Test } from '../pages/PrivateRoutes/Inventory'
@@ -36,19 +37,19 @@ export const RoutesPrivate = () => {
 				<SideBarComponent />
 				<Routes>
 					<Route path={routesPrivate.chatScreen} element={<ChatScreen />} />
-					<Route path={routesPrivate.ServicesScreen} element={<Services />}>
+					<Route path={routesPrivate.servicesScreen} element={<Services />}>
 						<Route index path='table' element={<Table />} />
 					</Route>
-					<Route path={routesPrivate.ServicesClientScreen} element={<ServicesClient />}>
+					<Route path={routesPrivate.servicesClientScreen} element={<ServicesClient />}>
 						<Route index path='table' element={<TableServiceClient />} />
 						<Route index path='create-service' element={<CreateService />} />
 					</Route>
-					<Route path={routesPrivate.TravelsScreen} element={<Travels />}>
+					<Route path={routesPrivate.travelsScreen} element={<Travels />}>
 						<Route index path='table' element={<TableTravels />} />
 						<Route index path='create-travel' element={<CreateTravel />} />
 					</Route>
 					<Route path={routesPrivate.usersScreen} element={<UsersScreen />} />
-					<Route path={routesPrivate.TestingScreen} element={<TestingScreen />} />
+					<Route path={routesPrivate.testingScreen} element={<TestingScreen />} />
 					<Route
 						path={routesPrivate.devicesScreen}
 						element={
@@ -64,9 +65,15 @@ export const RoutesPrivate = () => {
 					>
 						<Route index path='table' element={<TableDevice />} />
 						<Route index path='assign-device' element={<FormAssignDevice />} />
+						<Route path='device/:idDevice' element={<Device />}>
+							<Route index path='general' element={<General />} />
+							<Route path='test' element={<Test />} />
+							<Route path='events' element={<Events />} />
+							<Route path='travels' element={<Travels />} />
+						</Route>
 					</Route>
 					<Route
-						path={routesPrivate.InventoryScreen}
+						path={routesPrivate.inventoryScreen}
 						element={
 							<SocketForNameSpace
 								nameSpace={CONNECTION_NAME_SPACE.DEVICE}
@@ -87,12 +94,12 @@ export const RoutesPrivate = () => {
 						</Route>
 					</Route>
 					<Route path={routesPrivate.settingsScreen} element={<SettingsScreen />} />
-					{/* <Route path={routesPrivate.dashboardScreen} element={<DashboardScreen />} /> */}
+					<Route path={routesPrivate.accountScreen} element={<Account />} />
 					<Route path={routesPrivate.notificationScreen} element={<NotificationScreen />}>
 						<Route index path='table' element={<TableNotification />} />
 						<Route path=':idNotification' element={<DetailNotification />} />
 					</Route>
-					<Route path={routesPrivate.FactoryDevicesScreen} element={<FactoryDevicesScreen />} />
+					<Route path={routesPrivate.factoryDevicesScreen} element={<FactoryDevicesScreen />} />
 				</Routes>
 			</div>
 		</SocketProvider>

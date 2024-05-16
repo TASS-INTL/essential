@@ -2,7 +2,6 @@ import React, { createContext, useCallback, useEffect, useState } from 'react'
 
 import { io } from 'socket.io-client'
 
-import { inventoryStore } from '../../../store/inventoryStore'
 import { userStore } from '../../../store/userStore'
 import { SOCKET_EVENTS, SOCKETS_ROOMS, TRANSPORT_SOCKET } from './constants'
 
@@ -11,7 +10,6 @@ export const SocketContextForNameSpace = createContext()
 export const SocketForNameSpace = ({ children, nameSpace, typeJoin, socketsEvents, functionListening }) => {
 	const { uid, tokenSesion } = userStore((state) => state.userData)
 	const [socketForNameSpace, setSocketForNameSpace] = useState(null)
-	const setArrayTableInventory = inventoryStore((state) => state.setArrayTableInventory)
 
 	const connnectSocketForNameSpace = useCallback(() => {
 		const socketTemp = io(`https://skolympo.tassintl.com/${nameSpace}`, {

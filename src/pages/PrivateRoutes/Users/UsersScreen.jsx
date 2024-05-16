@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { usersStore } from '@/store/usersStore'
 
 import { ErrorComponent, LoaderComponent } from '../../../Components'
+import { Container } from '../../../Components/Container'
 import { FormCreateUser } from '../components'
 import { useUsers } from '../Hooks/useUser'
 
@@ -34,15 +35,15 @@ export const UsersScreen = () => {
 	console.log(fetchUserList?.data?.data?.results?.users)
 
 	return (
-		<div className='w-full bg-opacity-100'>
-			<div className=' w-11/12 m-auto mt-8 rounded-1xl'>
+		<Container>
+			<div className='m-auto mt-8 rounded-1xl'>
 				<div className='flex justify-between px-0 py-4 pt-10'>
 					<h4 className=' text-pretty text-2xl'>Usuarios</h4>
 					<button
 						onClick={onPressCreateUser}
 						className='bg-dark-purple shadow-lg  p2-4 px-8 rounded-md text-white'
 					>
-						+ Craer
+						+ Craer Usuario
 					</button>
 				</div>
 				<div className='bg-zinc-100 py-5 '>
@@ -94,6 +95,6 @@ export const UsersScreen = () => {
 				handleCreateUser={handleCreateUser}
 				handleUpdateUser={handleUpdateUser}
 			/>
-		</div>
+		</Container>
 	)
 }

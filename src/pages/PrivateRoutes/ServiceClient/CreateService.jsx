@@ -56,7 +56,8 @@ export const CreateService = () => {
 			setCountValueFill((state) => state + 1)
 			setDataGlobal({ data: { circle, values: e.lngLat }, id: e.lngLat.lng })
 			setIdsLayers((state) => ({ ...state, [`marker-${e.lngLat.lng}`]: [...state.marker, idLayer] }))
-			newMarker.on('dragend', () => {
+			newMarker.on('dragend', (evento) => {
+				console.log(evento.target.getOffset)
 				const lngLat = newMarker.getLngLat()
 				const { circle, idLayer: idNewLayer } = createCircleRadio(lngLat.lng, lngLat.lat, mapGlobal)
 				setIdsLayers((state) => ({
@@ -136,6 +137,8 @@ export const CreateService = () => {
 			}
 		}
 	}, [countValueFill, dataGlobal])
+
+	// console.log(dataCoordinates, 'dataCoordinates')
 
 	return (
 		<div className='pt-10 overflow-scroll h-5/6 px-10'>

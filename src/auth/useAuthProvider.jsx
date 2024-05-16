@@ -19,7 +19,6 @@ export const useAuthProvider = () => {
 		if (response?.completed) {
 			if (response?.type_ === 'USER_HAS_SESSION') {
 				localStorage.setItem('token', response.data[0].token)
-				console.log(response, 'response login USER_HAS_SESSION')
 				setUserData({
 					...userData,
 					logged: true,
@@ -60,8 +59,6 @@ export const useAuthProvider = () => {
 
 		if (response?.completed) {
 			if (screen === 'login') {
-				console.log(response, 'response login ValidateCodeApi')
-
 				localStorage.setItem('token', response.data[0].token)
 				setUserData({
 					...userData,

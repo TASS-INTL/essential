@@ -1,9 +1,12 @@
 import React from 'react'
 
+import { Container } from '../../../Components/Container'
+
 export const ChatScreen = () => {
 	return (
-		<div className='h-screen flex-1 p-7'>
-			<h1 className='text-2xl font-semibold '>ChatScreen</h1>
-		</div>
+		<Container>
+			<h1 className=' text-center text-3xl font-normal mt-32'>Chat</h1>
+			<article className='text-center'>estamos trabajando en modulo de Chat</article>
+		</Container>
 	)
 }

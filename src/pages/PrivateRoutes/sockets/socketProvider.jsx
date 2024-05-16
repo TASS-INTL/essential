@@ -39,7 +39,6 @@ export const SocketProvider = ({ children }) => {
 	}, [])
 
 	useEffect(() => {
-		console.log(uid)
 		socket?.emit(SOCKET_EVENTS.JOIN_ROOM, {
 			id_user: uid,
 			id_room: tokenSesion,
@@ -48,7 +47,6 @@ export const SocketProvider = ({ children }) => {
 		})
 
 		socket?.on(SOCKET_EVENTS.R_NOTIFICATION_RECEIVE, (data) => {
-			console.log(data, 'data notification')
 			showToast(`Revisa tus notificaciones`, 'warning')
 			setNotification(data?.unread)
 			setArrayNotification(data)

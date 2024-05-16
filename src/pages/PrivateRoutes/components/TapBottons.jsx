@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom'
 const arrayTap = [
 	{ id: 1, title: 'general' },
 	{ id: 2, title: 'test' },
-	{ id: 3, title: 'events' },
-	{ id: 4, title: 'travels' }
+	{ id: 3, title: 'events' }
 ]
 
 export const TapBottons = ({ location, idDevice }) => {

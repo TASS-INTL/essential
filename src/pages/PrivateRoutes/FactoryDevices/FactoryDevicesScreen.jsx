@@ -33,10 +33,10 @@ export const FactoryDevicesScreen = () => {
 	const typeDevice = fetchTypeDevice()
 
 	useEffect(() => {
-		setObjTypeDevice(typeDevice?.data?.data[0])
+		typeDevice?.data?.data[0] && setObjTypeDevice(typeDevice?.data?.data[0])
 	}, [typeDevice])
 
-	if (typeDevice.isLoading) return <LoaderComponent />
+	if (typeDevice?.isLoading) return <LoaderComponent />
 
 	return (
 		<div className='w-full py-5 px-8'>
