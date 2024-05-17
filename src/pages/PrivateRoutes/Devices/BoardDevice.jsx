@@ -2,7 +2,8 @@ import React from 'react'
 
 import { NavLink } from 'react-router-dom'
 
-export const BoardDevice = ({ dataBody }) => {
+export const BoardDevice = ({ dataBody, to }) => {
+	console.log(dataBody)
 	return (
 		<div className='relative overflow-x-scrolling overflow-y-scrolling shadow-md sm:rounded-lg'>
 			<div className='overflow-scroll'>
@@ -20,10 +21,10 @@ export const BoardDevice = ({ dataBody }) => {
 							</thead>
 							<tbody>
 								{dataBody.map((item, index) => (
-									<tr key={item._id} className='bg-white border-b  hover:bg-gray-50 '>
-										{Object.values(dataBody[index])?.map((itemObj) => (
+									<tr key={item._id} className='bg-white border-b hover:bg-gray-50 '>
+										{Object.values(dataBody[index])?.map((itemObj, i) => (
 											<th
-												key={itemObj}
+												key={i}
 												scope='row'
 												className='px-6 py-4 font-medium whitespace-nowrap '
 											>
@@ -34,9 +35,7 @@ export const BoardDevice = ({ dataBody }) => {
 											scope='row'
 											className='px-6 py-4 font-medium whitespace-nowrap underline text-blue-600 cursor-pointer'
 										>
-											<NavLink to={`/user/devices-screen/device/${item._id}/general`}>
-												ver
-											</NavLink>
+											<NavLink to={`/user/${to}/${item._id}/general`}>Ver</NavLink>
 										</th>
 									</tr>
 								))}

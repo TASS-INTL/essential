@@ -3,10 +3,13 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
+import { notificationStore } from '../../../store/notificationStore'
 import { InputSearch } from '../components'
+import { BoardDevice } from '../Devices/BoardDevice'
 
 export const TableTravels = () => {
 	const { register, handleSubmit } = useForm()
+	const arrayTableTravels = notificationStore((state) => state.arrayTableTravels)
 
 	return (
 		<>
@@ -27,7 +30,7 @@ export const TableTravels = () => {
 					<InputSearch register={register} />
 				</form>
 			</div>
-			{/* <BoardComponent dataHeader={tableHeaderService} dataBody={dataTableServices?.data?.data?.results} /> */}
+			<BoardDevice dataBody={arrayTableTravels?.results} to='travels-screen/travel' />
 			{/* <div className='py-5 flex justify-center items-center'>
 				<PaginationComponent
 					pageSelected={pageSelected}

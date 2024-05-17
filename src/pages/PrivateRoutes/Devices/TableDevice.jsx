@@ -17,6 +17,8 @@ export const TableDevice = () => {
 	const [array, setArray] = useState([1, 2, 3, 4, 5])
 	const arrayTabledevice = deviceStore((state) => state.arrayTabledevice)
 
+	console.log(arrayTabledevice)
+
 	return (
 		<div>
 			<div className='flex justify-between px-0 py-10 pt-10'>
@@ -39,11 +41,7 @@ export const TableDevice = () => {
 				</div>
 			</div>
 			<div className='py-2'>ACTUALIZACION EN TIEMPO REAL </div>
-			<BoardDevice
-				dataHeader={tableTitleInventory}
-				dataBody={arrayTabledevice?.results}
-				functionOnClick={() => {}}
-			/>
+			<BoardDevice dataBody={arrayTabledevice?.results} to='devices-screen/device' />
 		</div>
 	)
 }

@@ -17,10 +17,11 @@ import { CONNECTION_NAME_SPACE, SOCKET_EVENTS, SOCKETS_ROOMS } from '../pages/Pr
 import { SocketForNameSpace } from '../pages/PrivateRoutes/sockets/socketForNameSpace'
 import { SocketProvider } from '../pages/PrivateRoutes/sockets/socketProvider'
 import { TestingScreen } from '../pages/PrivateRoutes/Testing/TestingScreen'
-import { CreateTravel, TableTravels, Travels } from '../pages/PrivateRoutes/Travels'
+import { CreateTravel, DetailTravel, GeneralTravel, TableTravels, Travels } from '../pages/PrivateRoutes/Travels'
 import { UsersScreen } from '../pages/PrivateRoutes/Users/UsersScreen'
 import { deviceStore } from '../store/deviceStore'
 import { inventoryStore } from '../store/inventoryStore'
+import { travelsStore } from '../store/travelsStore'
 import { routesPrivate } from './constants'
 
 export const PrivateRouter = ({ isAuthenticated }) => {
@@ -30,6 +31,7 @@ export const PrivateRouter = ({ isAuthenticated }) => {
 export const RoutesPrivate = () => {
 	const setArrayTabledevice = deviceStore((state) => state.setArrayTabledevice)
 	const setArrayTableInventory = inventoryStore((state) => state.setArrayTableInventory)
+	const setArrayTableTravels = travelsStore((state) => state.setArrayTableTravels)
 
 	return (
 		<SocketProvider>
@@ -44,9 +46,27 @@ export const RoutesPrivate = () => {
 						<Route index path='table' element={<TableServiceClient />} />
 						<Route index path='create-service' element={<CreateService />} />
 					</Route>
-					<Route path={routesPrivate.travelsScreen} element={<Travels />}>
+					<Route
+						path={routesPrivate.travelsScreen}
+						element={
+							<SocketForNameSpace
+								nameSpace={CONNECTION_NAME_SPACE.TRAVEL}
+								typeJoin={SOCKETS_ROOMS.ROOM_TRAVELS}
+								socketsEvents={SOCKET_EVENTS.R_TB_TRAVELS}
+								functionListening={setArrayTableTravels}
+							>
+								<Travels />
+							</SocketForNameSpace>
+						}
+					>
 						<Route index path='table' element={<TableTravels />} />
 						<Route index path='create-travel' element={<CreateTravel />} />
+						<Route path='travel/:idTravel' element={<DetailTravel />}>
+							<Route index path='general' element={<GeneralTravel />} />
+							{/* <Route path='test' element={<Test />} /> */}
+							{/* <Route path='events' element={<Events />} /> */}
+							{/* <Route path='travels' element={<Travels />} /> */}
+						</Route>
 					</Route>
 					<Route path={routesPrivate.usersScreen} element={<UsersScreen />} />
 					<Route path={routesPrivate.testingScreen} element={<TestingScreen />} />
@@ -55,8 +75,8 @@ export const RoutesPrivate = () => {
 						element={
 							<SocketForNameSpace
 								nameSpace={CONNECTION_NAME_SPACE.DEVICE}
-								typeJoin={'room_device_cli'}
-								socketsEvents={'r_tb_device_cli'}
+								typeJoin={SOCKETS_ROOMS.ROOM_DEVICE_CLI}
+								socketsEvents={SOCKET_EVENTS.R_TB_DEVICE_CLI}
 								functionListening={setArrayTabledevice}
 							>
 								<DevicesScreen />
