@@ -5,19 +5,40 @@ export const pathRoutes = {
 }
 
 export const routesPrivate = {
+	// General paths
+	test: 'test',
+	table: 'table',
+	events: 'events',
+	general: 'general',
+	// Service
+	createService: 'create-service',
+	servicesScreen: 'services-screen',
+	servicesClientScreen: 'services-client-screen',
+	// Travel
+	travels: 'travels',
+	monitoring: 'monitoring',
+	createTravel: 'create-travel',
+	travelsScreen: 'travels-screen',
+	travelIdTravel: 'travel/:idTravel',
+	// Device
+	assignDevice: 'assign-device',
+	devicesScreen: 'devices-screen',
+	deviceIdDevice: 'device/:idDevice',
+	factoryDevicesScreen: 'factory-devices-screen',
+	// Notification
+	idNotification: ':idNotification',
+	notificationScreen: 'notifications-screen',
+	// Chat
 	chatScreen: 'chat-screen',
+	//
 	usersScreen: 'users-screen',
 	groupScreen: 'group-screen',
 	testingScreen: 'testing-screen',
 	accountScreen: 'account-screen',
-	devicesScreen: 'devices-screen',
-	travelsScreen: 'travels-screen',
 	settingsScreen: 'settings-screen',
 	inventoryScreen: 'inventory-screen',
-	servicesScreen: 'services-screen',
 	dashboardScreen: 'dashboard-screen',
-	notificationScreen: 'notifications-screen',
-	servicesClientScreen: 'services-client-screen',
-	factoryDevicesScreen: 'factory-devices-screen',
+	installersScreen: 'installers-screen',
+	monitoringScreen: 'monitoring-screen',
 	detailInventoryScreen: 'detail-inventory-screen'
 }

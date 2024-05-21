@@ -14,6 +14,10 @@ export const tableTitle = [
 	},
 	{
 		id: '3',
+		title: ''
+	},
+	{
+		id: '6',
 		title: 'tipo'
 	},
 	{

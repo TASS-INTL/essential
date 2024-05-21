@@ -2,24 +2,32 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-const arrayTap = [
-	{ id: 1, title: 'general' },
-	{ id: 2, title: 'test' },
-	{ id: 3, title: 'events' }
+export const arrayTapInventory = [
+	{ id: 1, title: 'general', name: 'General' },
+	{ id: 2, title: 'events', name: 'Eventos' },
+	{ id: 4, title: 'test', name: 'Test' }
 ]
 
-export const TapBottons = ({ location, idDevice }) => {
+export const arrayTapMonitoring = [
+	{ id: 1, title: 'general', name: 'General' },
+	{ id: 2, title: 'events', name: 'Eventos' },
+	{ id: 3, title: 'monitoring', name: 'Monitoreo' }
+]
+
+export const TapBottons = ({ location, idDevice, path, data }) => {
 	return (
 		<div className='pt-5'>
 			{!location.pathname.includes('table') && (
 				<ul className='flex gap-3 '>
-					{arrayTap?.map((item) => (
+					{data?.map((item) => (
 						<li
-							className={`${location.pathname.includes(item.title) && 'bg-slate-400 p-1'} p-1`}
+							className={`${
+								location.pathname.includes(item.title) && 'bg-black text-white'
+							} px-4 py-2 rounded-lg`}
 							key={item.id}
 						>
-							<Link to={`/user/inventory-screen/device/${idDevice}/${item.title}`}>
-								<h3>{item.title}</h3>
+							<Link to={`/user/${path}/${idDevice}/${item.title}`}>
+								<h3>{item.name}</h3>
 							</Link>
 						</li>
 					))}

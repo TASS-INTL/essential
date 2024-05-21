@@ -2,23 +2,31 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { SideBarComponent } from '../Components'
 import { pathNavigation } from '../pages/auth/constants'
-import { DevicesScreen, NotificationScreen } from '../pages/PrivateRoutes'
-import { Account } from '../pages/PrivateRoutes/Account'
-import { ChatScreen } from '../pages/PrivateRoutes/Chat'
-import { FormAssignDevice, TableDevice } from '../pages/PrivateRoutes/Devices'
-import { FactoryDevicesScreen } from '../pages/PrivateRoutes/FactoryDevices/FactoryDevicesScreen'
-import { Device, Events, General, InventoryScreen, TableInventory, Test } from '../pages/PrivateRoutes/Inventory'
-import { DetailNotification } from '../pages/PrivateRoutes/Notification/DetailNotification'
-import { TableNotification } from '../pages/PrivateRoutes/Notification/TableNotification'
-import { ServicesClient, TableServiceClient } from '../pages/PrivateRoutes/ServiceClient'
-import { CreateService, Services, Table } from '../pages/PrivateRoutes/Services'
-import { SettingsScreen } from '../pages/PrivateRoutes/Settings/SettingsScreen'
+import { Account } from '../pages/PrivateRoutes/ModuleAccount'
+import { ChatScreen } from '../pages/PrivateRoutes/ModuleChat'
+import { DevicesScreen, FormAssignDevice, TableDevice } from '../pages/PrivateRoutes/ModuleDevices'
+import { FactoryDevicesScreen } from '../pages/PrivateRoutes/ModuleFactoryDevices/FactoryDevicesScreen'
+import { Installers } from '../pages/PrivateRoutes/ModuleInstallers'
+import { Device, Events, General, InventoryScreen, TableInventory, Test } from '../pages/PrivateRoutes/ModuleInventory'
+import { MonitoringScreen } from '../pages/PrivateRoutes/ModuleMonitoring/MonitoringScreen'
+import { DetailNotification, NotificationScreen, TableNotification } from '../pages/PrivateRoutes/ModuleNotification'
+import { ServicesClient, TableServiceClient } from '../pages/PrivateRoutes/ModuleServiceClient'
+import { CreateService, Services, Table } from '../pages/PrivateRoutes/ModuleServices'
+import { SettingsScreen } from '../pages/PrivateRoutes/ModuleSettings/SettingsScreen'
+import { TestingScreen } from '../pages/PrivateRoutes/ModuleTesting/TestingScreen'
+import {
+	CreateTravel,
+	DetailTravel,
+	Eventstravel,
+	GeneralTravel,
+	Monitoring,
+	TableTravels,
+	Travels
+} from '../pages/PrivateRoutes/ModuleTravels'
+import { UsersScreen } from '../pages/PrivateRoutes/ModuleUsers/UsersScreen'
 import { CONNECTION_NAME_SPACE, SOCKET_EVENTS, SOCKETS_ROOMS } from '../pages/PrivateRoutes/sockets/constants'
 import { SocketForNameSpace } from '../pages/PrivateRoutes/sockets/socketForNameSpace'
 import { SocketProvider } from '../pages/PrivateRoutes/sockets/socketProvider'
-import { TestingScreen } from '../pages/PrivateRoutes/Testing/TestingScreen'
-import { CreateTravel, DetailTravel, GeneralTravel, TableTravels, Travels } from '../pages/PrivateRoutes/Travels'
-import { UsersScreen } from '../pages/PrivateRoutes/Users/UsersScreen'
 import { deviceStore } from '../store/deviceStore'
 import { inventoryStore } from '../store/inventoryStore'
 import { travelsStore } from '../store/travelsStore'
@@ -35,17 +43,25 @@ export const RoutesPrivate = () => {
 
 	return (
 		<SocketProvider>
-			<div className='flex'>
+			<div className='flex '>
 				<SideBarComponent />
 				<Routes>
+					{/* Module Chat */}
 					<Route path={routesPrivate.chatScreen} element={<ChatScreen />} />
+					{/* Module Installers */}
+					<Route path={routesPrivate.installersScreen} element={<Installers />} />
+					{/* Module Monitoring */}
+					<Route path={routesPrivate.monitoringScreen} element={<MonitoringScreen />} />
+					{/* Module Services  */}
 					<Route path={routesPrivate.servicesScreen} element={<Services />}>
-						<Route index path='table' element={<Table />} />
+						<Route index path={routesPrivate.table} element={<Table />} />
 					</Route>
+					{/* Module Service client*/}
 					<Route path={routesPrivate.servicesClientScreen} element={<ServicesClient />}>
-						<Route index path='table' element={<TableServiceClient />} />
-						<Route index path='create-service' element={<CreateService />} />
+						<Route index path={routesPrivate.table} element={<TableServiceClient />} />
+						<Route index path={routesPrivate.createService} element={<CreateService />} />
 					</Route>
+					{/* Module Travels */}
 					<Route
 						path={routesPrivate.travelsScreen}
 						element={
@@ -59,39 +75,42 @@ export const RoutesPrivate = () => {
 							</SocketForNameSpace>
 						}
 					>
-						<Route index path='table' element={<TableTravels />} />
-						<Route index path='create-travel' element={<CreateTravel />} />
-						<Route path='travel/:idTravel' element={<DetailTravel />}>
-							<Route index path='general' element={<GeneralTravel />} />
-							{/* <Route path='test' element={<Test />} /> */}
-							{/* <Route path='events' element={<Events />} /> */}
-							{/* <Route path='travels' element={<Travels />} /> */}
+						<Route index path={routesPrivate.table} element={<TableTravels />} />
+						<Route index path={routesPrivate.createTravel} element={<CreateTravel />} />
+						<Route path={routesPrivate.travelIdTravel} element={<DetailTravel />}>
+							<Route index path={routesPrivate.general} element={<GeneralTravel />} />
+							<Route index path={routesPrivate.monitoring} element={<Monitoring />} />
+							<Route index path={routesPrivate.events} element={<Eventstravel />} />
 						</Route>
 					</Route>
+					{/* Module Users */}
 					<Route path={routesPrivate.usersScreen} element={<UsersScreen />} />
+					{/* Module Testing */}
 					<Route path={routesPrivate.testingScreen} element={<TestingScreen />} />
+					{/* Module Devices */}
 					<Route
 						path={routesPrivate.devicesScreen}
 						element={
 							<SocketForNameSpace
 								nameSpace={CONNECTION_NAME_SPACE.DEVICE}
 								typeJoin={SOCKETS_ROOMS.ROOM_DEVICE_CLI}
-								socketsEvents={SOCKET_EVENTS.R_TB_DEVICE_CLI}
 								functionListening={setArrayTabledevice}
+								socketsEvents={SOCKET_EVENTS.R_TB_DEVICE_CLI}
 							>
 								<DevicesScreen />
 							</SocketForNameSpace>
 						}
 					>
-						<Route index path='table' element={<TableDevice />} />
-						<Route index path='assign-device' element={<FormAssignDevice />} />
-						<Route path='device/:idDevice' element={<Device />}>
-							<Route index path='general' element={<General />} />
-							<Route path='test' element={<Test />} />
-							<Route path='events' element={<Events />} />
-							<Route path='travels' element={<Travels />} />
+						<Route index path={routesPrivate.table} element={<TableDevice />} />
+						<Route index path={routesPrivate.assignDevice} element={<FormAssignDevice />} />
+						<Route path={routesPrivate.deviceIdDevice} element={<Device />}>
+							<Route index path={routesPrivate.general} element={<General />} />
+							<Route path={routesPrivate.test} element={<Test />} />
+							<Route path={routesPrivate.events} element={<Events />} />
+							<Route path={routesPrivate.travels} element={<Travels />} />
 						</Route>
 					</Route>
+					{/* Module Inventory */}
 					<Route
 						path={routesPrivate.inventoryScreen}
 						element={
@@ -105,20 +124,24 @@ export const RoutesPrivate = () => {
 							</SocketForNameSpace>
 						}
 					>
-						<Route index path='table' element={<TableInventory />} />
-						<Route path='device/:idDevice' element={<Device />}>
-							<Route index path='general' element={<General />} />
-							<Route path='test' element={<Test />} />
-							<Route path='events' element={<Events />} />
-							<Route path='travels' element={<Travels />} />
+						<Route index path={routesPrivate.table} element={<TableInventory />} />
+						<Route path={routesPrivate.deviceIdDevice} element={<Device />}>
+							<Route index path={routesPrivate.general} element={<General />} />
+							<Route path={routesPrivate.test} element={<Test />} />
+							<Route path={routesPrivate.events} element={<Events />} />
+							<Route path={routesPrivate.travels} element={<Travels />} />
 						</Route>
 					</Route>
+					{/* Module Settings */}
 					<Route path={routesPrivate.settingsScreen} element={<SettingsScreen />} />
+					{/* Module Account */}
 					<Route path={routesPrivate.accountScreen} element={<Account />} />
+					{/* Module Notification */}
 					<Route path={routesPrivate.notificationScreen} element={<NotificationScreen />}>
-						<Route index path='table' element={<TableNotification />} />
-						<Route path=':idNotification' element={<DetailNotification />} />
+						<Route index path={routesPrivate.table} element={<TableNotification />} />
+						<Route path={routesPrivate.idNotification} element={<DetailNotification />} />
 					</Route>
+					{/* Module Factory Device */}
 					<Route path={routesPrivate.factoryDevicesScreen} element={<FactoryDevicesScreen />} />
 				</Routes>
 			</div>

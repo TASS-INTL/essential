@@ -7,7 +7,9 @@ export const SOCKETS_ROOMS = {
 	ROOM_TRAVEL_INFO: 'room_travel_info',
 	ROOM_SESSION: 'room_session',
 	ROOM_MONITORING: 'room_monitoring',
-	ROOM_INVENTORY: 'room_inventory'
+	ROOM_INVENTORY: 'room_inventory',
+	ROOM_REAL_TIME_JOIN: 'room_real_time_join',
+	ROOM_REAL_TIME_LEAVE: 'room_real_time_leave'
 }
 
 export const SOCKET_EVENTS = {
@@ -33,6 +35,12 @@ export const SOCKET_EVENTS = {
 	// TRAVELS
 	R_TB_TRAVELS: 'r_tb_travels',
 	R_INFO_TRAVEL: 'r_info_travel',
+	TB_EVENTS_TRAVELS: 'tb_events_travel',
+	R_TB_EVENTS_TRAVEL: 'r_tb_events_travel',
+	TB_MONITORING_TRAVEL: 'tb_monitoring_travel',
+	R_TB_MONITORING_TRAVEL: 'r_tb_monitoring_travel',
+	REAL_TIME_MONITORING: 'real_time_monitoring',
+	R_TRAVEL_MONITORING_REAL_TIME: 'r_travel_monitoring_real_time',
 
 	//PAGINATION
 	TB_DEVICES_FAC: 'tb_devices_fac'
