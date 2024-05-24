@@ -12,6 +12,7 @@ export const Eventstravel = () => {
 	const { idTravel } = useParams()
 
 	const arrayTableTravelsEvents = travelsStore((state) => state.arrayTableTravelsEvents)
+
 	return (
 		<div>
 			<TapBottons

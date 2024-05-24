@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { BoardComponent, LoaderComponent } from '../../../Components'
 import { InputSearch } from '../components'
+import { BoardDevice } from '../ModuleDevices/BoardDevice'
 import { tableHeaderService } from '../ModuleServices/constants'
 import { useServiceClient } from './hooks/useServiceClient'
 
@@ -38,7 +39,7 @@ export const TableServiceClient = () => {
 					<InputSearch register={register} />
 				</form>
 			</div>
-			<BoardComponent dataHeader={tableHeaderService} dataBody={dataTableServicesClient?.data?.data?.results} />
+			<BoardDevice dataBody={dataTableServicesClient?.data?.data?.results} />
 			{/* <div className='py-5 flex justify-center items-center'>
 				<PaginationComponent
 					pageSelected={pageSelected}

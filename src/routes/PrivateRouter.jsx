@@ -76,7 +76,7 @@ export const RoutesPrivate = () => {
 						}
 					>
 						<Route index path={routesPrivate.table} element={<TableTravels />} />
-						<Route index path={routesPrivate.createTravel} element={<CreateTravel />} />
+						<Route path={routesPrivate.createTravel} element={<CreateTravel />} />
 						<Route path={routesPrivate.travelIdTravel} element={<DetailTravel />}>
 							<Route index path={routesPrivate.general} element={<GeneralTravel />} />
 							<Route index path={routesPrivate.monitoring} element={<Monitoring />} />

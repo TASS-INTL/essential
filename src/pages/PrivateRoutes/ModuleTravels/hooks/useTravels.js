@@ -21,10 +21,13 @@ export const useTravels = () => {
 			queryKey: ['getDataInfoRegister'],
 			queryFn: async () => await api(METHODS_API.GET, `module/travel/info/register`)
 		})
-
+	//?tx_period=30&sensing_period=30
 	const activateTravel = useMutation({
 		mutationFn: async ({ idTravel, type }) =>
-			await api(METHODS_API.POST, `module/travel/${idTravel}/${type}?tx_period=${30}&sensing_period=${30}`, data),
+			await api(
+				METHODS_API.POST,
+				`module/travel/${idTravel}/${type}${type === 'activate' ? '?tx_period=30&sensing_period=30' : ''}`
+			),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postCreateTravel'] })
 	})
 

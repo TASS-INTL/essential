@@ -7,6 +7,6 @@ export const deviceStore = create(
 			arrayTabledevice: null,
 			setArrayTabledevice: (value) => set(() => ({ arrayTabledevice: value }))
 		}),
-		{ name: 'users-storage' }
+		{ name: 'device-storage' }
 	)
 )

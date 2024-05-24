@@ -32,27 +32,27 @@ export const tableTitle = [
 
 export const tableTitleInventory = [
 	{
-		id: '1',
-		title: ''
-	},
-	{
 		id: '2',
 		title: 'Did'
 	},
 	{
+		id: '2',
+		title: 'mid'
+	},
+	{
 		id: '3',
-		title: 'Nombre'
+		title: 'fecha'
 	},
 	{
 		id: '4',
-		title: 'lote'
+		title: 'fecha envio'
 	},
 	{
 		id: '5',
-		title: 'Estado ()'
+		title: 'long'
 	},
 	{
 		id: '6',
-		title: ''
+		title: 'latitud'
 	}
 ]

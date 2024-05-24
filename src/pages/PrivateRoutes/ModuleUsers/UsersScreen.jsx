@@ -32,8 +32,6 @@ export const UsersScreen = () => {
 		setModalVisible(true)
 	}
 
-	console.log(fetchUserList?.data?.data?.results?.users)
-
 	return (
 		<Container>
 			<div className='m-auto mt-8 rounded-1xl'>

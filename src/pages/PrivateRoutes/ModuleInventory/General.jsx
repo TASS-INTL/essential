@@ -6,7 +6,7 @@ import { battery, padlockClose, padlockOpen } from '../../../assets/assetsplatfo
 import { inventoryStore } from '../../../store/inventoryStore'
 import { TapBottons } from '../components'
 import { Map } from '../components/Map'
-import { arrayTapMonitoring } from '../components/TapBottons'
+import { arrayTapInventory, arrayTapMonitoring } from '../components/TapBottons'
 import { useMap } from '../Hooks/useMap'
 import { useInventory } from './Hooks/useInventory'
 
@@ -40,12 +40,7 @@ export const General = () => {
 
 	return (
 		<>
-			<TapBottons
-				location={location}
-				idDevice={idDevice}
-				path='devices-screen/device'
-				data={arrayTapMonitoring}
-			/>
+			<TapBottons location={location} idDevice={idDevice} path='devices-screen/device' data={arrayTapInventory} />
 			<div className='pt-2'>
 				<section className='my-2'>
 					<h3 className='text-center font-bold text-2xl pb-2'>GENERAL</h3>

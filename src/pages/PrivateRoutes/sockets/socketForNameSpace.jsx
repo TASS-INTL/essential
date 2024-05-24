@@ -3,7 +3,7 @@ import React, { createContext, useCallback, useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
 
 import { userStore } from '../../../store/userStore'
-import { SOCKET_EVENTS, SOCKETS_ROOMS, TRANSPORT_SOCKET } from './constants'
+import { SOCKET_EVENTS, TRANSPORT_SOCKET } from './constants'
 
 export const SocketContextForNameSpace = createContext()
 
@@ -11,7 +11,7 @@ export const SocketForNameSpace = ({ children, nameSpace, typeJoin, socketsEvent
 	const { uid, tokenSesion } = userStore((state) => state.userData)
 	const [socketForNameSpace, setSocketForNameSpace] = useState(null)
 
-	const connnectSocketForNameSpace = useCallback(() => {
+	const connnectSocketForNameSpace = () => {
 		const socketTemp = io(`https://skolympo.tassintl.com/${nameSpace}`, {
 			reconnectionDelayMax: 9000,
 			transports: [TRANSPORT_SOCKET.WEBSOCKET, TRANSPORT_SOCKET.POLLING],
@@ -20,7 +20,7 @@ export const SocketForNameSpace = ({ children, nameSpace, typeJoin, socketsEvent
 		})
 
 		return socketTemp
-	}, [nameSpace])
+	}
 
 	const disconnectSocket = useCallback(() => {
 		socketForNameSpace?.disconnect()
@@ -33,7 +33,7 @@ export const SocketForNameSpace = ({ children, nameSpace, typeJoin, socketsEvent
 			// Desconexion del socket
 			disconnectSocket()
 		}
-	}, [])
+	}, [nameSpace])
 
 	useEffect(() => {
 		// Ingresar a las diferentes salas del socket
@@ -44,12 +44,13 @@ export const SocketForNameSpace = ({ children, nameSpace, typeJoin, socketsEvent
 			x_access_token: tokenSesion
 		})
 
-		// Validar que la conexion sea correcta
-		socketForNameSpace?.on(SOCKET_EVENTS.JOINED_ROOM, (data) => {})
-
 		// Escuchar una sala en especifico
 		socketForNameSpace?.on(socketsEvents, (data) => {
 			functionListening(data?.data)
+		})
+
+		socketForNameSpace?.on('connect_error', (error) => {
+			console.error('Error de Conexión:', error)
 		})
 	}, [socketForNameSpace])
 

@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
 
-import { BoardComponent, LoaderComponent } from '../../../Components'
+import { LoaderComponent } from '../../../Components'
 import { InputSearch } from '../components'
-import { tableHeaderService } from './constants'
+import { BoardDevice } from '../ModuleDevices/BoardDevice'
 import { useService } from './hooks/useService'
 
 export const Table = () => {
@@ -32,16 +31,7 @@ export const Table = () => {
 					<InputSearch register={register} />
 				</form>
 			</div>
-			<BoardComponent dataHeader={tableHeaderService} dataBody={dataTableServices?.data?.data?.results} />
-			{/* <div className='py-5 flex justify-center items-center'>
-				<PaginationComponent
-					pageSelected={pageSelected}
-					dataPagination={arrayTableInventory?.info}
-					setPageSelected={setPageSelected}
-					setArray={setArray}
-					array={array}
-				/>
-			</div> */}
+			<BoardDevice dataBody={dataTableServices?.data?.data?.results} />
 		</>
 	)
 }

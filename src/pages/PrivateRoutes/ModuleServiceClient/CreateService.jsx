@@ -57,7 +57,6 @@ export const CreateService = () => {
 			setDataGlobal({ data: { circle, values: e.lngLat }, id: e.lngLat.lng })
 			setIdsLayers((state) => ({ ...state, [`marker-${e.lngLat.lng}`]: [...state.marker, idLayer] }))
 			newMarker.on('dragend', (evento) => {
-				console.log(evento.target.getOffset)
 				const lngLat = newMarker.getLngLat()
 				const { circle, idLayer: idNewLayer } = createCircleRadio(lngLat.lng, lngLat.lat, mapGlobal)
 				setIdsLayers((state) => ({
@@ -138,33 +137,9 @@ export const CreateService = () => {
 		}
 	}, [countValueFill, dataGlobal])
 
-	// console.log(dataCoordinates, 'dataCoordinates')
-
 	return (
-		<div className='pt-10 overflow-scroll h-5/6 px-10'>
+		<div className='pt-10 px-10'>
 			<h2 className='pb-5 text-center text-3xl'>Nuevo serivicio</h2>
-			<LocalizationProvider dateAdapter={AdapterDayjs}>
-				<DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
-					<DateTimePicker
-						label='fecha de inicio'
-						value={dateStart}
-						onChange={(newValue) => setDateStart(newValue)}
-					/>
-					<DateTimePicker
-						label='fecha de final'
-						value={dateEnd}
-						onChange={(newValue) => setDateEnd(newValue)}
-					/>
-				</DemoContainer>
-			</LocalizationProvider>
-			<div className='pt-5'>
-				<div className='flex justify-between'>
-					<h4 className='py-4'>Lugar de inicio {countValueFill > 0 ? '✅️' : '❌'}</h4>
-					<h4 className='py-4'>Lugar de fin {countValueFill > 1 ? '✅️' : '❌'}</h4>
-					<h4 className='py-4'>paradas {countValueFill > 2 ? '✅️' : '❌'}</h4>
-				</div>
-				<Map setMapGlobal={setMapGlobal} />
-			</div>
 			<form
 				onSubmit={handleSubmit((data) => {
 					data.date_end = format(dateStart.$d, 'yyyy-MM-dd hh:mm:ss')
@@ -175,6 +150,28 @@ export const CreateService = () => {
 					handleCreateServiceClient(data)
 				})}
 			>
+				<LocalizationProvider dateAdapter={AdapterDayjs}>
+					<DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
+						<DateTimePicker
+							label='fecha de inicio'
+							value={dateStart}
+							onChange={(newValue) => setDateStart(newValue)}
+						/>
+						<DateTimePicker
+							label='fecha de final'
+							value={dateEnd}
+							onChange={(newValue) => setDateEnd(newValue)}
+						/>
+					</DemoContainer>
+				</LocalizationProvider>
+				<div className='pt-5'>
+					<div className='flex justify-between'>
+						<h4 className='py-4'>Lugar de inicio {countValueFill > 0 ? '✅️' : '❌'}</h4>
+						<h4 className='py-4'>Lugar de fin {countValueFill > 1 ? '✅️' : '❌'}</h4>
+						<h4 className='py-4'>paradas {countValueFill > 2 ? '✅️' : '❌'}</h4>
+					</div>
+					<Map setMapGlobal={setMapGlobal} />
+				</div>
 				<h4 className=' py-5'>Datos del conductor</h4>
 				<InputComponent
 					required
@@ -239,7 +236,7 @@ export const CreateService = () => {
 						})}
 					/>
 				</div>
-				<div className='flex justify-center pt-6'>
+				<div className='flex justify-center py-6'>
 					<InputSubmitComponent text='CREAR SERVICIO' />
 				</div>
 			</form>

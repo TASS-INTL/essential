@@ -5,16 +5,16 @@ export const travelsStore = create(
 	persist(
 		(set) => ({
 			travelInfo: null,
+			realTimeCoordinates: null,
 			arrayTableTravels: null,
 			arrayTableTravelsEvents: null,
 			arrayTableTravelsMonitoring: null,
-			realTimeCoordinates: null,
+			setTravelInfo: (value) => set(() => ({ travelInfo: value })),
 			setRealTimeCoordinates: (value) => set(() => ({ realTimeCoordinates: value })),
 			setArrayTableTravels: (value) => set(() => ({ arrayTableTravels: value })),
 			setArrayTableTravelsEvents: (value) => set(() => ({ arrayTableTravelsEvents: value })),
-			setArrayTableTravelsMonitoring: (value) => set(() => ({ arrayTableTravelsMonitoring: value })),
-			setTravelInfo: (value) => set(() => ({ travelInfo: value }))
+			setArrayTableTravelsMonitoring: (value) => set(() => ({ arrayTableTravelsMonitoring: value }))
 		}),
-		{ name: 'users-storage' }
+		{ name: 'travel-storage' }
 	)
 )

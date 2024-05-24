@@ -9,10 +9,13 @@ import {
 	factorydevices,
 	Groups,
 	Installers,
+	Inventory,
 	Monitoring,
 	Notification,
 	Services,
+	ServicesClient,
 	SesionLeft,
+	Testing,
 	Travels,
 	Users
 } from '../assets/assetsplatform/PrivateRoutes'
@@ -32,7 +35,10 @@ const icons = {
 	factorydevices,
 	SesionLeft,
 	Users,
-	Groups
+	Groups,
+	ServicesClient,
+	Inventory,
+	Testing
 }
 
 export const SideBarComponent = () => {
@@ -47,7 +53,7 @@ export const SideBarComponent = () => {
 		<aside
 			id='separator-sidebar'
 			className={`${
-				open ? ' w-[15%]' : 'w-20'
+				open ? ' md:w-[20%] xl:w-[15%]' : 'w-20'
 			} relative duration-300 top-0 left-0 z-40 h-screen transition-transform -translate-x-full sm:translate-x-0`}
 			aria-label='Sidebar'
 		>

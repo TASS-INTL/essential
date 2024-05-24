@@ -18,7 +18,7 @@ export const TableDevice = () => {
 	const arrayTabledevice = deviceStore((state) => state.arrayTabledevice)
 
 	return (
-		<div>
+		<>
 			<div className='flex justify-between px-0 py-10 pt-10'>
 				<Link
 					to='/user/devices-screen/assign-device'
@@ -38,8 +38,8 @@ export const TableDevice = () => {
 					</form>
 				</div>
 			</div>
-			<div className='py-2'>ACTUALIZACION EN TIEMPO REAL </div>
+			<div className='py-2'>ACTUALIZACION EN TIEMPO REAL</div>
 			<BoardDevice dataBody={arrayTabledevice?.results} to='devices-screen/device' />
-		</div>
+		</>
 	)
 }

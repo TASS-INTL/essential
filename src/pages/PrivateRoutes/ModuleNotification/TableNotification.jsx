@@ -9,8 +9,6 @@ export const TableNotification = () => {
 	const [pageSelected, setPageSelected] = useState(1)
 	const [array, setArray] = useState([1, 2, 3, 4, 5])
 
-	console.log(arrayNotification)
-
 	return (
 		<div>
 			<div className='w-full flex flex-row justify-end'>

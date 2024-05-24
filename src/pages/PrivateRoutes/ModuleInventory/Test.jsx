@@ -4,6 +4,7 @@ import { useLocation, useParams } from 'react-router-dom'
 
 import { inventoryStore } from '../../../store/inventoryStore'
 import { TapBottons } from '../components'
+import { arrayTapInventory } from '../components/TapBottons'
 import { BoardDevice } from '../ModuleDevices/BoardDevice'
 import { useInventory } from './Hooks/useInventory'
 
@@ -21,7 +22,7 @@ export const Test = () => {
 
 	return (
 		<div>
-			<TapBottons location={location} idDevice={idDevice} path='devices-screen/device' />
+			<TapBottons location={location} idDevice={idDevice} path='devices-screen/device' data={arrayTapInventory} />
 
 			<div className='pt-10'>
 				<div className=' flex justify-end'>

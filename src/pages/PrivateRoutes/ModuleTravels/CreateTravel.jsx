@@ -242,7 +242,6 @@ export const CreateTravel = () => {
 					arrayOptions={dataInfoRegister?.data?.data?.devices}
 					option='nickname'
 				/>
-
 				<SelectComponent
 					color
 					register={register}

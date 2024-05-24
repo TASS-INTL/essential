@@ -2,13 +2,13 @@ import React from 'react'
 
 import { Outlet } from 'react-router-dom'
 
+import { Container } from '../../../Components/Container'
+
 export const Travels = () => {
 	return (
-		<div className='w-full'>
-			<div className='w-full h-screen max-w-6xl mx-auto'>
-				<h4 className='text-pretty text-4xl font-medium pt-5'>Viajes</h4>
-				<Outlet />
-			</div>
-		</div>
+		<Container>
+			<h4 className='text-pretty text-4xl font-medium pt-5'>Viajes</h4>
+			<Outlet />
+		</Container>
 	)
 }

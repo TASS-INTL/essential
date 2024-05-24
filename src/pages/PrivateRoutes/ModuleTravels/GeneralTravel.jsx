@@ -3,6 +3,7 @@ import React from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { padlockClose, padlockOpen } from '../../../assets/assetsplatform'
+import { LoaderComponent } from '../../../Components'
 import { travelsStore } from '../../../store/travelsStore'
 import { TapBottons } from '../components'
 import { arrayTapMonitoring } from '../components/TapBottons'
@@ -14,6 +15,8 @@ export const GeneralTravel = () => {
 	const { handleActivateTravel } = useTravels()
 
 	const travelInfo = travelsStore((state) => state.travelInfo)
+
+	travelInfo.length === 0 && <LoaderComponent />
 
 	return (
 		<div>

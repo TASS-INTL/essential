@@ -26,13 +26,8 @@ export const DetailTravel = () => {
 			type_join: SOCKETS_ROOMS.ROOM_TRAVEL_INFO
 		})
 
-		// socketForNameSpace?.on(SOCKET_EVENTS.JOINED_ROOM, (data) => {
-		// 	console.log(data)
-		// })
-
 		// Me suscribo a la sala del dispositivo para que me mande la informacion en tiempo real
 		socketForNameSpace?.on(SOCKET_EVENTS.R_INFO_TRAVEL, (data) => {
-			console.log(data)
 			setTravelInfo(data?.data)
 		})
 
@@ -76,8 +71,10 @@ export const DetailTravel = () => {
 
 		socketForNameSpace?.on(SOCKET_EVENTS.R_TRAVEL_MONITORING_REAL_TIME, (data) => {
 			setRealTimeCoordinates(data)
-			console.log(data, 'R_TRAVEL_MONITORING_REAL_TIME')
-			// setArrayTableTravelsMonitoring(data?.data)
+		})
+
+		socketForNameSpace?.on('connect_error', (error) => {
+			console.error('Error de Conexión:', error)
 		})
 
 		return () => {
@@ -93,7 +90,7 @@ export const DetailTravel = () => {
 				id_user: uid,
 				id_room: idTravel,
 				x_access_token: tokenSesion,
-				type_join: SOCKETS_ROOMS.ROOM_TRAVELS
+				type_join: SOCKETS_ROOMS.ROOM_TRAVEL_INFO
 			})
 		}
 	}, [])

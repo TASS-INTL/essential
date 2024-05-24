@@ -27,7 +27,6 @@ export const Device = () => {
 
 		// Me suscribo a la sala del dispositivo para que me mande la informacion en tiempo real
 		socketForNameSpace?.on(SOCKET_EVENTS.R_DEVICE_INFO, (data) => {
-			console.log(data)
 			setDeviceInfo(data?.data[0])
 		})
 

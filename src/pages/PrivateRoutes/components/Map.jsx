@@ -8,7 +8,7 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 
 const apiKey = import.meta.env.VITE_API_KEY_MAP
 
-export const Map = ({ width, height, setMapGlobal }) => {
+export const Map = ({ width, height, setMapGlobal, center }) => {
 	const region = 'sa-east-1'
 	const map = useRef(null)
 	const [zoom] = useState(10)

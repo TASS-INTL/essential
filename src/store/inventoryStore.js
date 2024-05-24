@@ -13,6 +13,6 @@ export const inventoryStore = create(
 			setArrayTableInventoryTest: (value) => set(() => ({ arrayTableInventoryTest: value })),
 			setArrayTableInventoryEvents: (value) => set(() => ({ arrayTableInventoryEvents: value }))
 		}),
-		{ name: 'users-storage' }
+		{ name: 'inventory-storage' }
 	)
 )

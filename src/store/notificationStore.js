@@ -7,6 +7,6 @@ export const notificationStore = create(
 			arrayNotification: null,
 			setArrayNotification: (value) => set(() => ({ arrayNotification: value }))
 		}),
-		{ name: 'users-storage' }
+		{ name: 'notification-storage' }
 	)
 )
