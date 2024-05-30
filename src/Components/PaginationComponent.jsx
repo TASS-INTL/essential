@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 
-export const PaginationComponent = ({ pageSelected, dataPagination, setPageSelected, setArray, array }) => {
+export const PaginationComponent = ({ pageSelected, dataPagination, setPageSelected }) => {
+	// const [array, setArray] = useState([1, 2, 3, 4, 5])
+	const [array, setArray] = useState([1, 2, 3, 4, 5])
+
 	//
 	const fillArrayWithLastValue = (UltimoValor) => {
 		let array = []
@@ -9,6 +12,8 @@ export const PaginationComponent = ({ pageSelected, dataPagination, setPageSelec
 		}
 		return array
 	}
+
+	console.log(fillArrayWithLastValue(dataPagination?.number_pages - 1), 'array filll')
 
 	return (
 		<nav aria-label='Page navigation example'>
@@ -40,13 +45,11 @@ export const PaginationComponent = ({ pageSelected, dataPagination, setPageSelec
 								1
 							</a>
 						</li>
-						{!array.includes(2) && (
-							<li>
-								<a className='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 '>
-									...
-								</a>
-							</li>
-						)}
+						<li>
+							<a className='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 '>
+								...
+							</a>
+						</li>
 					</>
 				)}
 				{array.map((item, index) => {

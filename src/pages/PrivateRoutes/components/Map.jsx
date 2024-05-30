@@ -13,7 +13,8 @@ export const Map = ({ width, height, setMapGlobal, center }) => {
 	const map = useRef(null)
 	const [zoom] = useState(10)
 	const mapContainer = useRef(null)
-	const mapName = 'explore.map.Here'
+	// const mapName = 'explore.map.Here'
+	const mapName = 'test-map-3d'
 
 	useEffect(() => {
 		const mapControl = (map.current = new maplibregl.Map({
@@ -21,10 +22,11 @@ export const Map = ({ width, height, setMapGlobal, center }) => {
 			style: `https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${mapName}/style-descriptor?key=${apiKey}`,
 			center: [-75.60855, 6.13824],
 			zoom: zoom,
-			hash: true
+			hash: true,
+			boxZoom: true
 		})
 			.addControl(new maplibregl.NavigationControl(), 'top-right')
-			.addControl(new maplibregl.ScaleControl()))
+			.addControl(new maplibregl.ScaleControl())).addControl(new maplibregl.FullscreenControl())
 
 		setMapGlobal(mapControl)
 	}, [])

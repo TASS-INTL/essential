@@ -32,7 +32,7 @@ export const tableTitle = [
 
 export const tableTitleInventory = [
 	{
-		id: '2',
+		id: '1',
 		title: 'Did'
 	},
 	{

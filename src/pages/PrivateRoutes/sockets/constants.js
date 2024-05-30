@@ -20,6 +20,7 @@ export const SOCKET_EVENTS = {
 
 	// NOTIFICATION
 	R_NOTIFICATION_RECEIVE: 'r_notificatio_receive',
+	NOTIFICATION_READ: 'notification_read',
 
 	// DEVICES GENERAL
 	R_DEVICE_INFO: 'r_device_info',

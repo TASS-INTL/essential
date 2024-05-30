@@ -2,16 +2,7 @@ import React from 'react'
 
 import { Outlet } from 'react-router-dom'
 
-import { BoardComponent } from '../../../Components'
-import { notificationStore } from '../../../store/notificationStore'
-import { tableTitle } from '../constants/constants'
-import { useSocket } from '../Hooks/useSocket'
-
 export const NotificationScreen = () => {
-	const arrayNotification = notificationStore((state) => state.arrayNotification)
-
-	const { sendReadSocket } = useSocket()
-
 	return (
 		<div className='w-full'>
 			<div className='w-full max-w-6xl mx-auto rounded-1xl'>

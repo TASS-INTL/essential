@@ -41,6 +41,20 @@ export const CreateTravel = () => {
 	})
 
 	useEffect(() => {
+		if (dataInfoRegister?.data?.data?.services.length > 0 && dataInfoRegister?.data?.data?.services !== undefined) {
+			objKeys.map((item) => {
+				const marker = createMarkerMap(
+					dataInfoRegister?.data?.data?.services[0]?.[item.name]?.location?.coordinates[0],
+					dataInfoRegister?.data?.data?.services[0]?.[item.name]?.location?.coordinates[1],
+					mapGlobal,
+					false
+				)
+				setMarkers((state) => [...state, marker])
+			})
+		}
+	}, [dataInfoRegister?.data?.data?.services])
+
+	useEffect(() => {
 		if (watch()?.service?.did) {
 			const filter = dataInfoRegister?.data?.data?.services.filter((word) => word._id === watch().service.did)
 			if (filter.length > 0) {
@@ -68,7 +82,7 @@ export const CreateTravel = () => {
 
 	useEffect(() => {
 		if (idsLayers[idLayerDelete]?.length > 1) {
-			mapGlobal.removeLayer(idsLayers[idLayerDelete][0])
+			mapGlobal?.removeLayer(idsLayers[idLayerDelete][0])
 			idsLayers[idLayerDelete].shift()
 		}
 	}, [idsLayers, idLayerDelete, mapGlobal])
@@ -81,7 +95,6 @@ export const CreateTravel = () => {
 			setDataGlobal({ data: { circle, values: e.lngLat }, id: e.lngLat.lng })
 			setIdsLayers((state) => ({ ...state, [`marker-${e.lngLat.lng}`]: [...state.marker, idLayer] }))
 			newMarker.on('dragend', (evento) => {
-				f
 				const lngLat = newMarker.getLngLat()
 				const { circle, idLayer: idNewLayer } = createCircleRadio(lngLat.lng, lngLat.lat, mapGlobal)
 				setIdsLayers((state) => ({
@@ -130,7 +143,6 @@ export const CreateTravel = () => {
 			}
 			const nameField =
 				countValueFill === 1 ? 'location_start' : countValueFill === 2 ? 'location_end' : 'station'
-			// setCoordinatesById((state) => ({ ...state, [nameField]: latAndLongId }))
 
 			if (nameField === 'station') {
 				setDataCoordinates((state) => ({
@@ -223,15 +235,15 @@ export const CreateTravel = () => {
 				</LocalizationProvider>
 				<SelectComponent
 					color
+					option='did'
+					name='service.did'
 					register={register}
 					label='Selecciona el servicio'
-					name='service.did'
 					arrayOptions={dataInfoRegister?.data?.data?.services}
-					option='did'
 				/>
 				<div className='flex justify-evenly'>
-					<h4 className='py-4'>Lugar de inicio {countValueFill > 0 ? '✅️' : '❌'}</h4>
-					<h4 className='py-4'>Lugar de fin {countValueFill > 1 ? '✅️' : '❌'}</h4>
+					<h4 className='py-4'>Confirma el lugar de inicio {countValueFill > 0 ? '✅️' : '❌'}</h4>
+					<h4 className='py-4'>Confirma el lugar de fin {countValueFill > 1 ? '✅️' : '❌'}</h4>
 				</div>
 				<Map setMapGlobal={setMapGlobal} />
 				<SelectComponent

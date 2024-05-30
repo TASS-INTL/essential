@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 
-import { Landing } from '../pages/LandingPage'
 import { userStore } from '../store/userStore'
 import { pathRoutes } from './constants'
 import { PrivateRouter } from './PrivateRouter'
@@ -20,7 +19,6 @@ export const AppRouter = () => {
 			<BrowserRouter>
 				<ToastContainer />
 				<Routes>
-					<Route path={pathRoutes.landing} element={<Landing />} />
 					<Route path={pathRoutes.auth} element={<PublicRouter isAuthenticated={logged} />} />
 					<Route path={pathRoutes.user} element={<PrivateRouter isAuthenticated={logged} />} />
 				</Routes>

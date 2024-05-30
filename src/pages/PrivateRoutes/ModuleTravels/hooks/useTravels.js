@@ -26,7 +26,7 @@ export const useTravels = () => {
 		mutationFn: async ({ idTravel, type }) =>
 			await api(
 				METHODS_API.POST,
-				`module/travel/${idTravel}/${type}${type === 'activate' ? '?tx_period=30&sensing_period=30' : ''}`
+				`module/travel/${idTravel}/${type}${type === 'activate' ? '?tx_period=120&sensing_period=20' : ''}`
 			),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postCreateTravel'] })
 	})

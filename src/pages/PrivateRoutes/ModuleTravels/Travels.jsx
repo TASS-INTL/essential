@@ -7,7 +7,7 @@ import { Container } from '../../../Components/Container'
 export const Travels = () => {
 	return (
 		<Container>
-			<h4 className='text-pretty text-4xl font-medium pt-5'>Viajes</h4>
+			<h4 className='text-pretty text-4xl font-medium pt-5 '>Viajes</h4>
 			<Outlet />
 		</Container>
 	)

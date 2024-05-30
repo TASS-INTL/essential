@@ -12,10 +12,10 @@ import { useMap } from '../Hooks/useMap'
 export const Monitoring = () => {
 	const location = useLocation()
 	const { idTravel } = useParams()
-	const arrayTableTravelsMonitoring = travelsStore((state) => state.arrayTableTravelsMonitoring)
-	const realTimeCoordinates = travelsStore((state) => state.realTimeCoordinates)
-	const { createMarkerMap, setMapGlobal, mapGlobal, deleteMarkerMap } = useMap()
 	const [markers, setMarkers] = useState(null)
+	const { createMarkerMap, setMapGlobal, deleteMarkerMap, mapGlobal } = useMap()
+	const realTimeCoordinates = travelsStore((state) => state.realTimeCoordinates)
+	const arrayTableTravelsMonitoring = travelsStore((state) => state.arrayTableTravelsMonitoring)
 
 	useEffect(() => {
 		if (realTimeCoordinates?.loc_clean?.lat) {
@@ -39,7 +39,7 @@ export const Monitoring = () => {
 	}, [realTimeCoordinates?.loc_clean?.lat, realTimeCoordinates?.loc_clean?.lng, mapGlobal])
 
 	return (
-		<div>
+		<>
 			<TapBottons
 				location={location}
 				idDevice={idTravel}
@@ -53,8 +53,7 @@ export const Monitoring = () => {
 				setMapGlobal={setMapGlobal}
 				center={[realTimeCoordinates?.loc_clean?.lng, realTimeCoordinates?.loc_clean?.lat]}
 			/>
-
-			<div>
+			<table>
 				<thead className='text-xs text-gray-700 uppercase bg-gray-50'>
 					<tr className=''>
 						{tableTitleInventory?.map((item) => (
@@ -67,7 +66,7 @@ export const Monitoring = () => {
 				<tbody>
 					{arrayTableTravelsMonitoring?.results?.map((item) => (
 						<tr key={item._id} className='bg-white border-b  hover:bg-gray-50 '>
-							<th scope='row' className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap '>
+							<th scope='row' className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap'>
 								{item.did}
 							</th>
 							<td className='px-6 py-4'>{item.mid}</td>
@@ -78,7 +77,7 @@ export const Monitoring = () => {
 						</tr>
 					))}
 				</tbody>
-			</div>
-		</div>
+			</table>
+		</>
 	)
 }

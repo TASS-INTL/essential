@@ -7,7 +7,6 @@ import { tableTitle } from '../constants/constants'
 export const TableNotification = () => {
 	const arrayNotification = notificationStore((state) => state.arrayNotification)
 	const [pageSelected, setPageSelected] = useState(1)
-	const [array, setArray] = useState([1, 2, 3, 4, 5])
 
 	return (
 		<div>
@@ -36,18 +35,12 @@ export const TableNotification = () => {
 					/>
 				</div>
 			</div>
-			<BoardComponent
-				dataHeader={tableTitle}
-				dataBody={arrayNotification.notifications.result}
-				to={`/user/notifications-screen/${1233345363}`}
-			/>
+			<BoardComponent dataHeader={tableTitle} dataBody={arrayNotification.notifications.result} />
 			<div className='py-5 flex justify-center items-center'>
 				<PaginationComponent
 					pageSelected={pageSelected}
 					dataPagination={arrayNotification.notifications.info}
 					setPageSelected={setPageSelected}
-					setArray={setArray}
-					array={array}
 				/>
 			</div>
 		</div>

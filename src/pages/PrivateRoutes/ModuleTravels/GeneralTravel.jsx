@@ -16,7 +16,7 @@ export const GeneralTravel = () => {
 
 	const travelInfo = travelsStore((state) => state.travelInfo)
 
-	travelInfo.length === 0 && <LoaderComponent />
+	if (travelInfo === null) return <LoaderComponent />
 
 	return (
 		<div>

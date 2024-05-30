@@ -38,7 +38,7 @@ export const FactoryDevicesScreen = () => {
 						color
 						required
 						register={register}
-						label='Selecciona el instalador'
+						label='Tipo de dispositivo'
 						name='device_type._id'
 						arrayOptions={typeDevice?.data?.data}
 						option='name'

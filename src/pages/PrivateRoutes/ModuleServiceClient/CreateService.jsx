@@ -30,6 +30,10 @@ export const CreateService = () => {
 	const [dateStart, setDateStart] = useState(dayjs('2024-04-17T15:30'))
 	const [dataCoordinates, setDataCoordinates] = useState({ place_start: {}, place_end: {}, station: [] })
 
+	//logic new
+
+	const [markersObjs, setMarkersObjs] = useState([])
+
 	const control = new MapLibreSearchControl({
 		useMapFocusPoint: true,
 		mapFocusPointMinZoom: 5,
@@ -41,6 +45,8 @@ export const CreateService = () => {
 	useEffect(() => {
 		mapGlobal?.addControl(control, 'top-left')
 	}, [mapGlobal])
+
+	console.log(markersObjs, 'markersObjs')
 
 	useEffect(() => {
 		if (idsLayers[idLayerDelete]?.length > 1) {
@@ -56,7 +62,14 @@ export const CreateService = () => {
 			setCountValueFill((state) => state + 1)
 			setDataGlobal({ data: { circle, values: e.lngLat }, id: e.lngLat.lng })
 			setIdsLayers((state) => ({ ...state, [`marker-${e.lngLat.lng}`]: [...state.marker, idLayer] }))
-			newMarker.on('dragend', (evento) => {
+
+			// new Logic
+			setMarkersObjs((state) => [...state, { idMarker: idLayer, marker: newMarker }])
+
+			newMarker.on('dragend', () => {
+				// new logic
+				console.log('esta moviendo el marker: ', idLayer)
+
 				const lngLat = newMarker.getLngLat()
 				const { circle, idLayer: idNewLayer } = createCircleRadio(lngLat.lng, lngLat.lat, mapGlobal)
 				setIdsLayers((state) => ({
