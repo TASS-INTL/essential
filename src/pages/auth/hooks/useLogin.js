@@ -1,47 +1,9 @@
-import { useEffect, useState } from 'react'
-
 import { useAuthProvider } from '@/auth/useAuthProvider'
 import { showToast } from '@/helpers/toast'
-import { userStore } from '@/store/userStore'
-
-const initialStatePersonalData = {
-	name: '',
-	key: '',
-	city: '',
-	email: '',
-	region: '',
-	country: '',
-	address: '',
-	username: '',
-	phone_number: {
-		code: '',
-		number: ''
-	},
-	code_postal: '',
-	state_province: '',
-	number_document_company: 0,
-	number_document_personal: '',
-	type_person: 'natural',
-	terms_conditions: false,
-	type_document_company: 'NN',
-	type_document_personal: 'CC',
-	type_role: 'client'
-	// type_role: "factory"
-}
 
 export const useAuth = () => {
 	const { login, ValidateCodeApi, registerPersonalData, registerNameAndUserName, resendCode, forgotPassword } =
 		useAuthProvider()
-	const { email, userName } = userStore((state) => state.userData)
-	// const [valuePersonalData, setValuePersonalData] = useState(initialStatePersonalData)
-
-	// useEffect(() => {
-	// 	setValuePersonalData({
-	// 		...valuePersonalData,
-	// 		email,
-	// 		username: userName
-	// 	})
-	// }, [])
 
 	// Login
 	const submitFormLogin = async (valuesLogin, e) => {

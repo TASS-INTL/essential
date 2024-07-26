@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 
 export const PaginationComponent = ({ pageSelected, dataPagination, setPageSelected }) => {
-	// const [array, setArray] = useState([1, 2, 3, 4, 5])
 	const [array, setArray] = useState([1, 2, 3, 4, 5])
 
-	//
 	const fillArrayWithLastValue = (UltimoValor) => {
 		let array = []
 		for (let i = UltimoValor - 4; i <= UltimoValor; i++) {
@@ -12,8 +10,6 @@ export const PaginationComponent = ({ pageSelected, dataPagination, setPageSelec
 		}
 		return array
 	}
-
-	console.log(fillArrayWithLastValue(dataPagination?.number_pages - 1), 'array filll')
 
 	return (
 		<nav aria-label='Page navigation example'>
