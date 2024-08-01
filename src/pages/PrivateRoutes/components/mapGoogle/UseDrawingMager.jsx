@@ -11,8 +11,6 @@ export function useDrawingManager(flagActivate) {
 
 	useEffect(() => {
 		if (!map || !drawing) return
-		console.log(google.maps.drawing.OverlayType)
-
 		// https://developers.google.com/maps/documentation/javascript/reference/drawing
 		const newDrawingManager = new drawing.DrawingManager({
 			map,
