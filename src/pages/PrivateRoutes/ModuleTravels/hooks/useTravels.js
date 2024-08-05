@@ -21,7 +21,7 @@ export const useTravels = () => {
 			queryKey: ['getDataInfoRegister'],
 			queryFn: async () => await api(METHODS_API.GET, `module/travel/info/register`)
 		})
-	//?tx_period=30&sensing_period=30
+
 	const activateTravel = useMutation({
 		mutationFn: async ({ idTravel, type }) =>
 			await api(

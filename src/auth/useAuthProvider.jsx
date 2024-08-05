@@ -16,9 +16,11 @@ export const useAuthProvider = () => {
 			password
 		})
 
+		console.log(response)
+
 		if (response?.completed) {
 			if (response?.type_ === 'USER_HAS_SESSION') {
-				localStorage.setItem('token', response.data[0].token)
+				localStorage.setItem('token', response?.data?.token)
 				setUserData({
 					...userData,
 					logged: true,
@@ -32,12 +34,12 @@ export const useAuthProvider = () => {
 					modules: response.data[0].user_policies.modules
 				})
 			} else {
-				localStorage.setItem('token', response.data[0].token)
+				localStorage.setItem('token', response?.data?.token)
 				setUserData({
 					...userData,
 					checking: false,
 					email,
-					tokenSesion: response.data[0].token
+					tokenSesion: response?.data?.token
 				})
 				navigate(pathNavigation.validateCode, { state: { screen: 'login' } })
 			}
@@ -56,26 +58,26 @@ export const useAuthProvider = () => {
 				email
 			}
 		)
-
+		console.log(response.data, 'response,data')
 		if (response?.completed) {
 			if (screen === 'login') {
-				localStorage.setItem('token', response.data[0].token)
+				localStorage.setItem('token', response?.data?.token)
 				setUserData({
 					...userData,
 					logged: true,
 					checking: false,
-					uid: response.data[0]._id,
-					name: response.data[0].name,
-					email: response.data[0].email,
-					state: response.data[0].state,
-					userName: response.data[0].username,
-					tokenSesion: response.data[0].token,
-					modules: response.data[0].user_policies.modules
+					uid: response?.data?._id,
+					name: response?.data?.name,
+					email: response?.data?.email,
+					state: response?.data?.state,
+					userName: response?.data?.username,
+					tokenSesion: response?.data?.token,
+					modules: response?.data?.user_policies.modules
 				})
 			} else {
 				setUserData({
 					...userData,
-					tokenRegister: response.data[0].token
+					tokenRegister: response?.data?.token
 				})
 				navigate(pathNavigation.personalData)
 			}
@@ -169,6 +171,7 @@ export const useAuthProvider = () => {
 
 	const logout = async () => {
 		const response = await api(METHODS_API.POST, 'auth2/logout')
+		console.log(response)
 
 		if (response?.completed || response?.type_ === 'UNAUTHORIZED') {
 			setUserData({

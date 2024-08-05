@@ -44,7 +44,7 @@ const icons = {
 export const SideBarComponent = () => {
 	const { pathname } = useLocation()
 	const { logout } = useAuthProvider()
-	const [open, setOpen] = useState(true)
+	const [open, setOpen] = useState(false)
 	const userData = userStore((state) => state.userData)
 	const notification = usersStore((state) => state.notification)
 	const [selectButton, setSelectButton] = useState(0)
@@ -52,9 +52,7 @@ export const SideBarComponent = () => {
 	return (
 		<aside
 			id='separator-sidebar'
-			className={`${
-				open ? ' md:w-[20%] xl:w-[15%]' : 'w-20'
-			} relative duration-300 top-0 left-0 z-40 h-screen transition-transform -translate-x-full sm:translate-x-0`}
+			className={`${open ? 'md:w-[20%] xl:w-[15%]' : 'w-20'} relative duration-300 top-0 left-0 z-40 h-screen `}
 			aria-label='Sidebar'
 		>
 			<img
@@ -64,9 +62,6 @@ export const SideBarComponent = () => {
 				onClick={() => setOpen(!open)}
 			/>
 			<div className='h-full px-3 py-4 overflow-y-auto bg-black border-r-2 border-gray'>
-				<div className=''>
-					<h1 className='text-white gap-x-4 px-2'>{userData.userName}</h1>
-				</div>
 				<ul className='space-y-2 font-medium'>
 					{userData?.modules?.map((menu, index) => (
 						<NavLink key={index} to={`${menu.pathName}`}>
@@ -75,7 +70,7 @@ export const SideBarComponent = () => {
 								className={`
                             flex 
                             justify-between
-                            p-2 
+                            p-3 
                             text-gray-900 
                             rounded-lg 
                             dark:text-white 
@@ -99,9 +94,9 @@ export const SideBarComponent = () => {
 										{menu.title}
 									</span>
 								</div>
-								<div className='flex items-end'>
+								{/* <div className='flex items-end'>
 									{menu.name === 'Notifications' && notification && <>{`(${notification})`}</>}
-								</div>
+								</div> */}
 							</li>
 						</NavLink>
 					))}
@@ -109,7 +104,7 @@ export const SideBarComponent = () => {
 						className={`
                      flex 
                      items-center 
-                     p-2  
+                     p-3  
                      dark:text-white  
                      rounded-lg 
                      cursor-pointer 
