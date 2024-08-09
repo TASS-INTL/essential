@@ -1,18 +1,13 @@
 import React from 'react'
 
-import { usersStore } from '@/store/usersStore'
-
-export const ModalComponent = ({ children, textModal }) => {
-	const setModalVisible = usersStore((state) => state.setModalVisible)
-
+export const ModalComponent = ({ children, textModal, handleClose }) => {
 	return (
 		<div className='fixed inset-0 bg-black bg-opacity-25  backdrop-blur-sm flex items-center justify-center'>
 			<div className=' bg-white p-2 rounded w-3/5'>
-				<button onClick={() => setModalVisible(false)} className='bg-black rounded-lg  px-6 py-1  text-white'>
+				<button onClick={() => handleClose(false)} className='bg-black rounded-lg px-6 py-1  text-white'>
 					cerrar
 				</button>
-				<h1 className='font-semibold text-center text-xl text-gray-700'>{textModal}</h1>
-				<p className='text-center text-gray-700 mb-5'>Ingrese todos los campos</p>
+				<h1 className='font-semibold text-center py-3 text-xl text-gray-700 overflow-y-scroll'>{textModal}</h1>
 				{children}
 			</div>
 		</div>

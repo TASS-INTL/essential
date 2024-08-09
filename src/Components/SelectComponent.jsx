@@ -3,7 +3,7 @@ import React from 'react'
 export const SelectComponent = ({ register, name, label, arrayOptions, required, option }) => {
 	return (
 		<div>
-			<label htmlFor={name} className='block mb-2 text-sm font-medium text-gray-900 '>
+			<label htmlFor={name} className='block mb-1 text-sm font-medium text-gray-900 '>
 				{label}
 			</label>
 			<div className='relative rounded-md shadow-sm'>

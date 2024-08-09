@@ -7,24 +7,24 @@ export const pathNavigation = {
 }
 
 export const arrayOptions = [
-	{ id: 1, name: 'Natural' },
-	{ id: 2, name: 'Juridica' }
+	{ _id: 1, name: 'Natural' },
+	{ _id: 2, name: 'Juridica' }
 ]
 
 export const typeDocument = [
-	{ id: 1, name: 'CC' },
-	{ id: 2, name: 'CE' },
-	{ id: 3, name: 'TI' },
-	{ id: 4, name: 'RC' },
-	{ id: 5, name: 'PA' },
-	{ id: 6, name: 'NIT' },
-	{ id: 7, name: 'SSN' },
-	{ id: 8, name: 'NUIP' },
-	{ id: 9, name: 'DNI' },
-	{ id: 10, name: 'NN' }
+	{ _id: 1, name: 'CC' },
+	{ _id: 2, name: 'CE' },
+	{ _id: 3, name: 'TI' },
+	{ _id: 4, name: 'RC' },
+	{ _id: 5, name: 'PA' },
+	{ _id: 6, name: 'NIT' },
+	{ _id: 7, name: 'SSN' },
+	{ _id: 8, name: 'NUIP' },
+	{ _id: 9, name: 'DNI' },
+	{ _id: 10, name: 'NN' }
 ]
 
 export const typeUser = [
-	{ id: 1, name: 'client' },
-	{ id: 2, name: 'factory' }
+	{ _id: 1, name: 'client' },
+	{ _id: 2, name: 'factory' }
 ]

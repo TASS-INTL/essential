@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 
+import { ModalComponent } from '../Components'
 import { userStore } from '../store/userStore'
 import { pathRoutes } from './constants'
 import { PrivateRouter } from './PrivateRouter'

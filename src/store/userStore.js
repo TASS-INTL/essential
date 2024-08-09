@@ -16,6 +16,8 @@ export const userStore = create(
 				tokenSesion: null,
 				modules: null
 			},
+			modalUser: false,
+			setModalUserVisible: (value) => set(() => ({ modalUser: value })),
 			setUserData: (value) => set(() => ({ userData: value }))
 		}),
 		{ name: 'user-storage' }

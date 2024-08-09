@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 
-import api from '../Api/api'
-import { METHODS_API } from '../Api/constantsApi'
-import { pathNavigation } from '../pages/auth/constants'
-import { userStore } from '../store/userStore'
+import api from '../../../Api/api'
+import { METHODS_API } from '../../../Api/constantsApi'
+import { userStore } from '../../../store/userStore'
+import { pathNavigation } from '../constants'
 
 export const useAuthProvider = () => {
 	const navigate = useNavigate()
@@ -15,8 +15,6 @@ export const useAuthProvider = () => {
 			email,
 			password
 		})
-
-		console.log(response)
 
 		if (response?.completed) {
 			if (response?.type_ === 'USER_HAS_SESSION') {
@@ -58,7 +56,6 @@ export const useAuthProvider = () => {
 				email
 			}
 		)
-		console.log(response.data, 'response,data')
 		if (response?.completed) {
 			if (screen === 'login') {
 				localStorage.setItem('token', response?.data?.token)
@@ -171,7 +168,6 @@ export const useAuthProvider = () => {
 
 	const logout = async () => {
 		const response = await api(METHODS_API.POST, 'auth2/logout')
-		console.log(response)
 
 		if (response?.completed || response?.type_ === 'UNAUTHORIZED') {
 			setUserData({

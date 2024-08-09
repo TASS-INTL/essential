@@ -4,6 +4,8 @@ import { NavLink, useLocation } from 'react-router-dom'
 
 import {
 	Account,
+	Admin,
+	Central,
 	Chating,
 	Devices,
 	factorydevices,
@@ -19,8 +21,7 @@ import {
 	Travels,
 	Users
 } from '../assets/assetsplatform/PrivateRoutes'
-import { useAuthProvider } from '../auth/useAuthProvider'
-import { usersStore } from '../store/usersStore'
+import { useAuthProvider } from '../pages/auth/hooks/useAuthProvider'
 import { userStore } from '../store/userStore'
 
 const icons = {
@@ -38,26 +39,28 @@ const icons = {
 	Groups,
 	ServicesClient,
 	Inventory,
-	Testing
+	Testing,
+	Central,
+	Admin
 }
 
 export const SideBarComponent = () => {
 	const { pathname } = useLocation()
 	const { logout } = useAuthProvider()
 	const [open, setOpen] = useState(false)
-	const userData = userStore((state) => state.userData)
-	const notification = usersStore((state) => state.notification)
 	const [selectButton, setSelectButton] = useState(0)
+	const userData = userStore((state) => state.userData)
 
+	console.log(userData)
 	return (
 		<aside
 			id='separator-sidebar'
-			className={`${open ? 'md:w-[20%] xl:w-[15%]' : 'w-20'} relative duration-300 top-0 left-0 z-40 h-screen `}
+			className={`${open ? 'md:w-[20%] xl:w-[15%]' : 'w-20'}  absolute duration-300 top-0 left-0  h-screen `}
 			aria-label='Sidebar'
 		>
 			<img
 				src='../src/assets/img/control.png'
-				className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
+				className={`absolute cursor-pointer -right-3 top-4 w-7 border-dark-purple
            border-2 rounded-full  ${!open && 'rotate-180'}`}
 				onClick={() => setOpen(!open)}
 			/>
@@ -91,12 +94,9 @@ export const SideBarComponent = () => {
 										className='w-[24px] h-[20px] object-contain cursor-pointer'
 									/>
 									<span className={`${!open && 'hidden'} origin-left duration-200 ms-3 text-sm`}>
-										{menu.title}
+										{menu.name_consult}
 									</span>
 								</div>
-								{/* <div className='flex items-end'>
-									{menu.name === 'Notifications' && notification && <>{`(${notification})`}</>}
-								</div> */}
 							</li>
 						</NavLink>
 					))}

@@ -5,7 +5,7 @@ export const InputComponent = ({ defaultValue, label, register, name, required, 
 		<div>
 			<label
 				htmlFor={name}
-				className={`block mb-2 text-sm font-medium ${color ? 'text-gray-900' : 'text-white'}   `}
+				className={`block mb-1 text-sm font-medium ${color ? 'text-gray-900' : 'text-white'}   `}
 			>
 				{label}
 			</label>

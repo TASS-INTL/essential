@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form'
 import { useLocation } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
 
+import { logoTass } from '../../assets/assetsplatform/PrivateRoutes'
 import { useAuth } from './hooks/useLogin'
 
 export function cn(...inputs) {
@@ -28,18 +29,22 @@ export const ValidateCodeScreen = () => {
 	} = useForm()
 
 	return (
-		<div className='bg-primary min-h-screen  items-center justify-center  space-x-6'>
+		<div className=' min-h-screen  items-center justify-center  space-x-6'>
 			<div className='min-h-screen p-6 flex flex-col items-center justify-center'>
 				<div className='w-1/1 md:w-1/3'>
-					<div className='mb-7'>
-						<h1 className='text-4xl font-bold text-white text-center'>Validacion de codigo</h1>
-						<h2 className='text-2xl font-bold text-white text-center'>ingresa el codigo</h2>
+					<div className=' flex justify-center items-center py-2'>
+						<img src={logoTass} width={390} alt='logoTass' />
+					</div>
+					<div className='mt-7 mb-5'>
+						<h1 className='text-2xl font-bold text-black text-center'>Validacion de codigo</h1>
+						<h2 className='text-1xl font-bold text-black text-center'>ingresa el codigo</h2>
 					</div>
 					<form
 						action='flex flex-col'
 						onSubmit={handleSubmit((data, event) => submitFormValidateCode(data, event, screen))}
 					>
 						<InputComponent
+							color
 							register={register}
 							label='Validacion de codigo'
 							name='code'
@@ -53,7 +58,7 @@ export const ValidateCodeScreen = () => {
 					</form>
 					<p
 						onClick={submitResendCode}
-						className=' text-white text-center cursor-pointer hover:text-blue-300'
+						className=' text-black text-center cursor-pointer hover:text-blue-300'
 					>
 						volver a enviar
 					</p>

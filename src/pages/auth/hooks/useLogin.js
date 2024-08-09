@@ -1,5 +1,6 @@
-import { useAuthProvider } from '@/auth/useAuthProvider'
 import { showToast } from '@/helpers/toast'
+
+import { useAuthProvider } from './useAuthProvider'
 
 export const useAuth = () => {
 	const { login, ValidateCodeApi, registerPersonalData, registerNameAndUserName, resendCode, forgotPassword } =
