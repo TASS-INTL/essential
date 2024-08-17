@@ -56,7 +56,7 @@ const Navbar = () => {
 	const handleActiveMenu = () => setActiveMenu(!activeMenu)
 
 	return (
-		<div className='flex z-10 bg-white justify-end'>
+		<div className='flex bg-white justify-end '>
 			<div className='flex'>
 				<NavButton
 					title='Notification'

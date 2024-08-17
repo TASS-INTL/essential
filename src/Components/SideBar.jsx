@@ -24,7 +24,7 @@ import {
 import { useAuthProvider } from '../pages/auth/hooks/useAuthProvider'
 import { userStore } from '../store/userStore'
 
-const icons = {
+export const icons = {
 	Account,
 	Devices,
 	Travels,
@@ -51,16 +51,15 @@ export const SideBarComponent = () => {
 	const [selectButton, setSelectButton] = useState(0)
 	const userData = userStore((state) => state.userData)
 
-	console.log(userData)
 	return (
 		<aside
 			id='separator-sidebar'
-			className={`${open ? 'md:w-[20%] xl:w-[15%]' : 'w-20'}  absolute duration-300 top-0 left-0  h-screen `}
+			className={`${open ? 'md:w-[20%] xl:w-[15%]' : 'w-[4.5rem]'} absolute duration-300 top-0 left-0 h-screen`}
 			aria-label='Sidebar'
 		>
 			<img
 				src='../src/assets/img/control.png'
-				className={`absolute cursor-pointer -right-3 top-4 w-7 border-dark-purple
+				className={`absolute cursor-pointer -right-3 top-4 w-7 border-primary
            border-2 rounded-full  ${!open && 'rotate-180'}`}
 				onClick={() => setOpen(!open)}
 			/>
@@ -81,7 +80,7 @@ export const SideBarComponent = () => {
                             dark:hover:bg-gray-700 
                             gap-x-4
                             ${menu.gap ? 'mt-9' : 'mt-2'}
-									 ${pathname.includes(menu.pathName) && 'bg-light-white'}`}
+									 ${pathname.includes(menu.pathName) && 'bg-lightWhite'}`}
 								onClick={() => {
 									menu.title === 'Cerrar sesion' && logout()
 									setSelectButton(index)
@@ -94,7 +93,7 @@ export const SideBarComponent = () => {
 										className='w-[24px] h-[20px] object-contain cursor-pointer'
 									/>
 									<span className={`${!open && 'hidden'} origin-left duration-200 ms-3 text-sm`}>
-										{menu.name_consult}
+										{menu.name}
 									</span>
 								</div>
 							</li>
@@ -108,8 +107,8 @@ export const SideBarComponent = () => {
                      dark:text-white  
                      rounded-lg 
                      cursor-pointer 
-                     hover:bg-light-white 
-                     mt-1 ${selectButton === true && 'bg-light-white'} `}
+                     hover:bg-lightWhite 
+                     mt-1 ${selectButton === true && 'bg-lightWhite'} `}
 						onClick={logout}
 					>
 						<img

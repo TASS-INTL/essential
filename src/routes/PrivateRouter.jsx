@@ -5,18 +5,14 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { SideBarComponent } from '../Components'
 import Navbar from '../Components/navBar'
 import { pathNavigation } from '../pages/auth/constants'
-import { Account } from '../pages/PrivateRoutes/ModuleAccount'
-import { ChatScreen } from '../pages/PrivateRoutes/ModuleChat'
-import { DevicesScreen, FormAssignDevice, TableDevice } from '../pages/PrivateRoutes/ModuleDevices'
-import { FactoryDevicesScreen } from '../pages/PrivateRoutes/ModuleFactoryDevices/FactoryDevicesScreen'
-import { Installers } from '../pages/PrivateRoutes/ModuleInstallers'
-import { Device, Events, General, InventoryScreen, TableInventory, Test } from '../pages/PrivateRoutes/ModuleInventory'
-import { MonitoringScreen } from '../pages/PrivateRoutes/ModuleMonitoring/MonitoringScreen'
-import { DetailNotification, NotificationScreen, TableNotification } from '../pages/PrivateRoutes/ModuleNotification'
-import { ServicesClient, TableServiceClient } from '../pages/PrivateRoutes/ModuleServiceClient'
-import { CreateService, Services, Table } from '../pages/PrivateRoutes/ModuleServices'
-import { SettingsScreen } from '../pages/PrivateRoutes/ModuleSettings/SettingsScreen'
-import { TestingScreen } from '../pages/PrivateRoutes/ModuleTesting/TestingScreen'
+import { Account } from '../pages/PrivateRoutes/Account/ModuleAccount/Account'
+import { UsersScreen } from '../pages/PrivateRoutes/Admin/ModuleUsers/UsersScreen'
+import { CentralScreen } from '../pages/PrivateRoutes/Central'
+import { Installers } from '../pages/PrivateRoutes/Central/ModuleInstallers/Installers'
+import { MonitoringScreen } from '../pages/PrivateRoutes/Central/ModuleMonitoring/MonitoringScreen'
+import { ServicesClient } from '../pages/PrivateRoutes/Central/ModuleServiceClient/ServicesClient'
+import { TableServiceClient } from '../pages/PrivateRoutes/Central/ModuleServiceClient/TableServiceClient'
+import { CreateService, Services, Table } from '../pages/PrivateRoutes/Central/ModuleServices'
 import {
 	CreateTravel,
 	DetailTravel,
@@ -25,8 +21,23 @@ import {
 	Monitoring,
 	TableTravels,
 	Travels
-} from '../pages/PrivateRoutes/ModuleTravels'
-import { UsersScreen } from '../pages/PrivateRoutes/ModuleUsers/UsersScreen'
+} from '../pages/PrivateRoutes/Central/ModuleTravels'
+import { ChatScreen } from '../pages/PrivateRoutes/Chat/ModuleChat/ChatScreen'
+import { DevicesScreen } from '../pages/PrivateRoutes/Inventory/ModuleDevices/DevicesScreen'
+import { FormAssignDevice } from '../pages/PrivateRoutes/Inventory/ModuleDevices/FormAssignDevice'
+import { TableDevice } from '../pages/PrivateRoutes/Inventory/ModuleDevices/TableDevice'
+import { FactoryDevicesScreen } from '../pages/PrivateRoutes/Inventory/ModuleFactoryDevices/FactoryDevicesScreen'
+import {
+	Device,
+	Events,
+	General,
+	InventoryScreen,
+	TableInventory,
+	Test
+} from '../pages/PrivateRoutes/Inventory/ModuleInventory'
+import { TestingScreen } from '../pages/PrivateRoutes/Inventory/ModuleTesting/TestingScreen'
+import { NotificationScreen } from '../pages/PrivateRoutes/Notification/ModuleNotification/NotificationScreen'
+import { TableNotification } from '../pages/PrivateRoutes/Notification/ModuleNotification/TableNotification'
 import { CONNECTION_NAME_SPACE, SOCKET_EVENTS, SOCKETS_ROOMS } from '../pages/PrivateRoutes/sockets/constants'
 import { SocketForNameSpace } from '../pages/PrivateRoutes/sockets/socketForNameSpace'
 import { SocketContext, SocketProvider } from '../pages/PrivateRoutes/sockets/socketProvider'
@@ -53,7 +64,7 @@ export const RoutesPrivate = () => {
 
 	return (
 		<div className='flex relative'>
-			<div className='fixed w-full'>
+			<div className='fixed w-full z-10'>
 				<Navbar />
 				<SideBarComponent />
 			</div>
@@ -123,40 +134,15 @@ export const RoutesPrivate = () => {
 						<Route path={routesPrivate.travels} element={<Travels />} />
 					</Route>
 				</Route>
-				{/* Module Inventory */}
-				<Route path={routesPrivate.inventoryScreen} element={<InventoryScreen />} />
 
-				{/* <Route
-					path={routesPrivate.inventoryScreen}
-					// element={
-					// 	<SocketForNameSpace
-					// 		nameSpace={CONNECTION_NAME_SPACE.DEVICE}
-					// 		typeJoin={SOCKETS_ROOMS.ROOM_INVENTORY}
-					// 		socketsEvents={SOCKET_EVENTS.R_TB_DEVICE_FAC}
-					// 		functionListening={setArrayTableInventory}
-					// 	>
-					// 		<InventoryScreen />
-					// 	</SocketForNameSpace>
-					// }
-					element={<InventoryScreen />}
-				>
-					<Route index path={routesPrivate.inventoryScreen} element={<InventoryMain />} />
-					<Route path={routesPrivate.table} element={<TableInventory />} />
-					<Route path={routesPrivate.deviceIdDevice} element={<Device />}>
-						<Route index path={routesPrivate.general} element={<General />} />
-						<Route path={routesPrivate.test} element={<Test />} />
-						<Route path={routesPrivate.events} element={<Events />} />
-						<Route path={routesPrivate.travels} element={<Travels />} />
-					</Route>
-				</Route> */}
-				{/* Module Settings */}
-				<Route path={routesPrivate.settingsScreen} element={<SettingsScreen />} />
+				<Route path={routesPrivate.inventoryScreen} element={<InventoryScreen />} />
+				<Route path={routesPrivate.centralScreen} element={<CentralScreen />} />
+
 				{/* Module Account */}
 				<Route path={routesPrivate.accountScreen} element={<Account />} />
 				{/* Module Notification */}
 				<Route path={routesPrivate.notificationScreen} element={<NotificationScreen />}>
 					<Route index path={routesPrivate.table} element={<TableNotification />} />
-					<Route path={routesPrivate.idNotification} element={<DetailNotification />} />
 				</Route>
 				{/* Module Factory Device */}
 				<Route path={routesPrivate.factoryDevicesScreen} element={<FactoryDevicesScreen />} />

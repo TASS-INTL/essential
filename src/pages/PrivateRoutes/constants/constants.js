@@ -193,6 +193,8 @@ export const initialStateEditTravel = {
 			location: '', // objeto de la documentacion
 			permissions: {}, // viene del back
 			name: 'name geo',
+			consecutive: 2,
+			validated: false,
 			market: {
 				location: {},
 				status: true
@@ -201,6 +203,8 @@ export const initialStateEditTravel = {
 		location_start: {
 			location: '', // objeto de la documentacion
 			permissions: {}, // viene del back
+			consecutive: 1,
+			validated: false,
 			name: 'name geo',
 			market: {
 				location: {},
@@ -212,6 +216,8 @@ export const initialStateEditTravel = {
 				location: '', // objeto de la documentacion
 				permissions: {}, // viene del back
 				name: 'name geo',
+				consecutive: 2,
+				validated: false,
 				market: {
 					location: {},
 					status: true

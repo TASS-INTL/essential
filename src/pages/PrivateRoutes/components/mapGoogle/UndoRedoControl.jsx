@@ -2,7 +2,7 @@ import React, { useEffect, useReducer, useRef } from 'react'
 
 import { useMap } from '@vis.gl/react-google-maps'
 
-import { DrawingActionKind, isCircle, isMarker, isPolygon, isRectangle } from './types'
+import { DrawingActionKind, isCircle, isMarker, isPolygon, isPolyline, isRectangle } from './types'
 
 // Handle drawing manager events
 function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispatch) {

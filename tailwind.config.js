@@ -16,12 +16,10 @@ export default {
 			display: ['Inter', 'system-ui', 'sans-serif'],
 			body: ['Inter', 'system-ui', 'sans-serif'],
 			colors: {
-				'dark-purple': '#081A51',
-				'light-white': 'rgba(255, 255, 255, 0.17)',
-				primary: '#00040f',
-				secondary: '#00f6ff',
-				dimWhite: 'rgba(255, 255, 255, 0.7)',
-				dimBlue: 'rgba(9, 151, 124, 0.1)'
+				primary: '#262626',
+				secondary: '#3366ff',
+				bluePrimary: '#0c3471',
+				lightWhite: 'rgba(255, 255, 255, 0.17)'
 			},
 			fontFamily: {
 				poppins: ['Poppins', 'sans-serif']

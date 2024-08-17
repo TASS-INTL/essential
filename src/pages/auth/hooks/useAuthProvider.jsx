@@ -168,8 +168,9 @@ export const useAuthProvider = () => {
 
 	const logout = async () => {
 		const response = await api(METHODS_API.POST, 'auth2/logout')
+		console.log(response, 'response')
 
-		if (response?.completed || response?.type_ === 'UNAUTHORIZED') {
+		if (response?.completed || response?.type_ === 'UNAUTHORIZED' || response?.type_ === 'Session not found') {
 			setUserData({
 				uid: null,
 				name: null,

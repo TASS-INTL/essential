@@ -10,6 +10,7 @@ export const routesPrivate = {
 	table: 'table',
 	events: 'events',
 	general: 'general',
+	centralScreen: 'central-screen',
 	// Service
 	createService: 'create-service',
 	servicesScreen: 'services-screen',
