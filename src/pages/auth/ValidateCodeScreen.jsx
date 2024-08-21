@@ -37,7 +37,9 @@ export const ValidateCodeScreen = () => {
 					</div>
 					<div className='mt-7 mb-5'>
 						<h1 className='text-2xl font-bold text-black text-center'>Validacion de codigo</h1>
-						<h2 className='text-1xl font-bold text-black text-center'>ingresa el codigo</h2>
+						<h2 className='text-1xl font-bold text-black text-center'>
+							Ingresa el codigo que hemos enviado a tu correo!
+						</h2>
 					</div>
 					<form
 						action='flex flex-col'

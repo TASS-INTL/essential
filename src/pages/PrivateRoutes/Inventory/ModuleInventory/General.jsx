@@ -38,8 +38,6 @@ export const General = () => {
 		}
 	}, [mapGlobal, deviceInfo?.general?.last_location?.lng, deviceInfo?.general?.last_location?.lat])
 
-	console.log(deviceInfo, 'deviceInfo')
-
 	return (
 		<>
 			<TapBottons location={location} idDevice={idDevice} path='devices-screen/device' data={arrayTapInventory} />

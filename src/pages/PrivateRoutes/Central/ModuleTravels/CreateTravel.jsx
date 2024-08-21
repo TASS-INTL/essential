@@ -82,13 +82,12 @@ function reducer(state, action) {
 				snapshot.position = overlay.getPosition()?.toJSON()
 			} else if (isPolygon(overlay) || isPolyline(overlay)) {
 				const array = []
-				overlay
-					.getPath()
-					?.getArray()
-					.map((item) => {
-						array.push([item.lat(), item.lng()])
-						return console.log('lat : ', item.lat(), 'lng : ', item.lng())
-					})
+				// overlay
+				// 	.getPath()
+				// 	?.getArray()
+				// 	.map((item) => {
+				// 		array.push([item.lat(), item.lng()])
+				// 	})
 
 				const result = polygon(
 					[
@@ -155,7 +154,7 @@ function reducer(state, action) {
 }
 
 export const CreateTravel = ({ dataForm, handleCreate }) => {
-	const { register, handleSubmit } = useForm(dataForm)
+	const { register, handleSubmit, watch } = useForm(dataForm)
 	const [state, dispatch] = useReducer(reducer, {
 		past: [],
 		now: [],
@@ -169,7 +168,6 @@ export const CreateTravel = ({ dataForm, handleCreate }) => {
 	const [objectLocations, setObjectLocations] = useState(initialDataLocation)
 
 	const addPlaces = ({ location, data }) => {
-		console.log('entro aca', location, data)
 		setSelectedPlace(data)
 		setObjectLocations((state) => ({ ...state, [location]: data }))
 	}

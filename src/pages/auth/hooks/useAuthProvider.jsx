@@ -17,19 +17,19 @@ export const useAuthProvider = () => {
 		})
 
 		if (response?.completed) {
-			if (response?.type_ === 'USER_HAS_SESSION') {
+			if (response?.type_ === 'SingInCompleted') {
 				localStorage.setItem('token', response?.data?.token)
 				setUserData({
 					...userData,
 					logged: true,
 					checking: false,
-					uid: response.data[0]._id,
-					name: response.data[0].name,
-					email: response.data[0].email,
-					state: response.data[0].state,
-					userName: response.data[0].username,
-					tokenSesion: response.data[0].token,
-					modules: response.data[0].user_policies.modules
+					uid: response?.data?._id,
+					name: response?.data?.name,
+					email: response?.data?.email,
+					state: response?.data?.state,
+					userName: response?.data?.username,
+					tokenSesion: response?.data?.token,
+					modules: response?.data?.user_policies?.modules
 				})
 			} else {
 				localStorage.setItem('token', response?.data?.token)
@@ -168,9 +168,8 @@ export const useAuthProvider = () => {
 
 	const logout = async () => {
 		const response = await api(METHODS_API.POST, 'auth2/logout')
-		console.log(response, 'response')
 
-		if (response?.completed || response?.type_ === 'UNAUTHORIZED' || response?.type_ === 'Session not found') {
+		if (response?.completed || response?.type_ === 'ErrorServerGetCurrentSession') {
 			setUserData({
 				uid: null,
 				name: null,

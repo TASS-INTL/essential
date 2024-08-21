@@ -20,8 +20,6 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect, location }) => {
 	useEffect(() => {
 		if (!placeAutocomplete) return
 
-		console.log(placeAutocomplete, 'placeAutocomplete')
-
 		placeAutocomplete.addListener('place_changed', () => {
 			onPlaceSelect({ data: placeAutocomplete.getPlace(), location })
 		})

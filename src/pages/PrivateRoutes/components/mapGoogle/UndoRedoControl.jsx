@@ -106,8 +106,6 @@ function useOverlaySnapshots(map, state, overlaysShouldUpdateRef) {
 export const UndoRedoControl = ({ drawingManager, dispatch, state }) => {
 	const map = useMap()
 
-	// console.log(state, 'state')
-
 	// We need this ref to prevent infinite loops in certain cases.
 	// For example when the radius of circle is set via code (and not by user interaction)
 	// the radius_changed event gets triggered again. This would cause an infinite loop.

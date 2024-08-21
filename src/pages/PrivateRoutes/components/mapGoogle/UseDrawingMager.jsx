@@ -14,7 +14,6 @@ export function useDrawingManager(flagActivate) {
 		// https://developers.google.com/maps/documentation/javascript/reference/drawing
 		const newDrawingManager = new drawing.DrawingManager({
 			map,
-			drawingMode: google.maps.drawing.OverlayType.CIRCLE,
 			drawingControl: true,
 			drawingControlOptions: {
 				position: google.maps.ControlPosition.BLOCK_START_INLINE_START,
