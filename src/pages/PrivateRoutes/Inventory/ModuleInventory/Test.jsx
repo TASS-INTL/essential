@@ -3,8 +3,7 @@ import React from 'react'
 import { inventoryStore } from '@/store/inventoryStore'
 import { useLocation, useParams } from 'react-router-dom'
 
-import { TapBottons } from '../../components'
-import { arrayTapInventory } from '../../components/TapBottons'
+import { arrayTapInventory, TapBottons } from '../../../../Components/TapBottons'
 import { BoardDevice } from '../ModuleDevices/BoardDevice'
 import { useInventory } from './Hooks/useInventory'
 

@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { BoardComponent, PaginationComponent } from '../../../../Components'
+import { InputSearch } from '../../../../Components/InputSearch'
 import { notificationStore } from '../../../../store/notificationStore'
-import { InputSearch } from '../../components'
 import { tableTitle } from '../../constants/constants'
 
 export const TableNotification = () => {

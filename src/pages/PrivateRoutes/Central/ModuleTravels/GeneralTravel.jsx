@@ -4,9 +4,8 @@ import { useLocation, useParams } from 'react-router-dom'
 
 import { padlockClose } from '../../../../assets/assetsplatform'
 import { LoaderComponent } from '../../../../Components'
+import { arrayTapMonitoring, TapBottons } from '../../../../Components/TapBottons'
 import { travelsStore } from '../../../../store/travelsStore'
-import { TapBottons } from '../../components'
-import { arrayTapMonitoring } from '../../components/TapBottons'
 import { useTravels } from './hooks/useTravels'
 
 export const GeneralTravel = () => {

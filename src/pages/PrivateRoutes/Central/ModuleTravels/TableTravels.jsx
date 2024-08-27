@@ -9,7 +9,7 @@ import { format } from 'date-fns'
 import { useForm } from 'react-hook-form'
 
 import { CreateTravel } from '.'
-import { InputSearch } from '../../components'
+import { InputSearch } from '../../../../Components/InputSearch'
 import { initialStateTravel, styleModal } from '../../constants/constants'
 import { BoardDevice } from '../../Inventory/ModuleDevices/BoardDevice'
 import { useTravels } from './hooks/useTravels'

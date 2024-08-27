@@ -1,20 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { MapLibreSearchControl } from '@stadiamaps/maplibre-search-box'
-import { format } from 'date-fns'
-import dayjs from 'dayjs'
 import { useForm } from 'react-hook-form'
-
-import { emailSvg } from '../../../../assets/assetsplatform'
-import { InputSubmitComponent } from '../../../../Components'
-import { InputComponent } from '../../../../Components/InputComponent'
-import { Map } from '../../components/Map'
-import { useMap } from '../../Hooks/useMap'
-import { useServiceClient } from './hooks/useServiceClient'
 
 export const CreateService = () => {
 	const { register, handleSubmit } = useForm()

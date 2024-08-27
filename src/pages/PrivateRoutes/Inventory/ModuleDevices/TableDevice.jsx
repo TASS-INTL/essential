@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
+import { InputSearch } from '../../../../Components/InputSearch'
 import { deviceStore } from '../../../../store/deviceStore'
-import { InputSearch } from '../../components'
 import { BoardDevice } from './BoardDevice'
 
 export const TableDevice = () => {

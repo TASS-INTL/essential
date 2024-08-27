@@ -1,35 +1,31 @@
 import React, { useEffect, useState } from 'react'
 
-import { BoardComponent, PaginationComponent } from '@/Components'
+// import { BoardComponent, PaginationComponent } from '@/Components'
 import { inventoryStore } from '@/store/inventoryStore'
 import { useForm } from 'react-hook-form'
 
-import { InputSearch } from '../../components'
+import { BoardComponent, PaginationComponent } from '../../../../Components'
+import { InputSearch } from '../../../../Components/InputSearch'
 import { tableTitleInventory } from '../../constants/constants'
 
 export const TableInventory = () => {
 	const { register, handleSubmit } = useForm()
-	// const { paginationEmit } = useInventorySocket()
 	const [dataSearch, setDataSearch] = useState('')
 	const [pageSelected, setPageSelected] = useState(1)
 	const [array, setArray] = useState([1, 2, 3, 4, 5])
 	const arrayTableInventory = inventoryStore((state) => state.arrayTableInventory)
 
-	// useEffect(() => {
-	// 	paginationEmit(pageSelected, dataSearch)
-	// }, [pageSelected, dataSearch])
+	const HandleChange = (data) => {
+		setPageSelected(1)
+		setArray([1, 2, 3, 4, 5])
+		setDataSearch(data.search)
+	}
 
 	return (
 		<div>
 			<div className='flex justify-between px-0 py-10 pt-10'>
 				<div className='relative'>
-					<form
-						onSubmit={handleSubmit((data) => {
-							setPageSelected(1)
-							setArray([1, 2, 3, 4, 5])
-							setDataSearch(data.search)
-						})}
-					>
+					<form onSubmit={handleSubmit(HandleChange)}>
 						<InputSearch register={register} />
 					</form>
 				</div>

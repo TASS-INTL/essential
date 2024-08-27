@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useLocation, useParams } from 'react-router-dom'
 
-import { arrayTapMonitoring, TapBottons } from '../../components/TapBottons'
+import { arrayTapMonitoring, TapBottons } from '../../../../Components/TapBottons'
 import { BoardDevice } from '../../Inventory/ModuleDevices/BoardDevice'
 
 export const Eventstravel = () => {

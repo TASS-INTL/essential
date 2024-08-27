@@ -69,20 +69,21 @@ export const RoutesPrivate = () => {
 				<SideBarComponent />
 			</div>
 			<Routes>
-				{/* Module Chat */}
-				<Route path={routesPrivate.chatScreen} element={<ChatScreen />} />
+				{/* ============ MODULE CENTRAL =============== */}
+				<Route path={routesPrivate.centralScreen} element={<CentralScreen />} />
+
 				{/* Module Installers */}
 				<Route path={routesPrivate.installersScreen} element={<Installers />} />
 				{/* Module Monitoring */}
 				<Route path={routesPrivate.monitoringScreen} element={<MonitoringScreen />} />
-				{/* Module Services  */}
-				<Route path={routesPrivate.servicesScreen} element={<Services />}>
-					<Route index path={routesPrivate.table} element={<Table />} />
-				</Route>
 				{/* Module Service client*/}
 				<Route path={routesPrivate.servicesClientScreen} element={<ServicesClient />}>
 					<Route index path={routesPrivate.table} element={<TableServiceClient />} />
 					<Route index path={routesPrivate.createService} element={<CreateService />} />
+				</Route>
+				{/* Module Services  */}
+				<Route path={routesPrivate.servicesScreen} element={<Services />}>
+					<Route index path={routesPrivate.table} element={<Table />} />
 				</Route>
 				{/* Module Travels */}
 				<Route
@@ -106,10 +107,21 @@ export const RoutesPrivate = () => {
 						<Route index path={routesPrivate.events} element={<Eventstravel />} />
 					</Route>
 				</Route>
+
+				{/* ============ MODULE ADMIN =============== */}
+
 				{/* Module Users */}
 				<Route path={routesPrivate.usersScreen} element={<UsersScreen />} />
-				{/* Module Testing */}
+
+				{/* ============ MODULE CHAT =============== */}
+
+				{/* Module Chat */}
+				<Route path={routesPrivate.chatScreen} element={<ChatScreen />} />
+
 				<Route path={routesPrivate.testingScreen} element={<TestingScreen />} />
+
+				{/* ============ MODULE INVENTORY =============== */}
+				<Route path={routesPrivate.inventoryScreen} element={<InventoryScreen />} />
 
 				{/* Module Devices */}
 				<Route
@@ -134,18 +146,20 @@ export const RoutesPrivate = () => {
 						<Route path={routesPrivate.travels} element={<Travels />} />
 					</Route>
 				</Route>
+				{/* Module Factory Device */}
+				<Route path={routesPrivate.factoryDevicesScreen} element={<FactoryDevicesScreen />} />
 
-				<Route path={routesPrivate.inventoryScreen} element={<InventoryScreen />} />
-				<Route path={routesPrivate.centralScreen} element={<CentralScreen />} />
+				{/* ============ MODULE ACCOUNT =============== */}
 
 				{/* Module Account */}
 				<Route path={routesPrivate.accountScreen} element={<Account />} />
+
+				{/* ============ MODULE NOTIFICATIONS =============== */}
+
 				{/* Module Notification */}
 				<Route path={routesPrivate.notificationScreen} element={<NotificationScreen />}>
 					<Route index path={routesPrivate.table} element={<TableNotification />} />
 				</Route>
-				{/* Module Factory Device */}
-				<Route path={routesPrivate.factoryDevicesScreen} element={<FactoryDevicesScreen />} />
 			</Routes>
 		</div>
 	)

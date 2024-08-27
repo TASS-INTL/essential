@@ -1,14 +1,10 @@
 import React, { useState } from 'react'
 
-import { BoardComponent, LoaderComponent } from '@/Components'
 import { Box, Button, Modal, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
 
-import { InputSearch } from '../../components'
 import { initialStateService, styleModal } from '../../constants/constants'
 import { BoardDevice } from '../../Inventory/ModuleDevices/BoardDevice'
-import { tableHeaderService } from '../ModuleServices/constants'
 import { CreateTravel } from '../ModuleTravels'
 import { useServiceClient } from './hooks/useServiceClient'
 
@@ -48,7 +44,7 @@ export const TableServiceClient = () => {
 						setDataSearch(data.search)
 					})}
 				>
-					<InputSearch register={register} />
+					{/* <InputSearch register={register} /> */}
 				</form>
 			</div>
 			<BoardDevice dataBody={dataTableServicesClient?.data?.data?.results} />

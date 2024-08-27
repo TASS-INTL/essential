@@ -2,9 +2,8 @@ import React from 'react'
 
 import { useLocation, useParams } from 'react-router-dom'
 
+import { arrayTapInventory, TapBottons } from '../../../../Components/TapBottons'
 import { inventoryStore } from '../../../../store/inventoryStore'
-import { TapBottons } from '../../components'
-import { arrayTapInventory } from '../../components/TapBottons'
 import { BoardDevice } from '../ModuleDevices/BoardDevice'
 
 export const Events = () => {

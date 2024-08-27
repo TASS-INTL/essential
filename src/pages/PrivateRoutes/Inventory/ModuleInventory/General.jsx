@@ -4,9 +4,7 @@ import { battery, padlockClose, padlockOpen } from '@/assets/assetsplatform'
 import { inventoryStore } from '@/store/inventoryStore'
 import { useLocation, useParams } from 'react-router-dom'
 
-import { TapBottons } from '../../components'
-import { Map } from '../../components/Map'
-import { arrayTapInventory } from '../../components/TapBottons'
+import { arrayTapInventory, TapBottons } from '../../../../Components/TapBottons'
 import { useMap } from '../../Hooks/useMap'
 import { useInventory } from './Hooks/useInventory'
 
@@ -82,7 +80,7 @@ export const General = () => {
 						</div>
 						<div className='w-4/6 px-10'>
 							<h5 className='text-center font-normal text-xl'>Ultima ubicacion</h5>
-							<Map width='100' height='100' setMapGlobal={setMapGlobal} />
+							{/* <Map width='100' height='100' setMapGlobal={setMapGlobal} /> */}
 							<div className='flex flex-row gap-6 justify-center'>
 								<button
 									onClick={() => SendCommand(null, 'location')}

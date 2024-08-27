@@ -2,9 +2,9 @@ import React from 'react'
 
 import { useForm } from 'react-hook-form'
 
-import { emailSvg, lock } from '../../../assets/assetsplatform'
-import { InputComponent, InputSubmitComponent, ModalComponent, SelectComponent } from '../../../Components'
-import { typeDocument } from '../../auth/constants'
+import { InputComponent, InputSubmitComponent, ModalComponent, SelectComponent } from '.'
+import { emailSvg, lock } from '../assets/assetsplatform'
+import { typeDocument } from '../pages/auth/constants'
 
 export const FormCreateUser = ({
 	userUpdate,

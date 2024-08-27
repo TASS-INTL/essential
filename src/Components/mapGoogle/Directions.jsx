@@ -32,6 +32,11 @@ export const Directions = ({ origin, destination }) => {
 			})
 			.then((response) => {
 				directionsRenderer.setDirections(response)
+				console.log(
+					response.routes[0]?.overview_path.map((item) => {
+						console.log(item.lat(), item.lng())
+					})
+				)
 				setRoutes(response.routes)
 			})
 

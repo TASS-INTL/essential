@@ -11,9 +11,8 @@ import { APIProvider } from '@vis.gl/react-google-maps'
 import dayjs from 'dayjs'
 import { useForm } from 'react-hook-form'
 
-import { MapGoogle } from '../../components/mapGoogle/Map'
-import { MapHandler } from '../../components/mapGoogle/MapHandler'
-import { PlaceAutocompleteClassic } from '../../components/mapGoogle/PlaceAutocompleteClassic'
+import { MapGoogle } from '../../../../Components/mapGoogle/Map'
+import { PlaceAutocompleteClassic } from '../../../../Components/mapGoogle/PlaceAutocompleteClassic'
 import {
 	DrawingActionKind,
 	isCircle,
@@ -21,7 +20,7 @@ import {
 	isPolygon,
 	isPolyline,
 	isRectangle
-} from '../../components/mapGoogle/types'
+} from '../../../../Components/mapGoogle/types'
 import { initialDataLocation } from '../../constants/constants'
 import { useTravels } from './hooks/useTravels'
 

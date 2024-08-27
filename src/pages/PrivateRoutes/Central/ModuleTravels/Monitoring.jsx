@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react'
 
 import { useLocation, useParams } from 'react-router-dom'
 
+import { arrayTapMonitoring, TapBottons } from '../../../../Components/TapBottons'
 import { travelsStore } from '../../../../store/travelsStore'
-import { TapBottons } from '../../components'
-import { Map } from '../../components/Map'
-import { arrayTapMonitoring } from '../../components/TapBottons'
 import { tableTitleInventory } from '../../constants/constants'
 import { useMap } from '../../Hooks/useMap'
 

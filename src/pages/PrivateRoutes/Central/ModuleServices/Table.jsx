@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { LoaderComponent } from '../../../../Components'
-import { InputSearch } from '../../components'
+import { InputSearch } from '../../../../Components/InputSearch'
 import { BoardDevice } from '../../Inventory/ModuleDevices/BoardDevice'
 import { useService } from './hooks/useService'
 

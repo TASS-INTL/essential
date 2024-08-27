@@ -4,7 +4,7 @@ import { usersStore } from '@/store/usersStore'
 
 import { ErrorComponent, LoaderComponent } from '../../../../Components'
 import { Container } from '../../../../Components/Container'
-import { FormCreateUser } from '../../components'
+import { FormCreateUser } from '../../../../Components/FormCreateUser'
 import { useUsers } from '../../Hooks/useUser'
 
 export const UsersScreen = () => {
