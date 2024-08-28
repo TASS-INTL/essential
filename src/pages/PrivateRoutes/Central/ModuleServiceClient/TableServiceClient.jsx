@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 
-import { Box, Button, Modal, Typography } from '@mui/material'
+import { Button } from '@mui/material'
 import { useForm } from 'react-hook-form'
 
-import { initialStateService, styleModal } from '../../constants/constants'
+import { LoaderComponent, ModalComponent } from '../../../../Components'
+import { InputSearch } from '../../../../Components/InputSearch'
 import { BoardDevice } from '../../Inventory/ModuleDevices/BoardDevice'
-import { CreateTravel } from '../ModuleTravels'
+import { CreateService } from './CreateService'
 import { useServiceClient } from './hooks/useServiceClient'
 
 export const TableServiceClient = () => {
@@ -22,13 +23,10 @@ export const TableServiceClient = () => {
 
 	dataTableServicesClient.isLoading && <LoaderComponent />
 
-	const createService = (data) => {
-		data.date_end = format(dateStart.$d, 'yyyy-MM-dd hh:mm:ss')
-		data.date_start = format(dateEnd.$d, 'yyyy-MM-dd hh:mm:ss')
-		data.place_end = dataCoordinates.place_end
-		data.place_start = dataCoordinates.place_start
-		data.station = dataCoordinates.station
-		handleCreateServiceClient(data)
+	const HandlePagination = (data) => {
+		setPageSelected(1)
+		setArray([1, 2, 3, 4, 5])
+		setDataSearch(data.search)
 	}
 
 	return (
@@ -37,30 +35,14 @@ export const TableServiceClient = () => {
 				<Button variant='contained' onClick={handleOpen}>
 					Crear Servicio
 				</Button>
-				<form
-					onSubmit={handleSubmit((data) => {
-						setPageSelected(1)
-						setArray([1, 2, 3, 4, 5])
-						setDataSearch(data.search)
-					})}
-				>
-					{/* <InputSearch register={register} /> */}
+				<form onSubmit={handleSubmit(HandlePagination)}>
+					<InputSearch register={register} />
 				</form>
 			</div>
 			<BoardDevice dataBody={dataTableServicesClient?.data?.data?.results} />
-			<Modal
-				open={open}
-				onClose={handleOpen}
-				aria-labelledby='modal-modal-title'
-				aria-describedby='modal-modal-description'
-			>
-				<Box sx={styleModal}>
-					<Typography id='modal-modal-title' variant='h6' component='h2' className='text-center'>
-						Creacion del servicio
-					</Typography>
-					<CreateTravel dataForm={initialStateService} handleCreate={createService} />
-				</Box>
-			</Modal>
+			<ModalComponent handleOpen={open} HandleClose={handleOpen} titleModal='Creacion del servicio'>
+				<CreateService />
+			</ModalComponent>
 		</>
 	)
 }

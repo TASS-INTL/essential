@@ -12,8 +12,8 @@ export const MapGoogle = ({ UndoRedoControlPermission, dispatch, state, location
 		<>
 			<Map
 				style={{ width: '95%', margin: 'auto' }}
-				defaultCenter={{ lat: 22.54992, lng: 0 }}
-				defaultZoom={3}
+				defaultCenter={{ lat: 3.8515385, lng: -74.8861476 }}
+				defaultZoom={5}
 				gestureHandling={'greedy'}
 				disableDefaultUI={true}
 			>

@@ -1,15 +1,10 @@
 import React, { useContext, useEffect } from 'react'
 
 import { TooltipComponent } from '@syncfusion/ej2-react-popups'
-import { AiOutlineMenu } from 'react-icons/ai'
-import { BsChatLeft } from 'react-icons/bs'
-import { FiAlignCenter, FiShoppingCart } from 'react-icons/fi'
 import { MdKeyboardArrowDown } from 'react-icons/md'
 import { RiNotification3Line } from 'react-icons/ri'
 
-// import { Cart, Chat, Notification, UserProfile } from '.'
 import avatar from '../assets/img/avatar.jpg'
-import { useStateContext } from '../contexts/contextProvider'
 import { SocketContext } from '../pages/PrivateRoutes/sockets/socketProvider'
 import Notification from './Notification'
 import UserProfile from './UserProfile'

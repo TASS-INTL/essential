@@ -27,22 +27,14 @@ import { DevicesScreen } from '../pages/PrivateRoutes/Inventory/ModuleDevices/De
 import { FormAssignDevice } from '../pages/PrivateRoutes/Inventory/ModuleDevices/FormAssignDevice'
 import { TableDevice } from '../pages/PrivateRoutes/Inventory/ModuleDevices/TableDevice'
 import { FactoryDevicesScreen } from '../pages/PrivateRoutes/Inventory/ModuleFactoryDevices/FactoryDevicesScreen'
-import {
-	Device,
-	Events,
-	General,
-	InventoryScreen,
-	TableInventory,
-	Test
-} from '../pages/PrivateRoutes/Inventory/ModuleInventory'
+import { Device, Events, General, InventoryScreen, Test } from '../pages/PrivateRoutes/Inventory/ModuleInventory'
 import { TestingScreen } from '../pages/PrivateRoutes/Inventory/ModuleTesting/TestingScreen'
 import { NotificationScreen } from '../pages/PrivateRoutes/Notification/ModuleNotification/NotificationScreen'
 import { TableNotification } from '../pages/PrivateRoutes/Notification/ModuleNotification/TableNotification'
 import { CONNECTION_NAME_SPACE, SOCKET_EVENTS, SOCKETS_ROOMS } from '../pages/PrivateRoutes/sockets/constants'
 import { SocketForNameSpace } from '../pages/PrivateRoutes/sockets/socketForNameSpace'
-import { SocketContext, SocketProvider } from '../pages/PrivateRoutes/sockets/socketProvider'
+import { SocketProvider } from '../pages/PrivateRoutes/sockets/socketProvider'
 import { deviceStore } from '../store/deviceStore'
-import { inventoryStore } from '../store/inventoryStore'
 import { travelsStore } from '../store/travelsStore'
 import { routesPrivate } from './constants'
 
@@ -58,9 +50,7 @@ export const PrivateRouter = ({ isAuthenticated }) => {
 
 export const RoutesPrivate = () => {
 	const setArrayTabledevice = deviceStore((state) => state.setArrayTabledevice)
-	const setArrayTableInventory = inventoryStore((state) => state.setArrayTableInventory)
 	const setArrayTableTravels = travelsStore((state) => state.setArrayTableTravels)
-	const { activeMenu } = useContext(SocketContext)
 
 	return (
 		<div className='flex relative'>

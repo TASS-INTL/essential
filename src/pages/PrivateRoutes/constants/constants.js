@@ -246,3 +246,5 @@ export const initialDataLocation = {
 	location_start: {},
 	location_end: {}
 }
+
+export const API_KEY_GOOGLE_MAPS = import.meta.env.VITE_API_KEY_GOOGLE_MAPS
