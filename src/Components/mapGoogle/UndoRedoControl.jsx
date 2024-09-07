@@ -12,6 +12,7 @@ function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispat
 		const eventListeners = []
 
 		const addUpdateListener = (eventName, drawResult) => {
+			console.log(eventName, 'eventName')
 			const updateListener = google.maps.event.addListener(drawResult.overlay, eventName, () => {
 				if (eventName === 'dragstart') {
 					overlaysShouldUpdateRef.current = false
@@ -19,6 +20,12 @@ function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispat
 
 				if (eventName === 'dragend') {
 					overlaysShouldUpdateRef.current = true
+				}
+
+				if (eventName === 'click') {
+					console.log('hola mundo')
+					console.log(overlaysShouldUpdateRef)
+					// overlaysShouldUpdateRef.current = true
 				}
 
 				if (overlaysShouldUpdateRef.current) {
@@ -47,7 +54,7 @@ function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispat
 
 					case google.maps.drawing.OverlayType.POLYGON:
 					case google.maps.drawing.OverlayType.POLYLINE:
-						;['mouseup'].forEach((eventName) => addUpdateListener(eventName, drawResult))
+						;['mouseup', 'click'].forEach((eventName) => addUpdateListener(eventName, drawResult))
 
 					case google.maps.drawing.OverlayType.RECTANGLE:
 						;['bounds_changed', 'dragstart', 'dragend'].forEach((eventName) =>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps'
 
-export const Directions = ({ origin, destination }) => {
+export const Directions = ({ origin, destination, setArrayOptionRoutes }) => {
 	const map = useMap()
 	const routesLibrary = useMapsLibrary('routes')
 	const [directionsService, setDirectionsService] = useState()
@@ -32,11 +32,7 @@ export const Directions = ({ origin, destination }) => {
 			})
 			.then((response) => {
 				directionsRenderer.setDirections(response)
-				console.log(
-					response.routes[0]?.overview_path.map((item) => {
-						console.log(item.lat(), item.lng())
-					})
-				)
+				setArrayOptionRoutes(response.routes ? response.routes : null)
 				setRoutes(response.routes)
 			})
 

@@ -33,7 +33,7 @@ export function useDrawingManager(flagActivate) {
 			},
 			polygonOptions: {
 				editable: true,
-				draggable: true
+				draggable: false
 			},
 			rectangleOptions: {
 				editable: true,

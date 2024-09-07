@@ -4,6 +4,7 @@ import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { APIProvider } from '@vis.gl/react-google-maps'
+import { format } from 'date-fns'
 import dayjs from 'dayjs'
 import { useForm } from 'react-hook-form'
 import { MdOutlineReadMore } from 'react-icons/md'
@@ -200,48 +201,6 @@ const reducer = (state, action) => {
 	}
 }
 
-const handleCreateService = (data) => {
-	data.date_end = format(dateStart.$d, 'yyyy-MM-dd hh:mm:ss')
-	data.date_start = format(dateEnd.$d, 'yyyy-MM-dd hh:mm:ss')
-	data.place_end = dataCoordinates.place_end
-	data.place_start = dataCoordinates.place_start
-	data.station = dataCoordinates.station
-
-	const sendJsonService = {
-		type_device: {
-			_id: '',
-			name: ''
-		},
-		id_route: '',
-		type_service: {
-			_id: '',
-			name: ''
-		},
-		date_start: '',
-		date_end: '',
-		carrier: {
-			name: '',
-			number: '',
-			driver: {
-				name: '',
-				licence_plate: '',
-				number_document: '',
-				phone: '',
-				email: ''
-			},
-			information_container: {
-				licence_plate: '',
-				type: '',
-				number: '',
-				seals: ['', '']
-			}
-		},
-		information_aditional: '',
-		remarks: ''
-	}
-	handleCreateServiceClient(data)
-}
-
 export const CreateService = () => {
 	const { register, handleSubmit } = useForm()
 	const [state, dispatch] = useReducer(reducer, {
@@ -254,6 +213,49 @@ export const CreateService = () => {
 	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
 
 	const [objectLocations, setObjectLocations] = useState(initialDataLocation)
+
+	const handleCreateService = (data) => {
+		data.date_end = format(dateStart.$d, 'yyyy-MM-dd hh:mm:ss')
+		data.date_start = format(dateEnd.$d, 'yyyy-MM-dd hh:mm:ss')
+		// data.place_end = dataCoordinates.place_end
+		// data.place_start = dataCoordinates.place_start
+		// data.station = dataCoordinates.station
+
+		const sendJsonService = {
+			type_device: {
+				_id: '',
+				name: ''
+			},
+			id_route: '',
+			type_service: {
+				_id: '',
+				name: ''
+			},
+			date_start: '',
+			date_end: '',
+			carrier: {
+				name: '',
+				number: '',
+				driver: {
+					name: '',
+					licence_plate: '',
+					number_document: '',
+					phone: '',
+					email: ''
+				},
+				information_container: {
+					licence_plate: '',
+					type: '',
+					number: '',
+					seals: ['', '']
+				}
+			},
+			information_aditional: '',
+			remarks: ''
+		}
+
+		// handleCreateServiceClient(data)
+	}
 
 	const [open, setOpen] = useState(false)
 	const handleOpen = () => setOpen(!open)

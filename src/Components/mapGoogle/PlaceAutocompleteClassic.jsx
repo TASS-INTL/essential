@@ -28,7 +28,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect, location }) => {
 	return (
 		<div className='autocomplete-container'>
 			<input
-				className='border text-sm rounded-lg text-black block w-full ps-10 p-2.5 border-gray-600 placeholder-gray-400 focus:ring-offset-gray-400'
+				className='border text-sm rounded-lg text-black block w-full ps-2 p-2.5 border-gray-600 placeholder-gray-400 focus:ring-offset-gray-400'
 				ref={inputRef}
 			/>
 		</div>

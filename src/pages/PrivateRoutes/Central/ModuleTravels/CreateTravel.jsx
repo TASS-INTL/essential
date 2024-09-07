@@ -6,7 +6,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { polygon } from '@turf/helpers'
 import { APIProvider } from '@vis.gl/react-google-maps'
 import dayjs from 'dayjs'
 import { useForm } from 'react-hook-form'
@@ -17,7 +16,7 @@ import { PlaceAutocompleteClassic } from '../../../../Components/mapGoogle/Place
 import { API_KEY_GOOGLE_MAPS, initialDataLocation } from '../../constants/constants'
 import { useTravels } from './hooks/useTravels'
 
-export const CreateTravel = ({ dataForm, handleCreate }) => {
+export const CreateTravel = ({ dataForm }) => {
 	const { register, handleSubmit } = useForm(dataForm)
 	const [state, dispatch] = useReducer(reducer, {
 		past: [],
@@ -36,8 +35,10 @@ export const CreateTravel = ({ dataForm, handleCreate }) => {
 		setObjectLocations((state) => ({ ...state, [location]: data }))
 	}
 
+	const handleCreate = () => {}
+
 	return (
-		<div className='border-2 rounded-2xl h-[95%]'>
+		<div className='h-[95%]'>
 			<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
 				<MapHandler place={selectedPlace} />
 				<div className='flex h-full'>

@@ -1,6 +1,17 @@
 import React from 'react'
 
-export const InputComponent = ({ defaultValue, label, register, name, required, maxLength, svg, type, color }) => {
+export const InputComponent = ({
+	defaultValue,
+	label,
+	register,
+	name,
+	required,
+	maxLength,
+	svg,
+	type,
+	color,
+	placeholder
+}) => {
 	return (
 		<div>
 			<label
@@ -19,9 +30,10 @@ export const InputComponent = ({ defaultValue, label, register, name, required, 
 					type={type}
 					{...register(name, { required, maxLength })}
 					defaultValue={defaultValue ? defaultValue : ''}
-					className={`border text-sm rounded-lg  block w-full ps-10 p-2.5 ${
+					className={`border text-sm rounded-lg  block w-full ps-2 p-2.5 ${
 						color ? ' bg-white text-black' : 'bg-black text-white'
 					}  border-gray-600 placeholder-gray-400 focus:ring-offset-gray-400`}
+					placeholder={placeholder}
 				/>
 			</div>
 		</div>
