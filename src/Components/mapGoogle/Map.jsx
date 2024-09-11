@@ -1,32 +1,31 @@
 import React, { useState } from 'react'
 
-import {
-	AdvancedMarker,
-	ControlPosition,
-	InfoWindow,
-	Map,
-	MapControl,
-	Marker,
-	useAdvancedMarkerRef
-} from '@vis.gl/react-google-maps'
+import { ControlPosition, Map, MapControl } from '@vis.gl/react-google-maps'
 
 import { permission } from '../../pages/PrivateRoutes/Routing/ModuleRouting/CreateRouting'
 import { Circle } from './Circle'
 import { Directions } from './Directions'
+import { InfoWindowComponent } from './InfoWindowComponent'
+import { MarkerWithInfowindow } from './MarkerWithInfowindow'
 import { UndoRedoControl } from './UndoRedoControl'
 import { useDrawingManager } from './UseDrawingMager'
 
 const INITIAL_CENTER = { lat: 41.1897, lng: -96.0627 }
 
-export const MapGoogle = ({ UndoRedoControlPermission, dispatch, state, locations, setArrayOptionRoutes }) => {
-	const drawingManager = useDrawingManager(UndoRedoControlPermission)
+export const MapGoogle = ({ state, dispatch, locations, dataPrintModals, UndoRedoControlPermission }) => {
+	const drawingManager = useDrawingManager()
 
-	const [center, setCenter] = React.useState(INITIAL_CENTER)
-	const [radius, setRadius] = React.useState(400)
+	const [center, setCenter] = useState(INITIAL_CENTER)
+	const [radius, setRadius] = useState(400)
 
 	const changeCenter = (newCenter) => {
 		if (!newCenter) return
 		setCenter({ lng: newCenter.lng(), lat: newCenter.lat() })
+	}
+
+	const changeStatePermission = (idPermission) => {
+		const position = state.now.findIndex((element) => element._id === idPermission)
+		state.now[position].showPermission = false
 	}
 
 	return (
@@ -41,13 +40,8 @@ export const MapGoogle = ({ UndoRedoControlPermission, dispatch, state, location
 			>
 				{/* Direction for the Route */}
 				{locations.location_start.name && locations.location_end.name && (
-					<Directions
-						origin={locations.location_start.name}
-						destination={locations.location_end.name}
-						setArrayOptionRoutes={setArrayOptionRoutes}
-					/>
+					<Directions origin={locations.location_start.name} destination={locations.location_end.name} />
 				)}
-
 				{/* marker and geofence of the location start */}
 				{locations?.location_start?.market?.location?.coordinates[0] && (
 					<>
@@ -102,51 +96,32 @@ export const MapGoogle = ({ UndoRedoControlPermission, dispatch, state, location
 						/>
 					</>
 				)}
+				{/* permissions modal in the geofences */}
+				{dataPrintModals && (
+					<>
+						{dataPrintModals?.map((item) => (
+							<>
+								{item.showPermission && (
+									<InfoWindowComponent
+										key={item._id}
+										maxWidth={200}
+										onCloseClick={() => changeStatePermission(item._id)}
+										permission={permission}
+										position={{
+											lat: item.snapshot.path[0].lat(),
+											lng: item.snapshot.path[0].lng()
+										}}
+									/>
+								)}
+							</>
+						))}
+					</>
+				)}
 			</Map>
 			{UndoRedoControlPermission && (
 				<MapControl position={ControlPosition.TOP_CENTER}>
 					<UndoRedoControl drawingManager={drawingManager} dispatch={dispatch} state={state} />
 				</MapControl>
-			)}
-		</>
-	)
-}
-
-export const MarkerWithInfowindow = ({ position }) => {
-	const [infowindowOpen, setInfowindowOpen] = useState(true)
-	const [markerRef, marker] = useAdvancedMarkerRef()
-
-	return (
-		<>
-			<AdvancedMarker
-				draggable
-				ref={markerRef}
-				onClick={() => setInfowindowOpen(true)}
-				position={{ lat: position.lat, lng: position.lng }}
-				title={'AdvancedMarker that opens an Infowindow when clicked.'}
-			/>
-			{infowindowOpen && (
-				<InfoWindow anchor={marker} maxWidth={400} onCloseClick={() => setInfowindowOpen(false)}>
-					<div className='p-2'>
-						{permission.map((item) => (
-							<div key={item._id} div className='flex justify-center items-center'>
-								<div className='p-3'>{item.name_consult}</div>
-								<div className='relative inline-block w-11 h-5'>
-									<input
-										value={item.values.value}
-										id={item._id}
-										type='checkbox'
-										className='peer appearance-none w-11 h-5 bg-slate-100 rounded-full checked:bg-slate-800 cursor-pointer transition-colors duration-300'
-									/>
-									<label
-										for={item._id}
-										className='absolute top-0 left-0 w-5 h-5 bg-white rounded-full border border-slate-300 shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-slate-800 cursor-pointer'
-									></label>
-								</div>
-							</div>
-						))}
-					</div>
-				</InfoWindow>
 			)}
 		</>
 	)

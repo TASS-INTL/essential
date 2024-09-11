@@ -11,8 +11,7 @@ function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispat
 
 		const eventListeners = []
 
-		const addUpdateListener = (eventName, drawResult) => {
-			console.log(eventName, 'eventName')
+		const addUpdateListener = (eventName, drawResult, dispatch) => {
 			const updateListener = google.maps.event.addListener(drawResult.overlay, eventName, () => {
 				if (eventName === 'dragstart') {
 					overlaysShouldUpdateRef.current = false
@@ -23,9 +22,10 @@ function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispat
 				}
 
 				if (eventName === 'click') {
-					console.log('hola mundo')
-					console.log(overlaysShouldUpdateRef)
-					// overlaysShouldUpdateRef.current = true
+					dispatch({
+						type: DrawingActionKind.SET_OVERLAY,
+						payload: { overlay: drawResult.overlay, _id: drawResult._id }
+					})
 				}
 
 				if (overlaysShouldUpdateRef.current) {
@@ -40,6 +40,7 @@ function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispat
 			drawingManager,
 			'overlaycomplete',
 			(drawResult) => {
+				drawResult._id = crypto.randomUUID()
 				switch (drawResult.type) {
 					case google.maps.drawing.OverlayType.CIRCLE:
 						;['center_changed', 'radius_changed'].forEach((eventName) =>
@@ -54,7 +55,7 @@ function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispat
 
 					case google.maps.drawing.OverlayType.POLYGON:
 					case google.maps.drawing.OverlayType.POLYLINE:
-						;['mouseup', 'click'].forEach((eventName) => addUpdateListener(eventName, drawResult))
+						;['mouseup', 'click'].forEach((eventName) => addUpdateListener(eventName, drawResult, dispatch))
 
 					case google.maps.drawing.OverlayType.RECTANGLE:
 						;['bounds_changed', 'dragstart', 'dragend'].forEach((eventName) =>
@@ -63,8 +64,10 @@ function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispat
 
 						break
 				}
-
-				dispatch({ type: DrawingActionKind.SET_OVERLAY, payload: drawResult })
+				dispatch({
+					type: DrawingActionKind.SET_OVERLAY,
+					payload: { overlay: drawResult.overlay, _id: drawResult._id }
+				})
 			}
 		)
 
@@ -112,7 +115,6 @@ function useOverlaySnapshots(map, state, overlaysShouldUpdateRef) {
 
 export const UndoRedoControl = ({ drawingManager, dispatch, state }) => {
 	const map = useMap()
-
 	// We need this ref to prevent infinite loops in certain cases.
 	// For example when the radius of circle is set via code (and not by user interaction)
 	// the radius_changed event gets triggered again. This would cause an infinite loop.

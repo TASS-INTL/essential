@@ -1,31 +1,15 @@
 import React, { useReducer, useState } from 'react'
 
-import circle from '@turf/circle'
-import { polygon } from '@turf/helpers'
 import { APIProvider } from '@vis.gl/react-google-maps'
 import { useForm } from 'react-hook-form'
 
-import { emailSvg } from '../../../../assets/assetsplatform'
-import { InputComponent, SelectComponent } from '../../../../Components'
+import { InputComponent, InputSubmitComponent, SelectComponent } from '../../../../Components'
 import { MapGoogle } from '../../../../Components/mapGoogle/Map'
 import { MapHandler } from '../../../../Components/mapGoogle/MapHandler'
 import { PlaceAutocompleteClassic } from '../../../../Components/mapGoogle/PlaceAutocompleteClassic'
 import { DrawingActionKind, isCircle, isMarker, isPolygon, isRectangle } from '../../../../Components/mapGoogle/types'
+import { calculateCircle } from '../../../../helpers/routes'
 import { API_KEY_GOOGLE_MAPS, initialDataLocation } from '../../constants/constants'
-
-// flujo de creacin de una ruta
-
-// 1. Ingresar el nombre de la ruta  // ✅
-// 2. Ingresar el punto de inicio // ✅
-// 3. Vizualizar en el mapa el punto de incio // ✅
-// 4. Vizualizar la geocerca del punto de inicio // ✅
-// 5. Vizualiar los permisos de la geocerca del punto de inicio // ✅
-// 6. Poder modificar los permisos de esa geocerca, habalitar o deshabilitar // ✅
-// 7. Repetir los pasos del 1 al 6 para el punto de fin // ✅
-// 8. Poder agregar geo cercas
-// 9. Dibujar una geocerca
-// 10. Poder visualizar los permisos de la geocerca
-// 11. Poder modificar los permisos de esa geocerca, habalitar o deshabilitar
 
 const reducer = (state, action) => {
 	switch (action.type) {
@@ -65,7 +49,7 @@ const reducer = (state, action) => {
 		// We then take a snapshot of the relevant values of the new overlay and
 		// add it to the "now" state. The old "now" is added to the "past" stack
 		case DrawingActionKind.SET_OVERLAY: {
-			const { overlay } = action.payload
+			const { overlay, _id } = action.payload
 
 			const snapshot = {}
 
@@ -73,52 +57,39 @@ const reducer = (state, action) => {
 				snapshot.center = overlay.getCenter()?.toJSON()
 				snapshot.radius = overlay.getRadius()
 			} else if (isMarker(overlay)) {
-				const { lat, lng } = overlay.getPosition()?.toJSON()
-				let center = [lat, lng]
-				let radius = 5
-				let options = { steps: 10, units: 'kilometers', properties: { foo: 'bar' } }
-				let circle = turf.circle(center, radius, options)
-
 				snapshot.position = overlay.getPosition()?.toJSON()
 			} else if (isPolygon(overlay) || isPolyline(overlay)) {
-				// console.log('entro', overlay.getPath())
-				const array = []
-				// overlay
-				// 	.getPath()
-				// 	?.getArray()
-				// 	.map((item) => {
-				// 		array.push([item.lat(), item.lng()])
-				// 	})
-
-				// const result = polygon(
-				// 	[
-				// 		[
-				// 			[-5, 52],
-				// 			[-4, 56],
-				// 			[-2, 51],
-				// 			[-7, 54],
-				// 			[-5, 52]
-				// 		]
-				// 	],
-				// 	{ name: 'poly1' }
-				// )
-
 				snapshot.path = overlay.getPath()?.getArray()
 			} else if (isRectangle(overlay)) {
 				snapshot.bounds = overlay.getBounds()?.toJSON()
 			}
 
-			return {
-				past: [...state.past, state.now],
-				now: [
-					...state.now,
-					{
-						type: action.payload.type,
-						geometry: action.payload.overlay,
-						snapshot
-					}
-				],
-				future: []
+			const objChange = state.now.find((item) => item._id === _id)
+			if (objChange) {
+				const position = state.now.findIndex((element) => element._id === objChange?._id)
+				objChange.showPermission = true
+				state.now.splice(position, 1, objChange)
+
+				return {
+					past: [...state.past, state.now],
+					now: [...state.now],
+					future: []
+				}
+			} else {
+				return {
+					past: [...state.past, state.now],
+					now: [
+						...state.now,
+						{
+							type: action.payload.type,
+							geometry: action.payload.overlay,
+							snapshot,
+							showPermission: true,
+							_id
+						}
+					],
+					future: []
+				}
 			}
 		}
 
@@ -240,7 +211,34 @@ const routing = {
 			]
 		},
 		// Permisos del punto de inicio
-		permissions: [permission],
+		permissions: permission,
+		// Nombre del punto del inicio
+		name: '',
+		// Marker del punto de inicio
+		market: {
+			location: {
+				type: 'Point',
+				coordinates: [100.0, 0.0]
+			},
+			status: 'create'
+		}
+	},
+	location_end: {
+		// Geocerca del punto de inicio
+		location: {
+			type: 'Polygon',
+			coordinates: [
+				[
+					[100.0, 0.0],
+					[101.0, 0.0],
+					[101.0, 1.0],
+					[100.0, 1.0],
+					[100.0, 0.0]
+				]
+			]
+		},
+		// Permisos del punto de inicio
+		permissions: permission,
 		// Nombre del punto del inicio
 		name: '',
 		// Marker del punto de inicio
@@ -266,7 +264,7 @@ const routing = {
 					]
 				]
 			},
-			permissions: [permission],
+			permissions: permission,
 			name: '',
 			market: {
 				location: {
@@ -274,60 +272,36 @@ const routing = {
 					coordinates: [100.0, 0.0]
 				},
 				status: 'create'
+			},
+			info: {
+				completed: false,
+				order: 1
 			}
 		}
 	],
-	location_end: {
-		location: {
-			lat: '',
-			lng: ''
-		},
-		permissions: [],
-		name: '',
-		market: {
-			location: {
-				lat: '',
-				lng: ''
-			},
-			status: ''
-		}
-	},
 	coordinates: [[123, 123]],
-	distance: ''
+	distance: {},
+	duration: {}
 }
 
 export const CreateRouting = () => {
 	const { register, handleSubmit } = useForm()
-
 	const [state, dispatch] = useReducer(reducer, {
 		past: [],
 		now: [],
 		future: []
 	})
 	const [selectedPlace, setSelectedPlace] = useState(null)
-	const [arrayOptionRoutes, setArrayOptionRoutes] = useState(null)
 	const [objectLocations, setObjectLocations] = useState(initialDataLocation)
 
-	const calculateCircle = (lat, lng) => {
-		let center = [lat, lng]
-		let radius = 5
-		let options = { steps: 10, units: 'kilometers', properties: { foo: 'bar' } }
-		let circle = turf.circle(center, radius, options)
-		return circle
-	}
-
 	const addPlaces = ({ location, data }) => {
-		// console.log(' data --> ', data?.geometry?.location?.lat)
-
 		const { geometry } = calculateCircle(data?.geometry?.location?.lat(), data?.geometry?.location?.lng())
-		// console.log('geoFenceCircle ---> ', geometry)
-
 		setSelectedPlace(data)
 		setObjectLocations((state) => ({
 			...state,
 			[location]: {
 				location: geometry,
-				permissions: [],
+				permissions: permission,
 				name: data?.formatted_address,
 				market: {
 					location: {
@@ -340,11 +314,52 @@ export const CreateRouting = () => {
 		}))
 	}
 
+	const handleSendData = (data) => {
+		// location start end location end
+		console.log(objectLocations, 'objectLocations')
+		// stations
+		const station = []
+		if (state.now.length > 0) {
+			state.now.forEach((element, index) => {
+				const locationCoordinates = []
+				element.snapshot.path.forEach((item) => {
+					locationCoordinates.push([item.lat(), item.lng()])
+				})
+				const obj = {
+					location: {
+						type: 'Polygon',
+						coordinates: locationCoordinates
+					},
+					permissions: permission,
+					name: `station-${index + 1}`,
+					market: {
+						location: {
+							type: 'Point',
+							coordinates: null
+						},
+						status: 'create'
+					},
+					info: {
+						completed: false,
+						order: index + 1
+					}
+				}
+				station.push(obj)
+			})
+		}
+		console.log('station -->', station)
+
+		// data send
+		console.log('dataSend --> ', data)
+	}
+
+	console.log('state --->', state)
+
 	return (
 		<div className='h-[95%]'>
 			<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
 				<MapHandler place={selectedPlace} />
-				<div className='flex h-full'>
+				<div className='flex bg-slate-500 h-2/4'>
 					{/* MAP */}
 					<div className='w-[40%]'>
 						<MapGoogle
@@ -354,19 +369,19 @@ export const CreateRouting = () => {
 							dispatch={dispatch}
 							state={state}
 							selectedPlace={selectedPlace}
-							setArrayOptionRoutes={setArrayOptionRoutes}
 							directions
 							locations={objectLocations}
+							dataPrintModals={state?.now}
 						/>
 					</div>
 					{/* FORM */}
-					<form className='w-[60%] overflow-y-scroll'>
+					<form onSubmit={handleSubmit(handleSendData)} className='w-[60%] overflow-y-scroll'>
 						<div className='flex gap-4 mt-5'>
 							<div className='w-[30%]'>
 								<InputComponent
 									required
-									name='driver.email'
-									type='email'
+									name='name_routing'
+									type='text'
 									register={register}
 									label='Nombre de la ruta'
 									placeholder='Medellin - la guajira'
@@ -382,17 +397,8 @@ export const CreateRouting = () => {
 								<PlaceAutocompleteClassic onPlaceSelect={addPlaces} location='location_end' />
 							</div>
 						</div>
-						<div>
-							{arrayOptionRoutes && (
-								<SelectComponent
-									color
-									option='summary'
-									name='service.did'
-									register={register}
-									label='Rutas alternativas'
-									arrayOptions={arrayOptionRoutes}
-								/>
-							)}
+						<div className='flex justify-center pt-6 '>
+							<InputSubmitComponent text='Crear Ruta' />
 						</div>
 					</form>
 				</div>

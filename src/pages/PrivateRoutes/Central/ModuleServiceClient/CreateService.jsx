@@ -3,6 +3,7 @@ import React, { useEffect, useReducer, useState } from 'react'
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
+import { polygon } from '@turf/helpers'
 import { APIProvider } from '@vis.gl/react-google-maps'
 import { format } from 'date-fns'
 import dayjs from 'dayjs'
@@ -13,6 +14,14 @@ import { emailSvg } from '../../../../assets/assetsplatform'
 import { InputComponent, InputSubmitComponent, ModalComponent, SelectComponent } from '../../../../Components'
 import { MapGoogle } from '../../../../Components/mapGoogle/Map'
 import { MapHandler } from '../../../../Components/mapGoogle/MapHandler'
+import {
+	DrawingActionKind,
+	isCircle,
+	isMarker,
+	isPolygon,
+	isPolyline,
+	isRectangle
+} from '../../../../Components/mapGoogle/types'
 import { API_KEY_GOOGLE_MAPS, initialDataLocation } from '../../constants/constants'
 import { CreateRouting } from '../../Routing/ModuleRouting'
 

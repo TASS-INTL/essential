@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps'
 
-export const Directions = ({ origin, destination, setArrayOptionRoutes }) => {
+export const Directions = ({ origin, destination }) => {
 	const map = useMap()
 	const routesLibrary = useMapsLibrary('routes')
 	const [directionsService, setDirectionsService] = useState()
@@ -31,8 +31,8 @@ export const Directions = ({ origin, destination, setArrayOptionRoutes }) => {
 				provideRouteAlternatives: true
 			})
 			.then((response) => {
+				console.log('response routes ---> ', response)
 				directionsRenderer.setDirections(response)
-				setArrayOptionRoutes(response.routes ? response.routes : null)
 				setRoutes(response.routes)
 			})
 
@@ -51,16 +51,16 @@ export const Directions = ({ origin, destination, setArrayOptionRoutes }) => {
 		<div className='directions'>
 			<h2>{selected.summary}</h2>
 			<p>
-				{leg.start_address.split(',')[0]} to {leg.end_address.split(',')[0]}
+				Desde: {leg.start_address.split(',')[0]} Hacia: {leg.end_address.split(',')[0]}
 			</p>
 			<p>Distancia: {leg.distance?.text}</p>
 			<p>Duracion: {leg.duration?.text}</p>
 
-			<h2>Other Routes</h2>
+			<h2 className='pt-2'>Otras rutas</h2>
 			<ul>
 				{routes.map((route, index) => (
 					<li key={route.summary}>
-						<button onClick={() => setRouteIndex(index)}>{route.summary}</button>
+						* <button onClick={() => setRouteIndex(index)}>{route.summary}</button>
 					</li>
 				))}
 			</ul>
