@@ -10,8 +10,6 @@ export const CentralScreen = () => {
 	const { modules } = userStore((state) => state.userData)
 	const { submodules } = modules.find((item) => item.name === 'Central')
 
-	console.log(submodules)
-
 	return (
 		<Container>
 			<h1 className='text-center text-3xl font-normal mt-12'>Central</h1>

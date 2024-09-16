@@ -248,3 +248,72 @@ export const initialDataLocation = {
 }
 
 export const API_KEY_GOOGLE_MAPS = import.meta.env.VITE_API_KEY_GOOGLE_MAPS
+
+export const permission = [
+	{
+		_id: '66625f1a3c6de0255a3eb5fe',
+		name: 'entry_close',
+		values: {
+			value: true
+		},
+		name_consult: 'Cerrar'
+	},
+	{
+		_id: '66625f263c6de0255a3eb5ff',
+		name: 'entry_open',
+		values: {
+			value: true
+		},
+		name_consult: 'Abrir'
+	},
+	{
+		_id: '66625f363c6de0255a3eb600',
+		name: 'geofence_entry_load',
+		values: {
+			value: true
+		},
+		name_consult: 'avisa entrada a la geocerca'
+	},
+	{
+		_id: '66625f523c6de0255a3eb601',
+		name: 'geofence_output_load',
+		values: {
+			value: true
+		},
+		name_consult: 'Sale de la geocerca'
+	},
+	{
+		_id: '66625f653c6de0255a3eb602',
+		name: 'entry_violation',
+		values: {
+			value: true
+		},
+		name_consult: 'violaciones'
+	},
+	{
+		_id: '66625f723c6de0255a3eb604',
+		name: 'date_entry_load',
+		values: {
+			value: true,
+			date: '2024-04-17T03:30:00.000+0000'
+		},
+		name_consult: 'Fecha de entrada'
+	},
+	{
+		_id: '66625f783c6de0255a3eb605',
+		name: 'date_output_load',
+		values: {
+			value: true,
+			date: '2024-04-17T03:30:00.000+0000'
+		},
+		name_consult: 'Fecha salida'
+	},
+	{
+		_id: '66bbb472ed6fb16031a0c4d7',
+		name: 'receive_commands',
+		name_consult: 'Recivir comandos',
+		values: {
+			value: true
+		}
+	}
+]

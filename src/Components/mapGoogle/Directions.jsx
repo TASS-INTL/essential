@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps'
 
-export const Directions = ({ origin, destination }) => {
+export const Directions = ({ origin, destination, setDataDirections }) => {
 	const map = useMap()
 	const routesLibrary = useMapsLibrary('routes')
 	const [directionsService, setDirectionsService] = useState()
@@ -17,7 +17,7 @@ export const Directions = ({ origin, destination }) => {
 		if (!routesLibrary || !map) return
 		setDirectionsService(new routesLibrary.DirectionsService())
 		setDirectionsRenderer(new routesLibrary.DirectionsRenderer({ map }))
-	}, [routesLibrary, map])
+	}, [routesLibrary, map, origin, destination])
 
 	// Use directions service
 	useEffect(() => {
@@ -31,7 +31,6 @@ export const Directions = ({ origin, destination }) => {
 				provideRouteAlternatives: true
 			})
 			.then((response) => {
-				console.log('response routes ---> ', response)
 				directionsRenderer.setDirections(response)
 				setRoutes(response.routes)
 			})
@@ -45,16 +44,20 @@ export const Directions = ({ origin, destination }) => {
 		directionsRenderer.setRouteIndex(routeIndex)
 	}, [routeIndex, directionsRenderer, origin, destination])
 
+	useEffect(() => {
+		setDataDirections(selected)
+	}, [selected])
+
 	if (!leg) return null
 
 	return (
 		<div className='directions'>
 			<h2>{selected.summary}</h2>
 			<p>
-				Desde: {leg.start_address.split(',')[0]} Hacia: {leg.end_address.split(',')[0]}
+				Desde: {leg?.start_address?.split(',')[0]} Hacia: {leg?.end_address?.split(',')[0]}
 			</p>
-			<p>Distancia: {leg.distance?.text}</p>
-			<p>Duracion: {leg.duration?.text}</p>
+			<p>Distancia: {leg?.distance?.text}</p>
+			<p>Duracion: {leg?.duration?.text}</p>
 
 			<h2 className='pt-2'>Otras rutas</h2>
 			<ul>

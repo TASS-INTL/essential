@@ -30,7 +30,7 @@ import { CreateRouting } from '../../Routing/ModuleRouting'
 // para crear un servicio se hace hacen los siguientes pasos
 
 // consultar los selects
-//    los tipos de dispositivps ---> id, name
+//    los tipos de dispositivos ---> id, name
 //    las rutas asociadas del cliente ---> id, did, name
 //    los tipos de servicios ---> id,name
 
