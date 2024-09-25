@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { APIProvider } from '@vis.gl/react-google-maps'
 
 import { InputComponent, InputSubmitComponent } from '../../../../Components'
@@ -17,8 +19,13 @@ export const CreateRouting = () => {
 		selectedPlace,
 		handleSendData,
 		objectLocations,
-		setDataDirections
+		setDataDirections,
+		permissionsData,
+		handleChangePermissions,
+		handleChangeMarkerDraggable
 	} = useRouting()
+
+	const [mapReference, setMapReference] = useState(null)
 
 	return (
 		<div className='h-[95%]'>
@@ -28,17 +35,16 @@ export const CreateRouting = () => {
 					{/* MAP */}
 					<div className='w-[40%]'>
 						<MapGoogle
-							customControlPermission
-							MapHandlerPermission
-							UndoRedoControlPermission
-							dispatch={dispatch}
+							setMapReference={setMapReference}
+							permissionsData={permissionsData}
 							state={state}
-							selectedPlace={selectedPlace}
-							directions
+							dispatch={dispatch}
 							locations={objectLocations}
 							dataPrintModals={state?.now}
 							setDataDirections={setDataDirections}
-							addPlaces={addPlaces}
+							UndoRedoControlPermission
+							handleChangePermissions={handleChangePermissions}
+							handleChangeMarkerDraggable={handleChangeMarkerDraggable}
 						/>
 					</div>
 					{/* FORM */}
@@ -57,13 +63,14 @@ export const CreateRouting = () => {
 							</div>
 							<div className='w-[30%]'>
 								<span className='mb-3'>Lugar de inicio</span>
-								<PlaceAutocompleteClassic onPlaceSelect={addPlaces} location='location_start' />
+								<PlaceAutocompleteClassic addPlaces={addPlaces} location='location_start' />
 							</div>
 							<div className='w-[30%]'>
 								<span className='mb-3'>Lugar de fin</span>
-								<PlaceAutocompleteClassic onPlaceSelect={addPlaces} location='location_end' />
+								<PlaceAutocompleteClassic addPlaces={addPlaces} location='location_end' />
 							</div>
 						</div>
+
 						<div className='flex justify-center pt-6 '>
 							<InputSubmitComponent text='Crear Ruta' />
 						</div>

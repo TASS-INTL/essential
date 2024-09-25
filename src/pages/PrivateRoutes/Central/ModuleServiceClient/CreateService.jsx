@@ -1,29 +1,16 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useState } from 'react'
 
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
-import { polygon } from '@turf/helpers'
 import { APIProvider } from '@vis.gl/react-google-maps'
-import { format } from 'date-fns'
-import dayjs from 'dayjs'
-import { useForm } from 'react-hook-form'
 import { MdOutlineReadMore } from 'react-icons/md'
 
-import { emailSvg } from '../../../../assets/assetsplatform'
 import { InputComponent, InputSubmitComponent, ModalComponent, SelectComponent } from '../../../../Components'
 import { MapGoogle } from '../../../../Components/mapGoogle/Map'
-import { MapHandler } from '../../../../Components/mapGoogle/MapHandler'
-import {
-	DrawingActionKind,
-	isCircle,
-	isMarker,
-	isPolygon,
-	isPolyline,
-	isRectangle
-} from '../../../../Components/mapGoogle/types'
-import { API_KEY_GOOGLE_MAPS, initialDataLocation } from '../../constants/constants'
+import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
 import { CreateRouting } from '../../Routing/ModuleRouting'
+import { useServiceClient } from './hooks/useServiceClient'
 
 // ============ Creacion de servicio ================
 
@@ -84,209 +71,67 @@ const routesClient = [
 	}
 ]
 
-const reducer = (state, action) => {
-	switch (action.type) {
-		// This action is called whenever anything changes on any overlay.
-		// We then take a snapshot of the relevant values of each overlay and
-		// save them as the new "now". The old "now" is added to the "past" stack
-		case DrawingActionKind.UPDATE_OVERLAYS: {
-			const overlays = state.now.map((overlay) => {
-				const snapshot = {}
-				const { geometry } = overlay
-
-				if (isCircle(geometry)) {
-					snapshot.center = geometry.getCenter()?.toJSON()
-					snapshot.radius = geometry.getRadius()
-				} else if (isMarker(geometry)) {
-					snapshot.position = geometry.getPosition()?.toJSON()
-				} else if (isPolygon(geometry) || isPolyline(geometry)) {
-					snapshot.path = geometry.getPath()?.getArray()
-				} else if (isRectangle(geometry)) {
-					snapshot.bounds = geometry.getBounds()?.toJSON()
-				}
-
-				return {
-					...overlay,
-					snapshot
-				}
-			})
-
-			return {
-				now: [...overlays],
-				past: [...state.past, state.now],
-				future: []
-			}
+const jsonService = {
+	type_device: {
+		_id: '',
+		name: ''
+	},
+	id_route: '',
+	type_service: {
+		_id: '',
+		name: ''
+	},
+	date_start: '',
+	date_end: '',
+	carrier: {
+		name: '',
+		number: '',
+		driver: {
+			name: '',
+			licence_plate: '',
+			number_document: '',
+			phone: '',
+			email: ''
+		},
+		information_container: {
+			licence_plate: '',
+			type: '',
+			number: '',
+			seals: ['', '']
 		}
-
-		// This action is called when a new overlay is added to the map.
-		// We then take a snapshot of the relevant values of the new overlay and
-		// add it to the "now" state. The old "now" is added to the "past" stack
-		case DrawingActionKind.SET_OVERLAY: {
-			const { overlay } = action.payload
-
-			const snapshot = {}
-
-			if (isCircle(overlay)) {
-				snapshot.center = overlay.getCenter()?.toJSON()
-				snapshot.radius = overlay.getRadius()
-			} else if (isMarker(overlay)) {
-				const { lat, lng } = overlay.getPosition()?.toJSON()
-				let center = [lat, lng]
-				let radius = 5
-				let options = { steps: 10, units: 'kilometers', properties: { foo: 'bar' } }
-				let circle = turf.circle(center, radius, options)
-
-				snapshot.position = overlay.getPosition()?.toJSON()
-			} else if (isPolygon(overlay) || isPolyline(overlay)) {
-				const array = []
-				// overlay
-				// 	.getPath()
-				// 	?.getArray()
-				// 	.map((item) => {
-				// 		array.push([item.lat(), item.lng()])
-				// 	})
-
-				const result = polygon(
-					[
-						[
-							[-5, 52],
-							[-4, 56],
-							[-2, 51],
-							[-7, 54],
-							[-5, 52]
-						]
-					],
-					{ name: 'poly1' }
-				)
-
-				snapshot.path = overlay.getPath()?.getArray()
-			} else if (isRectangle(overlay)) {
-				snapshot.bounds = overlay.getBounds()?.toJSON()
-			}
-
-			return {
-				past: [...state.past, state.now],
-				now: [
-					...state.now,
-					{
-						type: action.payload.type,
-						geometry: action.payload.overlay,
-						snapshot
-					}
-				],
-				future: []
-			}
-		}
-
-		// This action is called when the undo button is clicked.
-		// Get the top item from the "past" stack and set it as the new "now".
-		// Add the old "now" to the "future" stack to enable redo functionality
-		case DrawingActionKind.UNDO: {
-			const last = state.past.slice(-1)[0]
-
-			if (!last) return state
-
-			return {
-				past: [...state.past].slice(0, -1),
-				now: last,
-				future: state.now ? [...state.future, state.now] : state.future
-			}
-		}
-
-		// This action is called when the redo button is clicked.
-		// Get the top item from the "future" stack and set it as the new "now".
-		// Add the old "now" to the "past" stack to enable undo functionality
-		case DrawingActionKind.REDO: {
-			const next = state.future.slice(-1)[0]
-
-			if (!next) return state
-
-			return {
-				past: state.now ? [...state.past, state.now] : state.past,
-				now: next,
-				future: [...state.future].slice(0, -1)
-			}
-		}
-	}
+	},
+	information_aditional: '',
+	remarks: ''
 }
 
 export const CreateService = () => {
-	const { register, handleSubmit } = useForm()
-	const [state, dispatch] = useReducer(reducer, {
-		past: [],
-		now: [],
-		future: []
-	})
-	const [selectedPlace, setSelectedPlace] = useState(null)
-	const [dateStart, setDateStart] = useState(dayjs('2024-04-17T15:30'))
-	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
+	const {
+		open,
+		data,
+		dateEnd,
+		register,
+		dateStart,
+		handleOpen,
+		setDateEnd,
+		handleSubmit,
+		setDateStart,
+		handleCreateService,
+		dataPreCreateService
+	} = useServiceClient()
 
-	const [objectLocations, setObjectLocations] = useState(initialDataLocation)
-
-	const handleCreateService = (data) => {
-		data.date_end = format(dateStart.$d, 'yyyy-MM-dd hh:mm:ss')
-		data.date_start = format(dateEnd.$d, 'yyyy-MM-dd hh:mm:ss')
-		// data.place_end = dataCoordinates.place_end
-		// data.place_start = dataCoordinates.place_start
-		// data.station = dataCoordinates.station
-
-		const sendJsonService = {
-			type_device: {
-				_id: '',
-				name: ''
-			},
-			id_route: '',
-			type_service: {
-				_id: '',
-				name: ''
-			},
-			date_start: '',
-			date_end: '',
-			carrier: {
-				name: '',
-				number: '',
-				driver: {
-					name: '',
-					licence_plate: '',
-					number_document: '',
-					phone: '',
-					email: ''
-				},
-				information_container: {
-					licence_plate: '',
-					type: '',
-					number: '',
-					seals: ['', '']
-				}
-			},
-			information_aditional: '',
-			remarks: ''
-		}
-
-		// handleCreateServiceClient(data)
-	}
-
-	const [open, setOpen] = useState(false)
-	const handleOpen = () => setOpen(!open)
+	const [mapReference, setMapReference] = useState(null)
 
 	return (
 		<div className='pt-2 px-2 h-[95%]'>
-			<ModalComponent handleOpen={open} HandleClose={handleOpen} titleModal='Creacion de ruta'>
-				<CreateRouting />
-			</ModalComponent>
+			{open && (
+				<ModalComponent handleOpen={open} HandleClose={handleOpen} titleModal='Creacion de ruta'>
+					<CreateRouting />
+				</ModalComponent>
+			)}
 			<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
-				<MapHandler place={selectedPlace} />
 				<div className='flex h-full'>
 					<div className='w-[40%]'>
-						<MapGoogle
-							customControlPermission
-							MapHandlerPermission
-							UndoRedoControlPermission
-							dispatch={dispatch}
-							state={state}
-							selectedPlace={selectedPlace}
-							locations={objectLocations}
-						/>
+						<MapGoogle dataRoute={data} setMapReference={setMapReference} />
 					</div>
 					<div className='w-[60%] overflow-y-scroll'>
 						<form onSubmit={handleSubmit(handleCreateService)} className='flex flex-col'>
@@ -309,29 +154,31 @@ export const CreateService = () => {
 									</DemoContainer>
 								</LocalizationProvider>
 							</div>
+							{/* select routing */}
 							<div className='flex mt-5  justify-between'>
 								<div className='w-[70%] flex  items-center'>
 									<SelectComponent
 										color
 										option='name_routing'
-										name='service.did'
+										name='id_route'
 										register={register}
 										label='Rutas'
-										arrayOptions={routesClient}
+										arrayOptions={dataPreCreateService?.data?.data?.routes}
 									/>
 								</div>
 								<div className='w-[30%] flex items-end justify-center text-sm'>
 									<button
 										onClick={handleOpen}
-										className=' rounded-md w-4/5 ps-1 p-2.5 flex gap-1 justify-center items-center bg-black text-white'
+										className='rounded-md w-4/5 ps-1 p-2.5 flex gap-1 justify-center items-center bg-black text-white'
 									>
 										<MdOutlineReadMore color='white' />
 										<span>Nueva Ruta</span>
 									</button>
 								</div>
-
-								{/* 
-                        <div className='w-[41%]'>
+							</div>
+							{/* services */}
+							<div className='flex justify-between mt-5'>
+								<div className='w-[48%]'>
 									<SelectComponent
 										color
 										option='name'
@@ -341,7 +188,7 @@ export const CreateService = () => {
 										arrayOptions={typesServices}
 									/>
 								</div>
-                         <div className='w-[31%]'>
+								<div className='w-[48%]'>
 									<SelectComponent
 										color
 										register={register}
@@ -350,16 +197,41 @@ export const CreateService = () => {
 										arrayOptions={typesDevices}
 										option='name'
 									/>
-								</div> 
-                        */}
+								</div>
 							</div>
-							{/* <div>
-								<h4 className=' py-5'>Datos del conductor</h4>
+							{/* transportista */}
+							<h2 className='py-2 text-center'>DATOS DEL TRANSPORTISTA</h2>
+							<div className='flex justify-between mt-1'>
+								<div className='w-[48%]'>
+									<InputComponent
+										required
+										name='carrier.name'
+										type='text'
+										register={register}
+										label='nombre del transportista'
+										placeholder='Botero soto'
+										color
+									/>
+								</div>
+								<div className='w-[48%]'>
+									<InputComponent
+										color
+										required
+										name='carrier.number'
+										type='number'
+										register={register}
+										label='Numero de celular'
+										placeholder='+57 000 000 0000'
+									/>
+								</div>
+							</div>
+							{/* dates driver  */}
+							<h2 className='py-2 text-center'>DATOS DEL CONDUCTOR</h2>
+							<div className='flex gap-4 flex-wrap'>
 								<InputComponent
 									required
-									name='driver.email'
+									name='carrier.driver.email'
 									type='email'
-									svg={emailSvg}
 									register={register}
 									label='Correo electronico'
 									placeholder='name@gmail.com'
@@ -368,9 +240,8 @@ export const CreateService = () => {
 								<InputComponent
 									color
 									required
-									name='driver.license_plate'
+									name='carrier.driver.license_plate'
 									type='text'
-									svg={emailSvg}
 									register={register}
 									label='Placa'
 									placeholder='XXXXX'
@@ -378,9 +249,8 @@ export const CreateService = () => {
 								<InputComponent
 									color
 									required
-									name='driver.name'
+									name='carrier.driver.name'
 									type='text'
-									svg={emailSvg}
 									register={register}
 									label='Nombre'
 									placeholder='jhondue'
@@ -388,9 +258,8 @@ export const CreateService = () => {
 								<InputComponent
 									color
 									required
-									name='driver.number_document'
+									name='carrier.driver.number_document'
 									type='number'
-									svg={emailSvg}
 									register={register}
 									label='Numero de documento'
 									placeholder='000 000 0000'
@@ -398,15 +267,46 @@ export const CreateService = () => {
 								<InputComponent
 									color
 									required
-									name='driver.phone'
+									name='carrier.driver.phone'
 									type='number'
-									svg={emailSvg}
 									register={register}
 									label='Numero de celular'
+									placeholder='+57 000 000 0000'
+								/>
+							</div>
+							{/* info container */}
+							<h2 className='py-2 text-center'>INFORMACION DEL CONTENEDOR</h2>
+							<div className='flex gap-4 flex-wrap'>
+								<InputComponent
+									color
+									required
+									name='carrier.information_container.license_plate'
+									type='text'
+									register={register}
+									label='Placa'
+									placeholder='XXXXX'
+								/>
+								<InputComponent
+									color
+									required
+									name='carrier.information_container.type'
+									type='text'
+									register={register}
+									label='tipo de contenedor'
+									placeholder='jhondue'
+								/>
+								<InputComponent
+									color
+									required
+									name='carrier.information_container.number'
+									type='number'
+									register={register}
+									label='Numero del contenedor'
 									placeholder='000 000 0000'
 								/>
-							</div> */}
-							{/* <div className='flex flex-col'>
+							</div>
+							{/* remarks */}
+							<div className='flex flex-col'>
 								<label htmlFor='story' className='py-1'>
 									Quieres dar alguna indicacion adicional ?
 								</label>
@@ -418,11 +318,11 @@ export const CreateService = () => {
 										}
 									})}
 								/>
-							</div> */}
+							</div>
 							{/* SEND FORM */}
-							{/* <div className='flex justify-center pt-6 '>
+							<div className='flex justify-center pt-6 '>
 								<InputSubmitComponent text='CREAR VIAJE' />
-							</div> */}
+							</div>
 						</form>
 					</div>
 				</div>

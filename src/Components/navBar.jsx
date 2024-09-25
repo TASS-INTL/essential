@@ -6,6 +6,7 @@ import { RiNotification3Line } from 'react-icons/ri'
 
 import avatar from '../assets/img/avatar.jpg'
 import { SocketContext } from '../pages/PrivateRoutes/sockets/socketProvider'
+import { userStore } from '../store/userStore'
 import Notification from './Notification'
 import UserProfile from './UserProfile'
 
@@ -29,6 +30,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 const Navbar = () => {
 	const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize } =
 		useContext(SocketContext)
+	const userData = userStore((state) => state.userData)
 
 	useEffect(() => {
 		const handleResize = () => setScreenSize(window.innerWidth)
@@ -67,7 +69,7 @@ const Navbar = () => {
 					>
 						<img className='rounded-full w-8 h-8' src={avatar} alt='user-profile' />
 						<p>
-							<span className='text-gray-400 font-bold ml-1 text-14'>Marlon</span>
+							<span className='text-gray-400 font-bold ml-1 text-14'>{userData?.name}</span>
 						</p>
 						<MdKeyboardArrowDown className='text-gray-400 text-14' />
 					</div>

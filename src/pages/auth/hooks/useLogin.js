@@ -56,7 +56,7 @@ export const useAuth = () => {
 
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 		response?.completed &&
-			showToast('Se a reenviado el codigo de validacion al correo de manera exitosa', 'success')
+			showToast('Se a reenviado el codigo de validacion al correo de manera exitosa ✅', 'success')
 	}
 
 	// Personal Data
@@ -70,7 +70,7 @@ export const useAuth = () => {
 		const response = await registerPersonalData(valuePersonalData)
 
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
-		response?.completed && showToast('Se a completado de manera exitos el registro', 'success')
+		response?.completed && showToast('Se a completado de manera exitos el registro ✅', 'success')
 	}
 
 	// Forgot Password
@@ -80,7 +80,7 @@ export const useAuth = () => {
 			email: valuesForgot.email
 		})
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
-		response?.completed && showToast('Te enviamos la nueva contraseña al correo', 'success')
+		response?.completed && showToast('Te enviamos la nueva contraseña al correo ✅', 'success')
 	}
 
 	return {

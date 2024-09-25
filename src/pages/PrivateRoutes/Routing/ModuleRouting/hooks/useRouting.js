@@ -1,6 +1,6 @@
 import { useReducer, useState } from 'react'
 
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 
 import api from '../../../../../Api/api'
@@ -132,97 +132,8 @@ const reducer = (state, action) => {
 	}
 }
 
-const routing = {
-	name_routing: '',
-	location_start: {
-		// Geocerca del punto de inicio
-		location: {
-			type: 'Polygon',
-			coordinates: [
-				[
-					[100.0, 0.0],
-					[101.0, 0.0],
-					[101.0, 1.0],
-					[100.0, 1.0],
-					[100.0, 0.0]
-				]
-			]
-		},
-		// Permisos del punto de inicio
-		permissions: permission,
-		// Nombre del punto del inicio
-		name: '',
-		// Marker del punto de inicio
-		market: {
-			location: {
-				type: 'Point',
-				coordinates: [100.0, 0.0]
-			},
-			status: 'create'
-		}
-	},
-	location_end: {
-		// Geocerca del punto de inicio
-		location: {
-			type: 'Polygon',
-			coordinates: [
-				[
-					[100.0, 0.0],
-					[101.0, 0.0],
-					[101.0, 1.0],
-					[100.0, 1.0],
-					[100.0, 0.0]
-				]
-			]
-		},
-		// Permisos del punto de inicio
-		permissions: permission,
-		// Nombre del punto del inicio
-		name: '',
-		// Marker del punto de inicio
-		market: {
-			location: {
-				type: 'Point',
-				coordinates: [100.0, 0.0]
-			},
-			status: 'create'
-		}
-	},
-	stations: [
-		{
-			location: {
-				type: 'Polygon',
-				coordinates: [
-					[
-						[100.0, 0.0],
-						[101.0, 0.0],
-						[101.0, 1.0],
-						[100.0, 1.0],
-						[100.0, 0.0]
-					]
-				]
-			},
-			permissions: permission,
-			name: '',
-			market: {
-				location: {
-					type: 'Point',
-					coordinates: [100.0, 0.0]
-				},
-				status: 'create'
-			},
-			info: {
-				completed: false,
-				order: 1
-			}
-		}
-	],
-	distance: {},
-	duration: {},
-	coordinates: [[123, 123]]
-}
-
 export const useRouting = () => {
+	// states
 	const { register, handleSubmit } = useForm()
 	const [state, dispatch] = useReducer(reducer, {
 		past: [],
@@ -230,77 +141,73 @@ export const useRouting = () => {
 		future: []
 	})
 	const [selectedPlace, setSelectedPlace] = useState(null)
-	const [objectLocations, setObjectLocations] = useState(initialDataLocation)
 	const [dataDirections, setDataDirections] = useState(null)
+	const [objectLocations, setObjectLocations] = useState(initialDataLocation)
 
-	const createServiceClient = useMutation({
-		mutationFn: async (data) => await api(METHODS_API.POST, `module/routing/create-client`, data),
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postCreateServiceClient'] })
-	})
-
-	const handleCreateServiceClient = async (data) => {
-		const response = await createServiceClient.mutateAsync(data)
-		response?.completed && showToast('Se a creado de manera exito el servicio', 'success')
-		response?.error && showToast('❌ Algo ha salido mal al crear el serivicio' + response?.message, 'error')
-	}
-
-	const addPlaces = ({ location, data, fromDraggable }) => {
-		if (location !== undefined) {
-			const { geometry } = calculateCircle(
-				data ? data?.geometry?.location?.lat() : fromDraggable?.lat,
-				data ? data?.geometry?.location?.lng() : fromDraggable?.lng
-			)
-
-			if (data === null) {
-				setObjectLocations((state) => ({
-					...state,
-					[location]: {
-						...state[location],
-						market: {
-							location: {
-								type: 'Point',
-								coordinates: [fromDraggable.lat, fromDraggable.lng]
-							},
-							status: 'create'
-						}
-					}
-				}))
-			} else {
-				setSelectedPlace(data)
-				setObjectLocations((state) => ({
-					...state,
-					[location]: {
-						location: geometry,
-						permissions: permission,
-						name: data?.formatted_address,
-						info: { completed: false, order: 1 },
-						market: {
-							location: {
-								type: 'Point',
-								coordinates: [data?.geometry?.location?.lat(), data?.geometry?.location?.lng()]
-							},
-							status: 'create'
-						}
-					}
-				}))
+	// Adding places location start and location end
+	const addPlaces = ({ location, data }) => {
+		const { geometry } = calculateCircle(data?.geometry?.location?.lat(), data?.geometry?.location?.lng())
+		setSelectedPlace(data)
+		setObjectLocations((state) => ({
+			...state,
+			[location]: {
+				location: geometry,
+				permissions: null,
+				name: data?.formatted_address,
+				info: { status: location === 'location_start' ? 'current' : 'created', order: 1 },
+				market: {
+					location: {
+						type: 'Point',
+						coordinates: [data?.geometry?.location?.lng(), data?.geometry?.location?.lat()]
+					},
+					status: 'create'
+				}
 			}
-		}
+		}))
 	}
 
-	const handleSendData = (data) => {
-		// stations
+	// change values merker when draggable is activate
+	const handleChangeMarkerDraggable = ({ location, data }) => {
+		setObjectLocations((state) => ({
+			...state,
+			[location]: {
+				...state[location],
+				market: {
+					location: {
+						type: 'Point',
+						coordinates: [data?.lng, data?.lat]
+					},
+					status: 'create'
+				}
+			}
+		}))
+	}
+
+	// change permissions
+	const handleChangePermissions = ({ location, permissions }) => {
+		setObjectLocations((state) => ({
+			...state,
+			[location]: {
+				...state[location],
+				permissions
+			}
+		}))
+	}
+	// processing stations
+	const processingStations = () => {
 		const stationProcesed = []
 		let count = 2
 		if (state.now.length > 0) {
 			state.now.forEach((element) => {
 				const locationCoordinates = []
 				element.snapshot.path.forEach((item) => {
-					locationCoordinates.push([item.lat(), item.lng()])
+					locationCoordinates.push([item.lng(), item.lat()])
 				})
+
 				const obj = {
 					location: {
 						type: 'Polygon',
-						coordinates: locationCoordinates
+						coordinates: [locationCoordinates]
 					},
 					permissions: permission,
 					name: `station-${count}`,
@@ -312,41 +219,90 @@ export const useRouting = () => {
 						status: 'create'
 					},
 					info: {
-						completed: false,
+						status: 'created',
 						order: count
 					}
 				}
 				count++
 				stationProcesed.push(obj)
+				locationCoordinates.push(locationCoordinates[0])
 			})
 		}
 
-		// coordinates, distance, duration
+		return { stationProcesed, count }
+	}
+
+	// processing coordinates
+	const processingCoordinates = () => {
 		const arrayCoordinates = []
 		dataDirections?.overview_path?.forEach((item) => {
 			arrayCoordinates.push([item.lat(), item.lng()])
 		})
 
-		// data send
-		data.location_start = objectLocations.location_start
-		data.location_end = objectLocations.location_end
-		data.stations = stationProcesed
-		data.distance = dataDirections.legs[0].distance
-		data.duration = dataDirections.legs[0].duration
-		data.coordinatesroute = arrayCoordinates
-		data.location_end.info.order = count
-		handleCreateServiceClient(data)
+		return arrayCoordinates
+	}
+
+	// send create routing
+	const createRoutingClient = useMutation({
+		mutationFn: async (data) => await api(METHODS_API.POST, `module/routing/create-client`, data),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postCreateRoutingClient'] })
+	})
+
+	// handle create routing
+	const handleCreateRoutingClient = async (data) => {
+		const response = await createRoutingClient.mutateAsync(data)
+		response?.completed && showToast('Se a creado de manera exitosa la ruta', 'success')
+		response?.error && showToast('❌ Algo ha salido mal al crear la ruta' + response?.message, 'error')
+	}
+
+	// get permission for routing
+	const getPermissionsForRouting = () =>
+		useQuery({
+			queryKey: ['permissionsForRouting'],
+			queryFn: async () => await api(METHODS_API.GET, `module/routing/permissions/geofences`)
+		})
+
+	const { data: permissionsData } = getPermissionsForRouting()
+
+	// Sending all the information collected for the route
+	const handleSendData = (data) => {
+		try {
+			// stations
+			const { stationProcesed, count } = processingStations()
+
+			// coordinates, distance, duration
+			const cooordinatesProcessind = processingCoordinates()
+
+			// data send
+			data.stations = stationProcesed
+			data.coordinatesroute = cooordinatesProcessind
+			data.location_end = objectLocations?.location_end
+			data.distance = dataDirections?.legs[0]?.distance
+			data.duration = dataDirections?.legs[0]?.duration
+			data.location_start = objectLocations?.location_start
+			data.location_end.info.order = count
+			data.viewport = dataDirections?.bounds
+			showToast('Se a enviado a crear la ruta', 'warning')
+			handleCreateRoutingClient(data)
+		} catch (error) {
+			console.log(error)
+			showToast('Ocurrio un error debes llenar todos los campos', 'warning')
+		}
 	}
 
 	return {
 		state,
 		dispatch,
 		register,
-		handleSubmit,
 		addPlaces,
-		handleSendData,
+		handleSubmit,
 		selectedPlace,
+		handleSendData,
+		permissionsData,
 		objectLocations,
-		setDataDirections
+		setDataDirections,
+		handleChangePermissions,
+		getPermissionsForRouting,
+		handleChangeMarkerDraggable
 	}
 }

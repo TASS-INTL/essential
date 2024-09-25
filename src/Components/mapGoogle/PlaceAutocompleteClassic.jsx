@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { useMapsLibrary } from '@vis.gl/react-google-maps'
 
-export const PlaceAutocompleteClassic = ({ onPlaceSelect, location }) => {
+export const PlaceAutocompleteClassic = ({ addPlaces, location }) => {
 	const [placeAutocomplete, setPlaceAutocomplete] = useState(null)
 	const inputRef = useRef(null)
 	const places = useMapsLibrary('places')
@@ -21,9 +21,9 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect, location }) => {
 		if (!placeAutocomplete) return
 
 		placeAutocomplete.addListener('place_changed', () => {
-			onPlaceSelect({ data: placeAutocomplete.getPlace(), location })
+			addPlaces({ location, data: placeAutocomplete.getPlace() })
 		})
-	}, [onPlaceSelect, placeAutocomplete])
+	}, [addPlaces, placeAutocomplete])
 
 	return (
 		<div className='autocomplete-container'>

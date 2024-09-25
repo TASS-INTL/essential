@@ -1,23 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import { forwardRef, useEffect } from 'react'
 
-import { ControlPosition, Map, MapControl } from '@vis.gl/react-google-maps'
+import { ControlPosition, Map, MapControl, useMap } from '@vis.gl/react-google-maps'
 
-import { permission } from '../../pages/PrivateRoutes/constants/constants'
 import { Directions } from './Directions'
 import { InfoWindowComponent } from './InfoWindowComponent'
 import { MarkerWithInfowindow } from './MarkerWithInfowindow'
+import { Polygon } from './Polygon'
+import { Polyline } from './Polyline'
 import { UndoRedoControl } from './UndoRedoControl'
 import { useDrawingManager } from './UseDrawingMager'
 
 export const MapGoogle = ({
+	setMapReference,
 	state,
 	dispatch,
 	locations,
+	dataRoute,
+	permissionsData,
 	dataPrintModals,
-	UndoRedoControlPermission,
 	setDataDirections,
-	addPlaces
+	handleChangePermissions,
+	UndoRedoControlPermission,
+	handleChangeMarkerDraggable
 }) => {
+	const map = useMap()
+
 	const drawingManager = useDrawingManager()
 
 	const changeStatePermission = (idPermission) => {
@@ -25,17 +32,23 @@ export const MapGoogle = ({
 		state.now[position].showPermission = false
 	}
 
+	useEffect(() => {
+		if (!map) return
+		console.log(map)
+		setMapReference(map)
+	}, [map])
+
 	return (
 		<>
 			<Map
 				style={{ width: '95%', margin: 'auto' }}
 				defaultCenter={{ lat: 3.8515385, lng: -74.8861476 }}
-				defaultZoom={5}
+				defaultZoom={6}
 				gestureHandling={'greedy'}
 				disableDefaultUI={true}
 			>
 				{/* Direction for the Route */}
-				{locations.location_start.name && locations.location_end.name && (
+				{locations?.location_start?.name && locations?.location_end?.name && (
 					<Directions
 						origin={locations.location_start.name}
 						destination={locations.location_end.name}
@@ -44,29 +57,29 @@ export const MapGoogle = ({
 				)}
 				{/* marker and geofence of the location start */}
 				{locations?.location_start?.market?.location?.coordinates[0] && (
-					<>
-						<MarkerWithInfowindow
-							position={{
-								lat: locations?.location_start?.market?.location?.coordinates[0],
-								lng: locations?.location_start?.market?.location?.coordinates[1]
-							}}
-							location='location_start'
-							addPlaces={addPlaces}
-						/>
-					</>
+					<MarkerWithInfowindow
+						position={{
+							lat: locations?.location_start?.market?.location?.coordinates[1],
+							lng: locations?.location_start?.market?.location?.coordinates[0]
+						}}
+						location='location_start'
+						permissionsData={permissionsData}
+						handleChangePermissions={handleChangePermissions}
+						handleChangeMarkerDraggable={handleChangeMarkerDraggable}
+					/>
 				)}
 				{/* marker and geofence of the location end */}
 				{locations?.location_end?.market?.location?.coordinates[1] && (
-					<>
-						<MarkerWithInfowindow
-							position={{
-								lat: locations?.location_end?.market?.location?.coordinates[0],
-								lng: locations?.location_end?.market?.location?.coordinates[1]
-							}}
-							location='location_end'
-							addPlaces={addPlaces}
-						/>
-					</>
+					<MarkerWithInfowindow
+						position={{
+							lat: locations?.location_end?.market?.location?.coordinates[1],
+							lng: locations?.location_end?.market?.location?.coordinates[0]
+						}}
+						location='location_end'
+						permissionsData={permissionsData}
+						handleChangePermissions={handleChangePermissions}
+						handleChangeMarkerDraggable={handleChangeMarkerDraggable}
+					/>
 				)}
 				{/* permissions modal in the geofences */}
 				{dataPrintModals && (
@@ -76,9 +89,9 @@ export const MapGoogle = ({
 								{item.showPermission && (
 									<InfoWindowComponent
 										key={item._id}
-										maxWidth={200}
+										maxWidth={400}
 										onCloseClick={() => changeStatePermission(item._id)}
-										permission={permission}
+										permission={permissionsData?.data}
 										position={{
 											lat: item.snapshot.path[0].lat(),
 											lng: item.snapshot.path[0].lng()
@@ -88,6 +101,22 @@ export const MapGoogle = ({
 							</>
 						))}
 					</>
+				)}
+				{dataRoute?.data?.coordinatesroute && (
+					<Polyline strokeWeight={7} strokeColor={'#8a2be2'} pathArray={dataRoute?.data?.coordinatesroute} />
+				)}
+				{dataRoute?.data?.stations.length > 0 && (
+					<>
+						{dataRoute?.data?.stations.map((item) => (
+							<Polygon key={item._id} strokeWeight={1.5} pathsArray={item?.location?.coordinates[0]} />
+						))}
+					</>
+				)}
+				{dataRoute?.data?.location_start && (
+					<Polygon strokeWeight={1.5} pathsArray={dataRoute?.data?.location_start?.location.coordinates[0]} />
+				)}
+				{dataRoute?.data?.location_end && (
+					<Polygon strokeWeight={1.5} pathsArray={dataRoute?.data?.location_end?.location.coordinates[0]} />
 				)}
 			</Map>
 			{UndoRedoControlPermission && (

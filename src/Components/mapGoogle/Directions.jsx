@@ -16,7 +16,7 @@ export const Directions = ({ origin, destination, setDataDirections }) => {
 	useEffect(() => {
 		if (!routesLibrary || !map) return
 		setDirectionsService(new routesLibrary.DirectionsService())
-		setDirectionsRenderer(new routesLibrary.DirectionsRenderer({ map }))
+		setDirectionsRenderer(new routesLibrary.DirectionsRenderer({ draggable: true, map }))
 	}, [routesLibrary, map, origin, destination])
 
 	// Use directions service
@@ -48,6 +48,14 @@ export const Directions = ({ origin, destination, setDataDirections }) => {
 		setDataDirections(selected)
 	}, [selected])
 
+	useEffect(() => {
+		if (!directionsRenderer) return
+		google.maps.event.addListener(directionsRenderer, 'directions_changed', () => {
+			const modifiedRoute = directionsRenderer.getDirections()
+			setDataDirections(modifiedRoute.routes[0])
+		})
+	}, [directionsRenderer])
+
 	if (!leg) return null
 
 	return (
@@ -63,7 +71,7 @@ export const Directions = ({ origin, destination, setDataDirections }) => {
 			<ul>
 				{routes.map((route, index) => (
 					<li key={route.summary}>
-						* <button onClick={() => setRouteIndex(index)}>{route.summary}</button>
+						- <button onClick={() => setRouteIndex(index)}>{route.summary}</button>
 					</li>
 				))}
 			</ul>

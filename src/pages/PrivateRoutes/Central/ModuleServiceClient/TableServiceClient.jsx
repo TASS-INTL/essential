@@ -40,9 +40,11 @@ export const TableServiceClient = () => {
 				</form>
 			</div>
 			<BoardDevice dataBody={dataTableServicesClient?.data?.data?.results} />
-			<ModalComponent handleOpen={open} HandleClose={handleOpen} titleModal='Creacion del servicio'>
-				<CreateService />
-			</ModalComponent>
+			{open && (
+				<ModalComponent handleOpen={open} HandleClose={handleOpen} titleModal='Creacion del servicio'>
+					<CreateService />
+				</ModalComponent>
+			)}
 		</>
 	)
 }
