@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -6,103 +6,18 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { APIProvider } from '@vis.gl/react-google-maps'
 import { MdOutlineReadMore } from 'react-icons/md'
 
-import { InputComponent, InputSubmitComponent, ModalComponent, SelectComponent } from '../../../../Components'
+import {
+	ErrorComponent,
+	InputComponent,
+	InputSubmitComponent,
+	LoaderComponent,
+	ModalComponent,
+	SelectComponent
+} from '../../../../Components'
 import { MapGoogle } from '../../../../Components/mapGoogle/Map'
 import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
 import { CreateRouting } from '../../Routing/ModuleRouting'
 import { useServiceClient } from './hooks/useServiceClient'
-
-// ============ Creacion de servicio ================
-
-// para crear un servicio se hace hacen los siguientes pasos
-
-// consultar los selects
-//    los tipos de dispositivos ---> id, name
-//    las rutas asociadas del cliente ---> id, did, name
-//    los tipos de servicios ---> id,name
-
-// Los inputs
-//    fecha de inicio y fin ---> requerido
-//    informacion de transportista
-//       nombre
-//       numero
-//       informacion del conductor
-//          nombre
-//          placa del vehiculo
-//          numero de documento
-//          correo
-//       informacion del contenedor
-//          placa del contendedor
-//          numero del contenedor
-//          guayas
-// Informacion adicional
-// Observaciones
-
-const typesServices = [
-	{
-		name: 'typo de serivico 1',
-		_id: '1'
-	},
-	{
-		name: 'typo servicio 2',
-		_id: '2'
-	}
-]
-
-const typesDevices = [
-	{
-		_id: '1',
-		name: 'Device 1'
-	},
-	{
-		_id: '2',
-		name: 'Device 2'
-	}
-]
-
-const routesClient = [
-	{
-		_id: '1',
-		name_routing: 'Medellin - Cartagena'
-	},
-	{
-		_id: '2',
-		name_routing: 'Bogata - Cali'
-	}
-]
-
-const jsonService = {
-	type_device: {
-		_id: '',
-		name: ''
-	},
-	id_route: '',
-	type_service: {
-		_id: '',
-		name: ''
-	},
-	date_start: '',
-	date_end: '',
-	carrier: {
-		name: '',
-		number: '',
-		driver: {
-			name: '',
-			licence_plate: '',
-			number_document: '',
-			phone: '',
-			email: ''
-		},
-		information_container: {
-			licence_plate: '',
-			type: '',
-			number: '',
-			seals: ['', '']
-		}
-	},
-	information_aditional: '',
-	remarks: ''
-}
 
 export const CreateService = () => {
 	const {
@@ -119,7 +34,9 @@ export const CreateService = () => {
 		dataPreCreateService
 	} = useServiceClient()
 
-	const [mapReference, setMapReference] = useState(null)
+	if (dataPreCreateService.isLoading) return <LoaderComponent />
+
+	if (dataPreCreateService.error) return <ErrorComponent />
 
 	return (
 		<div className='pt-2 px-2 h-[95%]'>
@@ -131,7 +48,7 @@ export const CreateService = () => {
 			<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
 				<div className='flex h-full'>
 					<div className='w-[40%]'>
-						<MapGoogle dataRoute={data} setMapReference={setMapReference} />
+						<MapGoogle dataRoute={data} />
 					</div>
 					<div className='w-[60%] overflow-y-scroll'>
 						<form onSubmit={handleSubmit(handleCreateService)} className='flex flex-col'>
@@ -182,20 +99,20 @@ export const CreateService = () => {
 									<SelectComponent
 										color
 										option='name'
-										name='service.did'
+										name='type_service._id'
 										register={register}
 										label='tipo de servicio'
-										arrayOptions={typesServices}
+										arrayOptions={dataPreCreateService?.data?.data?.types_services}
 									/>
 								</div>
 								<div className='w-[48%]'>
 									<SelectComponent
 										color
+										option='name'
+										name='type_device._id'
 										register={register}
 										label='Selecciona el dispositivo'
-										name='device.id_device'
-										arrayOptions={typesDevices}
-										option='name'
+										arrayOptions={dataPreCreateService?.data?.data?.types_devices}
 									/>
 								</div>
 							</div>
@@ -217,7 +134,7 @@ export const CreateService = () => {
 									<InputComponent
 										color
 										required
-										name='carrier.number'
+										name='carrier.phone_number'
 										type='number'
 										register={register}
 										label='Numero de celular'
@@ -240,7 +157,7 @@ export const CreateService = () => {
 								<InputComponent
 									color
 									required
-									name='carrier.driver.license_plate'
+									name='carrier.driver.licence_plate'
 									type='text'
 									register={register}
 									label='Placa'
@@ -280,7 +197,7 @@ export const CreateService = () => {
 								<InputComponent
 									color
 									required
-									name='carrier.information_container.license_plate'
+									name='carrier.information_container.licence_plate'
 									type='text'
 									register={register}
 									label='Placa'

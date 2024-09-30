@@ -1,19 +1,24 @@
+import { useState } from 'react'
+
 import api from '@/Api/api'
 import { METHODS_API } from '@/Api/constantsApi'
 import { showToast } from '@/helpers/toast'
-import { usersStore } from '@/store/usersStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { queryClient } from '../../../routes/AppRouter'
 
 export const useUsers = () => {
-	const setModalVisible = usersStore((state) => state.setModalVisible)
+	const [methodForm, setMethodForm] = useState(true)
+	const [userUpdate, setUserUpdate] = useState(null)
+	const [modalVisible, setModalVisible] = useState(false)
 
 	const fetchDataUser = () =>
 		useQuery({
 			queryKey: ['getUserList'],
 			queryFn: async () => await api(METHODS_API.GET, 'module/users')
 		})
+
+	const fetchUserList = fetchDataUser()
 
 	const createUser = useMutation({
 		mutationFn: async (data) => await api(METHODS_API.POST, 'module/users/create', data),
@@ -58,10 +63,31 @@ export const useUsers = () => {
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 	}
 
+	const handleOpen = () => setModalVisible(!modalVisible)
+
+	const onPressUpdateUser = (idUserUpdate) => {
+		const userUpdate = fetchUserList?.data?.data[0]?.users?.find((element) => element._id === idUserUpdate)
+		setUserUpdate(userUpdate)
+		setMethodForm(false)
+		setModalVisible(true)
+	}
+
+	const onPressCreateUser = () => {
+		setMethodForm(true)
+		setModalVisible(true)
+	}
+
 	return {
+		methodForm,
+		userUpdate,
+		modalVisible,
+		fetchUserList,
+		handleOpen,
 		fetchDataUser,
 		handleCreateUser,
 		handleDeleteUser,
-		handleUpdateUser
+		handleUpdateUser,
+		onPressUpdateUser,
+		onPressCreateUser
 	}
 }

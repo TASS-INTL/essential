@@ -11,7 +11,7 @@ import { useServiceClient } from './hooks/useServiceClient'
 
 export const TableServiceClient = () => {
 	const [page, setPage] = useState(1)
-	const { fetchDataServiceClient } = useServiceClient()
+	const { getDataTableServiceClient } = useServiceClient()
 	const { register, handleSubmit } = useForm()
 	const [dataSearch, setDataSearch] = useState('')
 	const [array, setArray] = useState([1, 2, 3, 4, 5])
@@ -19,7 +19,7 @@ export const TableServiceClient = () => {
 	const [open, setOpen] = useState(false)
 	const handleOpen = () => setOpen(!open)
 
-	const dataTableServicesClient = fetchDataServiceClient(page, '')
+	const dataTableServicesClient = getDataTableServiceClient(page, '')
 
 	dataTableServicesClient.isLoading && <LoaderComponent />
 

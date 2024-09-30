@@ -61,21 +61,20 @@ export const RoutesPrivate = () => {
 			<Routes>
 				{/* ============ MODULE CENTRAL =============== */}
 				<Route path={routesPrivate.centralScreen} element={<CentralScreen />} />
-
-				{/* Module Installers */}
+				{/* Installers */}
 				<Route path={routesPrivate.installersScreen} element={<Installers />} />
-				{/* Module Monitoring */}
+				{/* Monitoring */}
 				<Route path={routesPrivate.monitoringScreen} element={<MonitoringScreen />} />
-				{/* Module Service client*/}
+				{/* Service client*/}
 				<Route path={routesPrivate.servicesClientScreen} element={<ServicesClient />}>
 					<Route index path={routesPrivate.table} element={<TableServiceClient />} />
 					<Route index path={routesPrivate.createService} element={<CreateService />} />
 				</Route>
-				{/* Module Services  */}
+				{/* Services  */}
 				<Route path={routesPrivate.servicesScreen} element={<Services />}>
 					<Route index path={routesPrivate.table} element={<Table />} />
 				</Route>
-				{/* Module Travels */}
+				{/* Travels */}
 				<Route
 					path={routesPrivate.travelsScreen}
 					element={
@@ -105,7 +104,7 @@ export const RoutesPrivate = () => {
 
 				{/* ============ MODULE CHAT =============== */}
 
-				{/* Module Chat */}
+				{/*  Chat */}
 				<Route path={routesPrivate.chatScreen} element={<ChatScreen />} />
 
 				<Route path={routesPrivate.testingScreen} element={<TestingScreen />} />
@@ -113,7 +112,7 @@ export const RoutesPrivate = () => {
 				{/* ============ MODULE INVENTORY =============== */}
 				<Route path={routesPrivate.inventoryScreen} element={<InventoryScreen />} />
 
-				{/* Module Devices */}
+				{/* Devices */}
 				<Route
 					path={routesPrivate.devicesScreen}
 					element={
@@ -136,17 +135,18 @@ export const RoutesPrivate = () => {
 						<Route path={routesPrivate.travels} element={<Travels />} />
 					</Route>
 				</Route>
-				{/* Module Factory Device */}
+
+				{/* Factory Device */}
 				<Route path={routesPrivate.factoryDevicesScreen} element={<FactoryDevicesScreen />} />
 
 				{/* ============ MODULE ACCOUNT =============== */}
 
-				{/* Module Account */}
+				{/* Account */}
 				<Route path={routesPrivate.accountScreen} element={<Account />} />
 
 				{/* ============ MODULE NOTIFICATIONS =============== */}
 
-				{/* Module Notification */}
+				{/* Notification */}
 				<Route path={routesPrivate.notificationScreen} element={<NotificationScreen />}>
 					<Route index path={routesPrivate.table} element={<TableNotification />} />
 				</Route>

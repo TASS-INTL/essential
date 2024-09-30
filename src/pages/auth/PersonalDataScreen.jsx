@@ -54,7 +54,6 @@ export const PersonalDataScreen = () => {
 						<div className='grid gap-3 mb-2 md:grid-cols-3'>
 							<InputComponent
 								color
-								svg={emailSvg}
 								required
 								register={register}
 								label='nombre'
@@ -64,7 +63,6 @@ export const PersonalDataScreen = () => {
 							/>
 							<InputComponent
 								color
-								svg={emailSvg}
 								required
 								register={register}
 								label='email'
@@ -74,7 +72,6 @@ export const PersonalDataScreen = () => {
 							/>
 							<InputComponent
 								color
-								svg={emailSvg}
 								required
 								register={register}
 								label='username'
@@ -98,7 +95,6 @@ export const PersonalDataScreen = () => {
 							/>
 							<InputComponent
 								color
-								svg={emailSvg}
 								required
 								register={register}
 								label='numero de documento'
@@ -116,7 +112,6 @@ export const PersonalDataScreen = () => {
 									/>
 									<InputComponent
 										color
-										svg={emailSvg}
 										required
 										register={register}
 										label='numero de documento de la compañia'
@@ -127,7 +122,6 @@ export const PersonalDataScreen = () => {
 							)}
 							<InputComponent
 								color
-								svg={emailSvg}
 								required
 								register={register}
 								label='country'
@@ -136,25 +130,15 @@ export const PersonalDataScreen = () => {
 							/>
 							<InputComponent
 								color
-								svg={emailSvg}
 								required
 								register={register}
 								label='region'
 								name='region'
 								type='text'
 							/>
+							<InputComponent color required register={register} label='city' name='city' type='text' />
 							<InputComponent
 								color
-								svg={emailSvg}
-								required
-								register={register}
-								label='city'
-								name='city'
-								type='text'
-							/>
-							<InputComponent
-								color
-								svg={emailSvg}
 								required
 								register={register}
 								label='Direccion'
@@ -163,7 +147,6 @@ export const PersonalDataScreen = () => {
 							/>
 							<InputComponent
 								color
-								svg={emailSvg}
 								required
 								register={register}
 								label='estado o provincia'
@@ -172,7 +155,6 @@ export const PersonalDataScreen = () => {
 							/>
 							<InputComponent
 								color
-								svg={emailSvg}
 								required
 								register={register}
 								label='codigo postal'
@@ -200,7 +182,6 @@ export const PersonalDataScreen = () => {
 							</div>
 							<InputComponent
 								color
-								svg={emailSvg}
 								required
 								register={register}
 								label='password'

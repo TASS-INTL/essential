@@ -35,7 +35,6 @@ export const LoginScreen = () => {
 							required
 							name='email'
 							type='email'
-							svg={emailSvg}
 							register={register}
 							label='Correo electronico'
 							placeholder='name@gmail.com'
@@ -48,7 +47,6 @@ export const LoginScreen = () => {
 							name='password'
 							required
 							type='password'
-							svg={lock}
 							placeholder='•••••••••••'
 							color
 						/>

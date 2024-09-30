@@ -18,11 +18,7 @@ import { useTravels } from './hooks/useTravels'
 
 export const CreateTravel = ({ dataForm }) => {
 	const { register, handleSubmit } = useForm(dataForm)
-	const [state, dispatch] = useReducer(reducer, {
-		past: [],
-		now: [],
-		future: []
-	})
+
 	const [selectedPlace, setSelectedPlace] = useState(null)
 	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
 	const { fetchDataInfoRegister, handleCreateTravel } = useTravels()
@@ -35,7 +31,65 @@ export const CreateTravel = ({ dataForm }) => {
 		setObjectLocations((state) => ({ ...state, [location]: data }))
 	}
 
-	const handleCreate = () => {}
+	const handleCreate = () => {
+		const sendDataTravel = {
+			date_installation: '',
+			date_finalization: '',
+			location_installation: {
+				location: {
+					type: 'Polygon',
+					coordinates: []
+				},
+				permissions: [],
+				name: 'Sta. Barbara-Caldas, Caldas, Antioquia, Colombia',
+				market: {
+					location: {
+						type: 'Point',
+						coordinates: [6.067265199999999, -75.63417930000001]
+					},
+					status: 'create'
+				}
+			},
+			location_finalization: {
+				location: {
+					type: 'Polygon',
+					coordinates: []
+				},
+				permissions: [],
+				name: 'Sta. Barbara-Caldas, Caldas, Antioquia, Colombia',
+				market: {
+					location: {
+						type: 'Point',
+						coordinates: [6.067265199999999, -75.63417930000001]
+					},
+					status: 'create'
+				}
+			},
+			service: {
+				_id: '',
+				did: '',
+				status: ''
+			},
+			installers: {
+				_id: '',
+				name: '',
+				status: '',
+				type_operation: ''
+			},
+			type: {
+				_id: '',
+				name: ''
+			},
+			remarks: '',
+
+			periods: {
+				tx: 2,
+				sensing: ''
+			}
+		}
+	}
+
+	console.log('dataInfoRegister?.data?.data?.services', dataInfoRegister?.data?.data?.services)
 
 	return (
 		<div className='h-[95%]'>
@@ -43,15 +97,7 @@ export const CreateTravel = ({ dataForm }) => {
 				<MapHandler place={selectedPlace} />
 				<div className='flex h-full'>
 					<div className='w-[40%]'>
-						<MapGoogle
-							customControlPermission
-							MapHandlerPermission
-							UndoRedoControlPermission
-							dispatch={dispatch}
-							state={state}
-							selectedPlace={selectedPlace}
-							locations={objectLocations}
-						/>
+						<MapGoogle selectedPlace={selectedPlace} locations={objectLocations} />
 					</div>
 					<div className='w-[60%] overflow-y-scroll'>
 						<form onSubmit={handleSubmit(handleCreate)} className='flex flex-col'>
@@ -61,12 +107,12 @@ export const CreateTravel = ({ dataForm }) => {
 									<DemoContainer class='flex' components={['DateTimePicker', 'DateTimePicker']}>
 										<div className='flex gap-5'>
 											<DateTimePicker
-												label='fecha de inicio'
+												label='Fecha de Instalacion'
 												value={dateStart}
 												onChange={(newValue) => setDateStart(newValue)}
 											/>
 											<DateTimePicker
-												label='fecha de final'
+												label='Fecha de Desinstalacion'
 												value={dateEnd}
 												onChange={(newValue) => setDateEnd(newValue)}
 											/>
@@ -77,11 +123,11 @@ export const CreateTravel = ({ dataForm }) => {
 							{/* INPUTS PLACES */}
 							<div className='flex gap-4 mt-5'>
 								<div className='w-[40%]'>
-									<span className='mb-3'>Lugar de inicio</span>
+									<span className='mb-3'>Lugar de Instalacion</span>
 									<PlaceAutocompleteClassic onPlaceSelect={addPlaces} location='location_start' />
 								</div>
 								<div className='w-[40%]'>
-									<span className='mb-3'>Lugar de fin</span>
+									<span className='mb-3'>Lugar de Desinstalacion</span>
 									<PlaceAutocompleteClassic onPlaceSelect={addPlaces} location='location_end' />
 								</div>
 							</div>
@@ -128,7 +174,6 @@ export const CreateTravel = ({ dataForm }) => {
 										required
 										name='driver.email'
 										type='email'
-										svg={emailSvg}
 										register={register}
 										label='Correo electronico'
 										placeholder='name@gmail.com'
@@ -139,7 +184,6 @@ export const CreateTravel = ({ dataForm }) => {
 										required
 										name='driver.license_plate'
 										type='text'
-										svg={emailSvg}
 										register={register}
 										label='Placa'
 										placeholder='XXXXX'
@@ -149,7 +193,6 @@ export const CreateTravel = ({ dataForm }) => {
 										required
 										name='driver.name'
 										type='text'
-										svg={emailSvg}
 										register={register}
 										label='Nombre'
 										placeholder='jhondue'
@@ -159,7 +202,6 @@ export const CreateTravel = ({ dataForm }) => {
 										required
 										name='driver.number_document'
 										type='number'
-										svg={emailSvg}
 										register={register}
 										label='Numero de documento'
 										placeholder='000 000 0000'
@@ -169,7 +211,6 @@ export const CreateTravel = ({ dataForm }) => {
 										required
 										name='driver.phone'
 										type='number'
-										svg={emailSvg}
 										register={register}
 										label='Numero de celular'
 										placeholder='000 000 0000'

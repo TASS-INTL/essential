@@ -285,7 +285,7 @@ export const useRouting = () => {
 			showToast('Se a enviado a crear la ruta', 'warning')
 			handleCreateRoutingClient(data)
 		} catch (error) {
-			console.log(error)
+			console.error(error)
 			showToast('Ocurrio un error debes llenar todos los campos', 'warning')
 		}
 	}

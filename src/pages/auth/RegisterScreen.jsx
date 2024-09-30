@@ -31,7 +31,6 @@ export const RegisterScreen = () => {
 							required
 							name='email'
 							type='text'
-							svg={emailSvg}
 							register={register}
 							label='Correo electronico'
 							placeholder='correo@gmail.com'
@@ -43,7 +42,6 @@ export const RegisterScreen = () => {
 							label='Nombre de usuario'
 							name='username'
 							type='text'
-							svg={user}
 							placeholder='name123'
 							register={register}
 						/>

@@ -11,7 +11,6 @@ import { UndoRedoControl } from './UndoRedoControl'
 import { useDrawingManager } from './UseDrawingMager'
 
 export const MapGoogle = ({
-	setMapReference,
 	state,
 	dispatch,
 	locations,
@@ -23,20 +22,12 @@ export const MapGoogle = ({
 	UndoRedoControlPermission,
 	handleChangeMarkerDraggable
 }) => {
-	const map = useMap()
-
 	const drawingManager = useDrawingManager()
 
 	const changeStatePermission = (idPermission) => {
 		const position = state.now.findIndex((element) => element._id === idPermission)
 		state.now[position].showPermission = false
 	}
-
-	useEffect(() => {
-		if (!map) return
-		console.log(map)
-		setMapReference(map)
-	}, [map])
 
 	return (
 		<>

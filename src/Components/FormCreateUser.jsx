@@ -3,30 +3,32 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 
 import { InputComponent, InputSubmitComponent, ModalComponent, SelectComponent } from '.'
-import { emailSvg, lock } from '../assets/assetsplatform'
 import { typeDocument } from '../pages/auth/constants'
 
 export const FormCreateUser = ({
 	userUpdate,
-	fetchUserList,
-	modalVisible,
 	methodForm,
+	modalVisible,
+	HandleClose,
+	fetchUserList,
 	handleCreateUser,
 	handleUpdateUser
 }) => {
 	const { register, handleSubmit } = useForm()
 
+	const handleSendDataNewUser = (data, event) => {
+		methodForm ? handleCreateUser(data, event) : handleUpdateUser({ ...data, _id: userUpdate._id }, event)
+	}
+
 	return (
 		<>
 			{modalVisible && (
-				<ModalComponent textModal={methodForm ? 'Creacion de nuevo Usuario' : 'Actlializacion de usuario'}>
-					<form
-						onSubmit={handleSubmit((data, event) => {
-							methodForm
-								? handleCreateUser(data, event)
-								: handleUpdateUser({ ...data, _id: userUpdate._id }, event)
-						})}
-					>
+				<ModalComponent
+					handleOpen={modalVisible}
+					HandleClose={HandleClose}
+					titleModal={methodForm ? 'Creacion de nuevo Usuario' : 'Actlializacion de usuario'}
+				>
+					<form onSubmit={handleSubmit(handleSendDataNewUser)}>
 						<div className='grid grid-cols-2 gap-5 mx-10'>
 							<InputComponent
 								color
@@ -37,7 +39,6 @@ export const FormCreateUser = ({
 								name='name'
 								label='Nombre'
 								placeholder='yondoe'
-								svg={emailSvg}
 							/>
 							<InputComponent
 								color
@@ -48,7 +49,6 @@ export const FormCreateUser = ({
 								name='username'
 								type='text'
 								placeholder='yondoe99'
-								svg={emailSvg}
 							/>
 							<InputComponent
 								color
@@ -59,7 +59,6 @@ export const FormCreateUser = ({
 								defaultValue={userUpdate?.email}
 								type='email'
 								placeholder='yondoe@gmail.com'
-								svg={emailSvg}
 							/>
 							<InputComponent
 								color
@@ -70,7 +69,6 @@ export const FormCreateUser = ({
 								name='address'
 								type='text'
 								placeholder='calle86sur#24-23'
-								svg={emailSvg}
 							/>
 							<InputComponent
 								color
@@ -81,7 +79,6 @@ export const FormCreateUser = ({
 								name='country'
 								type='text'
 								placeholder='colombia'
-								svg={emailSvg}
 							/>
 							<InputComponent
 								color
@@ -92,7 +89,6 @@ export const FormCreateUser = ({
 								name='region'
 								type='text'
 								placeholder='Antioquia'
-								svg={emailSvg}
 							/>
 							<InputComponent
 								color
@@ -103,7 +99,6 @@ export const FormCreateUser = ({
 								name='city'
 								type='text'
 								placeholder='Medellin'
-								svg={emailSvg}
 							/>
 							<SelectComponent
 								register={register}
@@ -134,8 +129,7 @@ export const FormCreateUser = ({
 								label='Numero documento personal'
 								name='number_document_personal'
 								type='text'
-								placeholder='0000000000'
-								svg={emailSvg}
+								placeholder='000 0000 000'
 							/>
 							<InputComponent
 								color
@@ -145,7 +139,6 @@ export const FormCreateUser = ({
 								name='key'
 								type='password'
 								placeholder='•••••••••••'
-								svg={lock}
 							/>
 						</div>
 						<div className='my-3 flex flex-row justify-center items-center'>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useMapsLibrary } from '@vis.gl/react-google-maps'
+import { format } from 'date-fns'
 import dayjs from 'dayjs'
 import { useForm, useWatch } from 'react-hook-form'
 
@@ -15,52 +16,16 @@ export const useServiceClient = () => {
 	const [dateStart, setDateStart] = useState(dayjs('2024-04-17T15:30'))
 	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
 	const [open, setOpen] = useState(false)
-
-	const handleCreateService = (data) => {
-		data.date_end = format(dateStart.$d, 'yyyy-MM-dd hh:mm:ss')
-		data.date_start = format(dateEnd.$d, 'yyyy-MM-dd hh:mm:ss')
-
-		const sendJsonService = {
-			type_device: {
-				_id: '',
-				name: ''
-			},
-			id_route: '',
-			type_service: {
-				_id: '',
-				name: ''
-			},
-			date_start: '',
-			date_end: '',
-			carrier: {
-				name: '',
-				number: '',
-				driver: {
-					name: '',
-					licence_plate: '',
-					number_document: '',
-					phone: '',
-					email: ''
-				},
-				information_container: {
-					licence_plate: '',
-					type: '',
-					number: '',
-					seals: ['', '']
-				}
-			},
-			information_aditional: '',
-			remarks: ''
-		}
-
-		// handleCreateServiceClient(data)
-	}
+	const idRoute = useWatch({
+		control,
+		id_route: null
+	})
 
 	const handleOpen = () => setOpen(!open)
 
-	const fetchDataServiceClient = (page, search) =>
+	const getDataTableServiceClient = (page, search) =>
 		useQuery({
-			queryKey: ['getServiceClientList', page, search],
+			queryKey: ['getDataTableServiceClient', page, search],
 			queryFn: async () =>
 				await api(
 					METHODS_API.GET,
@@ -74,6 +39,8 @@ export const useServiceClient = () => {
 			queryFn: async () => await api(METHODS_API.GET, `module/service/precreate`)
 		})
 
+	const dataPreCreateService = getDataPreCreateService()
+
 	const getDataRoute = (idRoute) => {
 		return useQuery({
 			queryKey: ['getDataRoute', idRoute],
@@ -82,8 +49,10 @@ export const useServiceClient = () => {
 		})
 	}
 
+	const { data } = getDataRoute(idRoute?.id_route ? idRoute?.id_route : null)
+
 	const createServiceClient = useMutation({
-		mutationFn: async (data) => await api(METHODS_API.POST, `module/service/`, data),
+		mutationFn: async (data) => await api(METHODS_API.POST, `module/service/travel-client/create`, data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postCreateServiceClient'] })
 	})
 
@@ -93,15 +62,21 @@ export const useServiceClient = () => {
 		response?.error && showToast('❌ Algo ha salido mal al enviar el comando :' + response?.message, 'error')
 	}
 
-	const idRoute = useWatch({
-		control,
-		id_route: null
-	})
+	const handleCreateService = (data) => {
+		data.date_end = format(dateStart.$d, 'yyyy-MM-dd hh:mm:ss')
+		data.date_start = format(dateEnd.$d, 'yyyy-MM-dd hh:mm:ss')
+		data.information_aditional = [{}]
 
-	// data precreate service
-	const dataPreCreateService = getDataPreCreateService()
-	//data of the route
-	const { data } = getDataRoute(idRoute?.id_route ? idRoute?.id_route : null)
+		const typeDevice = dataPreCreateService?.data?.data?.types_devices.find((e) => e._id === data.type_device._id)
+		const typeService = dataPreCreateService?.data?.data?.types_services.find(
+			(e) => e._id === data.type_service._id
+		)
+
+		data.type_device = typeDevice
+		data.type_service = typeService
+
+		handleCreateServiceClient(data)
+	}
 
 	return {
 		open,
@@ -111,8 +86,10 @@ export const useServiceClient = () => {
 		getDataRoute,
 		handleSubmit,
 		handleCreateService,
+		setDateEnd,
+		setDateStart,
 		dataPreCreateService,
-		fetchDataServiceClient,
+		getDataTableServiceClient,
 		handleCreateServiceClient
 	}
 }

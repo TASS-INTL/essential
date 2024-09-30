@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 
-import { usersStore } from '@/store/usersStore'
-
 import { ErrorComponent, LoaderComponent } from '../../../../Components'
 import { Container } from '../../../../Components/Container'
 import { FormCreateUser } from '../../../../Components/FormCreateUser'
@@ -9,28 +7,22 @@ import { useUsers } from '../../Hooks/useUser'
 
 export const UsersScreen = () => {
 	//
-	const { fetchDataUser, handleCreateUser, handleUpdateUser, handleDeleteUser } = useUsers()
-	const fetchUserList = fetchDataUser()
-	const [methodForm, setMethodForm] = useState(true)
-	const [userUpdate, setUserUpdate] = useState(null)
-	const modalVisible = usersStore((state) => state.modal)
-	const setModalVisible = usersStore((state) => state.setModalVisible)
+	const {
+		methodForm,
+		userUpdate,
+		modalVisible,
+		handleOpen,
+		handleCreateUser,
+		handleDeleteUser,
+		handleUpdateUser,
+		onPressUpdateUser,
+		onPressCreateUser,
+		fetchUserList
+	} = useUsers()
 
 	if (fetchUserList.isLoading) return <LoaderComponent />
 
 	if (fetchUserList.isError) return <ErrorComponent />
-
-	const onPressUpdateUser = (idUserUpdate) => {
-		const userUpdate = fetchUserList?.data?.data[0]?.users?.find((element) => element._id === idUserUpdate)
-		setUserUpdate(userUpdate)
-		setMethodForm(false)
-		setModalVisible(true)
-	}
-
-	const onPressCreateUser = () => {
-		setMethodForm(true)
-		setModalVisible(true)
-	}
 
 	return (
 		<Container>
@@ -90,6 +82,7 @@ export const UsersScreen = () => {
 				fetchUserList={fetchUserList}
 				modalVisible={modalVisible}
 				methodForm={methodForm}
+				HandleClose={handleOpen}
 				handleCreateUser={handleCreateUser}
 				handleUpdateUser={handleUpdateUser}
 			/>
