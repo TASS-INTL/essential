@@ -16,7 +16,7 @@ export const MarkerWithInfowindow = ({
 	const [markerRef, marker] = useAdvancedMarkerRef()
 	const [center, setCenter] = useState(null)
 	const [radius, setRadius] = useState(400)
-	const copyArrayPermission = JSON.parse(JSON.stringify(permissionsData?.data))
+	const copyArrayPermission = JSON.parse(JSON.stringify(permissionsData))
 
 	const changeCenter = (newCenter) => {
 		if (!newCenter) return
@@ -55,7 +55,7 @@ export const MarkerWithInfowindow = ({
 					marker={marker}
 					maxWidth={400}
 					onCloseClick={() => setInfowindowOpen(false)}
-					permission={permissionsData?.data}
+					permission={permissionsData}
 					handleCheckboxChange={handleCheckboxChange}
 					sendPermissionState={sendPermissionState}
 				/>

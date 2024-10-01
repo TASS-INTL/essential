@@ -5,12 +5,13 @@ import { InfoWindow } from '@vis.gl/react-google-maps'
 export const InfoWindowComponent = ({
 	marker,
 	maxWidth,
-	onCloseClick,
-	permission,
 	position,
-	handleCheckboxChange,
-	sendPermissionState
+	permission,
+	onCloseClick,
+	sendPermissionState,
+	handleCheckboxChange
 }) => {
+	console.log('InfoWindowComponent', permission)
 	return (
 		<InfoWindow
 			headerContent={

@@ -6,6 +6,7 @@ import { LoaderComponent } from './LoaderComponent'
 import { ModalComponent } from './ModalComponent'
 import { MouseColorComponente } from './MouseColorComponent'
 import { PaginationComponent } from './PaginationComponent'
+import { RemarksInput } from './RemarksInput'
 import { SelectComponent } from './SelectComponent'
 import { SideBarComponent } from './SideBar'
 
@@ -19,5 +20,6 @@ export {
 	MouseColorComponente,
 	BoardComponent,
 	PaginationComponent,
-	ErrorComponent
+	ErrorComponent,
+	RemarksInput
 }

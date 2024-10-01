@@ -58,23 +58,5 @@ export const Directions = ({ origin, destination, setDataDirections }) => {
 
 	if (!leg) return null
 
-	return (
-		<div className='directions'>
-			<h2>{selected.summary}</h2>
-			<p>
-				Desde: {leg?.start_address?.split(',')[0]} Hacia: {leg?.end_address?.split(',')[0]}
-			</p>
-			<p>Distancia: {leg?.distance?.text}</p>
-			<p>Duracion: {leg?.duration?.text}</p>
-
-			<h2 className='pt-2'>Otras rutas</h2>
-			<ul>
-				{routes.map((route, index) => (
-					<li key={route.summary}>
-						- <button onClick={() => setRouteIndex(index)}>{route.summary}</button>
-					</li>
-				))}
-			</ul>
-		</div>
-	)
+	return <></>
 }

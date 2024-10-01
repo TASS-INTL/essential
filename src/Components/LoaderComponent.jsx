@@ -1,6 +1,6 @@
 export const LoaderComponent = () => {
 	return (
-		<div className=' w-full flex items-center justify-center'>
+		<div className='h-full w-full flex items-center justify-center'>
 			<svg
 				version='1.1'
 				id='L5'

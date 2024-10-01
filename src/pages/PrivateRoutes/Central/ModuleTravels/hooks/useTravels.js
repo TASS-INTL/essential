@@ -16,7 +16,7 @@ export const useTravels = () => {
 				)
 		})
 
-	const fetchDataInfoRegister = () =>
+	const getDataPreCreateTravel = () =>
 		useQuery({
 			queryKey: ['getDataInfoRegister'],
 			queryFn: async () => await api(METHODS_API.GET, `module/travel/info/register`)
@@ -44,9 +44,14 @@ export const useTravels = () => {
 
 	const handleCreateTravel = async (data) => {
 		const response = await createTravel.mutateAsync(data)
-		response.completed && showToast('Se a creado de manera exito el viaje', 'success')
+		response?.completed && showToast('Se a creado de manera exito el viaje', 'success')
 		response?.error && showToast('❌ Algo ha salido mal al enviar el comando :' + response?.message, 'error')
 	}
 
-	return { fetchDataTableTravels, fetchDataInfoRegister, handleCreateTravel, handleActivateTravel }
+	return {
+		handleCreateTravel,
+		handleActivateTravel,
+		fetchDataTableTravels,
+		getDataPreCreateTravel
+	}
 }

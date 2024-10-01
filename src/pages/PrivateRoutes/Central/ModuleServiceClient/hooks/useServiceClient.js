@@ -12,7 +12,7 @@ import { showToast } from '../../../../../helpers/toast'
 import { queryClient } from '../../../../../routes/AppRouter'
 
 export const useServiceClient = () => {
-	const { register, handleSubmit, control } = useForm()
+	const { register, handleSubmit, control, watch } = useForm()
 	const [dateStart, setDateStart] = useState(dayjs('2024-04-17T15:30'))
 	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
 	const [open, setOpen] = useState(false)

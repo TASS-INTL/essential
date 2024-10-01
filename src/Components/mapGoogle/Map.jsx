@@ -20,7 +20,8 @@ export const MapGoogle = ({
 	setDataDirections,
 	handleChangePermissions,
 	UndoRedoControlPermission,
-	handleChangeMarkerDraggable
+	handleChangeMarkerDraggable,
+	withDirecton
 }) => {
 	const drawingManager = useDrawingManager()
 
@@ -38,13 +39,17 @@ export const MapGoogle = ({
 				gestureHandling={'greedy'}
 				disableDefaultUI={true}
 			>
-				{/* Direction for the Route */}
-				{locations?.location_start?.name && locations?.location_end?.name && (
-					<Directions
-						origin={locations.location_start.name}
-						destination={locations.location_end.name}
-						setDataDirections={setDataDirections}
-					/>
+				{withDirecton && (
+					<>
+						{/* Direction for the Route */}
+						{locations?.location_start?.name && locations?.location_end?.name && (
+							<Directions
+								origin={locations.location_start.name}
+								destination={locations.location_end.name}
+								setDataDirections={setDataDirections}
+							/>
+						)}
+					</>
 				)}
 				{/* marker and geofence of the location start */}
 				{locations?.location_start?.market?.location?.coordinates[0] && (
@@ -96,7 +101,7 @@ export const MapGoogle = ({
 				{dataRoute?.data?.coordinatesroute && (
 					<Polyline strokeWeight={7} strokeColor={'#8a2be2'} pathArray={dataRoute?.data?.coordinatesroute} />
 				)}
-				{dataRoute?.data?.stations.length > 0 && (
+				{dataRoute?.data?.stations?.length > 0 && (
 					<>
 						{dataRoute?.data?.stations.map((item) => (
 							<Polygon key={item._id} strokeWeight={1.5} pathsArray={item?.location?.coordinates[0]} />

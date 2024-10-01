@@ -262,7 +262,7 @@ export const useRouting = () => {
 			queryFn: async () => await api(METHODS_API.GET, `module/routing/permissions/geofences`)
 		})
 
-	const { data: permissionsData } = getPermissionsForRouting()
+	const permissionsData = getPermissionsForRouting()
 
 	// Sending all the information collected for the route
 	const handleSendData = (data) => {

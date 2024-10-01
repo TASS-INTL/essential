@@ -12,6 +12,7 @@ import {
 	InputSubmitComponent,
 	LoaderComponent,
 	ModalComponent,
+	RemarksInput,
 	SelectComponent
 } from '../../../../Components'
 import { MapGoogle } from '../../../../Components/mapGoogle/Map'
@@ -40,11 +41,9 @@ export const CreateService = () => {
 
 	return (
 		<div className='pt-2 px-2 h-[95%]'>
-			{open && (
-				<ModalComponent handleOpen={open} HandleClose={handleOpen} titleModal='Creacion de ruta'>
-					<CreateRouting />
-				</ModalComponent>
-			)}
+			<ModalComponent handleOpen={open} HandleClose={handleOpen} titleModal='Creacion de ruta'>
+				<CreateRouting />
+			</ModalComponent>
 			<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
 				<div className='flex h-full'>
 					<div className='w-[40%]'>
@@ -223,19 +222,8 @@ export const CreateService = () => {
 								/>
 							</div>
 							{/* remarks */}
-							<div className='flex flex-col'>
-								<label htmlFor='story' className='py-1'>
-									Quieres dar alguna indicacion adicional ?
-								</label>
-								<textarea
-									className='border border-black p-3 rounded-lg'
-									{...register('remarks', {
-										validate: {
-											pattern: (value) => !/[!]/.test(value)
-										}
-									})}
-								/>
-							</div>
+
+							<RemarksInput text='Quieres dar alguna indicacion adicional ?' register={register} />
 							{/* SEND FORM */}
 							<div className='flex justify-center pt-6 '>
 								<InputSubmitComponent text='CREAR VIAJE' />

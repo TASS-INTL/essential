@@ -1,95 +1,41 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React from 'react'
 
-import { emailSvg } from '@/assets/assetsplatform'
 import { InputComponent, InputSubmitComponent, SelectComponent } from '@/Components'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { APIProvider } from '@vis.gl/react-google-maps'
-import dayjs from 'dayjs'
-import { useForm } from 'react-hook-form'
 
+import { ErrorComponent, LoaderComponent, RemarksInput } from '../../../../Components'
 import { MapGoogle } from '../../../../Components/mapGoogle/Map'
 import { MapHandler } from '../../../../Components/mapGoogle/MapHandler'
 import { PlaceAutocompleteClassic } from '../../../../Components/mapGoogle/PlaceAutocompleteClassic'
-import { API_KEY_GOOGLE_MAPS, initialDataLocation } from '../../constants/constants'
-import { useTravels } from './hooks/useTravels'
+import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
+import { useCreateTravel } from './hooks/useCreateTravel'
 
 export const CreateTravel = ({ dataForm }) => {
-	const { register, handleSubmit } = useForm(dataForm)
+	const {
+		dateEnd,
+		register,
+		dateStart,
+		addPlaces,
+		setDateEnd,
+		setDateStart,
+		handleSubmit,
+		selectedPlace,
+		objectLocations,
+		dataPreCrateTravel,
+		handleCreateTravel,
+		serviceRouteInformation,
+		handleChangePermissions,
+		handleChangeMarkerDraggable
+	} = useCreateTravel(dataForm)
 
-	const [selectedPlace, setSelectedPlace] = useState(null)
-	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
-	const { fetchDataInfoRegister, handleCreateTravel } = useTravels()
-	const dataInfoRegister = fetchDataInfoRegister()
-	const [dateStart, setDateStart] = useState(dayjs('2024-04-17T15:30'))
-	const [objectLocations, setObjectLocations] = useState(initialDataLocation)
+	if (dataPreCrateTravel.isLoading) return <LoaderComponent />
 
-	const addPlaces = ({ location, data }) => {
-		setSelectedPlace(data)
-		setObjectLocations((state) => ({ ...state, [location]: data }))
-	}
-
-	const handleCreate = () => {
-		const sendDataTravel = {
-			date_installation: '',
-			date_finalization: '',
-			location_installation: {
-				location: {
-					type: 'Polygon',
-					coordinates: []
-				},
-				permissions: [],
-				name: 'Sta. Barbara-Caldas, Caldas, Antioquia, Colombia',
-				market: {
-					location: {
-						type: 'Point',
-						coordinates: [6.067265199999999, -75.63417930000001]
-					},
-					status: 'create'
-				}
-			},
-			location_finalization: {
-				location: {
-					type: 'Polygon',
-					coordinates: []
-				},
-				permissions: [],
-				name: 'Sta. Barbara-Caldas, Caldas, Antioquia, Colombia',
-				market: {
-					location: {
-						type: 'Point',
-						coordinates: [6.067265199999999, -75.63417930000001]
-					},
-					status: 'create'
-				}
-			},
-			service: {
-				_id: '',
-				did: '',
-				status: ''
-			},
-			installers: {
-				_id: '',
-				name: '',
-				status: '',
-				type_operation: ''
-			},
-			type: {
-				_id: '',
-				name: ''
-			},
-			remarks: '',
-
-			periods: {
-				tx: 2,
-				sensing: ''
-			}
-		}
-	}
-
-	console.log('dataInfoRegister?.data?.data?.services', dataInfoRegister?.data?.data?.services)
+	if (dataPreCrateTravel.error || dataPreCrateTravel.data?.error)
+		return <ErrorComponent error={dataPreCrateTravel.data?.message} />
 
 	return (
 		<div className='h-[95%]'>
@@ -97,10 +43,18 @@ export const CreateTravel = ({ dataForm }) => {
 				<MapHandler place={selectedPlace} />
 				<div className='flex h-full'>
 					<div className='w-[40%]'>
-						<MapGoogle selectedPlace={selectedPlace} locations={objectLocations} />
+						<MapGoogle
+							locations={objectLocations}
+							selectedPlace={selectedPlace}
+							permissionsData={dataPreCrateTravel?.data?.data?.permissions}
+							dataRoute={serviceRouteInformation?.data}
+							handleChangePermissions={handleChangePermissions}
+							handleChangeMarkerDraggable={handleChangeMarkerDraggable}
+							withDirecton={false}
+						/>
 					</div>
 					<div className='w-[60%] overflow-y-scroll'>
-						<form onSubmit={handleSubmit(handleCreate)} className='flex flex-col'>
+						<form onSubmit={handleSubmit(handleCreateTravel)} className='flex flex-col'>
 							{/* DATES */}
 							<div className='flex mt-5'>
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -120,52 +74,70 @@ export const CreateTravel = ({ dataForm }) => {
 									</DemoContainer>
 								</LocalizationProvider>
 							</div>
-							{/* INPUTS PLACES */}
-							<div className='flex gap-4 mt-5'>
-								<div className='w-[40%]'>
-									<span className='mb-3'>Lugar de Instalacion</span>
-									<PlaceAutocompleteClassic onPlaceSelect={addPlaces} location='location_start' />
-								</div>
-								<div className='w-[40%]'>
-									<span className='mb-3'>Lugar de Desinstalacion</span>
-									<PlaceAutocompleteClassic onPlaceSelect={addPlaces} location='location_end' />
-								</div>
-							</div>
 							{/* INPUTS TRAVELS */}
 							{dataForm.service && (
 								<div className='flex mt-5  justify-between'>
-									<div className='w-[31%]'>
+									<div className='w-[99%]'>
 										<SelectComponent
 											color
 											option='did'
-											name='service.did'
+											name='service._id'
 											register={register}
 											label='Selecciona el servicio'
-											arrayOptions={dataInfoRegister?.data?.data?.services}
-										/>
-									</div>
-									<div className='w-[31%]'>
-										<SelectComponent
-											color
-											register={register}
-											label='Selecciona el dispositivo'
-											name='device.id_device'
-											arrayOptions={dataInfoRegister?.data?.data?.devices}
-											option='nickname'
-										/>
-									</div>
-									<div className='w-[31%]'>
-										<SelectComponent
-											color
-											register={register}
-											label='Selecciona el instalador'
-											name='installer.id_installer'
-											arrayOptions={dataInfoRegister?.data?.data?.installers}
-											option='name'
+											arrayOptions={dataPreCrateTravel?.data?.data?.services}
 										/>
 									</div>
 								</div>
 							)}
+							{/* INPUTS PLACES */}
+							<div className='flex gap-4 mt-5'>
+								<div className='w-[48%]'>
+									<span className='mb-3'>Lugar de Instalacion</span>
+									<PlaceAutocompleteClassic addPlaces={addPlaces} location='location_start' />
+								</div>
+								<div className='w-[48%]'>
+									<span className='mb-3'>Lugar de Desinstalacion</span>
+									<PlaceAutocompleteClassic addPlaces={addPlaces} location='location_end' />
+								</div>
+							</div>
+
+							{/* INPUTS TYPE TREVEL */}
+							<div className='flex mt-5 gap-4 '>
+								<div className='w-[99%]'>
+									<SelectComponent
+										color
+										register={register}
+										label='Selecciona el tipo de viaje'
+										name='type._id'
+										arrayOptions={dataPreCrateTravel?.data?.data?.types_travel}
+										option='name'
+									/>
+								</div>
+							</div>
+
+							{/* INPUTS INTALLER */}
+							<div className='flex mt-5 gap-4 '>
+								<div className='w-[48%]'>
+									<SelectComponent
+										color
+										register={register}
+										label='Selecciona el instalador'
+										name='installer.id_installer'
+										arrayOptions={dataPreCrateTravel?.data?.data?.installers}
+										option='name'
+									/>
+								</div>
+								<div className='w-[48%]'>
+									<SelectComponent
+										color
+										register={register}
+										label='Selecciona la operacion'
+										name='installer.type_operation'
+										arrayOptions={dataPreCrateTravel?.data?.data?.type_operations}
+										option='name'
+									/>
+								</div>
+							</div>
 							{/* DRIVER SERVICE */}
 							{dataForm.driver && (
 								<div>
@@ -218,21 +190,7 @@ export const CreateTravel = ({ dataForm }) => {
 								</div>
 							)}
 							{/* COMENTS SERVICE */}
-							{dataForm.driver && (
-								<div className='flex flex-col'>
-									<label htmlFor='story' className='py-1'>
-										Quieres dar alguna indicacion adicional ?
-									</label>
-									<textarea
-										className='border border-black p-3 rounded-lg'
-										{...register('remarks', {
-											validate: {
-												pattern: (value) => !/[!]/.test(value)
-											}
-										})}
-									/>
-								</div>
-							)}
+							<RemarksInput text='Quieres dar alguna indicacion adicional ?' register={register} />
 							{/* SEND FORM */}
 							<div className='flex justify-center pt-6 '>
 								<InputSubmitComponent text='CREAR VIAJE' />

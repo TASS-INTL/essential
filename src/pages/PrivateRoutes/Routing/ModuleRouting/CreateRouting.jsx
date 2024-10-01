@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { APIProvider } from '@vis.gl/react-google-maps'
 
-import { InputComponent, InputSubmitComponent } from '../../../../Components'
+import { ErrorComponent, InputComponent, InputSubmitComponent, LoaderComponent } from '../../../../Components'
 import { MapGoogle } from '../../../../Components/mapGoogle/Map'
 import { MapHandler } from '../../../../Components/mapGoogle/MapHandler'
 import { PlaceAutocompleteClassic } from '../../../../Components/mapGoogle/PlaceAutocompleteClassic'
@@ -25,18 +25,20 @@ export const CreateRouting = () => {
 		handleChangeMarkerDraggable
 	} = useRouting()
 
-	const [mapReference, setMapReference] = useState(null)
+	if (permissionsData.isLoading) return <LoaderComponent />
+
+	if (permissionsData.error || permissionsData.data?.error)
+		return <ErrorComponent error={permissionsData.data?.message} />
 
 	return (
 		<div className='h-[95%]'>
 			<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
 				<MapHandler place={selectedPlace} />
-				<div className='flex  h-3/5'>
+				<div className='flex h-full'>
 					{/* MAP */}
 					<div className='w-[40%]'>
 						<MapGoogle
-							setMapReference={setMapReference}
-							permissionsData={permissionsData}
+							permissionsData={permissionsData?.data.data}
 							state={state}
 							dispatch={dispatch}
 							locations={objectLocations}
@@ -45,6 +47,7 @@ export const CreateRouting = () => {
 							UndoRedoControlPermission
 							handleChangePermissions={handleChangePermissions}
 							handleChangeMarkerDraggable={handleChangeMarkerDraggable}
+							withDirecton={true}
 						/>
 					</div>
 					{/* FORM */}
@@ -70,7 +73,6 @@ export const CreateRouting = () => {
 								<PlaceAutocompleteClassic addPlaces={addPlaces} location='location_end' />
 							</div>
 						</div>
-
 						<div className='flex justify-center pt-6 '>
 							<InputSubmitComponent text='Crear Ruta' />
 						</div>

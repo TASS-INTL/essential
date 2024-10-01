@@ -4,9 +4,8 @@ import 'react-phone-number-input/style.css'
 
 import { InputComponent, InputSubmitComponent, SelectComponent } from '@/Components'
 import { useForm } from 'react-hook-form'
-import PhoneInput, { formatPhoneNumber } from 'react-phone-number-input'
+import PhoneInput from 'react-phone-number-input'
 
-import { emailSvg } from '../../assets/assetsplatform'
 import { logoTass } from '../../assets/assetsplatform/PrivateRoutes'
 import { ModalComponent } from '../../Components'
 import { arrayOptions, typeDocument, typeUser } from './constants'
