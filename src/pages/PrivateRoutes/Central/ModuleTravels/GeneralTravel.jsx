@@ -15,7 +15,6 @@ export const GeneralTravel = () => {
 
 	const travelInfo = travelsStore((state) => state.travelInfo)
 
-	console.log(travelInfo)
 	if (travelInfo === null) return <LoaderComponent />
 
 	return (

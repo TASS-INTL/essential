@@ -2,6 +2,7 @@ import React, { createContext, useCallback, useEffect, useState } from 'react'
 
 import { io } from 'socket.io-client'
 
+import { showToast } from '../../../helpers/toast'
 import { userStore } from '../../../store/userStore'
 import { SOCKET_EVENTS, TRANSPORT_SOCKET } from './constants'
 
@@ -36,7 +37,11 @@ export const SocketForNameSpace = ({ children, nameSpace, typeJoin, socketsEvent
 	}, [nameSpace])
 
 	useEffect(() => {
-		// Ingresar a las diferentes salas del socket
+		// capture connection with room socket
+		socketForNameSpace?.on(SOCKET_EVENTS.JOINED_ROOM, (data) => {
+			showToast('conectado a la sala: ' + data.type_, 'success')
+		})
+		// join the connection with room socket
 		socketForNameSpace?.emit(SOCKET_EVENTS.JOIN_ROOM, {
 			id_user: uid,
 			id_room: tokenSesion,
@@ -44,14 +49,29 @@ export const SocketForNameSpace = ({ children, nameSpace, typeJoin, socketsEvent
 			x_access_token: tokenSesion
 		})
 
-		// Escuchar una sala en especifico
+		// licening room especific
 		socketForNameSpace?.on(socketsEvents, (data) => {
 			functionListening(data?.data)
 		})
 
+		// capture error in connection socket
 		socketForNameSpace?.on('connect_error', (error) => {
-			console.error('Error de Conexión:', error)
+			showToast('ocurrio un error en la conexion del socket' + error, 'error')
 		})
+
+		return () => {
+			// When the component is disassembled, the room output is sent
+			socketForNameSpace?.emit(SOCKET_EVENTS.LEAVE_ROOM, {
+				id_user: uid,
+				id_room: tokenSesion,
+				type_join: typeJoin,
+				x_access_token: tokenSesion
+			})
+			// The exit from the room is reported
+			socketForNameSpace?.on(SOCKET_EVENTS.LEFT_ROOM, (data) => {
+				showToast('desconectado de la sala: ' + data.type_, 'warning')
+			})
+		}
 	}, [socketForNameSpace])
 
 	const store = {

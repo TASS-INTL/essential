@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import dayjs from 'dayjs'
 import { useForm, useWatch } from 'react-hook-form'
@@ -8,12 +8,13 @@ import { useForm, useWatch } from 'react-hook-form'
 import api from '../../../../../Api/api'
 import { METHODS_API } from '../../../../../Api/constantsApi'
 import { calculateCircle } from '../../../../../helpers/routes'
+import { showToast } from '../../../../../helpers/toast'
+import { queryClient } from '../../../../../routes/AppRouter'
 import { initialDataLocation } from '../../../constants/constants'
 import { useTravels } from './useTravels'
 
 export const useCreateTravel = (dataForm) => {
-	const { register, handleSubmit, control, watch } = useForm(dataForm)
-
+	const { register, handleSubmit, control } = useForm(dataForm)
 	const [selectedPlace, setSelectedPlace] = useState(null)
 	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
 	const [dateStart, setDateStart] = useState(dayjs('2024-04-17T15:30'))
@@ -49,16 +50,65 @@ export const useCreateTravel = (dataForm) => {
 			}
 		}))
 	}
+	//
+	const getDataService = (idService) => {
+		return useQuery({
+			queryKey: ['getDataRoute', idService],
+			queryFn: async () => await api(METHODS_API.GET, `module/service/${idService}/routing`),
+			enabled: !!idService
+		})
+	}
+	//
+	const serviceRouteInformation = getDataService(idService?.service?._id ? idService?.service?._id : null)
+
+	// change permissions
+	const handleChangePermissions = ({ location, permissions }) => {
+		setObjectLocations((state) => ({
+			...state,
+			[location]: {
+				...state[location],
+				permissions
+			}
+		}))
+	}
+
+	// change values merker when draggable is activate
+	const handleChangeMarkerDraggable = ({ location, data }) => {
+		setObjectLocations((state) => ({
+			...state,
+			[location]: {
+				...state[location],
+				market: {
+					location: {
+						type: 'Point',
+						coordinates: [data?.lng, data?.lat]
+					},
+					status: 'create'
+				}
+			}
+		}))
+	}
+
+	const createTravelMutation = useMutation({
+		mutationFn: async (data) => await api(METHODS_API.POST, `module/travel/create`, data),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postCreateServiceClient'] })
+	})
+
+	const createTravel = async (data) => {
+		const response = await createTravelMutation.mutateAsync(data)
+		response?.completed && showToast('Se a creado de manera exito el servicio', 'success')
+		response?.error && showToast('❌ Algo ha salido mal al enviar el comando :' + response?.message, 'error')
+	}
 
 	const handleCreateTravel = (data) => {
 		const service = dataPreCrateTravel.data.data.services.find((item) => item._id === data.service._id)
 		const installer = dataPreCrateTravel.data.data.installers.find(
-			(item) => item._id === data.installer.id_installer
+			(item) => item._id === data.installers.id_installer
 		)
 		const typeTravel = dataPreCrateTravel.data.data.types_travel.find((item) => item._id === data.type._id)
 
 		const typeOperationInstaller = dataPreCrateTravel.data.data.type_operations.find(
-			(item) => item._id === data.installer.type_operation
+			(item) => item._id === data.installers.type_operation
 		)
 
 		const serviceSend = {
@@ -79,104 +129,14 @@ export const useCreateTravel = (dataForm) => {
 		data.location_installation = objectLocations.location_start
 		data.location_finalization = objectLocations.location_end
 		data.service = serviceSend
-		data.installer = sendInstaller
+		data.installers = [sendInstaller]
 		data.type = typeTravel
 		data.periods = {
 			tx: 2,
 			sensing: ''
 		}
 
-		console.log('data send -->', data)
-
-		const sendDataTravel = {
-			location_installation: {
-				location: {
-					type: 'Polygon',
-					coordinates: []
-				},
-				permissions: [],
-				name: 'Sta. Barbara-Caldas, Caldas, Antioquia, Colombia',
-				market: {
-					location: {
-						type: 'Point',
-						coordinates: [6.067265199999999, -75.63417930000001]
-					},
-					status: 'create'
-				}
-			}, // ✅
-			location_finalization: {
-				location: {
-					type: 'Polygon',
-					coordinates: []
-				},
-				permissions: [],
-				name: 'Sta. Barbara-Caldas, Caldas, Antioquia, Colombia',
-				market: {
-					location: {
-						type: 'Point',
-						coordinates: [6.067265199999999, -75.63417930000001]
-					},
-					status: 'create'
-				}
-			}, // ✅
-			service: {
-				_id: '',
-				did: '',
-				status: ''
-			}, // ✅
-			installers: {
-				_id: '',
-				name: '',
-				status: '',
-				type_operation: ''
-			}, // ✅
-			type: {
-				_id: '',
-				name: ''
-			}, // ✅
-			remarks: '', // ✅
-			periods: {
-				tx: 2,
-				sensing: ''
-			} // ✅
-		}
-	}
-
-	const getDataService = (idService) => {
-		return useQuery({
-			queryKey: ['getDataRoute', idService],
-			queryFn: async () => await api(METHODS_API.GET, `module/service/${idService}/routing`),
-			enabled: !!idService
-		})
-	}
-
-	const serviceRouteInformation = getDataService(idService?.service?._id ? idService?.service?._id : null)
-
-	// change permissions
-	const handleChangePermissions = ({ location, permissions }) => {
-		setObjectLocations((state) => ({
-			...state,
-			[location]: {
-				...state[location],
-				permissions
-			}
-		}))
-	}
-	// change values merker when draggable is activate
-	const handleChangeMarkerDraggable = ({ location, data }) => {
-		setObjectLocations((state) => ({
-			...state,
-			[location]: {
-				...state[location],
-				market: {
-					location: {
-						type: 'Point',
-						coordinates: [data?.lng, data?.lat]
-					},
-					status: 'create'
-				}
-			}
-		}))
+		createTravel(data)
 	}
 
 	return {

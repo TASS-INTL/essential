@@ -3,12 +3,12 @@ import React, { useState } from 'react'
 import { travelsStore } from '@/store/travelsStore'
 import Button from '@mui/material/Button'
 import { useForm } from 'react-hook-form'
+import { NavLink } from 'react-router-dom'
 
 import { CreateTravel } from '.'
-import { ModalComponent } from '../../../../Components'
+import { LoaderComponent, ModalComponent } from '../../../../Components'
 import { InputSearch } from '../../../../Components/InputSearch'
 import { initialStateTravel } from '../../constants/constants'
-import { BoardDevice } from '../../Inventory/ModuleDevices/BoardDevice'
 
 export const TableTravels = () => {
 	const [open, setOpen] = useState(false)
@@ -22,9 +22,11 @@ export const TableTravels = () => {
 		setDataSearch(data.search)
 	}
 
+	if (arrayTableTravels === null) return <LoaderComponent />
+
 	return (
 		<>
-			<div className='flex justify-between pt-5 py-20'>
+			<div className='flex justify-between pt-5 py-10'>
 				<Button variant='contained' onClick={handleOpen}>
 					Crear Viaje
 				</Button>
@@ -32,7 +34,58 @@ export const TableTravels = () => {
 					<InputSearch register={register} />
 				</form>
 			</div>
-			<BoardDevice dataBody={arrayTableTravels?.results} to='travels-screen/travel' />
+			<div>
+				{arrayTableTravels.results.map((item) => (
+					<div key={item._id} className='p-4 bg-white rounded-2xl'>
+						<div className='flex justify-between'>
+							<div className=''>
+								<div className='flex flex-col'>
+									<span className='text-black font-bold text-sm'>{item.did}</span>
+									<span className='text-black font-light text-sm'>fecha: {item.created_at}</span>
+								</div>
+							</div>
+							<div className='flex gap-5'>
+								<div className='bg-yellow-300 rounded-full flex justify-center items-center '>
+									<span className='text-[0.7rem] px-5'>{item.status}</span>
+								</div>
+								<NavLink
+									className='bg-black rounded-lg flex items-center'
+									to={`/user/travels-screen/travel/${item?._id}/general`}
+								>
+									<span className='text-[0.7rem] text-white px-5 '>Ver Viaje</span>
+								</NavLink>
+							</div>
+						</div>
+						<div className='flex mt-5 gap-2'>
+							<div className='h-3 w-full border border-blue-600 rounded-full '>
+								<div className={`pl-3 w-[${item?.distance?.progress}%] h-3 bg-blue-600 rounded-full`} />
+							</div>
+						</div>
+						<div className='flex gap-4'>
+							<div className='p-1'>
+								<span className=' font-medium text-lg'>
+									_id: <span className='font-light text-sm'> {item._id}</span>
+								</span>
+							</div>
+							<div className='p-1'>
+								<span className=' font-medium text-lg'>
+									status: <span className='font-light text-sm'> {item.status}</span>
+								</span>
+							</div>
+							<div className='p-1'>
+								<span className=' font-medium text-lg'>
+									servicio: <span className='font-light text-sm'> {item.service}</span>
+								</span>
+							</div>
+							<div className='p-1'>
+								<span className=' font-medium text-lg'>
+									servicio: <span className='font-light text-sm'> {item.service}</span>
+								</span>
+							</div>
+						</div>
+					</div>
+				))}
+			</div>
 			<ModalComponent handleOpen={open} HandleClose={handleOpen} titleModal='Creacion del Viaje'>
 				<CreateTravel dataForm={initialStateTravel} />
 			</ModalComponent>

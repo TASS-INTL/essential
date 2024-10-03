@@ -67,6 +67,11 @@ export const SocketProvider = ({ children }) => {
 	}, [])
 
 	useEffect(() => {
+		// capture connection with room socket
+		socket?.on(SOCKET_EVENTS.JOINED_ROOM, (data) => {
+			showToast('conectado a: ' + data.type_, 'success')
+		})
+
 		socket?.emit(SOCKET_EVENTS.JOIN_ROOM, {
 			id_user: uid,
 			id_room: tokenSesion,
@@ -79,6 +84,20 @@ export const SocketProvider = ({ children }) => {
 			setNotification(data?.unread)
 			setArrayNotification(data)
 		})
+
+		return () => {
+			// When the component is disassembled, the room output is sent
+			socket?.emit(SOCKET_EVENTS.LEAVE_ROOM, {
+				id_user: uid,
+				id_room: tokenSesion,
+				type_join: SOCKETS_ROOMS.ROOM_SESSION,
+				x_access_token: tokenSesion
+			})
+			// The exit from the room is reported
+			socket?.on(SOCKET_EVENTS.LEFT_ROOM, (data) => {
+				showToast('desconectado de la sala: ' + data.type_, 'warning')
+			})
+		}
 	}, [socket])
 
 	const store = {

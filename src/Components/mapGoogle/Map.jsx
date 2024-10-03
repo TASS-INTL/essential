@@ -15,13 +15,13 @@ export const MapGoogle = ({
 	dispatch,
 	locations,
 	dataRoute,
+	withDirecton,
 	permissionsData,
 	dataPrintModals,
 	setDataDirections,
 	handleChangePermissions,
 	UndoRedoControlPermission,
-	handleChangeMarkerDraggable,
-	withDirecton
+	handleChangeMarkerDraggable
 }) => {
 	const drawingManager = useDrawingManager()
 

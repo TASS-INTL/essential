@@ -122,7 +122,7 @@ export const CreateTravel = ({ dataForm }) => {
 										color
 										register={register}
 										label='Selecciona el instalador'
-										name='installer.id_installer'
+										name='installers.id_installer'
 										arrayOptions={dataPreCrateTravel?.data?.data?.installers}
 										option='name'
 									/>
@@ -132,7 +132,7 @@ export const CreateTravel = ({ dataForm }) => {
 										color
 										register={register}
 										label='Selecciona la operacion'
-										name='installer.type_operation'
+										name='installers.type_operation'
 										arrayOptions={dataPreCrateTravel?.data?.data?.type_operations}
 										option='name'
 									/>

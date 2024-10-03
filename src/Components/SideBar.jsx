@@ -59,11 +59,11 @@ export const SideBarComponent = () => {
 		>
 			<img
 				src='../src/assets/img/control.png'
-				className={`absolute cursor-pointer -right-3 top-4 w-7 border-primary
+				className={`absolute cursor-pointer -right-3 top-16 w-7 border-primary
            border-2 rounded-full  ${!open && 'rotate-180'}`}
 				onClick={() => setOpen(!open)}
 			/>
-			<div className='h-full px-3 py-4 overflow-y-auto bg-black border-r-2 border-gray'>
+			<div className='h-full px-3 py-4 overflow-y-auto bg-black'>
 				<ul className='space-y-2 font-medium'>
 					{userData?.modules?.map((menu, index) => (
 						<NavLink key={index} to={`${menu.pathName}`}>

@@ -11,7 +11,6 @@ export const InfoWindowComponent = ({
 	sendPermissionState,
 	handleCheckboxChange
 }) => {
-	console.log('InfoWindowComponent', permission)
 	return (
 		<InfoWindow
 			headerContent={

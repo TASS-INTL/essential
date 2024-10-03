@@ -53,7 +53,7 @@ export const RoutesPrivate = () => {
 	const setArrayTableTravels = travelsStore((state) => state.setArrayTableTravels)
 
 	return (
-		<div className='flex relative'>
+		<div className='flex relative h-screen w-screen bg-[#e6e6e6]'>
 			<div className='fixed w-full z-10'>
 				<Navbar />
 				<SideBarComponent />
