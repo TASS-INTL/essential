@@ -11,7 +11,7 @@ export const Monitoring = () => {
 	const location = useLocation()
 	const { idTravel } = useParams()
 	const [markers, setMarkers] = useState(null)
-	const { createMarkerMap, setMapGlobal, deleteMarkerMap, mapGlobal } = useMap()
+	const { createMarkerMap, deleteMarkerMap, mapGlobal } = useMap()
 	const realTimeCoordinates = travelsStore((state) => state.realTimeCoordinates)
 	const arrayTableTravelsMonitoring = travelsStore((state) => state.arrayTableTravelsMonitoring)
 
@@ -51,7 +51,7 @@ export const Monitoring = () => {
 				setMapGlobal={setMapGlobal}
 				center={[realTimeCoordinates?.loc_clean?.lng, realTimeCoordinates?.loc_clean?.lat]}
 			/> */}
-			<table>
+			{/* <table>
 				<thead className='text-xs text-gray-700 uppercase bg-gray-50'>
 					<tr className=''>
 						{tableTitleInventory?.map((item) => (
@@ -75,7 +75,7 @@ export const Monitoring = () => {
 						</tr>
 					))}
 				</tbody>
-			</table>
+			</table> */}
 		</>
 	)
 }

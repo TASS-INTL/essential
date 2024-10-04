@@ -2,7 +2,10 @@ import React from 'react'
 
 import { useLocation, useParams } from 'react-router-dom'
 
+import { LoaderComponent } from '../../../../Components'
+import { ErrorComponent } from '../../../../Components/ErrorComponent'
 import { arrayTapMonitoring, TapBottons } from '../../../../Components/TapBottons'
+import { travelsStore } from '../../../../store/travelsStore'
 import { BoardDevice } from '../../Inventory/ModuleDevices/BoardDevice'
 
 export const Eventstravel = () => {
@@ -11,8 +14,14 @@ export const Eventstravel = () => {
 
 	const arrayTableTravelsEvents = travelsStore((state) => state.arrayTableTravelsEvents)
 
+	// console.log(arrayTableTravelsEvents)
+
+	if (arrayTableTravelsEvents === null) return <LoaderComponent />
+
+	// if (arrayTableTravelsEvents.error) return <ErrorComponent error={arrayTableTravelsEvents.message} />
+
 	return (
-		<div>
+		<>
 			<TapBottons
 				location={location}
 				idDevice={idTravel}
@@ -20,7 +29,7 @@ export const Eventstravel = () => {
 				data={arrayTapMonitoring}
 			/>
 			<h2 className='text-normal py-3 pl-5'>Eventos en tiempo real</h2>
-			<BoardDevice dataBody={arrayTableTravelsEvents?.results} />
-		</div>
+			{/* <BoardDevice dataBody={arrayTableTravelsEvents?.results} /> */}
+		</>
 	)
 }

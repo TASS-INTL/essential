@@ -3,8 +3,9 @@ import React from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { padlockClose } from '../../../../assets/assetsplatform'
-import { LoaderComponent } from '../../../../Components'
+import { LoaderComponent, RowInformation, SectionCard } from '../../../../Components'
 import { arrayTapMonitoring, TapBottons } from '../../../../Components/TapBottons'
+import { trimText } from '../../../../helpers/routes'
 import { travelsStore } from '../../../../store/travelsStore'
 import { useTravels } from './hooks/useTravels'
 
@@ -25,8 +26,8 @@ export const GeneralTravel = () => {
 				path='travels-screen/travel'
 				data={arrayTapMonitoring}
 			/>
-			<div className='pt-10'>
-				<div className='flex flex-row gap-6 justify-end'>
+			<div className='pt-10 flex justify-center flex-wrap gap-6'>
+				{/* <div className='flex flex-row gap-6 justify-end'>
 					<button
 						onClick={() => handleActivateTravel({ idTravel, type: 'activate' })}
 						className='bg-lime-700 py-2 px-5 text-white rounded-lg'
@@ -39,67 +40,80 @@ export const GeneralTravel = () => {
 					>
 						Desactivar viaje
 					</button>
-				</div>
-				<section>
-					<h2 className=' text-lg font-bold text-center'>General</h2>
+				</div> */}
+				{/* General */}
+				<SectionCard>
+					<h2 className='text-lg font-bold text-start pb-3'>General</h2>
 					<div className='flex flex-col'>
-						<span className=' font-bold text-lg'>
-							Did Travel:<span className=' font-normal text-sm'> {travelInfo[0]?.general?.did}</span>
-						</span>
-						<span className=' font-bold text-lg'>
-							Id :<span className=' font-normal text-sm'> {travelInfo[0]?.general?.id}</span>
-						</span>
-						<span className=' font-bold text-lg'>
-							Status :<span className=' font-normal text-sm'> {travelInfo[0]?.general?.status}</span>
-						</span>
-						<span className=' font-bold text-lg'>
-							Numero de eventos :
-							<span className=' font-normal text-sm'> {travelInfo[0]?.general?.number_events}</span>
-						</span>
-						<span className=' font-bold text-lg'>
-							creado :<span className=' font-normal text-sm'> {travelInfo[0]?.general?.created_at}</span>
-						</span>
+						<RowInformation title='Did' info={travelInfo?.did} />
+						<RowInformation title='Id' info={travelInfo?._id} />
+						<RowInformation title='Estado' info={travelInfo?.status} />
+						<RowInformation title='Fecha de finalizacion' info={travelInfo?.date_finalization} />
+						<RowInformation title='Fecha de instalacion' info={travelInfo?.date_installation} />
 					</div>
-				</section>
-				<section className='pt-10'>
-					<h2 className=' text-lg font-bold text-center'>Devices</h2>
-					<img
-						// src={deviceInfo?.general?.lock?.value === 'open' ? padlockOpen : padlockClose}
-						src={padlockClose}
-						alt='icon'
-						className='w-[108px] h-[105px] object-contain cursor-pointer my-4'
-					/>
+				</SectionCard>
+				{/* Service */}
+				<SectionCard>
+					<h2 className='text-lg font-bold text-start pb-3'>Servicio</h2>
 					<div className='flex flex-col'>
-						<span className=' font-bold text-lg'>
-							Did :<span className=' font-normal text-sm'> {travelInfo[0]?.devices[0]?.did}</span>
-						</span>
-						<span className=' font-bold text-lg'>
-							Id_device :
-							<span className=' font-normal text-sm'> {travelInfo[0]?.devices[0]?.id_device}</span>
-						</span>
-						<span className=' font-bold text-lg'>
-							Status :<span className=' font-normal text-sm'> {travelInfo[0]?.devices[0]?.status}</span>
-						</span>
-						<span className=' font-bold text-lg'>
-							Id :<span className=' font-normal text-sm'> {travelInfo[0]?.devices[0]?._id}</span>
-						</span>
+						<RowInformation title='Ruta' info={travelInfo?.routing.name_routing} />
+						<RowInformation
+							title='Instalacion'
+							info={trimText(travelInfo?.location_installation?.name, 20)}
+						/>
+						<RowInformation
+							title='Desinstalacion'
+							info={trimText(travelInfo?.location_finalization?.name, 20)}
+						/>
+						<RowInformation title='Progreso de viaje' info={`${travelInfo?.travel_time?.progress}%`} />
 					</div>
-				</section>
-				<section className='pt-10'>
-					<h2 className=' text-lg font-bold text-center'>Instaladores</h2>
+				</SectionCard>
+				{/* Viaje */}
+				<SectionCard>
+					<h2 className='text-lg font-bold text-start pb-3'>Viaje</h2>
 					<div className='flex flex-col'>
-						<span className=' font-bold text-lg'>
-							Nombre :<span className=' font-normal text-sm'> {travelInfo[0]?.installers[0]?.name}</span>
-						</span>
-						<span className=' font-bold text-lg'>
-							Tipo de operacion :
-							<span className=' font-normal text-sm'>{travelInfo[0]?.installers[0]?.type_operation}</span>
-						</span>
-						<span className=' font-bold text-lg'>
-							Id :<span className=' font-normal text-sm'> {travelInfo[0]?.installers[0]?._id}</span>
-						</span>
+						<RowInformation title='Ruta' info={travelInfo?.routing.name_routing} />
+						<RowInformation
+							title='Instalacion'
+							info={trimText(travelInfo?.location_installation?.name, 20)}
+						/>
+						<RowInformation
+							title='Desinstalacion'
+							info={trimText(travelInfo?.location_finalization?.name, 20)}
+						/>
+						<RowInformation title='Progreso de viaje' info={`${travelInfo?.travel_time?.progress}%`} />
 					</div>
-				</section>
+				</SectionCard>
+				{/* Devices */}
+				<SectionCard>
+					<div className='flex justify-between items-center pb-4'>
+						<h2 className='text-lg font-bold text-start pb-3'>Devices</h2>
+						<img
+							src={travelInfo?.devices[0]?.lock === 'open' ? padlockOpen : padlockClose}
+							alt='icon'
+							className='w-[38px] h-[50px] cursor-pointer'
+						/>
+					</div>
+					<div className='flex flex-col'>
+						<RowInformation title='Did' info={travelInfo?.devices[0]?.did} />
+						<RowInformation title='Lock' info={travelInfo?.devices[0]?.lock} />
+						<RowInformation title='Nick name' info={travelInfo?.devices[0]?.nickname} />
+						<RowInformation title='En linea' info={travelInfo?.devices[0]?.on_live} />
+						<RowInformation title='Red' info={travelInfo?.devices[0]?.red} />
+						<RowInformation title='Estado' info={travelInfo?.devices[0]?.status} />
+					</div>
+				</SectionCard>
+				{/* Installers */}
+				<SectionCard>
+					<h2 className='text-lg font-bold text-start pb-3'>Instaladores</h2>
+					<div className='flex flex-col'>
+						<RowInformation title='Estado' info={travelInfo?.devices[0]?.status} />
+						<RowInformation title='Estado' info={travelInfo?.devices[0]?.status} />
+						<RowInformation title='Estado' info={travelInfo?.devices[0]?.status} />
+						<RowInformation title='Estado' info={travelInfo?.devices[0]?.status} />
+						<RowInformation title='Estado' info={travelInfo?.devices[0]?.status} />
+					</div>
+				</SectionCard>
 			</div>
 		</div>
 	)

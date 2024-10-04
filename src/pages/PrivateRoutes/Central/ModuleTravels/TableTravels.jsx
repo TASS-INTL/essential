@@ -35,13 +35,15 @@ export const TableTravels = () => {
 				</form>
 			</div>
 			<div>
-				{arrayTableTravels.results.map((item) => (
-					<div key={item._id} className='p-4 bg-white rounded-2xl'>
+				{arrayTableTravels?.results?.map((item) => (
+					<div key={item._id} className='p-4 bg-white rounded-xl'>
 						<div className='flex justify-between'>
 							<div className=''>
 								<div className='flex flex-col'>
-									<span className='text-black font-bold text-sm'>{item.did}</span>
-									<span className='text-black font-light text-sm'>fecha: {item.created_at}</span>
+									<span className='text-black font-bold text-xs'>{item?.did}</span>
+									<span className='text-black font-bold text-xs'>
+										Fecha: <span className='font-light'>{item?.created_at}</span>
+									</span>
 								</div>
 							</div>
 							<div className='flex gap-5'>
@@ -56,30 +58,30 @@ export const TableTravels = () => {
 								</NavLink>
 							</div>
 						</div>
-						<div className='flex mt-5 gap-2'>
+						<div className='flex mt-3'>
 							<div className='h-3 w-full border border-blue-600 rounded-full '>
 								<div className={`pl-3 w-[${item?.distance?.progress}%] h-3 bg-blue-600 rounded-full`} />
 							</div>
 						</div>
 						<div className='flex gap-4'>
 							<div className='p-1'>
-								<span className=' font-medium text-lg'>
-									_id: <span className='font-light text-sm'> {item._id}</span>
+								<span className=' font-medium text-sm'>
+									_id: <span className='font-light text-xs'> {item?._id}</span>
 								</span>
 							</div>
 							<div className='p-1'>
-								<span className=' font-medium text-lg'>
-									status: <span className='font-light text-sm'> {item.status}</span>
+								<span className=' font-medium text-sm'>
+									servicio: <span className='font-light text-xs'> {item?.service}</span>
 								</span>
 							</div>
 							<div className='p-1'>
-								<span className=' font-medium text-lg'>
-									servicio: <span className='font-light text-sm'> {item.service}</span>
+								<span className=' font-medium text-sm'>
+									eventos : <span className='font-light text-xs'> {item?.events}</span>
 								</span>
 							</div>
 							<div className='p-1'>
-								<span className=' font-medium text-lg'>
-									servicio: <span className='font-light text-sm'> {item.service}</span>
+								<span className=' font-medium text-sm'>
+									monitoreo: <span className='font-light text-xs'> {item?.monitoring}</span>
 								</span>
 							</div>
 						</div>
