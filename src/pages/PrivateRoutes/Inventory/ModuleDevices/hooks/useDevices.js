@@ -3,8 +3,11 @@ import { METHODS_API } from '@/Api/constantsApi'
 import { showToast } from '@/helpers/toast'
 import { queryClient } from '@/routes/AppRouter'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { useForm } from 'react-hook-form'
 
 export const useDevice = () => {
+	const { register, handleSubmit } = useForm()
+
 	//
 	const fetchTypeDevice = () =>
 		useQuery({
@@ -54,6 +57,8 @@ export const useDevice = () => {
 	return {
 		handleAssignDevice,
 		handleSyncDevice,
-		fetchTypeDevice
+		fetchTypeDevice,
+		handleSubmit,
+		register
 	}
 }

@@ -2,22 +2,25 @@ import React from 'react'
 
 import { useLocation, useParams } from 'react-router-dom'
 
+import { ErrorComponent, LoaderComponent, TitleWithLive } from '../../../../Components'
+import { BoardDevice } from '../../../../Components/BoardDevice'
 import { arrayTapInventory, TapBottons } from '../../../../Components/TapBottons'
 import { inventoryStore } from '../../../../store/inventoryStore'
-import { BoardDevice } from '../ModuleDevices/BoardDevice'
 
 export const Events = () => {
 	const { idDevice } = useParams()
 	const location = useLocation()
 	const arrayTableInventoryEvents = inventoryStore((state) => state.arrayTableInventoryEvents)
 
+	if (arrayTableInventoryEvents === null) return <LoaderComponent />
+
+	if (arrayTableInventoryEvents.error) return <ErrorComponent error={arrayTableInventoryEvents.message} />
+
 	return (
-		<div>
+		<>
 			<TapBottons location={location} idDevice={idDevice} path='devices-screen/device' data={arrayTapInventory} />
-			<div className='pt-10'>
-				<h1 className=' text-2xl pb-5'>Tabla de eventos</h1>
-				<BoardDevice dataBody={arrayTableInventoryEvents?.data?.results} />
-			</div>
-		</div>
+			<TitleWithLive title='EVENTOS' inLive />
+			<BoardDevice dataBody={arrayTableInventoryEvents?.data?.results} />
+		</>
 	)
 }

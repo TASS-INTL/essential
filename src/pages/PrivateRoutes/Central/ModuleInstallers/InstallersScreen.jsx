@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Container } from '../../../../Components/Container'
 
-export const Installers = () => {
+export const InstallersScreen = () => {
 	return (
 		<Container>
 			<h1 className=' text-center text-3xl font-normal mt-32'>Instaladores</h1>

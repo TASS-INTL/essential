@@ -1,14 +1,11 @@
 import React from 'react'
 
-import { useForm } from 'react-hook-form'
-
 import { InputComponent, InputSubmitComponent, SelectComponent } from '../../../../Components'
 import { typeStatus } from '../../constants/constants'
 import { useDevice } from './hooks/useDevices'
 
 export const FormAssignDevice = () => {
-	const { register, handleSubmit } = useForm()
-	const { handleAssignDevice } = useDevice()
+	const { handleAssignDevice, handleSubmit, register } = useDevice()
 
 	return (
 		<div className='h-screen flex-1 p-7'>

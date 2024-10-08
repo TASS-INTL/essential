@@ -47,18 +47,17 @@ export const useInventory = () => {
 			),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postComand'] })
 	})
+	const handleSendComand = async (data) => {
+		const response = await comandDevice.mutateAsync(data)
+		response.completed && showToast('Se a enviado el comando', 'warning')
+		response?.error && showToast('❌ Algo ha salido mal al enviar el comando :' + response?.message, 'error')
+	}
 
 	const comandDeviceTest = useMutation({
 		mutationFn: async ({ idDevice, did, to }) =>
 			await api(METHODS_API.POST, `module/device-factory/${idDevice}/testing/${to}?did=${did}`),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postComand'] })
 	})
-
-	const handleSendComand = async (data) => {
-		const response = await comandDevice.mutateAsync(data)
-		response.completed && showToast('Se a enviado el comando', 'warning')
-		response?.error && showToast('❌ Algo ha salido mal al enviar el comando :' + response?.message, 'error')
-	}
 
 	const handleSendComandTest = async (data) => {
 		const response = await comandDeviceTest.mutateAsync(data)

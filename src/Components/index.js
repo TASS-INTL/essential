@@ -11,10 +11,12 @@ import { RowInformation } from './RowInformation'
 import { SectionCard } from './SectionCard'
 import { SelectComponent } from './SelectComponent'
 import { SideBarComponent } from './SideBar'
+import { TitleWithLive } from './TitleWithLive'
 
 export {
 	SectionCard,
 	RemarksInput,
+	TitleWithLive,
 	InputComponent,
 	BoardComponent,
 	ErrorComponent,

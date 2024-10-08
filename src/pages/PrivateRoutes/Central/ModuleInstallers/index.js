@@ -1,3 +1,3 @@
-import { Installers } from './Installers'
+import { InstallersScreen } from './InstallersScreen'
 
-export { Installers }
+export { InstallersScreen }

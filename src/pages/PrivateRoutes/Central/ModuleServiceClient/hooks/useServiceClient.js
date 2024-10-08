@@ -49,7 +49,7 @@ export const useServiceClient = () => {
 		})
 	}
 
-	const { data } = getDataRoute(idRoute?.id_route ? idRoute?.id_route : null)
+	const dataRoute = getDataRoute(idRoute?.id_route ? idRoute?.id_route : null)
 
 	const createServiceClient = useMutation({
 		mutationFn: async (data) => await api(METHODS_API.POST, `module/service/travel-client/create`, data),
@@ -80,7 +80,7 @@ export const useServiceClient = () => {
 
 	return {
 		open,
-		data,
+		dataRoute,
 		register,
 		handleOpen,
 		getDataRoute,

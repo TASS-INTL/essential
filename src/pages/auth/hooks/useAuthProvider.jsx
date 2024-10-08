@@ -29,7 +29,8 @@ export const useAuthProvider = () => {
 					state: response?.data?.state,
 					userName: response?.data?.username,
 					tokenSesion: response?.data?.token,
-					modules: response?.data?.user_policies?.modules
+					modules: response?.data?.user_policies?.modules,
+					typeUser: response?.data?.type_master
 				})
 			} else {
 				localStorage.setItem('token', response?.data?.token)
@@ -69,7 +70,8 @@ export const useAuthProvider = () => {
 					state: response?.data?.state,
 					userName: response?.data?.username,
 					tokenSesion: response?.data?.token,
-					modules: response?.data?.user_policies.modules
+					modules: response?.data?.user_policies.modules,
+					typeUser: response?.data?.type_master
 				})
 			} else {
 				setUserData({

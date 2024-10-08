@@ -32,6 +32,8 @@ const Navbar = () => {
 		useContext(SocketContext)
 	const userData = userStore((state) => state.userData)
 
+	console.log(userData)
+
 	useEffect(() => {
 		const handleResize = () => setScreenSize(window.innerWidth)
 

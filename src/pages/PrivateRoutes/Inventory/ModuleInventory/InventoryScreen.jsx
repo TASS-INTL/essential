@@ -17,10 +17,11 @@ export const InventoryScreen = () => {
 			<div className='flex justify-center items-center'>
 				{submodules.map((item) => (
 					<NavLink
+						key={item._id}
 						to={`${item.pathName}`}
 						className='card bg-gray-500 p-2 flex flex-col items-center justify-center hover:bg-white transition-opacity px-7 rounded-lg mt-10'
 					>
-						<img src={padlockClose} alt='' />
+						<img src={padlockClose} alt='moduleImage' />
 						<span className=' pt-4'>Modulo {item.name_consult}</span>
 					</NavLink>
 				))}

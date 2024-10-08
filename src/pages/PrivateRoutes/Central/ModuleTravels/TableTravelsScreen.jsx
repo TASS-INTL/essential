@@ -10,7 +10,7 @@ import { LoaderComponent, ModalComponent } from '../../../../Components'
 import { InputSearch } from '../../../../Components/InputSearch'
 import { initialStateTravel } from '../../constants/constants'
 
-export const TableTravels = () => {
+export const TableTravelsScreen = () => {
 	const [open, setOpen] = useState(false)
 	const handleOpen = () => setOpen(!open)
 	const { register, handleSubmit } = useForm()

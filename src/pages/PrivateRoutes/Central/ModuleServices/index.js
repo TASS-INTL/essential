@@ -1,5 +1,5 @@
 import { CreateService } from '../ModuleServiceClient/CreateService'
-import { Services } from './Services'
-import { Table } from './Table'
+import { ServicesMasterScreen } from './ServicesMasterScreen'
+import { TableServicesMasterScreen } from './TableServicesMasterScreen'
 
-export { Services, Table, CreateService }
+export { ServicesMasterScreen, TableServicesMasterScreen, CreateService }

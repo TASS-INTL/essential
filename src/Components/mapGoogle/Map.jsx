@@ -1,9 +1,11 @@
 import { forwardRef, useEffect } from 'react'
 
-import { ControlPosition, Map, MapControl, useMap } from '@vis.gl/react-google-maps'
+import { APIProvider, ControlPosition, Map, MapControl, useMap } from '@vis.gl/react-google-maps'
 
+import { API_KEY_GOOGLE_MAPS } from '../../pages/PrivateRoutes/constants/constants'
 import { Directions } from './Directions'
 import { InfoWindowComponent } from './InfoWindowComponent'
+import { MapHandler } from './MapHandler'
 import { MarkerWithInfowindow } from './MarkerWithInfowindow'
 import { Polygon } from './Polygon'
 import { Polyline } from './Polyline'
@@ -16,6 +18,7 @@ export const MapGoogle = ({
 	locations,
 	dataRoute,
 	withDirecton,
+	selectedPlace,
 	permissionsData,
 	dataPrintModals,
 	setDataDirections,
@@ -31,7 +34,8 @@ export const MapGoogle = ({
 	}
 
 	return (
-		<>
+		<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
+			<MapHandler place={selectedPlace} />
 			<Map
 				style={{ width: '95%', margin: 'auto' }}
 				defaultCenter={{ lat: 3.8515385, lng: -74.8861476 }}
@@ -120,6 +124,6 @@ export const MapGoogle = ({
 					<UndoRedoControl drawingManager={drawingManager} dispatch={dispatch} state={state} />
 				</MapControl>
 			)}
-		</>
+		</APIProvider>
 	)
 }

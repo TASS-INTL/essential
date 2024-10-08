@@ -3,11 +3,11 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { LoaderComponent } from '../../../../Components'
+import { BoardDevice } from '../../../../Components/BoardDevice'
 import { InputSearch } from '../../../../Components/InputSearch'
-import { BoardDevice } from '../../Inventory/ModuleDevices/BoardDevice'
 import { useService } from './hooks/useService'
 
-export const Table = () => {
+export const TableServicesMasterScreen = () => {
 	const [page, setPage] = useState(1)
 	const { fetchDataService } = useService()
 	const { register, handleSubmit } = useForm()

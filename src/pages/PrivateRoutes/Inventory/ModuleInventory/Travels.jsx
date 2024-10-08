@@ -11,8 +11,6 @@ export const Travels = () => {
 	return (
 		<div>
 			<TapBottons location={location} idDevice={idDevice} path='devices-screen/device' />
-
-			<h1>Travels</h1>
 		</div>
 	)
 }
