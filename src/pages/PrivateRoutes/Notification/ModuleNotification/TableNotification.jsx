@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
-import { BoardComponent, PaginationComponent } from '../../../../Components'
+import { BoardComponent, ErrorComponent, LoaderComponent, PaginationComponent } from '../../../../Components'
 import { InputSearch } from '../../../../Components/InputSearch'
 import { notificationStore } from '../../../../store/notificationStore'
 import { tableTitle } from '../../constants/constants'
@@ -18,6 +18,10 @@ export const TableNotification = () => {
 		setDataSearch(data.search)
 	}
 
+	if (arrayNotification === null) return <LoaderComponent />
+
+	if (arrayNotification?.error) return <ErrorComponent error={arrayNotification?.message} />
+
 	return (
 		<>
 			<div className='flex justify-end py-2'>
@@ -25,7 +29,7 @@ export const TableNotification = () => {
 					<InputSearch register={register} />
 				</form>
 			</div>
-			<BoardComponent dataHeader={tableTitle} dataBody={arrayNotification.notifications.result} />
+			<BoardComponent dataHeader={tableTitle} dataBody={arrayNotification?.notifications?.result} />
 			<div className='py-5 flex justify-center items-center'>
 				<PaginationComponent
 					pageSelected={pageSelected}

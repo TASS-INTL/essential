@@ -26,8 +26,8 @@ import {
 } from '../pages/PrivateRoutes/Central/ModuleTravels'
 import { ChatScreen } from '../pages/PrivateRoutes/Chat/ModuleChat/ChatScreen'
 import { DevicesScreen } from '../pages/PrivateRoutes/Inventory/ModuleDevices/DevicesScreen'
-import { FormAssignDevice } from '../pages/PrivateRoutes/Inventory/ModuleDevices/FormAssignDevice'
-import { TableDevice } from '../pages/PrivateRoutes/Inventory/ModuleDevices/TableDevice'
+import { FormAssignDeviceScreen } from '../pages/PrivateRoutes/Inventory/ModuleDevices/FormAssignDeviceScreen'
+import { TableDeviceScreen } from '../pages/PrivateRoutes/Inventory/ModuleDevices/TableDeviceScreen'
 import { FactoryDevicesScreen } from '../pages/PrivateRoutes/Inventory/ModuleFactoryDevices/FactoryDevicesScreen'
 import {
 	DeviceProviderSocket,
@@ -115,7 +115,7 @@ export const RoutesPrivate = () => {
 
 				{/* ============ MODULE ADMIN =============== */}
 
-				{/* Module Users */}
+				{/* Users */}
 				<Route path={routesPrivate.usersScreen} element={<UsersScreen />} />
 
 				{/* ============ MODULE CHAT =============== */}
@@ -142,8 +142,10 @@ export const RoutesPrivate = () => {
 						</SocketForNameSpace>
 					}
 				>
-					<Route index path={routesPrivate.table} element={<TableDevice />} />
-					<Route path={routesPrivate.assignDevice} element={<FormAssignDevice />} />
+					<Route index path={routesPrivate.table} element={<TableDeviceScreen />} />
+					{/* Factory Device */}
+					<Route path={routesPrivate.factoryDevicesScreen} element={<FactoryDevicesScreen />} />
+					<Route path={routesPrivate.assignDeviceScreen} element={<FormAssignDeviceScreen />} />
 					<Route path={routesPrivate.deviceIdDevice} element={<DeviceProviderSocket />}>
 						<Route index path={routesPrivate.general} element={<General />} />
 						<Route path={routesPrivate.test} element={<Test />} />
@@ -151,9 +153,6 @@ export const RoutesPrivate = () => {
 						{/* <Route path={routesPrivate.travels} element={<Travels />} /> */}
 					</Route>
 				</Route>
-
-				{/* Factory Device */}
-				<Route path={routesPrivate.factoryDevicesScreen} element={<FactoryDevicesScreen />} />
 
 				{/* ============ MODULE ACCOUNT =============== */}
 

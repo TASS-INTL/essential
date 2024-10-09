@@ -4,7 +4,7 @@ import { InputComponent, InputSubmitComponent, SelectComponent } from '../../../
 import { typeStatus } from '../../constants/constants'
 import { useDevice } from './hooks/useDevices'
 
-export const FormAssignDevice = () => {
+export const FormAssignDeviceScreen = () => {
 	const { handleAssignDevice, handleSubmit, register } = useDevice()
 
 	return (

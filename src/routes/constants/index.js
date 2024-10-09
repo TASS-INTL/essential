@@ -25,7 +25,7 @@ export const routesPrivate = {
 	travelIdTravel: 'travel/:idTravel',
 	tableTravelsScreen: 'table-travels-screen',
 	// DEVICE
-	assignDevice: 'assign-device',
+	assignDeviceScreen: 'assign-device-screen',
 	devicesScreen: 'devices-screen',
 	deviceIdDevice: 'device/:idDevice',
 	factoryDevicesScreen: 'factory-devices-screen',

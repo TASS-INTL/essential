@@ -5,14 +5,13 @@ import { Link } from 'react-router-dom'
 
 import { BoardDevice } from '../../../../Components/BoardDevice.jsx'
 import { ErrorComponent } from '../../../../Components/ErrorComponent.jsx'
-import { InputSearch } from '../../../../Components/InputSearch'
-import { LiveIndicator } from '../../../../Components/LiveIndicator.jsx'
+import { InputSearch } from '../../../../Components/InputSearch.jsx'
 import { LoaderComponent } from '../../../../Components/LoaderComponent.jsx'
 import { TitleWithLive } from '../../../../Components/TitleWithLive.jsx'
-import { deviceStore } from '../../../../store/deviceStore'
+import { deviceStore } from '../../../../store/deviceStore.js'
 import { userStore } from '../../../../store/userStore.js'
 
-export const TableDevice = () => {
+export const TableDeviceScreen = () => {
 	const { register, handleSubmit } = useForm()
 	const [dataSearch, setDataSearch] = useState('')
 	// const { paginationEmit } = useInventorySocket()
@@ -32,16 +31,14 @@ export const TableDevice = () => {
 
 	if (arrayTabledevice.error) return <ErrorComponent error={arrayTabledevice.message} />
 
-	console.log('userData -->', userData)
-
 	return (
 		<>
 			<div className='flex justify-between px-0 py-3 pt-2'>
 				<Link
 					to={
 						userData.typeUser === 'factory'
-							? '/user/factory-devices-screen'
-							: '/user/devices-screen/assign-device'
+							? '/user/devices-screen/factory-devices-screen'
+							: '/user/devices-screen/assign-device-screen'
 					}
 					className='p-2 bg-black text-white rounded-lg flex justify-center items-center'
 				>
