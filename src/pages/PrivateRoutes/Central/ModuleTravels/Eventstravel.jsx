@@ -3,10 +3,10 @@ import React from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { LoaderComponent } from '../../../../Components'
+import { BoardDevice } from '../../../../Components/BoardDevice'
 import { ErrorComponent } from '../../../../Components/ErrorComponent'
 import { arrayTapMonitoring, TapBottons } from '../../../../Components/TapBottons'
 import { travelsStore } from '../../../../store/travelsStore'
-import { BoardDevice } from '../../Inventory/ModuleDevices/BoardDevice'
 
 export const Eventstravel = () => {
 	const location = useLocation()

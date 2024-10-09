@@ -7,7 +7,7 @@ import { userStore } from '../../../../store/userStore'
 import { SOCKET_EVENTS, SOCKETS_ROOMS } from '../../sockets/constants'
 import { SocketContextForNameSpace } from '../../sockets/socketForNameSpace'
 
-export const Device = () => {
+export const DeviceProviderSocket = () => {
 	const { idDevice } = useParams()
 	const { socketForNameSpace } = useContext(SocketContextForNameSpace)
 	const { uid, tokenSesion } = userStore((state) => state.userData)
@@ -27,7 +27,7 @@ export const Device = () => {
 
 		// Me suscribo a la sala del dispositivo para que me mande la informacion en tiempo real
 		socketForNameSpace?.on(SOCKET_EVENTS.R_DEVICE_INFO, (data) => {
-			setDeviceInfo(data?.data[0])
+			setDeviceInfo(data)
 		})
 
 		// emitir a la tabla de eventos
@@ -42,6 +42,7 @@ export const Device = () => {
 
 		// Aqui trae la informacion de los eventos
 		socketForNameSpace?.on(SOCKET_EVENTS.R_TB_EVENTS_DEVICE, (data) => {
+			console.log('data events device -->', data)
 			setArrayTableInventoryEvents(data)
 		})
 

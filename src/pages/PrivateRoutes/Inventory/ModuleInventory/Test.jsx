@@ -3,8 +3,8 @@ import React from 'react'
 import { inventoryStore } from '@/store/inventoryStore'
 import { useLocation, useParams } from 'react-router-dom'
 
+import { BoardDevice } from '../../../../Components/BoardDevice'
 import { arrayTapInventory, TapBottons } from '../../../../Components/TapBottons'
-import { BoardDevice } from '../ModuleDevices/BoardDevice'
 import { useInventory } from './Hooks/useInventory'
 
 export const Test = () => {
@@ -33,7 +33,7 @@ export const Test = () => {
 					</button>
 				</div>
 				<h1 className=' text-2xl pb-5'>Tabla de testing</h1>
-				<BoardDevice dataBody={arrayTableInventoryTest?.data?.results} />
+				{/* <BoardDevice dataBody={arrayTableInventoryTest?.data?.results} /> */}
 			</div>
 		</div>
 	)

@@ -11,14 +11,7 @@ import {
 } from '../pages/auth'
 import { pathNavigation } from '../pages/auth/constants'
 import { userStore } from '../store/userStore'
-
-export const PublicRouter = {
-	loginScreen: 'login-screen',
-	registerScreen: 'register-screen',
-	PersonalDataScreen: 'personal-data-screen',
-	validateCodeScreen: 'validate-code-screen',
-	forgotPasswordScreen: 'forgot-password-screen'
-}
+import { RoutesPublic } from './constants'
 
 export const AuthRouter = () => {
 	const location = useLocation()
@@ -30,11 +23,11 @@ export const AuthRouter = () => {
 
 	return (
 		<Routes>
-			<Route path={PublicRouter.loginScreen} element={<LoginScreen />} />
-			<Route path={PublicRouter.registerScreen} element={<RegisterScreen />} />
-			<Route path={PublicRouter.validateCodeScreen} element={<ValidateCodeScreen />} />
-			<Route path={PublicRouter.PersonalDataScreen} element={<PersonalDataScreen />} />
-			<Route path={PublicRouter.forgotPasswordScreen} element={<ForgotPasswordScreen />} />
+			<Route path={RoutesPublic.loginScreen} element={<LoginScreen />} />
+			<Route path={RoutesPublic.registerScreen} element={<RegisterScreen />} />
+			<Route path={RoutesPublic.validateCodeScreen} element={<ValidateCodeScreen />} />
+			<Route path={RoutesPublic.PersonalDataScreen} element={<PersonalDataScreen />} />
+			<Route path={RoutesPublic.forgotPasswordScreen} element={<ForgotPasswordScreen />} />
 		</Routes>
 	)
 }

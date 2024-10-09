@@ -16,23 +16,23 @@ export const arrayTapMonitoring = [
 
 export const TapBottons = ({ location, idDevice, path, data }) => {
 	return (
-		<div className='pt-5'>
+		<>
 			{!location.pathname.includes('table') && (
-				<ul className='flex gap-3 '>
+				<ul className='flex gap-3'>
 					{data?.map((item) => (
-						<li
-							className={`${
-								location.pathname.includes(item.title) && 'bg-black text-white'
-							} px-4 py-2 rounded-lg`}
-							key={item.id}
-						>
-							<Link to={`/user/${path}/${idDevice}/${item.title}`}>
+						<Link to={`/user/${path}/${idDevice}/${item.title}`}>
+							<li
+								className={`${
+									location.pathname.includes(item.title) && 'bg-black text-white'
+								} px-4 py-2 rounded-lg text-[0.9rem]`}
+								key={item.id}
+							>
 								<h3>{item.name}</h3>
-							</Link>
-						</li>
+							</li>
+						</Link>
 					))}
 				</ul>
 			)}
-		</div>
+		</>
 	)
 }

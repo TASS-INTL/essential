@@ -38,9 +38,10 @@ export const CreateRouting = () => {
 					{/* MAP */}
 					<div className='w-[40%]'>
 						<MapGoogle
-							permissionsData={permissionsData?.data.data}
 							state={state}
+							permissionsData={permissionsData?.data?.data}
 							dispatch={dispatch}
+							selectedPlace={selectedPlace}
 							locations={objectLocations}
 							dataPrintModals={state?.now}
 							setDataDirections={setDataDirections}

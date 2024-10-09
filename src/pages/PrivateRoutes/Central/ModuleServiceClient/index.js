@@ -1,5 +1,5 @@
 import { CreateService } from './CreateService'
-import { ServicesClient } from './ServicesClient'
-import { TableServiceClient } from './TableServiceClient'
+import { ServicesClientScreen } from './ServicesClientScreen'
+import { TableServiceClientScreen } from './TableServiceClientScreen'
 
-export { ServicesClient, TableServiceClient, CreateService }
+export { ServicesClientScreen, TableServiceClientScreen, CreateService }

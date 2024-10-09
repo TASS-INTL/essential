@@ -4,12 +4,12 @@ import { Button } from '@mui/material'
 import { useForm } from 'react-hook-form'
 
 import { LoaderComponent, ModalComponent } from '../../../../Components'
+import { BoardDevice } from '../../../../Components/BoardDevice'
 import { InputSearch } from '../../../../Components/InputSearch'
-import { BoardDevice } from '../../Inventory/ModuleDevices/BoardDevice'
 import { CreateService } from './CreateService'
 import { useServiceClient } from './hooks/useServiceClient'
 
-export const TableServiceClient = () => {
+export const TableServiceClientScreen = () => {
 	const [page, setPage] = useState(1)
 	const { getDataTableServiceClient } = useServiceClient()
 	const { register, handleSubmit } = useForm()

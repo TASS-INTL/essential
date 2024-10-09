@@ -5,33 +5,35 @@ export const pathRoutes = {
 }
 
 export const routesPrivate = {
-	// General paths
+	// GENERAL PATHS
 	test: 'test',
 	table: 'table',
 	events: 'events',
 	general: 'general',
 	centralScreen: 'central-screen',
-	// Service
+	// SERVICES
 	createService: 'create-service',
-	servicesScreen: 'services-screen',
+	servicesMasterScreen: 'services-master-screen',
 	servicesClientScreen: 'services-client-screen',
-	// Travel
+	tableServicesMasterScreen: 'table-services-master-screen',
+	tableServicesClientScreen: 'table-services-client-screen',
+	// TRAVELS
 	travels: 'travels',
 	monitoring: 'monitoring',
 	createTravel: 'create-travel',
 	travelsScreen: 'travels-screen',
 	travelIdTravel: 'travel/:idTravel',
-	// Device
-	assignDevice: 'assign-device',
+	tableTravelsScreen: 'table-travels-screen',
+	// DEVICE
+	assignDeviceScreen: 'assign-device-screen',
 	devicesScreen: 'devices-screen',
 	deviceIdDevice: 'device/:idDevice',
 	factoryDevicesScreen: 'factory-devices-screen',
-	// Notification
+	// NOTIFICATION
 	idNotification: ':idNotification',
 	notificationScreen: 'notifications-screen',
-	// Chat
+	// CHAT
 	chatScreen: 'chat-screen',
-	//
 	usersScreen: 'users-screen',
 	groupScreen: 'group-screen',
 	testingScreen: 'testing-screen',
@@ -39,7 +41,20 @@ export const routesPrivate = {
 	settingsScreen: 'settings-screen',
 	inventoryScreen: 'inventory-screen',
 	dashboardScreen: 'dashboard-screen',
-	installersScreen: 'installers-screen',
 	monitoringScreen: 'monitoring-screen',
-	detailInventoryScreen: 'detail-inventory-screen'
+	detailInventoryScreen: 'detail-inventory-screen',
+	// INSTALLERS
+	installersScreen: 'installers-screen'
+}
+
+export const RoutesPublic = {
+	loginScreen: 'login-screen',
+	registerScreen: 'register-screen',
+	PersonalDataScreen: 'personal-data-screen',
+	validateCodeScreen: 'validate-code-screen',
+	forgotPasswordScreen: 'forgot-password-screen'
+}
+
+export const routesRedirect = {
+	redirectUser: '/user/account-screen'
 }

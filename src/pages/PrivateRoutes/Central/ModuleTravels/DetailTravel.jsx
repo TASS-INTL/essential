@@ -1,18 +1,13 @@
 import React, { useContext, useEffect } from 'react'
 
-import { Outlet, useLocation, useParams } from 'react-router-dom'
+import { Outlet, useParams } from 'react-router-dom'
 
-import { arrayTapMonitoring, TapBottons } from '../../../../Components/TapBottons'
 import { travelsStore } from '../../../../store/travelsStore'
 import { userStore } from '../../../../store/userStore'
 import { SOCKET_EVENTS, SOCKETS_ROOMS } from '../../sockets/constants'
 import { SocketContextForNameSpace } from '../../sockets/socketForNameSpace'
 
 export const DetailTravel = () => {
-	const location = useLocation()
-
-	console.log(location)
-
 	const { idTravel } = useParams()
 	const { uid, tokenSesion } = userStore((state) => state.userData)
 	const setTravelInfo = travelsStore((state) => state.setTravelInfo)
@@ -46,7 +41,6 @@ export const DetailTravel = () => {
 			// type_join: SOCKETS_ROOMS.ROOM_DEVICE
 		})
 
-		console.log('entra', socketForNameSpace)
 		// Aqui trae la informacion de los eventos de monitoreo
 		socketForNameSpace?.on(SOCKET_EVENTS.R_TB_EVENTS_TRAVEL, (data) => {
 			console.log(data)
@@ -102,15 +96,5 @@ export const DetailTravel = () => {
 		}
 	}, [])
 
-	return (
-		<>
-			{/* <TapBottons
-				location={location}
-				idDevice={idTravel}
-				path='travels-screen/travel'
-				data={arrayTapMonitoring}
-			/> */}
-			<Outlet />
-		</>
-	)
+	return <Outlet />
 }

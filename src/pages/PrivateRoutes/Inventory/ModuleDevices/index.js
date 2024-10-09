@@ -1,5 +1,5 @@
 import { DevicesScreen } from './DevicesScreen'
-import { FormAssignDevice } from './FormAssignDevice'
-import { TableDevice } from './TableDevice'
+import { FormAssignDeviceScreen } from './FormAssignDeviceScreen'
+import { TableDeviceScreen } from './TableDeviceScreen'
 
-export { TableDevice, FormAssignDevice, DevicesScreen }
+export { TableDeviceScreen, FormAssignDeviceScreen, DevicesScreen }

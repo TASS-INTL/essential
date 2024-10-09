@@ -3,7 +3,7 @@ import { DetailTravel } from './DetailTravel'
 import { Eventstravel } from './Eventstravel'
 import { GeneralTravel } from './GeneralTravel'
 import { Monitoring } from './Monitoring'
-import { TableTravels } from './TableTravels'
-import { Travels } from './Travels'
+import { TableTravelsScreen } from './TableTravelsScreen'
+import { TravelsScreen } from './TravelsScreen'
 
-export { TableTravels, CreateTravel, Travels, DetailTravel, GeneralTravel, Monitoring, Eventstravel }
+export { TableTravelsScreen, CreateTravel, TravelsScreen, DetailTravel, GeneralTravel, Monitoring, Eventstravel }

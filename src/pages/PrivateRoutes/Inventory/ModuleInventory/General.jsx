@@ -11,71 +11,61 @@ import { useInventory } from './Hooks/useInventory'
 export const General = () => {
 	const location = useLocation()
 	const { idDevice } = useParams()
-	const { createMarkerMap, setMapGlobal, mapGlobal, deleteMarkerMap } = useMap()
 	const { handleSendComand } = useInventory()
 	const deviceInfo = inventoryStore((state) => state.deviceInfo)
-	const [markerState, setMarkerState] = useState(null)
 
 	const SendCommand = (typeComand, to) => {
-		handleSendComand({ idDevice, typeComand, did: deviceInfo?.general?.did, to })
+		handleSendComand({ idDevice, typeComand, did: deviceInfo?.data?.general?.did, to })
 	}
-
-	useEffect(() => {
-		if (mapGlobal && deviceInfo?.general?.last_location?.lng) {
-			if (markerState !== null) {
-				deleteMarkerMap(markerState)
-				setMarkerState(null)
-			}
-			let marker = createMarkerMap(
-				deviceInfo?.general?.last_location?.lng,
-				deviceInfo?.general?.last_location?.lat,
-				mapGlobal,
-				false
-			)
-			setMarkerState(marker)
-		}
-	}, [mapGlobal, deviceInfo?.general?.last_location?.lng, deviceInfo?.general?.last_location?.lat])
 
 	return (
 		<>
 			<TapBottons location={location} idDevice={idDevice} path='devices-screen/device' data={arrayTapInventory} />
 			<div className='pt-2'>
 				<section className='my-2'>
-					<h3 className='text-center font-bold text-2xl pb-2'>GENERAL</h3>
 					<div className='flex flex-row w-full justify-between'>
 						<div className='flex flex-col'>
 							<span className=' font-bold text-lg'>
-								Id : <span className=' font-normal text-sm'> {deviceInfo?._id}</span>
+								Id : <span className=' font-normal text-sm'> {deviceInfo?.data?._id}</span>
 							</span>
 							<span className=' font-bold text-lg'>
-								Did: <span className=' font-normal text-sm'> {deviceInfo?.general?.did}</span>
+								Did: <span className=' font-normal text-sm'> {deviceInfo?.data?.general?.did}</span>
 							</span>
 							<span className=' font-bold text-lg'>
-								Lock: <span className=' font-normal text-sm'> {deviceInfo?.general?.lock?.value}</span>
+								Lock:{' '}
+								<span className=' font-normal text-sm'> {deviceInfo?.data?.general?.lock?.value}</span>
 							</span>
 							<span className=' font-bold text-lg'>
-								Name: <span className=' font-normal text-sm'> {deviceInfo?.general?.did}</span>
+								Name: <span className=' font-normal text-sm'> {deviceInfo?.data?.general?.did}</span>
 							</span>
 							<span className=' font-bold text-lg'>
-								Lote: <span className=' font-normal text-sm'> {deviceInfo?.general?.lote}</span>
+								Lote: <span className=' font-normal text-sm'> {deviceInfo?.data?.general?.lote}</span>
 							</span>
 							<span className=' font-bold text-lg'>
-								Nickname :<span className=' font-normal text-sm'> {deviceInfo?.general?.nickname}</span>
+								Nickname :
+								<span className=' font-normal text-sm'> {deviceInfo?.data?.general?.nickname}</span>
 							</span>
 							<span className=' font-bold text-lg'>
-								State : <span className=' font-normal text-sm'> {deviceInfo?.general?.state}</span>
+								State :{' '}
+								<span className=' font-normal text-sm'> {deviceInfo?.data?.general?.state}</span>
 							</span>
 							<span className=' font-bold text-lg'>
 								Type_state :
-								<span className=' font-normal text-sm'> {deviceInfo?.general?.type_state}</span>
+								<span className=' font-normal text-sm'> {deviceInfo?.data?.general?.type_state}</span>
 							</span>
 							<span className=' font-bold text-lg'>
 								Lat :
-								<span className=' font-normal text-sm'> {deviceInfo?.general?.last_location?.lat}</span>
+								<span className=' font-normal text-sm'>
+									{' '}
+									{deviceInfo?.data?.general?.last_location?.lat}
+								</span>
 							</span>
 							<span className=' font-bold text-lg'>
 								Lng :
-								<span className=' font-normal text-sm'> {deviceInfo?.general?.last_location?.lng}</span>
+								<span className=' font-normal text-sm'>
+									{' '}
+									{deviceInfo?.data?.general?.last_location?.lng}
+								</span>
 							</span>
 						</div>
 						<div className='w-4/6 px-10'>

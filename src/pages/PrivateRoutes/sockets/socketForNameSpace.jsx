@@ -60,6 +60,10 @@ export const SocketForNameSpace = ({ children, nameSpace, typeJoin, socketsEvent
 		})
 
 		return () => {
+			socketForNameSpace?.on(SOCKET_EVENTS.LEFT_ROOM, (data) => {
+				console.log('data left room', data)
+				showToast('desconectado de la sala: ' + data.type_, 'warning')
+			})
 			// When the component is disassembled, the room output is sent
 			socketForNameSpace?.emit(SOCKET_EVENTS.LEAVE_ROOM, {
 				id_user: uid,
@@ -68,9 +72,6 @@ export const SocketForNameSpace = ({ children, nameSpace, typeJoin, socketsEvent
 				x_access_token: tokenSesion
 			})
 			// The exit from the room is reported
-			socketForNameSpace?.on(SOCKET_EVENTS.LEFT_ROOM, (data) => {
-				showToast('desconectado de la sala: ' + data.type_, 'warning')
-			})
 		}
 	}, [socketForNameSpace])
 

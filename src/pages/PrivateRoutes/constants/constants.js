@@ -1,6 +1,6 @@
 export const typeStatus = [
-	{ id: 1, name: 'active' },
-	{ id: 2, name: 'deactive' }
+	{ _id: 1, name: 'active' },
+	{ _id: 2, name: 'deactive' }
 ]
 
 export const tableTitle = [
