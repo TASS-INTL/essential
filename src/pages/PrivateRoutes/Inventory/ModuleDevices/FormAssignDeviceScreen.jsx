@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { InputComponent, InputSubmitComponent, SelectComponent } from '../../../../Components'
-import { typeStatus } from '../../constants/constants'
 import { useDevice } from './hooks/useDevices'
+import { InputComponent, InputSubmitComponent, SelectComponent } from '@/Components'
+import { typeStatus } from '../../constants/constants'
 
 export const FormAssignDeviceScreen = () => {
 	const { handleAssignDevice, handleSubmit, register } = useDevice()

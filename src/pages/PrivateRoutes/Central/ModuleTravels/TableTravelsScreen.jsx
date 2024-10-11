@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form'
 import { NavLink } from 'react-router-dom'
 
 import { CreateTravel } from '.'
-import { LoaderComponent, ModalComponent } from '../../../../Components'
-import { InputSearch } from '../../../../Components/InputSearch'
+import { LoaderComponent, ModalComponent } from '@/Components'
+import { InputSearch } from '@/Components/InputSearch'
 import { initialStateTravel } from '../../constants/constants'
 
 export const TableTravelsScreen = () => {
@@ -16,11 +16,7 @@ export const TableTravelsScreen = () => {
 	const { register, handleSubmit } = useForm()
 	const arrayTableTravels = travelsStore((state) => state.arrayTableTravels)
 
-	const handlePagination = (data) => {
-		setPageSelected(1)
-		setArray([1, 2, 3, 4, 5])
-		setDataSearch(data.search)
-	}
+	const handlePagination = (data) => {}
 
 	if (arrayTableTravels === null) return <LoaderComponent />
 

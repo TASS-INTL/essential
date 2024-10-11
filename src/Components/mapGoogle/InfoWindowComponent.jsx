@@ -26,7 +26,7 @@ export const InfoWindowComponent = ({
 			position={position ? position : null}
 		>
 			<div className='p-2 '>
-				{permission?.map((item) => (
+				{permission?.data?.data?.map((item) => (
 					<ListItems
 						key={item._id}
 						_id={item._id}

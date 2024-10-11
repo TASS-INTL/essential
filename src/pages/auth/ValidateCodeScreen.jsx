@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { InputComponent, InputSubmitComponent } from '@/Components'
 // Small utility to merge class names.
 import { clsx } from 'clsx'
-import { OTPInput } from 'input-otp'
 import { useForm } from 'react-hook-form'
 import { useLocation } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
@@ -16,8 +15,7 @@ export function cn(...inputs) {
 }
 
 export const ValidateCodeScreen = () => {
-	const { valueValidateCode, handleFormValidateCode, submitFormValidateCode, submitResendCode } = useAuth()
-	const [counter, setCounter] = useState('')
+	const {  handleFormValidateCode, submitFormValidateCode, submitResendCode } = useAuth()
 
 	const {
 		state: { screen }
@@ -25,7 +23,6 @@ export const ValidateCodeScreen = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors }
 	} = useForm()
 
 	return (

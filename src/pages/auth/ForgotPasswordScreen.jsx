@@ -3,11 +3,11 @@ import React from 'react'
 import { InputComponent, InputSubmitComponent } from '@/Components'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-
-import { emailSvg } from '../../assets/assetsplatform'
-import { logoTass } from '../../assets/assetsplatform/PrivateRoutes'
 import { pathNavigation } from './constants'
 import { useAuth } from './hooks/useLogin'
+import { showToast } from '@/helpers/toast'
+import { logoTass } from '@/assets/assetsplatform/PrivateRoutes'
+
 
 export const ForgotPasswordScreen = () => {
 	const { submitFormForgotPassword } = useAuth()
@@ -40,7 +40,6 @@ export const ForgotPasswordScreen = () => {
 							required
 							name='email'
 							type='email'
-							svg={emailSvg}
 							register={register}
 							label='Correo electronico'
 							placeholder='name@gmail.com'

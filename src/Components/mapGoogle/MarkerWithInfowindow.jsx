@@ -16,7 +16,7 @@ export const MarkerWithInfowindow = ({
 	const [markerRef, marker] = useAdvancedMarkerRef()
 	const [center, setCenter] = useState(null)
 	const [radius, setRadius] = useState(400)
-	const copyArrayPermission = JSON.parse(JSON.stringify(permissionsData))
+	const copyArrayPermission = JSON.parse(JSON.stringify(permissionsData?.data?.data))
 
 	const changeCenter = (newCenter) => {
 		if (!newCenter) return
@@ -29,11 +29,11 @@ export const MarkerWithInfowindow = ({
 
 	const handleCheckboxChange = (event, _id) => {
 		const isChecked = event.target.checked
-		copyArrayPermission?.forEach((permission) => {
+		for (const permission of copyArrayPermission) {
 			if (permission._id === _id) {
 				permission.values.value = isChecked
 			}
-		})
+		}
 	}
 
 	const sendPermissionState = () => {
@@ -48,7 +48,13 @@ export const MarkerWithInfowindow = ({
 				onClick={() => setInfowindowOpen(true)}
 				position={center === null ? { lat: position.lat, lng: position.lng } : center}
 				title={'AdvancedMarker that opens an Infowindow when clicked.'}
-				onDrag={(e) => setCenter({ location, lat: e.latLng?.lat() ?? 0, lng: e.latLng?.lng() ?? 0 })}
+				onDrag={(e) =>
+					setCenter({
+						location,
+						lat: e.latLng?.lat() ?? 0,
+						lng: e.latLng?.lng() ?? 0
+					})
+				}
 			/>
 			{infowindowOpen && (
 				<InfoWindowComponent

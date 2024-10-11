@@ -1,22 +1,14 @@
 import { useReducer, useState } from 'react'
 
+import api from '@/Api/api'
+import { METHODS_API } from '@/Api/constantsApi'
+import { DrawingActionKind, isCircle, isMarker, isPolygon, isPolyline, isRectangle } from '@/Components/mapGoogle/types'
+import { calculateCircle } from '@/helpers/routes'
+import { showToast } from '@/helpers/toast'
+import { initialDataLocation, permission } from '@/pages/PrivateRoutes/constants/constants'
+import { queryClient } from '@/routes/AppRouter'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-
-import api from '../../../../../Api/api'
-import { METHODS_API } from '../../../../../Api/constantsApi'
-import {
-	DrawingActionKind,
-	isCircle,
-	isMarker,
-	isPolygon,
-	isPolyline,
-	isRectangle
-} from '../../../../../Components/mapGoogle/types'
-import { calculateCircle } from '../../../../../helpers/routes'
-import { showToast } from '../../../../../helpers/toast'
-import { queryClient } from '../../../../../routes/AppRouter'
-import { initialDataLocation, permission } from '../../../constants/constants'
 
 const reducer = (state, action) => {
 	switch (action.type) {
@@ -140,6 +132,7 @@ export const useRouting = () => {
 		now: [],
 		future: []
 	})
+
 	const [selectedPlace, setSelectedPlace] = useState(null)
 	const [dataDirections, setDataDirections] = useState(null)
 	const [objectLocations, setObjectLocations] = useState(initialDataLocation)
@@ -262,6 +255,7 @@ export const useRouting = () => {
 			queryFn: async () => await api(METHODS_API.GET, `module/routing/permissions/geofences`)
 		})
 
+	//
 	const permissionsData = getPermissionsForRouting()
 
 	// Sending all the information collected for the route

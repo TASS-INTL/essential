@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form'
 
 export const useDevice = () => {
 	const { register, handleSubmit } = useForm()
-
 	//
 	const fetchTypeDevice = () =>
 		useQuery({
@@ -30,7 +29,6 @@ export const useDevice = () => {
 				'Se a enviado la asignacion al sistema en un momento podra validar esa informacion en el apartado de notificaciones',
 				'warning'
 			)
-			setModalVisible(false)
 		}
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 	}

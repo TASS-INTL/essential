@@ -3,22 +3,17 @@ import React from 'react'
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
-import { APIProvider } from '@vis.gl/react-google-maps'
 import { MdOutlineReadMore } from 'react-icons/md'
 
-import {
-	ErrorComponent,
-	InputComponent,
-	InputSubmitComponent,
-	LoaderComponent,
-	ModalComponent,
-	RemarksInput,
-	SelectComponent
-} from '../../../../Components'
-import { MapGoogle } from '../../../../Components/mapGoogle/Map'
-import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
-import { CreateRouting } from '../../Routing/ModuleRouting'
 import { useServiceClient } from './hooks/useServiceClient'
+import { LoaderComponent,ErrorComponent,
+		InputComponent,
+		InputSubmitComponent,
+		RemarksInput,
+		SelectComponent,
+		ModalComponent, } from '@/Components'
+import { MapGoogle } from '@/Components/mapGoogle/Map'
+import { CreateRouting } from '../../Routing/ModuleRouting'
 
 export const CreateService = () => {
 	const {

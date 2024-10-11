@@ -2,9 +2,8 @@ import React from 'react'
 
 import { Container } from '@/Components/Container'
 import { NavLink } from 'react-router-dom'
-
-import { padlockClose } from '../../../../assets/assetsplatform'
-import { userStore } from '../../../../store/userStore'
+import { userStore } from '@/store/userStore'
+import { padlockClose } from '@/assets/assetsplatform'
 
 export const InventoryScreen = () => {
 	const { modules } = userStore((state) => state.userData)

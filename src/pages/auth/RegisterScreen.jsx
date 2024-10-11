@@ -2,10 +2,10 @@ import { InputComponent, InputSubmitComponent } from '@/Components'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { emailSvg, user } from '../../assets/assetsplatform/index'
-import { logoTass } from '../../assets/assetsplatform/PrivateRoutes'
+
 import { pathNavigation } from './constants'
 import { useAuth } from './hooks/useLogin'
+import { logoTass } from '@/assets/assetsplatform/PrivateRoutes'
 
 export const RegisterScreen = () => {
 	const { submitFormRegister } = useAuth()

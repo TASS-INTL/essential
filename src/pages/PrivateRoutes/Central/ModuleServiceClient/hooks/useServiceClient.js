@@ -1,18 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
+import api from '@/Api/api'
+import { METHODS_API } from '@/Api/constantsApi'
+import { showToast } from '@/helpers/toast'
+import { queryClient } from '@/routes/AppRouter'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useMapsLibrary } from '@vis.gl/react-google-maps'
 import { format } from 'date-fns'
 import dayjs from 'dayjs'
 import { useForm, useWatch } from 'react-hook-form'
 
-import api from '../../../../../Api/api'
-import { METHODS_API } from '../../../../../Api/constantsApi'
-import { showToast } from '../../../../../helpers/toast'
-import { queryClient } from '../../../../../routes/AppRouter'
-
 export const useServiceClient = () => {
-	const { register, handleSubmit, control, watch } = useForm()
+	const { register, handleSubmit, control } = useForm()
 	const [dateStart, setDateStart] = useState(dayjs('2024-04-17T15:30'))
 	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
 	const [open, setOpen] = useState(false)

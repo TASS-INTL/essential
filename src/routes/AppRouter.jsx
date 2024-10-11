@@ -1,14 +1,13 @@
 import React from 'react'
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { ModalComponent } from '../Components'
-import { userStore } from '../store/userStore'
 import { pathRoutes } from './constants'
 import { PrivateRouter } from './PrivateRouter'
 import { PublicRouter } from './PublicRouter'
+import { userStore } from '@/store/userStore'
 
 export const queryClient = new QueryClient()
 

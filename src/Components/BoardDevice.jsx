@@ -1,11 +1,9 @@
 import React from 'react'
 
-import { NavLink } from 'react-router-dom'
-
 export const BoardDevice = ({ dataBody, to }) => {
 	return (
 		<div className='relative overflow-x-scrolling overflow-y-scrolling shadow-md sm:rounded-lg w-full '>
-			<div className='overflow-scroll'>
+			{/* <div className='overflow-scroll'>
 				<table className='w-full text-sm text-left rtl:text-right text-gray-500'>
 					<thead className='text-[0.8rem] text-gray-700 uppercase bg-gray-50'>
 						<tr className=''>
@@ -41,7 +39,7 @@ export const BoardDevice = ({ dataBody, to }) => {
 						))}
 					</tbody>
 				</table>
-			</div>
+			</div> */}
 		</div>
 	)
 }

@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useUsers } from './Hooks/useUser'
+import { ErrorComponent, LoaderComponent } from '@/Components'
+import { Container } from '@/Components/Container'
+import { FormCreateUser } from '@/Components/FormCreateUser'
 
-import { ErrorComponent, LoaderComponent } from '../../../../Components'
-import { Container } from '../../../../Components/Container'
-import { FormCreateUser } from '../../../../Components/FormCreateUser'
-import { useUsers } from '../../Hooks/useUser'
 
 export const UsersScreen = () => {
 	//

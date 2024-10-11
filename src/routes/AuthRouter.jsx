@@ -2,16 +2,10 @@ import React from 'react'
 
 import { Route, Routes, useLocation } from 'react-router-dom'
 
-import {
-	ForgotPasswordScreen,
-	LoginScreen,
-	PersonalDataScreen,
-	RegisterScreen,
-	ValidateCodeScreen
-} from '../pages/auth'
-import { pathNavigation } from '../pages/auth/constants'
-import { userStore } from '../store/userStore'
+import { pathNavigation } from '@/pages/auth/constants'
+import { userStore } from '@/store/userStore'
 import { RoutesPublic } from './constants'
+import { LoginScreen,	ForgotPasswordScreen,PersonalDataScreen,RegisterScreen,ValidateCodeScreen } from '@/pages/auth'
 
 export const AuthRouter = () => {
 	const location = useLocation()

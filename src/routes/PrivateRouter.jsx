@@ -18,7 +18,7 @@ import {
 import {
 	CreateTravel,
 	DetailTravel,
-	Eventstravel,
+	EventsTravel,
 	GeneralTravel,
 	Monitoring,
 	TableTravelsScreen,
@@ -73,7 +73,7 @@ export const RoutesPrivate = () => {
 				<Route path={routesPrivate.installersScreen} element={<InstallersScreen />} />
 				{/* Monitoring */}
 				<Route path={routesPrivate.monitoringScreen} element={<MonitoringScreen />} />
-				{/* Service client*/}
+				{/* Service client */}
 				<Route path={routesPrivate.servicesClientScreen} element={<ServicesClientScreen />}>
 					<Route
 						index
@@ -109,7 +109,7 @@ export const RoutesPrivate = () => {
 					<Route path={routesPrivate.travelIdTravel} element={<DetailTravel />}>
 						<Route index path={routesPrivate.general} element={<GeneralTravel />} />
 						<Route path={routesPrivate.monitoring} element={<Monitoring />} />
-						<Route path={routesPrivate.events} element={<Eventstravel />} />
+						<Route path={routesPrivate.events} element={<EventsTravel />} />
 					</Route>
 				</Route>
 

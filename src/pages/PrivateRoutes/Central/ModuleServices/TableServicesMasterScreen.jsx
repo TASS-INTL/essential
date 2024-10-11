@@ -1,28 +1,22 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { useForm } from 'react-hook-form'
 
-import { LoaderComponent } from '../../../../Components'
-import { BoardDevice } from '../../../../Components/BoardDevice'
-import { InputSearch } from '../../../../Components/InputSearch'
 import { useService } from './hooks/useService'
+import { LoaderComponent } from '@/Components'
+import { InputSearch } from '@/Components/InputSearch'
+import { BoardDevice } from '@/Components/BoardDevice'
 
 export const TableServicesMasterScreen = () => {
-	const [page, setPage] = useState(1)
+
 	const { fetchDataService } = useService()
 	const { register, handleSubmit } = useForm()
-	const [dataSearch, setDataSearch] = useState('')
-	const [array, setArray] = useState([1, 2, 3, 4, 5])
 
-	const dataTableServices = fetchDataService(page, '')
+	const dataTableServices = fetchDataService(1, '')
 
 	dataTableServices.isLoading && <LoaderComponent />
 
-	const handleSubmitPagination = (data) => {
-		setPageSelected(1)
-		setArray([1, 2, 3, 4, 5])
-		setDataSearch(data.search)
-	}
+	const handleSubmitPagination = (data) => {}
 
 	return (
 		<div className=''>

@@ -1,9 +1,8 @@
+import api from '@/Api/api'
+import { METHODS_API } from '@/Api/constantsApi'
+import { showToast } from '@/helpers/toast'
+import { queryClient } from '@/routes/AppRouter'
 import { useMutation, useQuery } from '@tanstack/react-query'
-
-import api from '../../../../../Api/api'
-import { METHODS_API } from '../../../../../Api/constantsApi'
-import { showToast } from '../../../../../helpers/toast'
-import { queryClient } from '../../../../../routes/AppRouter'
 
 export const useTravels = () => {
 	const fetchDataTableTravels = (page, search) =>

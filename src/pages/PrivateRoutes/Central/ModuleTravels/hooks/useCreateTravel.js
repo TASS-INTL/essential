@@ -1,16 +1,16 @@
 import { useState } from 'react'
 
+import api from '@/Api/api'
+import { METHODS_API } from '@/Api/constantsApi'
+import { calculateCircle } from '@/helpers/routes'
+import { showToast } from '@/helpers/toast'
+import { initialDataLocation } from '@/pages/PrivateRoutes/constants/constants'
+import { queryClient } from '@/routes/AppRouter'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import dayjs from 'dayjs'
 import { useForm, useWatch } from 'react-hook-form'
 
-import api from '../../../../../Api/api'
-import { METHODS_API } from '../../../../../Api/constantsApi'
-import { calculateCircle } from '../../../../../helpers/routes'
-import { showToast } from '../../../../../helpers/toast'
-import { queryClient } from '../../../../../routes/AppRouter'
-import { initialDataLocation } from '../../../constants/constants'
 import { useTravels } from './useTravels'
 
 export const useCreateTravel = (dataForm) => {

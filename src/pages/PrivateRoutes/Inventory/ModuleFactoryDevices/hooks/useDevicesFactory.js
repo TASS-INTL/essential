@@ -1,9 +1,8 @@
+import api from '@/Api/api'
+import { METHODS_API } from '@/Api/constantsApi'
+import { showToast } from '@/helpers/toast'
+import { queryClient } from '@/routes/AppRouter'
 import { useMutation, useQuery } from '@tanstack/react-query'
-
-import api from '../../../../Api/api'
-import { METHODS_API } from '../../../../Api/constantsApi'
-import { showToast } from '../../../../helpers/toast'
-import { queryClient } from '../../../../routes/AppRouter'
 
 export const useDevice = () => {
 	//
@@ -28,7 +27,6 @@ export const useDevice = () => {
 				'Se a enviado la asignacion al sistema en un momento podra validar esa informacion en el apartado de notificaciones',
 				'warning'
 			)
-			setModalVisible(false)
 		}
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 	}

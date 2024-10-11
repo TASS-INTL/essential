@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react'
 
 import 'react-phone-number-input/style.css'
 
-import { InputComponent, InputSubmitComponent, SelectComponent } from '@/Components'
+import { InputComponent, InputSubmitComponent, ModalComponent, SelectComponent } from '@/Components'
 import { useForm } from 'react-hook-form'
 import PhoneInput from 'react-phone-number-input'
 
-import { logoTass } from '../../assets/assetsplatform/PrivateRoutes'
-import { ModalComponent } from '../../Components'
 import { arrayOptions, typeDocument, typeUser } from './constants'
 import { useAuth } from './hooks/useLogin'
 import { TermsAndConditions } from './TermsAndConditions'
+import { logoTass } from '@/assets/assetsplatform/PrivateRoutes'
 
 const stylesInput = {
 	border: '1px solid #40587c',

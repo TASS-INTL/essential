@@ -1,11 +1,12 @@
 import { useContext } from 'react'
 
+import api from '@/Api/api'
+import { queryClient } from '@/routes/AppRouter'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
-import api from '../../../../../Api/api'
+// import api from '../../../../../Api/api'
 import { METHODS_API } from '../../../../../Api/constantsApi'
 import { showToast } from '../../../../../helpers/toast'
-import { queryClient } from '../../../../../routes/AppRouter'
 import { userStore } from '../../../../../store/userStore'
 import { SOCKET_EVENTS } from '../../../sockets/constants'
 import { SocketContextForNameSpace } from '../../../sockets/socketForNameSpace'
@@ -13,7 +14,6 @@ import { SocketContextForNameSpace } from '../../../sockets/socketForNameSpace'
 export const useInventory = () => {
 	const { socketForNameSpace } = useContext(SocketContextForNameSpace)
 	const { uid, tokenSesion } = userStore((state) => state.userData)
-
 	//
 	const fetchDataInventory = (page, search) =>
 		useQuery({
@@ -32,7 +32,7 @@ export const useInventory = () => {
 	const paginationEmit = (page, dataSearch) => {
 		socketForNameSpace?.emit(SOCKET_EVENTS.TB_DEVICES_FAC, {
 			page,
-			search: dataSearch ? dataSearch : null,
+			search: dataSearch || null,
 			id_user: uid,
 			id_room: tokenSesion,
 			x_access_token: tokenSesion

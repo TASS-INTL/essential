@@ -1,18 +1,16 @@
+import { padlockClose, padlockOpen } from '@/assets/assetsplatform'
+import { LoaderComponent, RowInformation, SectionCard } from '@/Components'
+import { arrayTapMonitoring, TapBottons } from '@/Components/TapBottons'
+import { trimText } from '@/helpers/routes'
+import { travelsStore } from '@/store/travelsStore'
 import React from 'react'
 
 import { useLocation, useParams } from 'react-router-dom'
 
-import { padlockClose } from '../../../../assets/assetsplatform'
-import { LoaderComponent, RowInformation, SectionCard } from '../../../../Components'
-import { arrayTapMonitoring, TapBottons } from '../../../../Components/TapBottons'
-import { trimText } from '../../../../helpers/routes'
-import { travelsStore } from '../../../../store/travelsStore'
-import { useTravels } from './hooks/useTravels'
 
 export const GeneralTravel = () => {
 	const location = useLocation()
 	const { idTravel } = useParams()
-	const { handleActivateTravel } = useTravels()
 
 	const travelInfo = travelsStore((state) => state.travelInfo)
 

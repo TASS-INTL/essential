@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
-// import { BoardComponent, PaginationComponent } from '@/Components'
 import { inventoryStore } from '@/store/inventoryStore'
 import { useForm } from 'react-hook-form'
-
-import { BoardComponent, PaginationComponent } from '../../../../Components'
-import { InputSearch } from '../../../../Components/InputSearch'
+import { InputSearch } from '@/Components/InputSearch'
+import { BoardComponent, PaginationComponent } from '@/Components'
 import { tableTitleInventory } from '../../constants/constants'
 
 export const TableInventory = () => {
 	const { register, handleSubmit } = useForm()
-	const [dataSearch, setDataSearch] = useState('')
 	const [pageSelected, setPageSelected] = useState(1)
 	const [array, setArray] = useState([1, 2, 3, 4, 5])
 	const arrayTableInventory = inventoryStore((state) => state.arrayTableInventory)
 
-	const HandleChange = (data) => {
-		setPageSelected(1)
-		setArray([1, 2, 3, 4, 5])
-		setDataSearch(data.search)
-	}
+	const HandleChange = (data) => {}
 
 	return (
 		<div>

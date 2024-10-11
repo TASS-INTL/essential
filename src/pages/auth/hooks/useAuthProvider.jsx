@@ -1,8 +1,7 @@
+import api from '@/Api/api'
+import { METHODS_API } from '@/Api/constantsApi'
+import { userStore } from '@/store/userStore'
 import { useNavigate } from 'react-router-dom'
-
-import api from '../../../Api/api'
-import { METHODS_API } from '../../../Api/constantsApi'
-import { userStore } from '../../../store/userStore'
 import { pathNavigation } from '../constants'
 
 export const useAuthProvider = () => {

@@ -1,18 +1,14 @@
 import React from 'react'
 
-import { InputComponent, InputSubmitComponent, SelectComponent } from '@/Components'
+import { ErrorComponent, InputComponent, InputSubmitComponent, LoaderComponent, RemarksInput, SelectComponent } from '@/Components'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { APIProvider } from '@vis.gl/react-google-maps'
 
-import { ErrorComponent, LoaderComponent, RemarksInput } from '../../../../Components'
-import { MapGoogle } from '../../../../Components/mapGoogle/Map'
-import { MapHandler } from '../../../../Components/mapGoogle/MapHandler'
-import { PlaceAutocompleteClassic } from '../../../../Components/mapGoogle/PlaceAutocompleteClassic'
-import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
 import { useCreateTravel } from './hooks/useCreateTravel'
+import { MapGoogle } from '@/Components/mapGoogle/Map'
+import { PlaceAutocompleteClassic } from '@/Components/mapGoogle/PlaceAutocompleteClassic'
 
 export const CreateTravel = ({ dataForm }) => {
 	const {

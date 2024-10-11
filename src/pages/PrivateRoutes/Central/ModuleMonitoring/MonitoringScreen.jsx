@@ -1,6 +1,6 @@
+import { Container } from '@/Components/Container'
 import React from 'react'
 
-import { Container } from '../../../../Components/Container'
 
 export const MonitoringScreen = () => {
 	return (

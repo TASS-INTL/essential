@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react'
 
 import { Outlet, useParams } from 'react-router-dom'
-
-import { inventoryStore } from '../../../../store/inventoryStore'
-import { userStore } from '../../../../store/userStore'
-import { SOCKET_EVENTS, SOCKETS_ROOMS } from '../../sockets/constants'
 import { SocketContextForNameSpace } from '../../sockets/socketForNameSpace'
+import { userStore } from '@/store/userStore'
+import { inventoryStore } from '@/store/inventoryStore'
+import { SOCKET_EVENTS, SOCKETS_ROOMS } from '../../sockets/constants'
+
 
 export const DeviceProviderSocket = () => {
 	const { idDevice } = useParams()

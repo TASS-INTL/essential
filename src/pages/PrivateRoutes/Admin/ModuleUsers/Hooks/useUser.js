@@ -5,7 +5,7 @@ import { METHODS_API } from '@/Api/constantsApi'
 import { showToast } from '@/helpers/toast'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
-import { queryClient } from '../../../routes/AppRouter'
+import { queryClient } from '../../../../../routes/AppRouter'
 
 export const useUsers = () => {
 	const [methodForm, setMethodForm] = useState(true)
@@ -55,7 +55,7 @@ export const useUsers = () => {
 	const handleUpdateUser = async (data, event) => {
 		event.preventDefault()
 
-		const response = await updateUser.mutateAsync({ idUser: data._id, data: data })
+		const response = await updateUser.mutateAsync({ idUser: data._id, data })
 		if (response.completed) {
 			showToast('Se a Actualizado el usuario de manera exitosa', 'success')
 			setModalVisible(false)

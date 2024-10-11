@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { 
+		SelectComponent,
+		ErrorComponent,
+		InputComponent,
+		InputSubmitComponent,
+		LoaderComponent 
+	} from '@/Components'
+import React from 'react'
 
 import { useForm } from 'react-hook-form'
-
-import {
-	ErrorComponent,
-	InputComponent,
-	InputSubmitComponent,
-	LoaderComponent,
-	SelectComponent
-} from '../../../../Components'
-import { Container } from '../../../../Components/Container'
-import { useDevice } from '../ModuleDevices/hooks/useDevices'
+import { useDevice } from './hooks/useDevicesFactory'
+import { Container } from '@/Components/Container'
 
 export const FactoryDevicesScreen = () => {
 	const { register, handleSubmit } = useForm()

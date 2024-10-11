@@ -1,10 +1,9 @@
+import { Container } from '@/Components/Container'
+import { icons } from '@/Components/SideBar'
+import { userStore } from '@/store/userStore'
 import React from 'react'
 
 import { NavLink } from 'react-router-dom'
-
-import { Container } from '../../../Components/Container'
-import { icons } from '../../../Components/SideBar'
-import { userStore } from '../../../store/userStore'
 
 export const CentralScreen = () => {
 	const { modules } = userStore((state) => state.userData)

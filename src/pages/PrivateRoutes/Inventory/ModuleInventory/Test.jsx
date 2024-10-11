@@ -3,14 +3,12 @@ import React from 'react'
 import { inventoryStore } from '@/store/inventoryStore'
 import { useLocation, useParams } from 'react-router-dom'
 
-import { BoardDevice } from '../../../../Components/BoardDevice'
-import { arrayTapInventory, TapBottons } from '../../../../Components/TapBottons'
 import { useInventory } from './Hooks/useInventory'
+import { arrayTapInventory, TapBottons } from '@/Components/TapBottons'
 
 export const Test = () => {
 	const location = useLocation()
 	const { idDevice } = useParams()
-	const arrayTableInventoryTest = inventoryStore((state) => state.arrayTableInventoryTest)
 	const deviceInfo = inventoryStore((state) => state.deviceInfo)
 
 	const { handleSendComandTest } = useInventory()
@@ -22,7 +20,6 @@ export const Test = () => {
 	return (
 		<div>
 			<TapBottons location={location} idDevice={idDevice} path='devices-screen/device' data={arrayTapInventory} />
-
 			<div className='pt-10'>
 				<div className=' flex justify-end'>
 					<button

@@ -1,14 +1,11 @@
+import { ErrorComponent, LoaderComponent } from '@/Components'
+import { arrayTapMonitoring, TapBottons } from '@/Components/TapBottons'
+import { travelsStore } from '@/store/travelsStore'
 import React from 'react'
 
 import { useLocation, useParams } from 'react-router-dom'
 
-import { LoaderComponent } from '../../../../Components'
-import { BoardDevice } from '../../../../Components/BoardDevice'
-import { ErrorComponent } from '../../../../Components/ErrorComponent'
-import { arrayTapMonitoring, TapBottons } from '../../../../Components/TapBottons'
-import { travelsStore } from '../../../../store/travelsStore'
-
-export const Eventstravel = () => {
+export const EventsTravel = () => {
 	const location = useLocation()
 	const { idTravel } = useParams()
 
@@ -18,7 +15,7 @@ export const Eventstravel = () => {
 
 	if (arrayTableTravelsEvents === null) return <LoaderComponent />
 
-	// if (arrayTableTravelsEvents.error) return <ErrorComponent error={arrayTableTravelsEvents.message} />
+	if (arrayTableTravelsEvents?.error) return <ErrorComponent error={arrayTableTravelsEvents.message} />
 
 	return (
 		<>

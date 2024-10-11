@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import { battery, padlockClose, padlockOpen } from '@/assets/assetsplatform'
 import { inventoryStore } from '@/store/inventoryStore'
 import { useLocation, useParams } from 'react-router-dom'
-
-import { arrayTapInventory, TapBottons } from '../../../../Components/TapBottons'
-import { useMap } from '../../Hooks/useMap'
 import { useInventory } from './Hooks/useInventory'
+import { arrayTapInventory, TapBottons } from '@/Components/TapBottons'
 
 export const General = () => {
 	const location = useLocation()

@@ -2,11 +2,11 @@ import React, { createContext, useCallback, useEffect, useState } from 'react'
 
 import { io } from 'socket.io-client'
 
-import { showToast } from '../../../helpers/toast'
-import { notificationStore } from '../../../store/notificationStore'
-import { usersStore } from '../../../store/usersStore'
-import { userStore } from '../../../store/userStore'
 import { SOCKET_EVENTS, SOCKETS_ROOMS, TRANSPORT_SOCKET } from './constants'
+import { userStore } from '@/store/userStore'
+import { usersStore } from '@/store/usersStore'
+import { notificationStore } from '@/store/notificationStore'
+import { showToast } from '@/helpers/toast'
 
 export const SocketContext = createContext()
 

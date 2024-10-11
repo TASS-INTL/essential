@@ -1,11 +1,11 @@
+import { ErrorComponent, LoaderComponent, TitleWithLive } from '@/Components'
+import { BoardDevice } from '@/Components/BoardDevice'
+import { arrayTapInventory, TapBottons } from '@/Components/TapBottons'
+import { inventoryStore } from '@/store/inventoryStore'
 import React from 'react'
 
 import { useLocation, useParams } from 'react-router-dom'
 
-import { ErrorComponent, LoaderComponent, TitleWithLive } from '../../../../Components'
-import { BoardDevice } from '../../../../Components/BoardDevice'
-import { arrayTapInventory, TapBottons } from '../../../../Components/TapBottons'
-import { inventoryStore } from '../../../../store/inventoryStore'
 
 export const Events = () => {
 	const { idDevice } = useParams()
