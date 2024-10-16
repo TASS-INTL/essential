@@ -14,24 +14,22 @@ export const InfoWindowComponent = ({
 	return (
 		<InfoWindow
 			headerContent={
-				<>
-					<button className='bg-black text-white p-2 rounded-lg' onClick={() => sendPermissionState()}>
-						Guardar
-					</button>
-				</>
+				<button className='bg-black text-white p-2 rounded-lg' onClick={() => sendPermissionState()}>
+					Guardar
+				</button>
 			}
-			anchor={marker ? marker : ''}
+			anchor={marker || ''}
 			maxWidth={maxWidth}
 			onCloseClick={() => onCloseClick(false)}
-			position={position ? position : null}
+			position={position || null}
 		>
 			<div className='p-2 '>
-				{permission?.data?.data?.map((item) => (
+				{permission?.map((item) => (
 					<ListItems
 						key={item._id}
 						_id={item._id}
 						handleCheckboxChange={handleCheckboxChange}
-						name_consult={item.name_consult}
+						nameConsult={item.name_consult}
 						value={item.values.value}
 					/>
 				))}
@@ -40,12 +38,12 @@ export const InfoWindowComponent = ({
 	)
 }
 
-const ListItems = ({ _id, handleCheckboxChange, name_consult, value }) => {
+const ListItems = ({ _id, handleCheckboxChange, nameConsult, value }) => {
 	const [stateItem, setStateItem] = useState(value)
 
 	return (
 		<div className='flex justify-center items-center'>
-			<div className='p-3'>{name_consult}</div>
+			<div className='p-3'>{nameConsult}</div>
 			<div className='relative inline-block w-11 h-5'>
 				<input
 					checked={stateItem}

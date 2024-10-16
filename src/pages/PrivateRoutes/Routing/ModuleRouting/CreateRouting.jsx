@@ -1,15 +1,15 @@
+import { Fragment } from 'react'
+
+import { ErrorComponent, InputComponent, InputSubmitComponent, LoaderComponent } from '@/Components'
+import { Directions } from '@/Components/mapGoogle/Directions'
+import { InfoWindowComponent } from '@/Components/mapGoogle/InfoWindowComponent'
+import { MapGoogle } from '@/Components/mapGoogle/Map'
+import { MarkerWithInfowindow } from '@/Components/mapGoogle/MarkerWithInfowindow'
+import { PlaceAutocompleteClassic } from '@/Components/mapGoogle/PlaceAutocompleteClassic'
 import { APIProvider } from '@vis.gl/react-google-maps'
 
-import { useRouting } from './hooks/useRouting'
-import { Fragment } from 'react'
-import { ErrorComponent, InputComponent, InputSubmitComponent, LoaderComponent } from '@/Components'
 import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
-import { MapGoogle } from '@/Components/mapGoogle/Map'
-import { Directions } from '@/Components/mapGoogle/Directions'
-import { MarkerWithInfowindow } from '@/Components/mapGoogle/MarkerWithInfowindow'
-import { InfoWindowComponent } from '@/Components/mapGoogle/InfoWindowComponent'
-import { PlaceAutocompleteClassic } from '@/Components/mapGoogle/PlaceAutocompleteClassic'
-
+import { useRouting } from './hooks/useRouting'
 
 export const CreateRouting = () => {
 	const {
@@ -21,8 +21,10 @@ export const CreateRouting = () => {
 		selectedPlace,
 		handleSendData,
 		objectLocations,
-		setDataDirections,
 		permissionsData,
+		setDataDirections,
+		changeStatePermission,
+		handlePermissionForGeoFences,
 		handleChangePermissions,
 		handleChangeMarkerDraggable
 	} = useRouting()
@@ -32,10 +34,7 @@ export const CreateRouting = () => {
 	if (permissionsData.error || permissionsData.data?.error)
 		return <ErrorComponent error={permissionsData.data?.message} />
 
-	const changeStatePermission = (idPermission) => {
-		const position = state.now.findIndex((element) => element._id === idPermission)
-		state.now[position].showPermission = false
-	}
+	console.log('permissionsData --->', permissionsData)
 
 	return (
 		<div className='h-[95%]'>
@@ -64,7 +63,7 @@ export const CreateRouting = () => {
 										lng: objectLocations?.location_start?.market?.location?.coordinates[0]
 									}}
 									location='location_start'
-									permissionsData={permissionsData}
+									permissionsData={permissionsData?.data?.data}
 									handleChangePermissions={handleChangePermissions}
 									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
 								/>
@@ -77,7 +76,7 @@ export const CreateRouting = () => {
 										lng: objectLocations?.location_end?.market?.location?.coordinates[0]
 									}}
 									location='location_end'
-									permissionsData={permissionsData}
+									permissionsData={permissionsData?.data?.data}
 									handleChangePermissions={handleChangePermissions}
 									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
 								/>
@@ -96,6 +95,7 @@ export const CreateRouting = () => {
 													lat: item.snapshot.path[0].lat(),
 													lng: item.snapshot.path[0].lng()
 												}}
+												sendPermissionState={handlePermissionForGeoFences}
 											/>
 										)}
 									</Fragment>

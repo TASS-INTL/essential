@@ -43,15 +43,12 @@ const reducer = (state, action) => {
 				future: []
 			}
 		}
-
 		// This action is called when a new overlay is added to the map.
 		// We then take a snapshot of the relevant values of the new overlay and
 		// add it to the "now" state. The old "now" is added to the "past" stack
 		case DrawingActionKind.SET_OVERLAY: {
 			const { overlay, _id } = action.payload
-
 			const snapshot = {}
-
 			if (isCircle(overlay)) {
 				snapshot.center = overlay.getCenter()?.toJSON()
 				snapshot.radius = overlay.getRadius()
@@ -62,7 +59,6 @@ const reducer = (state, action) => {
 			} else if (isRectangle(overlay)) {
 				snapshot.bounds = overlay.getBounds()?.toJSON()
 			}
-
 			const objChange = state.now.find((item) => item._id === _id)
 			if (objChange) {
 				const position = state.now.findIndex((element) => element._id === objChange?._id)
@@ -91,7 +87,6 @@ const reducer = (state, action) => {
 				}
 			}
 		}
-
 		// This action is called when the undo button is clicked.
 		// Get the top item from the "past" stack and set it as the new "now".
 		// Add the old "now" to the "future" stack to enable redo functionality
@@ -106,15 +101,12 @@ const reducer = (state, action) => {
 				future: state.now ? [...state.future, state.now] : state.future
 			}
 		}
-
 		// This action is called when the redo button is clicked.
 		// Get the top item from the "future" stack and set it as the new "now".
 		// Add the old "now" to the "past" stack to enable undo functionality
 		case DrawingActionKind.REDO: {
 			const next = state.future.slice(-1)[0]
-
 			if (!next) return state
-
 			return {
 				past: state.now ? [...state.past, state.now] : state.past,
 				now: next,
@@ -132,10 +124,10 @@ export const useRouting = () => {
 		now: [],
 		future: []
 	})
-
 	const [selectedPlace, setSelectedPlace] = useState(null)
 	const [dataDirections, setDataDirections] = useState(null)
 	const [objectLocations, setObjectLocations] = useState(initialDataLocation)
+	const [permissionForGeoFences, setPermissionForGeoFences] = useState([])
 
 	// Adding places location start and location end
 	const addPlaces = ({ location, data }) => {
@@ -157,6 +149,10 @@ export const useRouting = () => {
 				}
 			}
 		}))
+	}
+
+	const handlePermissionForGeoFences = (permission) => {
+		setPermissionForGeoFences((prevState) => [...prevState, permission])
 	}
 
 	// change values merker when draggable is activate
@@ -284,6 +280,11 @@ export const useRouting = () => {
 		}
 	}
 
+	const changeStatePermission = (idPermission) => {
+		const position = state.now.findIndex((element) => element._id === idPermission)
+		state.now[position].showPermission = false
+	}
+
 	return {
 		state,
 		dispatch,
@@ -295,8 +296,10 @@ export const useRouting = () => {
 		permissionsData,
 		objectLocations,
 		setDataDirections,
+		changeStatePermission,
 		handleChangePermissions,
 		getPermissionsForRouting,
-		handleChangeMarkerDraggable
+		handleChangeMarkerDraggable,
+		handlePermissionForGeoFences
 	}
 }

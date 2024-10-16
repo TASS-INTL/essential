@@ -16,7 +16,7 @@ export const MarkerWithInfowindow = ({
 	const [markerRef, marker] = useAdvancedMarkerRef()
 	const [center, setCenter] = useState(null)
 	const [radius, setRadius] = useState(400)
-	const copyArrayPermission = JSON.parse(JSON.stringify(permissionsData?.data?.data))
+	const copyArrayPermission = JSON.parse(JSON.stringify(permissionsData))
 
 	const changeCenter = (newCenter) => {
 		if (!newCenter) return
