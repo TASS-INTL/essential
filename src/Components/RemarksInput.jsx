@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const RemarksInput = ({ text, register }) => {
+export const RemarksInput = ({ text, register, required }) => {
 	return (
 		<div className='flex flex-col mt-3'>
 			<label htmlFor='story' className='py-1'>
@@ -9,6 +9,7 @@ export const RemarksInput = ({ text, register }) => {
 			<textarea
 				className='border border-black p-3 rounded-lg'
 				{...register('remarks', {
+					required,
 					validate: {
 						pattern: (value) => !/[!]/.test(value)
 					}

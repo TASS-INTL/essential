@@ -1,11 +1,14 @@
-import { travelsStore } from '@/store/travelsStore'
-import { userStore } from '@/store/userStore'
 import React, { useContext, useEffect } from 'react'
 
+import { MapGoogle } from '@/Components/mapGoogle/Map'
+import { travelsStore } from '@/store/travelsStore'
+import { userStore } from '@/store/userStore'
+import { APIProvider } from '@vis.gl/react-google-maps'
 import { Outlet, useParams } from 'react-router-dom'
-import { SocketContextForNameSpace } from '../../sockets/socketForNameSpace'
-import { SOCKET_EVENTS, SOCKETS_ROOMS } from '../../sockets/constants'
 
+import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
+import { SOCKET_EVENTS, SOCKETS_ROOMS } from '../../sockets/constants'
+import { SocketContextForNameSpace } from '../../sockets/socketForNameSpace'
 
 export const DetailTravel = () => {
 	const { idTravel } = useParams()
@@ -28,6 +31,7 @@ export const DetailTravel = () => {
 
 		// Me suscribo a la sala del dispositivo para que me mande la informacion en tiempo real
 		socketForNameSpace?.on(SOCKET_EVENTS.R_INFO_TRAVEL, (data) => {
+			console.log('entro al socket de informacion del viaje', data)
 			setTravelInfo(data?.data)
 		})
 
@@ -43,7 +47,6 @@ export const DetailTravel = () => {
 
 		// Aqui trae la informacion de los eventos de monitoreo
 		socketForNameSpace?.on(SOCKET_EVENTS.R_TB_EVENTS_TRAVEL, (data) => {
-			console.log(data)
 			setArrayTableTravelsEvents(data?.data ? data?.data : data)
 		})
 
@@ -96,5 +99,14 @@ export const DetailTravel = () => {
 		}
 	}, [])
 
-	return <Outlet />
+	return (
+		<>
+			<div className='h-full relative'>
+				<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
+					<MapGoogle />
+				</APIProvider>
+				<Outlet />
+			</div>
+		</>
+	)
 }

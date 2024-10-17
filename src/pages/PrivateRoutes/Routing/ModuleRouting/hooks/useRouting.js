@@ -5,7 +5,7 @@ import { METHODS_API } from '@/Api/constantsApi'
 import { DrawingActionKind, isCircle, isMarker, isPolygon, isPolyline, isRectangle } from '@/Components/mapGoogle/types'
 import { calculateCircle } from '@/helpers/routes'
 import { showToast } from '@/helpers/toast'
-import { initialDataLocation, permission } from '@/pages/PrivateRoutes/constants/constants'
+import { initialDataLocation } from '@/pages/PrivateRoutes/constants/constants'
 import { queryClient } from '@/routes/AppRouter'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
@@ -151,7 +151,7 @@ export const useRouting = () => {
 		}))
 	}
 
-	const handlePermissionForGeoFences = (permission) => {
+	const handleChangePermissionForGeoFences = (permission) => {
 		setPermissionForGeoFences((prevState) => [...prevState, permission])
 	}
 
@@ -173,7 +173,7 @@ export const useRouting = () => {
 	}
 
 	// change permissions
-	const handleChangePermissions = ({ location, permissions }) => {
+	const handleChangePermissionsForLocationStartAndEnd = ({ location, permissions }) => {
 		setObjectLocations((state) => ({
 			...state,
 			[location]: {
@@ -182,12 +182,15 @@ export const useRouting = () => {
 			}
 		}))
 	}
+
 	// processing stations
 	const processingStations = () => {
+		console.log()
+
 		const stationProcesed = []
 		let count = 2
 		if (state.now.length > 0) {
-			state.now.forEach((element) => {
+			state.now.forEach((element, index) => {
 				const locationCoordinates = []
 				element.snapshot.path.forEach((item) => {
 					locationCoordinates.push([item.lng(), item.lat()])
@@ -198,7 +201,7 @@ export const useRouting = () => {
 						type: 'Polygon',
 						coordinates: [locationCoordinates]
 					},
-					permissions: permission,
+					permissions: permissionForGeoFences[index],
 					name: `station-${count}`,
 					market: {
 						location: {
@@ -297,9 +300,9 @@ export const useRouting = () => {
 		objectLocations,
 		setDataDirections,
 		changeStatePermission,
-		handleChangePermissions,
+		handleChangePermissionsForLocationStartAndEnd,
 		getPermissionsForRouting,
 		handleChangeMarkerDraggable,
-		handlePermissionForGeoFences
+		handleChangePermissionForGeoFences
 	}
 }

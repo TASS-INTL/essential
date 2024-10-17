@@ -57,62 +57,18 @@ export const tableTitleInventory = [
 	}
 ]
 
-export const initialStateTravel = {
-	date_end: '',
-	date_start: '',
-	devices: [
-		{
-			did: '',
-			id_device: '',
-			status: '',
-			type_operation: 'INSTALLATION'
-		}
-	],
-	installers: [
-		{
-			id_installer: '',
-			name: '',
-			status: '',
-			type_operation: 'INSTALLATION'
-		}
-	],
-	service: {
-		did: '',
-		id_service: ''
-	},
-	routes: {
-		location_end: {
-			location: '', // objeto de la documentacion
-			permissions: {}, // viene del back
-			name: 'name geo',
-			market: {
-				location: {},
-				status: true
-			}
-		},
-		location_start: {
-			location: '', // objeto de la documentacion
-			permissions: {}, // viene del back
-			name: 'name geo',
-			market: {
-				location: {},
-				status: true
-			}
-		},
-		stations: [
-			{
-				location: '', // objeto de la documentacion
-				permissions: {}, // viene del back
-				name: 'name geo',
-				market: {
-					location: {},
-					status: true
-				}
-			}
-		],
-		coordinatesroute: []
-	}
+export const dataForCreateTravel = {
+	date_finalization: null,
+	date_installation: null,
+	installers: null,
+	location_finalization: null,
+	location_installation: null,
+	periods: null,
+	remarks: '',
+	service: null,
+	type: null
 }
+
 export const initialStateService = {
 	date_end: '',
 	date_start: '',
@@ -243,8 +199,8 @@ export const styleModal = {
 }
 
 export const initialDataLocation = {
-	location_start: {},
-	location_end: {}
+	location_start: null,
+	location_end: null
 }
 export const initialDataLocation2 = [{ location_start: {} }, { location_end: {} }]
 

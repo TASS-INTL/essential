@@ -1,20 +1,47 @@
 import { useState } from 'react'
 
+import { showToast } from '@/helpers/toast'
 import { InfoWindow } from '@vis.gl/react-google-maps'
 
 export const InfoWindowComponent = ({
 	marker,
 	maxWidth,
 	position,
+	location,
+	geoFences,
 	permission,
 	onCloseClick,
-	sendPermissionState,
-	handleCheckboxChange
+	handleChangePermissions
 }) => {
+	const copyArrayPermission = JSON.parse(JSON.stringify(permission))
+
+	const handleCheckboxChange = (event, _id) => {
+		const isChecked = event.target.checked
+		for (const permission of copyArrayPermission) {
+			if (permission._id === _id) {
+				permission.values.value = isChecked
+			}
+		}
+	}
+
+	const sendPermissionState = () => {
+		if (geoFences) {
+			handleChangePermissions(copyArrayPermission)
+		} else {
+			handleChangePermissions({ location, permissions: copyArrayPermission })
+		}
+	}
+
 	return (
 		<InfoWindow
 			headerContent={
-				<button className='bg-black text-white p-2 rounded-lg' onClick={() => sendPermissionState()}>
+				<button
+					className='bg-black text-white p-2 rounded-lg'
+					onClick={() => {
+						sendPermissionState()
+						showToast('! se a guardado de manera exitosa !', 'success')
+					}}
+				>
 					Guardar
 				</button>
 			}

@@ -24,8 +24,8 @@ export const CreateRouting = () => {
 		permissionsData,
 		setDataDirections,
 		changeStatePermission,
-		handlePermissionForGeoFences,
-		handleChangePermissions,
+		handleChangePermissionForGeoFences,
+		handleChangePermissionsForLocationStartAndEnd,
 		handleChangeMarkerDraggable
 	} = useRouting()
 
@@ -34,20 +34,13 @@ export const CreateRouting = () => {
 	if (permissionsData.error || permissionsData.data?.error)
 		return <ErrorComponent error={permissionsData.data?.message} />
 
-	console.log('permissionsData --->', permissionsData)
-
 	return (
 		<div className='h-[95%]'>
 			<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
 				<div className='flex h-full'>
 					{/* MAP */}
 					<div className='w-[40%]'>
-						<MapGoogle
-							state={state}
-							dispatch={dispatch}
-							selectedPlace={selectedPlace}
-							UndoRedoControlPermission
-						>
+						<MapGoogle state={state} dispatch={dispatch} selectedPlace={selectedPlace} showDrawingManager>
 							{!!objectLocations?.location_start?.name && objectLocations?.location_end?.name && (
 								<Directions
 									origin={objectLocations.location_start.name}
@@ -64,7 +57,7 @@ export const CreateRouting = () => {
 									}}
 									location='location_start'
 									permissionsData={permissionsData?.data?.data}
-									handleChangePermissions={handleChangePermissions}
+									handleChangePermissions={handleChangePermissionsForLocationStartAndEnd}
 									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
 								/>
 							)}
@@ -77,7 +70,7 @@ export const CreateRouting = () => {
 									}}
 									location='location_end'
 									permissionsData={permissionsData?.data?.data}
-									handleChangePermissions={handleChangePermissions}
+									handleChangePermissions={handleChangePermissionsForLocationStartAndEnd}
 									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
 								/>
 							)}
@@ -95,7 +88,8 @@ export const CreateRouting = () => {
 													lat: item.snapshot.path[0].lat(),
 													lng: item.snapshot.path[0].lng()
 												}}
-												sendPermissionState={handlePermissionForGeoFences}
+												handleChangePermissions={handleChangePermissionForGeoFences}
+												geoFences
 											/>
 										)}
 									</Fragment>

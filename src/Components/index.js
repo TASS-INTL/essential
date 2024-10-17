@@ -5,6 +5,7 @@ import { InputSubmitComponent } from './InputSubmitComponent'
 import { LoaderComponent } from './LoaderComponent'
 import { ModalComponent } from './ModalComponent'
 import { MouseColorComponente } from './MouseColorComponent'
+import { NoData } from './NoData'
 import { PaginationComponent } from './PaginationComponent'
 import { RemarksInput } from './RemarksInput'
 import { RowInformation } from './RowInformation'
@@ -27,5 +28,6 @@ export {
 	SideBarComponent,
 	PaginationComponent,
 	InputSubmitComponent,
-	MouseColorComponente
+	MouseColorComponente,
+	NoData
 }

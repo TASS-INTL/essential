@@ -62,7 +62,7 @@ export const useCreateTravel = (dataForm) => {
 	const serviceRouteInformation = getDataService(idService?.service?._id ? idService?.service?._id : null)
 
 	// change permissions
-	const handleChangePermissions = ({ location, permissions }) => {
+	const handleChangePermissionsForLocationStartAndEnd = ({ location, permissions }) => {
 		setObjectLocations((state) => ({
 			...state,
 			[location]: {
@@ -136,7 +136,9 @@ export const useCreateTravel = (dataForm) => {
 			sensing: ''
 		}
 
-		createTravel(data)
+		if (data.location_installation && data.location_finalization) {
+			createTravel(data)
+		}
 	}
 
 	return {
@@ -152,7 +154,7 @@ export const useCreateTravel = (dataForm) => {
 		handleCreateTravel,
 		dataPreCrateTravel,
 		serviceRouteInformation,
-		handleChangePermissions,
-		handleChangeMarkerDraggable
+		handleChangeMarkerDraggable,
+		handleChangePermissionsForLocationStartAndEnd
 	}
 }

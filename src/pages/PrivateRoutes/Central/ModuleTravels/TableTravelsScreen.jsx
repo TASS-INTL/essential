@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 
+import { LoaderComponent, ModalComponent } from '@/Components'
+import { InputSearch } from '@/Components/InputSearch'
 import { travelsStore } from '@/store/travelsStore'
 import Button from '@mui/material/Button'
 import { useForm } from 'react-hook-form'
 import { NavLink } from 'react-router-dom'
 
 import { CreateTravel } from '.'
-import { LoaderComponent, ModalComponent } from '@/Components'
-import { InputSearch } from '@/Components/InputSearch'
-import { initialStateTravel } from '../../constants/constants'
+import { dataForCreateTravel } from '../../constants/constants'
 
 export const TableTravelsScreen = () => {
 	const [open, setOpen] = useState(false)
@@ -32,7 +32,7 @@ export const TableTravelsScreen = () => {
 			</div>
 			<div>
 				{arrayTableTravels?.results?.map((item) => (
-					<div key={item._id} className='p-4 bg-white rounded-xl'>
+					<div key={item._id} className='p-4 bg-white rounded-xl my-3'>
 						<div className='flex justify-between'>
 							<div className=''>
 								<div className='flex flex-col'>
@@ -85,7 +85,7 @@ export const TableTravelsScreen = () => {
 				))}
 			</div>
 			<ModalComponent handleOpen={open} HandleClose={handleOpen} titleModal='Creacion del Viaje'>
-				<CreateTravel dataForm={initialStateTravel} />
+				<CreateTravel dataForm={dataForCreateTravel} />
 			</ModalComponent>
 		</>
 	)

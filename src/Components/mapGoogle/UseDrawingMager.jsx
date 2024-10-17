@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 
 import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps'
 
-export function useDrawingManager() {
+export function useDrawingManager(showDrawingManager) {
+	if (showDrawingManager === undefined) return
+
 	const map = useMap()
 	const drawing = useMapsLibrary('drawing')
 
