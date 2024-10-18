@@ -21,8 +21,8 @@ export const TableTravelsScreen = () => {
 	if (arrayTableTravels === null) return <LoaderComponent />
 
 	return (
-		<>
-			<div className='flex justify-between pt-5 py-10'>
+		<div className='px-9'>
+			<div className='flex justify-between pt-5 py-5'>
 				<Button variant='contained' onClick={handleOpen}>
 					Crear Viaje
 				</Button>
@@ -87,6 +87,6 @@ export const TableTravelsScreen = () => {
 			<ModalComponent handleOpen={open} HandleClose={handleOpen} titleModal='Creacion del Viaje'>
 				<CreateTravel dataForm={dataForCreateTravel} />
 			</ModalComponent>
-		</>
+		</div>
 	)
 }

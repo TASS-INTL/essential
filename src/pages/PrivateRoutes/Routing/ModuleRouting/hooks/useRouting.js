@@ -185,8 +185,6 @@ export const useRouting = () => {
 
 	// processing stations
 	const processingStations = () => {
-		console.log()
-
 		const stationProcesed = []
 		let count = 2
 		if (state.now.length > 0) {

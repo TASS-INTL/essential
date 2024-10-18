@@ -43,7 +43,7 @@ export const CreateTravel = ({ dataForm }) => {
 			<div className='h-[95%]'>
 				<div className='flex h-full'>
 					<div className='w-[40%]'>
-						<MapGoogle selectedPlace={selectedPlace}>
+						<MapGoogle width='95%' selectedPlace={selectedPlace}>
 							{!!objectLocations?.location_start?.market?.location?.coordinates[0] && (
 								<MarkerWithInfowindow
 									position={{
@@ -51,7 +51,11 @@ export const CreateTravel = ({ dataForm }) => {
 										lng: objectLocations?.location_start?.market?.location?.coordinates[0]
 									}}
 									location='location_start'
-									permissionsData={dataPreCrateTravel?.data?.data?.permissions}
+									permissionsData={
+										objectLocations.location_start.permissions
+											? objectLocations.location_start.permissions
+											: dataPreCrateTravel?.data?.data?.permissions
+									}
 									handleChangePermissions={handleChangePermissionsForLocationStartAndEnd}
 									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
 								/>
@@ -64,7 +68,11 @@ export const CreateTravel = ({ dataForm }) => {
 										lng: objectLocations?.location_end?.market?.location?.coordinates[0]
 									}}
 									location='location_end'
-									permissionsData={dataPreCrateTravel?.data?.data?.permissions}
+									permissionsData={
+										objectLocations.location_end.permissions
+											? objectLocations.location_end.permissions
+											: dataPreCrateTravel?.data?.data?.permissions
+									}
 									handleChangePermissions={handleChangePermissionsForLocationStartAndEnd}
 									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
 								/>
@@ -108,7 +116,7 @@ export const CreateTravel = ({ dataForm }) => {
 					<div className='w-[60%] overflow-y-scroll'>
 						<form onSubmit={handleSubmit(handleCreateTravel)} className='flex flex-col'>
 							{/* DATES */}
-							<div className='flex mt-5'>
+							<div className='flex mt-3'>
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
 									<DemoContainer class='flex' components={['DateTimePicker', 'DateTimePicker']}>
 										<div className='flex gap-5'>
@@ -127,7 +135,7 @@ export const CreateTravel = ({ dataForm }) => {
 								</LocalizationProvider>
 							</div>
 							{/* INPUTS TRAVELS */}
-							<div className='flex mt-5  justify-between'>
+							<div className='flex mt-3  justify-between'>
 								<div className='w-[99%]'>
 									<SelectComponent
 										required
@@ -141,7 +149,7 @@ export const CreateTravel = ({ dataForm }) => {
 								</div>
 							</div>
 							{/* INPUTS TYPE TREVEL */}
-							<div className='flex mt-5 gap-4 '>
+							<div className='flex mt-3 gap-4 '>
 								<div className='w-[99%]'>
 									<SelectComponent
 										required
@@ -155,7 +163,7 @@ export const CreateTravel = ({ dataForm }) => {
 								</div>
 							</div>
 							{/* INPUTS INTALLER */}
-							<div className='flex mt-5 gap-4 '>
+							<div className='flex mt-3 gap-4 '>
 								<div className='w-[48%]'>
 									<SelectComponent
 										required
@@ -180,7 +188,7 @@ export const CreateTravel = ({ dataForm }) => {
 								</div>
 							</div>
 							{/* INPUTS PLACES */}
-							<div className='flex gap-4 mt-5'>
+							<div className='flex gap-4 mt-3'>
 								<div className='w-[48%]'>
 									<span className='mb-3'>Lugar de Instalacion</span>
 									<PlaceAutocompleteClassic addPlaces={addPlaces} location='location_start' />

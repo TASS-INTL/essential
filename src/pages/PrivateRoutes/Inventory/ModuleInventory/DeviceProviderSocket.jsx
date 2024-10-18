@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react'
 
-import { Outlet, useParams } from 'react-router-dom'
-import { SocketContextForNameSpace } from '../../sockets/socketForNameSpace'
-import { userStore } from '@/store/userStore'
 import { inventoryStore } from '@/store/inventoryStore'
-import { SOCKET_EVENTS, SOCKETS_ROOMS } from '../../sockets/constants'
+import { userStore } from '@/store/userStore'
+import { Outlet, useParams } from 'react-router-dom'
 
+import { SOCKET_EVENTS, SOCKETS_ROOMS } from '../../sockets/constants'
+import { SocketContextForNameSpace } from '../../sockets/socketForNameSpace'
 
 export const DeviceProviderSocket = () => {
 	const { idDevice } = useParams()
@@ -42,7 +42,6 @@ export const DeviceProviderSocket = () => {
 
 		// Aqui trae la informacion de los eventos
 		socketForNameSpace?.on(SOCKET_EVENTS.R_TB_EVENTS_DEVICE, (data) => {
-			console.log('data events device -->', data)
 			setArrayTableInventoryEvents(data)
 		})
 

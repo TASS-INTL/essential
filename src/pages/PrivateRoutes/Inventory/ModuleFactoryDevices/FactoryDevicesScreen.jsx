@@ -1,15 +1,10 @@
-import { 
-		SelectComponent,
-		ErrorComponent,
-		InputComponent,
-		InputSubmitComponent,
-		LoaderComponent 
-	} from '@/Components'
 import React from 'react'
 
-import { useForm } from 'react-hook-form'
-import { useDevice } from './hooks/useDevicesFactory'
+import { ErrorComponent, InputComponent, InputSubmitComponent, LoaderComponent, SelectComponent } from '@/Components'
 import { Container } from '@/Components/Container'
+import { useForm } from 'react-hook-form'
+
+import { useDevice } from './hooks/useDevicesFactory'
 
 export const FactoryDevicesScreen = () => {
 	const { register, handleSubmit } = useForm()
@@ -26,7 +21,6 @@ export const FactoryDevicesScreen = () => {
 		data.device_type.name_consult = filterObj[0]?.name_consult
 		handleSyncDevice(data, event)
 	}
-	console.log(typeDevice?.data)
 
 	return (
 		<Container>

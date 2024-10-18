@@ -2,6 +2,7 @@ import api from '@/Api/api'
 import { METHODS_API } from '@/Api/constantsApi'
 import { userStore } from '@/store/userStore'
 import { useNavigate } from 'react-router-dom'
+
 import { pathNavigation } from '../constants'
 
 export const useAuthProvider = () => {
@@ -178,7 +179,9 @@ export const useAuthProvider = () => {
 				logged: false,
 				userName: null,
 				checking: false,
-				tokenSesion: null
+				tokenSesion: null,
+				modules: null,
+				typeUser: null
 			})
 			localStorage.removeItem('token')
 		}

@@ -1,10 +1,10 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react'
 
+import { showToast } from '@/helpers/toast'
+import { userStore } from '@/store/userStore'
 import { io } from 'socket.io-client'
 
 import { SOCKET_EVENTS, TRANSPORT_SOCKET } from './constants'
-import { userStore } from '@/store/userStore'
-import { showToast } from '@/helpers/toast'
 
 export const SocketContextForNameSpace = createContext()
 
@@ -61,7 +61,6 @@ export const SocketForNameSpace = ({ children, nameSpace, typeJoin, socketsEvent
 
 		return () => {
 			socketForNameSpace?.on(SOCKET_EVENTS.LEFT_ROOM, (data) => {
-				console.log('data left room', data)
 				showToast('desconectado de la sala: ' + data.type_, 'warning')
 			})
 			// When the component is disassembled, the room output is sent

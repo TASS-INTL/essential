@@ -31,8 +31,7 @@ export const DetailTravel = () => {
 
 		// Me suscribo a la sala del dispositivo para que me mande la informacion en tiempo real
 		socketForNameSpace?.on(SOCKET_EVENTS.R_INFO_TRAVEL, (data) => {
-			console.log('entro al socket de informacion del viaje', data)
-			setTravelInfo(data?.data)
+			setTravelInfo(data)
 		})
 
 		// // emitir a la tabla de eventos de monitorio

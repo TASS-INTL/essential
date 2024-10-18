@@ -1,10 +1,10 @@
+import React from 'react'
+
 import { ErrorComponent, LoaderComponent, TitleWithLive } from '@/Components'
 import { BoardDevice } from '@/Components/BoardDevice'
 import { InputSearch } from '@/Components/InputSearch'
 import { deviceStore } from '@/store/deviceStore'
 import { userStore } from '@/store/userStore'
-import React from 'react'
-
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
@@ -21,7 +21,7 @@ export const TableDeviceScreen = () => {
 	if (arrayTabledevice?.error) return <ErrorComponent error={arrayTabledevice.message} />
 
 	return (
-		<>
+		<div className='px-9'>
 			<div className='flex justify-between px-0 py-3 pt-2'>
 				<Link
 					to={
@@ -43,6 +43,6 @@ export const TableDeviceScreen = () => {
 			{arrayTabledevice.results.length > 0 && (
 				<BoardDevice dataBody={arrayTabledevice?.results} to='devices-screen/device' />
 			)}
-		</>
+		</div>
 	)
 }

@@ -1,17 +1,15 @@
 import React, { useState } from 'react'
 
+import { LoaderComponent, ModalComponent } from '@/Components'
+import { BoardDevice } from '@/Components/BoardDevice'
+import { InputSearch } from '@/Components/InputSearch'
 import { Button } from '@mui/material'
 import { useForm } from 'react-hook-form'
 
-
 import { CreateService } from './CreateService'
 import { useServiceClient } from './hooks/useServiceClient'
-import { LoaderComponent, ModalComponent } from '@/Components'
-import { InputSearch } from '@/Components/InputSearch'
-import { BoardDevice } from '@/Components/BoardDevice'
 
 export const TableServiceClientScreen = () => {
-
 	const { getDataTableServiceClient } = useServiceClient()
 	const { register, handleSubmit } = useForm()
 	const [open, setOpen] = useState(false)
@@ -19,7 +17,7 @@ export const TableServiceClientScreen = () => {
 
 	const dataTableServicesClient = getDataTableServiceClient(1, '')
 
-	dataTableServicesClient.isLoading && <LoaderComponent />
+	if (dataTableServicesClient.isLoading) return <LoaderComponent />
 
 	const HandlePagination = (data) => {}
 
