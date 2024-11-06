@@ -132,8 +132,8 @@ export const useCreateTravel = (dataForm) => {
 		data.installers = [sendInstaller]
 		data.type = typeTravel
 		data.periods = {
-			tx: 2,
-			sensing: ''
+			tx: 10,
+			sensing: 10
 		}
 
 		if (data.location_installation && data.location_finalization) {

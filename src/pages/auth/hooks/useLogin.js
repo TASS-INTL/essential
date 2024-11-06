@@ -1,8 +1,14 @@
 import { showToast } from '@/helpers/toast'
+import { useForm } from 'react-hook-form'
 
 import { useAuthProvider } from './useAuthProvider'
 
 export const useAuth = () => {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors }
+	} = useForm()
 	const { login, ValidateCodeApi, registerPersonalData, registerNameAndUserName, resendCode, forgotPassword } =
 		useAuthProvider()
 
@@ -89,6 +95,9 @@ export const useAuth = () => {
 		submitFormRegister,
 		submitFormValidateData,
 		submitFormValidateCode,
-		submitFormForgotPassword
+		submitFormForgotPassword,
+		errors,
+		handleSubmit,
+		register
 	}
 }

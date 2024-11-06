@@ -1,10 +1,13 @@
 import React from 'react'
 
 import { battery, padlockClose, padlockOpen } from '@/assets/assetsplatform'
+import { ErrorComponent, LoaderComponent } from '@/Components'
+import { Container } from '@/Components/Container'
+import { arrayTapInventory, TapBottons } from '@/Components/TapBottons'
 import { inventoryStore } from '@/store/inventoryStore'
 import { useLocation, useParams } from 'react-router-dom'
+
 import { useInventory } from './Hooks/useInventory'
-import { arrayTapInventory, TapBottons } from '@/Components/TapBottons'
 
 export const General = () => {
 	const location = useLocation()
@@ -15,6 +18,10 @@ export const General = () => {
 	const SendCommand = (typeComand, to) => {
 		handleSendComand({ idDevice, typeComand, did: deviceInfo?.data?.general?.did, to })
 	}
+
+	if (deviceInfo === null) return <LoaderComponent />
+
+	if (deviceInfo.error) return <ErrorComponent error={deviceInfo.message} />
 
 	return (
 		<>
@@ -90,7 +97,7 @@ export const General = () => {
 									Estado: <span> {deviceInfo?.general?.lock?.value}</span>
 								</span>
 								<img
-									src={deviceInfo?.general?.lock?.value === 'open' ? padlockOpen : padlockClose}
+									src={deviceInfo?.data?.general?.lock?.value === 'open' ? padlockOpen : padlockClose}
 									alt='icon'
 									className='w-[108px] h-[105px] object-contain cursor-pointer my-4'
 								/>

@@ -8,7 +8,7 @@ import { useDevice } from './hooks/useDevicesFactory'
 
 export const FactoryDevicesScreen = () => {
 	const { register, handleSubmit } = useForm()
-	const { handleSyncDevice, fetchTypeDevice } = useDevice()
+	const { handleCreateDevice, fetchTypeDevice } = useDevice()
 	const typeDevice = fetchTypeDevice()
 
 	if (typeDevice?.isLoading) return <LoaderComponent />
@@ -19,7 +19,7 @@ export const FactoryDevicesScreen = () => {
 		const filterObj = typeDevice?.data?.data?.filter((obj) => obj._id === data?.device_type?._id)
 		data.device_type.name = filterObj[0]?.name
 		data.device_type.name_consult = filterObj[0]?.name_consult
-		handleSyncDevice(data, event)
+		handleCreateDevice(data, event)
 	}
 
 	return (
@@ -52,7 +52,7 @@ export const FactoryDevicesScreen = () => {
 							required
 							color
 							register={register}
-							name='Nickname'
+							name='nickname'
 							type='text'
 							label='nickname'
 						/>

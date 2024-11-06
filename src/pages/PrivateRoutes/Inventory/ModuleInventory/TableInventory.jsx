@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 
+import { BoardComponent, PaginationComponent } from '@/Components'
+import { InputSearch } from '@/Components/InputSearch'
 import { inventoryStore } from '@/store/inventoryStore'
 import { useForm } from 'react-hook-form'
-import { InputSearch } from '@/Components/InputSearch'
-import { BoardComponent, PaginationComponent } from '@/Components'
+
 import { tableTitleInventory } from '../../constants/constants'
 
 export const TableInventory = () => {

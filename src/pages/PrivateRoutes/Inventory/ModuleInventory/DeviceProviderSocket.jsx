@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 
+import { Container } from '@/Components/Container'
 import { inventoryStore } from '@/store/inventoryStore'
 import { userStore } from '@/store/userStore'
 import { Outlet, useParams } from 'react-router-dom'
@@ -71,5 +72,9 @@ export const DeviceProviderSocket = () => {
 		}
 	}, [])
 
-	return <Outlet />
+	return (
+		<Container>
+			<Outlet />
+		</Container>
+	)
 }

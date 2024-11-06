@@ -21,7 +21,7 @@ export const TableTravelsScreen = () => {
 	if (arrayTableTravels === null) return <LoaderComponent />
 
 	return (
-		<div className='px-9'>
+		<div className='px-16 py-4'>
 			<div className='flex justify-between pt-5 py-5'>
 				<Button variant='contained' onClick={handleOpen}>
 					Crear Viaje

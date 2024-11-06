@@ -1,22 +1,16 @@
 import React from 'react'
 
+import { logoTass } from '@/assets/assetsplatform/PrivateRoutes'
 import { InputComponent, InputSubmitComponent } from '@/Components'
+import { showToast } from '@/helpers/toast'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+
 import { pathNavigation } from './constants'
 import { useAuth } from './hooks/useLogin'
-import { showToast } from '@/helpers/toast'
-import { logoTass } from '@/assets/assetsplatform/PrivateRoutes'
-
 
 export const ForgotPasswordScreen = () => {
-	const { submitFormForgotPassword } = useAuth()
-
-	const {
-		register,
-		handleSubmit,
-		formState: { errors }
-	} = useForm()
+	const { submitFormForgotPassword, register, handleSubmit, errors } = useAuth()
 
 	return (
 		<div className=' w-full min-h-screen  items-center justify-center  space-x-6'>

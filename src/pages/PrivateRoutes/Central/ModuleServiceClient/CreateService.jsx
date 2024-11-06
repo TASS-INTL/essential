@@ -40,7 +40,7 @@ export const CreateService = () => {
 	if (dataPreCreateService?.isLoading) return <LoaderComponent />
 
 	if (dataPreCreateService?.isError) return <ErrorComponent error={dataPreCreateService.massage} />
-	
+
 	return (
 		<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
 			<div className='pt-2 px-2 h-[95%]'>
@@ -259,7 +259,7 @@ export const CreateService = () => {
 							<RemarksInput text='Quieres dar alguna indicacion adicional ?' register={register} />
 							{/* SEND FORM */}
 							<div className='flex justify-center pt-6 '>
-								<InputSubmitComponent text='CREAR VIAJE' />
+								<InputSubmitComponent text='CREAR SERVICIO' />
 							</div>
 						</form>
 					</div>

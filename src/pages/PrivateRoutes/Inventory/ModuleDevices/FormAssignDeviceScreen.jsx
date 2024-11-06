@@ -1,14 +1,15 @@
 import React from 'react'
 
-import { useDevice } from './hooks/useDevices'
 import { InputComponent, InputSubmitComponent, SelectComponent } from '@/Components'
+
 import { typeStatus } from '../../constants/constants'
+import { useDevice } from './hooks/useDevices'
 
 export const FormAssignDeviceScreen = () => {
 	const { handleAssignDevice, handleSubmit, register } = useDevice()
 
 	return (
-		<div className='h-screen flex-1 p-7'>
+		<div className='h-screen flex-1 px-16 py-7'>
 			<h1 className=' text-xl font-bold text-center py-5'>Asignacion de dispositivo</h1>
 			<form action='' onSubmit={handleSubmit((data, event) => handleAssignDevice(data, event))}>
 				<InputComponent color required register={register} name='description' type='text' label='Description' />

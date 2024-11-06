@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from 'react'
 
 import { MapGoogle } from '@/Components/mapGoogle/Map'
+import { Polygon } from '@/Components/mapGoogle/Polygon'
+import { Polyline } from '@/Components/mapGoogle/Polyline'
 import { travelsStore } from '@/store/travelsStore'
 import { userStore } from '@/store/userStore'
 import { APIProvider } from '@vis.gl/react-google-maps'
@@ -18,6 +20,7 @@ export const DetailTravel = () => {
 	const setArrayTableTravelsMonitoring = travelsStore((state) => state.setArrayTableTravelsMonitoring)
 	const setRealTimeCoordinates = travelsStore((state) => state.setRealTimeCoordinates)
 	const { socketForNameSpace } = useContext(SocketContextForNameSpace)
+	const travelInfo = travelsStore((state) => state.travelInfo)
 
 	// conexion con el socket para las diferentes salas
 	useEffect(() => {
@@ -98,11 +101,33 @@ export const DetailTravel = () => {
 		}
 	}, [])
 
+	console.log('travelInfo --> ', travelInfo?.data)
+
 	return (
 		<>
 			<div className='h-full relative'>
 				<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
-					<MapGoogle />
+					<MapGoogle>
+						{!!travelInfo?.data?.routing?.coordinatesroute && (
+							<Polyline
+								strokeWeight={7}
+								strokeColor={'#c27e79'}
+								pathArray={travelInfo?.data?.routing?.coordinatesroute}
+							/>
+						)}
+						{!!travelInfo?.data?.routing?.location_start && (
+							<Polygon
+								strokeWeight={1.5}
+								pathsArray={travelInfo?.data?.routing?.location_start?.location.coordinates[0]}
+							/>
+						)}
+						{!!travelInfo?.data?.routing?.location_end && (
+							<Polygon
+								strokeWeight={1.5}
+								pathsArray={travelInfo?.data?.routing?.location_end?.location.coordinates[0]}
+							/>
+						)}
+					</MapGoogle>
 				</APIProvider>
 				<Outlet />
 			</div>

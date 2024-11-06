@@ -1,8 +1,10 @@
+import React, { useState } from 'react'
+
 import { BoardComponent, ErrorComponent, LoaderComponent, PaginationComponent } from '@/Components'
 import { InputSearch } from '@/Components/InputSearch'
 import { notificationStore } from '@/store/notificationStore'
-import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+
 import { tableTitle } from '../../constants/constants'
 
 export const TableNotification = () => {
@@ -17,7 +19,7 @@ export const TableNotification = () => {
 	if (arrayNotification?.error) return <ErrorComponent error={arrayNotification?.message} />
 
 	return (
-		<>
+		<div className='px-16 py-7'>
 			<div className='flex justify-end py-2'>
 				<form onSubmit={handleSubmit(handleSubmitPagination)}>
 					<InputSearch register={register} />
@@ -31,6 +33,6 @@ export const TableNotification = () => {
 					setPageSelected={setPageSelected}
 				/>
 			</div>
-		</>
+		</div>
 	)
 }

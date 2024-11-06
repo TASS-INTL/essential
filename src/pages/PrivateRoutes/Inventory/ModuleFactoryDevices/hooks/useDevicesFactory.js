@@ -11,7 +11,6 @@ export const useDevice = () => {
 			queryKey: ['getTypeDevice'],
 			queryFn: async () => await api(METHODS_API.GET, 'module/device-factory/get-info')
 		})
-	//
 
 	const assignDeviceMutate = useMutation({
 		mutationFn: async (data) => await api(METHODS_API.POST, 'module/device/assign', data),
@@ -32,27 +31,24 @@ export const useDevice = () => {
 	}
 
 	// Sincronizacion de dispositivo
-	const syncDevice = useMutation({
+	const createDevice = useMutation({
 		mutationFn: async (data) => await api(METHODS_API.POST, 'module/device-factory/create', data),
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postSyncDevice'] })
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postCreateDevice'] })
 	})
 
-	const handleSyncDevice = async (data, event) => {
+	const handleCreateDevice = async (data, event) => {
 		event.preventDefault()
-		const syncDeviceData = data
-		const response = await syncDevice.mutateAsync(syncDeviceData)
+
+		const response = await createDevice.mutateAsync(data)
 		if (response.completed) {
-			showToast(
-				'Se a enviado la sincronizacion al sistema en un momento podra validar esa informacion en el apartado de Inventario',
-				'warning'
-			)
+			showToast(`${response.message}`, 'warning')
 		}
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 	}
 
 	return {
 		handleAssignDevice,
-		handleSyncDevice,
+		handleCreateDevice,
 		fetchTypeDevice
 	}
 }

@@ -29,13 +29,7 @@ import { DevicesScreen } from '../pages/PrivateRoutes/Inventory/ModuleDevices/De
 import { FormAssignDeviceScreen } from '../pages/PrivateRoutes/Inventory/ModuleDevices/FormAssignDeviceScreen'
 import { TableDeviceScreen } from '../pages/PrivateRoutes/Inventory/ModuleDevices/TableDeviceScreen'
 import { FactoryDevicesScreen } from '../pages/PrivateRoutes/Inventory/ModuleFactoryDevices/FactoryDevicesScreen'
-import {
-	DeviceProviderSocket,
-	Events,
-	General,
-	InventoryScreen,
-	Test
-} from '../pages/PrivateRoutes/Inventory/ModuleInventory'
+import { DeviceProviderSocket, Events, General, Test } from '../pages/PrivateRoutes/Inventory/ModuleInventory'
 import { TestingScreen } from '../pages/PrivateRoutes/Inventory/ModuleTesting/TestingScreen'
 import { NotificationScreen } from '../pages/PrivateRoutes/Notification/ModuleNotification/NotificationScreen'
 import { TableNotification } from '../pages/PrivateRoutes/Notification/ModuleNotification/TableNotification'
@@ -67,8 +61,6 @@ export const RoutesPrivate = () => {
 				<SideBarComponent />
 			</div>
 			<Routes>
-				{/* ============ MODULE CENTRAL =============== */}
-				<Route path={routesPrivate.centralScreen} element={<CentralScreen />} />
 				{/* Installers */}
 				<Route path={routesPrivate.installersScreen} element={<InstallersScreen />} />
 				{/* Monitoring */}
@@ -91,6 +83,10 @@ export const RoutesPrivate = () => {
 					/>
 				</Route>
 				{/* Travels */}
+				<Route
+					path={routesPrivate.centralScreen}
+					element={<CentralScreen NameMap='Central' title='Central' />}
+				/>
 				<Route
 					path={routesPrivate.travelsScreen}
 					element={
@@ -126,9 +122,11 @@ export const RoutesPrivate = () => {
 				<Route path={routesPrivate.testingScreen} element={<TestingScreen />} />
 
 				{/* ============ MODULE INVENTORY =============== */}
-				<Route path={routesPrivate.inventoryScreen} element={<InventoryScreen />} />
-
 				{/* DEVICES OPERATOR - MASTER */}
+				<Route
+					path={routesPrivate.inventoryScreen}
+					element={<CentralScreen NameMap='Inventory' title='Inventario' />}
+				/>
 				<Route
 					path={routesPrivate.devicesScreen}
 					element={

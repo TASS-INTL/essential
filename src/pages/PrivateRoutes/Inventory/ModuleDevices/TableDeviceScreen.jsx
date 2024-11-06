@@ -21,7 +21,7 @@ export const TableDeviceScreen = () => {
 	if (arrayTabledevice?.error) return <ErrorComponent error={arrayTabledevice.message} />
 
 	return (
-		<div className='px-9'>
+		<div className='px-16 py-4'>
 			<div className='flex justify-between px-0 py-3 pt-2'>
 				<Link
 					to={

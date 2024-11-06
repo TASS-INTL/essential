@@ -20,7 +20,7 @@ export const TableServicesMasterScreen = () => {
 	const handleSubmitPagination = () => {}
 
 	return (
-		<div className='px-9'>
+		<div className='px-16'>
 			<div className='flex justify-end py-2'>
 				<form onSubmit={handleSubmit(handleSubmitPagination)}>
 					<InputSearch register={register} />

@@ -24,12 +24,7 @@ export const useDevice = () => {
 		event.preventDefault()
 		const assignDevice = data
 		const response = await assignDeviceMutate.mutateAsync(assignDevice)
-		if (response.completed) {
-			showToast(
-				'Se a enviado la asignacion al sistema en un momento podra validar esa informacion en el apartado de notificaciones',
-				'warning'
-			)
-		}
+		response.completed && showToast(`${response.message}`, 'warning')
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 	}
 
