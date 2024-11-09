@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
 import { NavLink } from 'react-router-dom'
 
@@ -23,8 +23,8 @@ export const BoardDevice = ({ dataBody, to }) => {
 					</thead>
 					<tbody>
 						{dataBody.map((item, index) => (
-							<>
-								<tr key={item._id} className='bg-white border-b hover:bg-gray-100 '>
+							<Fragment key={item._id}>
+								<tr className='bg-white border-b hover:bg-gray-100 '>
 									{Object.values(dataBody[index])?.map((itemObj, i) => (
 										<th
 											key={i}
@@ -41,7 +41,7 @@ export const BoardDevice = ({ dataBody, to }) => {
 										<NavLink to={`/user/${to}/${item._id}/general`}>Ver</NavLink>
 									</th>
 								</tr>
-							</>
+							</Fragment>
 						))}
 					</tbody>
 				</table>

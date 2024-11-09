@@ -21,6 +21,7 @@ import {
 	EventsTravel,
 	GeneralTravel,
 	Monitoring,
+	Reports,
 	TableTravelsScreen,
 	TravelsScreen
 } from '../pages/PrivateRoutes/Central/ModuleTravels'
@@ -106,6 +107,7 @@ export const RoutesPrivate = () => {
 						<Route index path={routesPrivate.general} element={<GeneralTravel />} />
 						<Route path={routesPrivate.monitoring} element={<Monitoring />} />
 						<Route path={routesPrivate.events} element={<EventsTravel />} />
+						<Route path={routesPrivate.reports} element={<Reports />} />
 					</Route>
 				</Route>
 

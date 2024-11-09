@@ -99,7 +99,7 @@ export const SideBarComponent = () => {
 							</li>
 						</NavLink>
 					))}
-					<li
+					{/* <li
 						className={`
                      flex 
                      items-center 
@@ -119,7 +119,7 @@ export const SideBarComponent = () => {
 						<span className={`${!open && 'hidden'} origin-left duration-200 ms-3 text-sm`}>
 							Cerrar sesion
 						</span>
-					</li>
+					</li> */}
 				</ul>
 			</div>
 		</aside>

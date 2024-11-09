@@ -1,7 +1,6 @@
-export const calculateCircle = (lat, lng) => {
+export const calculateCircle = ({ lat, lng, radius }) => {
 	const center = [lng, lat]
-	const radius = 5
-	const options = { steps: 100, units: 'kilometers', properties: { foo: 'bar' } }
+	const options = { steps: 100, units: 'meters', properties: { foo: 'bar' } }
 	const circle = turf.circle(center, radius, options)
 	return circle
 }

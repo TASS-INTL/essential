@@ -30,18 +30,13 @@ export const InfoWindowComponent = ({
 		} else {
 			handleChangePermissions({ location, permissions: copyArrayPermission })
 		}
+		showToast('!se a guardado de manera exitosa!', 'success')
 	}
 
 	return (
 		<InfoWindow
 			headerContent={
-				<button
-					className='bg-black text-white p-2 rounded-lg'
-					onClick={() => {
-						sendPermissionState()
-						showToast('! se a guardado de manera exitosa !', 'success')
-					}}
-				>
+				<button className='bg-black text-white p-2 rounded-lg' onClick={sendPermissionState}>
 					Guardar
 				</button>
 			}

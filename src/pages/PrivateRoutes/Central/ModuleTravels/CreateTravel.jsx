@@ -199,7 +199,11 @@ export const CreateTravel = ({ dataForm }) => {
 								</div>
 							</div>
 							{/* COMENTS SERVICE */}
-							<RemarksInput text='Quieres dar alguna indicacion adicional ?' register={register} />
+							<RemarksInput
+								text='Quieres dar alguna indicacion adicional ?'
+								register={register}
+								nameRegister='remarks'
+							/>
 							{/* SEND FORM */}
 							<div className='flex justify-center pt-6 '>
 								<InputSubmitComponent text='CREAR VIAJE' />

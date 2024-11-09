@@ -101,8 +101,6 @@ export const DetailTravel = () => {
 		}
 	}, [])
 
-	console.log('travelInfo --> ', travelInfo?.data)
-
 	return (
 		<>
 			<div className='h-full relative'>

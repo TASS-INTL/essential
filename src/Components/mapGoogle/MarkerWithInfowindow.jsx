@@ -10,6 +10,7 @@ export const MarkerWithInfowindow = ({
 	position,
 	permissionsData,
 	handleChangePermissions,
+	handleChangeRadiusCircle,
 	handleChangeMarkerDraggable
 }) => {
 	const [infowindowOpen, setInfowindowOpen] = useState(true)
@@ -23,8 +24,18 @@ export const MarkerWithInfowindow = ({
 	}
 
 	useEffect(() => {
-		center?.location && handleChangeMarkerDraggable({ location: center?.location, data: center })
+		if (center === null) return
+		handleChangeMarkerDraggable({ location, data: center })
 	}, [center])
+
+	useEffect(() => {
+		handleChangeRadiusCircle({
+			location,
+			lat: center === null ? position.lat : center?.lat,
+			lng: center === null ? position.lng : center?.lng,
+			radius
+		})
+	}, [radius, center])
 
 	return (
 		<>

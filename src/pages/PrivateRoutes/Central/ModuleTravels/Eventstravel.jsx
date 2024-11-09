@@ -24,7 +24,7 @@ export const EventsTravel = () => {
 				path='travels-screen/travel'
 				data={arrayTapMonitoring}
 			/>
-			<div className='h-[81%] '>
+			<div className='h-[81%]'>
 				<TitleWithLive title='EVENTOS' inLive />
 				<BoardDevice dataBody={arrayTableTravelsEvents?.results} />
 			</div>

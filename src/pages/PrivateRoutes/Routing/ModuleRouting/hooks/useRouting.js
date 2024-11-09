@@ -130,8 +130,13 @@ export const useRouting = () => {
 	const [permissionForGeoFences, setPermissionForGeoFences] = useState([])
 
 	// Adding places location start and location end
-	const addPlaces = ({ location, data }) => {
-		const { geometry } = calculateCircle(data?.geometry?.location?.lat(), data?.geometry?.location?.lng())
+	const addPlaces = ({ location, data, radius }) => {
+		const { geometry } = calculateCircle({
+			lat: data?.geometry?.location?.lat(),
+			lng: data?.geometry?.location?.lng(),
+			radius
+		})
+
 		setSelectedPlace(data)
 		setObjectLocations((state) => ({
 			...state,
@@ -168,6 +173,21 @@ export const useRouting = () => {
 					},
 					status: 'create'
 				}
+			}
+		}))
+	}
+
+	const handleChangeRadiusCircle = ({ location, lat, lng, radius }) => {
+		const { geometry } = calculateCircle({
+			lat,
+			lng,
+			radius
+		})
+		setObjectLocations((state) => ({
+			...state,
+			[location]: {
+				...state[location],
+				location: geometry
 			}
 		}))
 	}
@@ -298,9 +318,10 @@ export const useRouting = () => {
 		objectLocations,
 		setDataDirections,
 		changeStatePermission,
-		handleChangePermissionsForLocationStartAndEnd,
 		getPermissionsForRouting,
+		handleChangeRadiusCircle,
 		handleChangeMarkerDraggable,
-		handleChangePermissionForGeoFences
+		handleChangePermissionForGeoFences,
+		handleChangePermissionsForLocationStartAndEnd
 	}
 }

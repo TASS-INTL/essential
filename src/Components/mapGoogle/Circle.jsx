@@ -67,7 +67,7 @@ const useCircle = (props) => {
 		if (!circle) return
 
 		// Add event listeners
-		const gme = google.maps.event
+		const googleMapsEvents = google.maps.event
 		;[
 			['click', 'onClick'],
 			['drag', 'onDrag'],
@@ -76,22 +76,24 @@ const useCircle = (props) => {
 			['mouseover', 'onMouseOver'],
 			['mouseout', 'onMouseOut']
 		].forEach(([eventName, eventCallback]) => {
-			gme.addListener(circle, eventName, (e) => {
+			googleMapsEvents.addListener(circle, eventName, (e) => {
 				const callback = callbacks.current[eventCallback]
 				if (callback) callback(e)
 			})
 		})
-		gme.addListener(circle, 'radius_changed', () => {
+
+		googleMapsEvents.addListener(circle, 'radius_changed', () => {
 			const newRadius = circle.getRadius()
 			callbacks.current.onRadiusChanged?.(newRadius)
 		})
-		gme.addListener(circle, 'center_changed', () => {
+
+		googleMapsEvents.addListener(circle, 'center_changed', () => {
 			const newCenter = circle.getCenter()
 			callbacks.current.onCenterChanged?.(newCenter)
 		})
 
 		return () => {
-			gme.clearInstanceListeners(circle)
+			googleMapsEvents.clearInstanceListeners(circle)
 		}
 	}, [circle])
 

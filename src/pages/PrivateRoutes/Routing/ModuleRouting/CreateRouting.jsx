@@ -24,6 +24,7 @@ export const CreateRouting = () => {
 		permissionsData,
 		setDataDirections,
 		changeStatePermission,
+		handleChangeRadiusCircle,
 		handleChangePermissionForGeoFences,
 		handleChangePermissionsForLocationStartAndEnd,
 		handleChangeMarkerDraggable
@@ -37,7 +38,7 @@ export const CreateRouting = () => {
 	return (
 		<div className='h-[95%]'>
 			<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
-				<div className='flex h-full'>
+				<div className='flex h-full gap-3'>
 					{/* MAP */}
 					<div className='w-[40%]'>
 						<MapGoogle state={state} dispatch={dispatch} selectedPlace={selectedPlace} showDrawingManager>
@@ -56,9 +57,12 @@ export const CreateRouting = () => {
 										lng: objectLocations?.location_start?.market?.location?.coordinates[0]
 									}}
 									location='location_start'
-									permissionsData={permissionsData?.data?.data}
+									permissionsData={
+										objectLocations?.location_start?.permissions || permissionsData?.data?.data
+									}
 									handleChangePermissions={handleChangePermissionsForLocationStartAndEnd}
 									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
+									handleChangeRadiusCircle={handleChangeRadiusCircle}
 								/>
 							)}
 							{/* marker and geofence of the location end */}
@@ -69,9 +73,12 @@ export const CreateRouting = () => {
 										lng: objectLocations?.location_end?.market?.location?.coordinates[0]
 									}}
 									location='location_end'
-									permissionsData={permissionsData?.data?.data}
+									permissionsData={
+										objectLocations?.location_end?.permissions || permissionsData?.data?.data
+									}
 									handleChangePermissions={handleChangePermissionsForLocationStartAndEnd}
 									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
+									handleChangeRadiusCircle={handleChangeRadiusCircle}
 								/>
 							)}
 							{/* permissions modal in the geofences */}

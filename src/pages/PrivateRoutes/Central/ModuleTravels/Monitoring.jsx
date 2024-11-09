@@ -1,15 +1,14 @@
 import React from 'react'
 
-import { useLocation, useParams } from 'react-router-dom'
 import { arrayTapMonitoring, TapBottons } from '@/Components/TapBottons'
-
+import { useLocation, useParams } from 'react-router-dom'
 
 export const Monitoring = () => {
 	const location = useLocation()
 	const { idTravel } = useParams()
 
 	return (
-		<>
+		<div className='absolute top-0 right-0 bg-white h-full w-3/5 p-3'>
 			<TapBottons
 				location={location}
 				idDevice={idTravel}
@@ -48,6 +47,6 @@ export const Monitoring = () => {
 					))}
 				</tbody>
 			</table> */}
-		</>
+		</div>
 	)
 }

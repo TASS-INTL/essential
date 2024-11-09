@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { LoaderComponent, ModalComponent } from '@/Components'
+import { ErrorComponent, LoaderComponent, ModalComponent } from '@/Components'
 import { BoardDevice } from '@/Components/BoardDevice'
 import { InputSearch } from '@/Components/InputSearch'
 import { Button } from '@mui/material'
@@ -19,10 +19,12 @@ export const TableServiceClientScreen = () => {
 
 	if (dataTableServicesClient.isLoading) return <LoaderComponent />
 
+	if (dataTableServicesClient.isError) return <ErrorComponent error={dataTableServicesClient.error.message} />
+
 	const HandlePagination = (data) => {}
 
 	return (
-		<>
+		<div className='px-16'>
 			<div className='flex justify-between pt-5 py-20'>
 				<Button variant='contained' onClick={handleOpen}>
 					Crear Servicio
@@ -37,6 +39,6 @@ export const TableServiceClientScreen = () => {
 					<CreateService />
 				</ModalComponent>
 			)}
-		</>
+		</div>
 	)
 }

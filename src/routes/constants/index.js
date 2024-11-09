@@ -18,6 +18,7 @@ export const routesPrivate = {
 	tableServicesMasterScreen: 'table-services-master-screen',
 	tableServicesClientScreen: 'table-services-client-screen',
 	// TRAVELS
+	reports: 'reports',
 	travels: 'travels',
 	monitoring: 'monitoring',
 	createTravel: 'create-travel',

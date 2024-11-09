@@ -37,19 +37,41 @@ export const CreateService = () => {
 		dataPreCreateService
 	} = useServiceClient()
 
-	if (dataPreCreateService?.isLoading) return <LoaderComponent />
+	if (dataPreCreateService?.isLoading || dataRoute?.isLoading) return <LoaderComponent />
 
-	if (dataPreCreateService?.isError) return <ErrorComponent error={dataPreCreateService.massage} />
+	if (dataPreCreateService?.isError || dataRoute?.isError)
+		return <ErrorComponent error={dataPreCreateService.massage} />
+
+	console.log('dataRoute?.data?.data --> ', dataRoute?.data?.data)
 
 	return (
 		<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
-			<div className='pt-2 px-2 h-[95%]'>
+			<div className='pt-1 px-2 h-[95%]'>
 				<ModalComponent handleOpen={open} HandleClose={handleOpen} titleModal='Creacion de ruta'>
 					<CreateRouting />
 				</ModalComponent>
 				<div className='flex h-full'>
 					<div className='w-[40%]'>
-						<MapGoogle>
+						<MapGoogle
+						// selectedPlace={
+						// 	dataRoute?.data?.data
+						// 		? {
+						// 				geometry: {
+						// 					viewport: {
+						// 						Gh: {
+						// 							hi: dataRoute?.data?.data.viewport.east,
+						// 							lo: dataRoute?.data?.data.viewport.north
+						// 						},
+						// 						ei: {
+						// 							hi: dataRoute?.data?.data.viewport.south,
+						// 							lo: dataRoute?.data?.data.viewport.west
+						// 						}
+						// 					}
+						// 				}
+						// 			}
+						// 		: null
+						// }
+						>
 							{dataRoute?.data?.data?.coordinatesroute && (
 								<Polyline
 									strokeWeight={7}
@@ -82,10 +104,10 @@ export const CreateService = () => {
 							)}
 						</MapGoogle>
 					</div>
-					<div className='w-[60%] overflow-y-scroll'>
+					<div className='w-[60%] overflow-y-scroll px-3'>
 						<form onSubmit={handleSubmit(handleCreateService)} className='flex flex-col'>
 							{/* DATES */}
-							<div className='flex mt-5'>
+							<div className='flex'>
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
 									<DemoContainer class='flex' components={['DateTimePicker', 'DateTimePicker']}>
 										<div className='flex gap-5'>
@@ -104,14 +126,14 @@ export const CreateService = () => {
 								</LocalizationProvider>
 							</div>
 							{/* select routing */}
-							<div className='flex mt-5  justify-between'>
+							<div className='flex mt-3  justify-between'>
 								<div className='w-[70%] flex  items-center'>
 									<SelectComponent
 										color
 										option='name_routing'
 										name='id_route'
 										register={register}
-										label='Rutas'
+										label='Rutas para el viaje'
 										arrayOptions={dataPreCreateService?.data?.data?.routes}
 									/>
 								</div>
@@ -176,7 +198,7 @@ export const CreateService = () => {
 							</div>
 							{/* dates driver  */}
 							<h2 className='py-2 text-center'>DATOS DEL CONDUCTOR</h2>
-							<div className='flex gap-4 flex-wrap'>
+							<div className='flex gap-2 flex-wrap'>
 								<InputComponent
 									required
 									name='carrier.driver.email'
@@ -255,8 +277,11 @@ export const CreateService = () => {
 								/>
 							</div>
 							{/* remarks */}
-
-							<RemarksInput text='Quieres dar alguna indicacion adicional ?' register={register} />
+							<RemarksInput
+								text='Quieres dar alguna indicacion adicional ?'
+								register={register}
+								nameRegister='remarks'
+							/>
 							{/* SEND FORM */}
 							<div className='flex justify-center pt-6 '>
 								<InputSubmitComponent text='CREAR SERVICIO' />

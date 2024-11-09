@@ -1,5 +1,7 @@
 import React, { useContext } from 'react'
 
+import { useAuthProvider } from '@/pages/auth/hooks/useAuthProvider'
+import { userStore } from '@/store/userStore'
 import { BsCurrencyDollar, BsShield } from 'react-icons/bs'
 import { FiCreditCard } from 'react-icons/fi'
 import { MdOutlineCancel } from 'react-icons/md'
@@ -34,11 +36,15 @@ export const userProfileData = [
 
 const UserProfile = () => {
 	const { currentColor } = useContext(SocketContext)
+	const userData = userStore((state) => state.userData)
+	const { logout } = useAuthProvider()
+
+	console.log('userData-->', userData)
 
 	return (
 		<div className='nav-item absolute right-1 top-16 bg-[#42464D] p-8 rounded-lg w-96 z-20'>
 			<div className='flex justify-between items-center'>
-				<p className='font-semibold text-lg text-white '>User Profile</p>
+				<p className='font-semibold text-lg text-white '>Perfil de Usuario</p>
 				<Button
 					icon={<MdOutlineCancel />}
 					color='rgb(153, 171, 180)'
@@ -50,9 +56,9 @@ const UserProfile = () => {
 			<div className='flex gap-5 items-center mt-6 border-color border-b-1 pb-6'>
 				{/* <img className='rounded-full h-24 w-24' src={avatar} alt='user-profile' /> */}
 				<div>
-					<p className='font-semibold text-xl text-white '> Marlon asprilla </p>
-					<p className='text-white text-sm '> Administrator </p>
-					<p className='text-white text-sm font-semibold '> info@shop.com </p>
+					<p className='font-semibold text-xl text-white '> {userData.name} </p>
+					<p className='text-white text-sm '> {userData.typeUser} </p>
+					<p className='text-white text-sm font-semibold '> {userData.email} </p>
 				</div>
 			</div>
 			<div>
@@ -77,7 +83,14 @@ const UserProfile = () => {
 				))}
 			</div>
 			<div className='mt-5'>
-				<Button color='white' bgColor={currentColor} text='Logout' borderRadius='10px' width='full' />
+				<button
+					type='button'
+					onClick={logout}
+					style={{ backgroundColor: currentColor, color: 'white', borderRadius: '10px' }}
+					className='p-3 w-full hover:drop-shadow-xl'
+				>
+					Cerrar sesion
+				</button>
 			</div>
 		</div>
 	)
