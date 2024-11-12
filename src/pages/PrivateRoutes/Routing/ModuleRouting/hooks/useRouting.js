@@ -207,7 +207,7 @@ export const useRouting = () => {
 	const processingStations = () => {
 		const stationProcesed = []
 		let count = 2
-		if (state.now.length > 0) {
+		if (state.now?.length > 0) {
 			state.now.forEach((element, index) => {
 				const locationCoordinates = []
 				element.snapshot.path.forEach((item) => {

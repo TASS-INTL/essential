@@ -42,8 +42,6 @@ export const CreateService = () => {
 	if (dataPreCreateService?.isError || dataRoute?.isError)
 		return <ErrorComponent error={dataPreCreateService.massage} />
 
-	console.log('dataRoute?.data?.data --> ', dataRoute?.data?.data)
-
 	return (
 		<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
 			<div className='pt-1 px-2 h-[95%]'>

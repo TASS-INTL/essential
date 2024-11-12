@@ -76,7 +76,7 @@ export const useAuthProvider = () => {
 			} else {
 				setUserData({
 					...userData,
-					tokenRegister: response?.data?.token
+					tokenRegister: response?.data[0]?.token
 				})
 				navigate(pathNavigation.personalData)
 			}

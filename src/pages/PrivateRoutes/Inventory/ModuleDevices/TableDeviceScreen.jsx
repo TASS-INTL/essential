@@ -40,7 +40,7 @@ export const TableDeviceScreen = () => {
 				</div>
 			</div>
 			<TitleWithLive title='DISPOSITIVOS' inLive />
-			{arrayTabledevice.results.length > 0 && (
+			{arrayTabledevice?.results?.length > 0 && (
 				<BoardDevice dataBody={arrayTabledevice?.results} to='devices-screen/device' />
 			)}
 		</div>

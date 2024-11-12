@@ -6,7 +6,7 @@ export const calculateCircle = ({ lat, lng, radius }) => {
 }
 
 export function trimText(texto, maxLongitud) {
-	if (texto.length > maxLongitud) {
+	if (texto?.length > maxLongitud) {
 		return texto.substring(0, maxLongitud) + '...'
 	} else {
 		return texto

@@ -56,7 +56,6 @@ export const useTravels = () => {
 		const response = await sendBinnacle.mutateAsync({ data, idTravel })
 		response?.completed && showToast('se a creado de manera exitosa la bitacora', 'success')
 		response?.error && showToast('❌ Algo ha salido mal al crear la bitacora: ' + response?.message, 'error')
-		console.log('responseSendBinnacleTravel -->', response)
 	}
 
 	return {

@@ -129,7 +129,7 @@ export const UndoRedoControl = ({ drawingManager, dispatch, state }) => {
 		<div className='mt-1'>
 			<button
 				onClick={() => dispatch({ type: DrawingActionKind.UNDO })}
-				disabled={!state.past.length}
+				disabled={!state.past?.length}
 				className='cursor-pointer bg-white opacity-[.5] p-[2px] mr-1'
 			>
 				<svg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'>
@@ -138,7 +138,7 @@ export const UndoRedoControl = ({ drawingManager, dispatch, state }) => {
 			</button>
 			<button
 				onClick={() => dispatch({ type: DrawingActionKind.REDO })}
-				disabled={!state.future.length}
+				disabled={!state.future?.length}
 				className='cursor-pointer bg-white opacity-[.5] p-[2px]'
 			>
 				<svg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'>

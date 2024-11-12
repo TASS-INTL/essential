@@ -39,8 +39,6 @@ const UserProfile = () => {
 	const userData = userStore((state) => state.userData)
 	const { logout } = useAuthProvider()
 
-	console.log('userData-->', userData)
-
 	return (
 		<div className='nav-item absolute right-1 top-16 bg-[#42464D] p-8 rounded-lg w-96 z-20'>
 			<div className='flex justify-between items-center'>

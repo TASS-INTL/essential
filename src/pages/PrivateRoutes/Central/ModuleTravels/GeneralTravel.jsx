@@ -15,8 +15,6 @@ export const GeneralTravel = () => {
 
 	if (travelInfo === null) return <LoaderComponent />
 
-	if (travelInfo === null) return <LoaderComponent />
-
 	return (
 		<div className='absolute top-0 right-0 bg-white h-full w-3/5 p-3'>
 			<TapBottons

@@ -73,6 +73,11 @@ export const useAuth = () => {
 			return showToast('❌ Debes ingresar todos los campos', 'error')
 		}
 
+		valuePersonalData.phone_number = {
+			code: '+57',
+			number: '3225713623'
+		}
+
 		const response = await registerPersonalData(valuePersonalData)
 
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')

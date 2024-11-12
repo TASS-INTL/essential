@@ -22,8 +22,6 @@ export const Reports = () => {
 		formState: { errors }
 	} = useForm()
 
-	console.log('trevelInfo --> ', travelInfo)
-
 	return (
 		<div className='absolute top-0 right-0 bg-white h-full w-3/5 p-3'>
 			<TapBottons

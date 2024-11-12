@@ -5,7 +5,7 @@ import 'react-phone-number-input/style.css'
 import { logoTass } from '@/assets/assetsplatform/PrivateRoutes'
 import { InputComponent, InputSubmitComponent, ModalComponent, SelectComponent } from '@/Components'
 import { useForm } from 'react-hook-form'
-import PhoneInput from 'react-phone-number-input'
+import PhoneInput, { formatPhoneNumberIntl } from 'react-phone-number-input'
 
 import { arrayOptions, typeDocument, typeUser } from './constants'
 import { useAuth } from './hooks/useLogin'
@@ -37,6 +37,8 @@ export const PersonalDataScreen = () => {
 	useEffect(() => {
 		watch().type_person === 'Juridica' ? setFlagInput(true) : setFlagInput(false)
 	}, [watch().type_person])
+
+	console.log(formatPhoneNumberIntl(value))
 
 	return (
 		<div className='w-full min-h-screen  items-center justify-center  space-x-6 '>
@@ -122,7 +124,7 @@ export const PersonalDataScreen = () => {
 								color
 								required
 								register={register}
-								label='Ciudad'
+								label='Pais'
 								name='country'
 								type='text'
 							/>
@@ -171,7 +173,7 @@ export const PersonalDataScreen = () => {
 								<PhoneInput
 									international
 									countryCallingCodeEditable={false}
-									defaultCountry='US'
+									defaultCountry='CO'
 									placeholder='Enter phone number'
 									value={value}
 									onChange={setValue}
@@ -190,7 +192,7 @@ export const PersonalDataScreen = () => {
 							<SelectComponent
 								register={register}
 								label='Tipo de usuario'
-								name='type_role'
+								name='type_master'
 								arrayOptions={typeUser}
 								option='name'
 							/>
