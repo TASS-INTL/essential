@@ -17,10 +17,10 @@ export const Events = () => {
 	if (arrayTableInventoryEvents.error) return <ErrorComponent error={arrayTableInventoryEvents.message} />
 
 	return (
-		<Container>
+		<div className='px-10'>
 			<TapBottons location={location} idDevice={idDevice} path='devices-screen/device' data={arrayTapInventory} />
 			<TitleWithLive title='EVENTOS' inLive />
 			<BoardDevice dataBody={arrayTableInventoryEvents?.data?.results} />
-		</Container>
+		</div>
 	)
 }

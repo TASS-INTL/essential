@@ -37,6 +37,11 @@ export const useUsers = () => {
 
 	const handleCreateUser = async (data, event) => {
 		event.preventDefault()
+
+		data.phone_number = {
+			code: '57',
+			number: '123456789'
+		}
 		const newUser = data
 		const response = await createUser.mutateAsync(newUser)
 		if (response.completed) {

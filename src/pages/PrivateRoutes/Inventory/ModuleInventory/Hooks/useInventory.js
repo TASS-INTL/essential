@@ -49,7 +49,7 @@ export const useInventory = () => {
 	})
 	const handleSendComand = async (data) => {
 		const response = await comandDevice.mutateAsync(data)
-		response.completed && showToast('Se a enviado el comando', 'warning')
+		response?.completed && showToast('Se a enviado el comando', 'warning')
 		response?.error && showToast('❌ Algo ha salido mal al enviar el comando :' + response?.message, 'error')
 	}
 
@@ -61,7 +61,7 @@ export const useInventory = () => {
 
 	const handleSendComandTest = async (data) => {
 		const response = await comandDeviceTest.mutateAsync(data)
-		response.completed && showToast('Se a enviado el comando', 'warning')
+		response?.completed && showToast('Se a enviado el comando', 'warning')
 		response?.error && showToast('❌ Algo ha salido mal al enviar el comando :' + response?.message, 'error')
 	}
 

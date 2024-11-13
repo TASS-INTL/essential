@@ -17,7 +17,7 @@ export const arrayTapMonitoring = [
 
 export const TapBottons = ({ location, idDevice, path, data }) => {
 	return (
-		<div className='p-2'>
+		<>
 			{!location.pathname.includes('table') && (
 				<ul className='flex gap-2'>
 					{data?.map((item) => (
@@ -34,6 +34,6 @@ export const TapBottons = ({ location, idDevice, path, data }) => {
 					))}
 				</ul>
 			)}
-		</div>
+		</>
 	)
 }

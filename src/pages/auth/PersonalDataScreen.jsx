@@ -38,8 +38,6 @@ export const PersonalDataScreen = () => {
 		watch().type_person === 'Juridica' ? setFlagInput(true) : setFlagInput(false)
 	}, [watch().type_person])
 
-	console.log(formatPhoneNumberIntl(value))
-
 	return (
 		<div className='w-full min-h-screen  items-center justify-center  space-x-6 '>
 			<div className='min-h-screen flex  flex-row justify-center items-center'>

@@ -50,26 +50,7 @@ export const CreateService = () => {
 				</ModalComponent>
 				<div className='flex h-full'>
 					<div className='w-[40%]'>
-						<MapGoogle
-						// selectedPlace={
-						// 	dataRoute?.data?.data
-						// 		? {
-						// 				geometry: {
-						// 					viewport: {
-						// 						Gh: {
-						// 							hi: dataRoute?.data?.data.viewport.east,
-						// 							lo: dataRoute?.data?.data.viewport.north
-						// 						},
-						// 						ei: {
-						// 							hi: dataRoute?.data?.data.viewport.south,
-						// 							lo: dataRoute?.data?.data.viewport.west
-						// 						}
-						// 					}
-						// 				}
-						// 			}
-						// 		: null
-						// }
-						>
+						<MapGoogle>
 							{dataRoute?.data?.data?.coordinatesroute && (
 								<Polyline
 									strokeWeight={7}

@@ -1,9 +1,10 @@
 import React from 'react'
-import { useUsers } from './Hooks/useUser'
+
 import { ErrorComponent, LoaderComponent } from '@/Components'
 import { Container } from '@/Components/Container'
 import { FormCreateUser } from '@/Components/FormCreateUser'
 
+import { useUsers } from './Hooks/useUser'
 
 export const UsersScreen = () => {
 	//
@@ -26,7 +27,7 @@ export const UsersScreen = () => {
 
 	return (
 		<Container>
-			<div className='m-auto mt-8 rounded-1xl'>
+			<div className='m-auto mt-8 mx-16 rounded-1xl'>
 				<div className='flex justify-between px-0 py-4 pt-10'>
 					<h4 className=' text-pretty text-2xl'>Usuarios</h4>
 					<button

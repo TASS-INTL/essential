@@ -115,6 +115,7 @@ export const RoutesPrivate = () => {
 
 				{/* Users */}
 				<Route path={routesPrivate.usersScreen} element={<UsersScreen />} />
+				<Route path={'/admin-screen'} element={<CentralScreen NameMap='Admin' title='Administrador' />} />
 
 				{/* ============ MODULE CHAT =============== */}
 

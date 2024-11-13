@@ -99,27 +99,6 @@ export const SideBarComponent = () => {
 							</li>
 						</NavLink>
 					))}
-					{/* <li
-						className={`
-                     flex 
-                     items-center 
-                     p-3  
-                     dark:text-white  
-                     rounded-lg 
-                     cursor-pointer 
-                     hover:bg-lightWhite 
-                     mt-1 ${selectButton === true && 'bg-lightWhite'} `}
-						onClick={logout}
-					>
-						<img
-							src={icons['SesionLeft']}
-							alt='icon'
-							className='w-[24px] h-[20px] object-contain cursor-pointer'
-						/>
-						<span className={`${!open && 'hidden'} origin-left duration-200 ms-3 text-sm`}>
-							Cerrar sesion
-						</span>
-					</li> */}
 				</ul>
 			</div>
 		</aside>
