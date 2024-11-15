@@ -14,11 +14,13 @@ export const FormCreateUser = ({
 	handleCreateUser,
 	handleUpdateUser
 }) => {
-	const { register, handleSubmit } = useForm()
+	const { register, handleSubmit } = useForm(userUpdate ? userUpdate : '')
 
 	const handleSendDataNewUser = (data, event) => {
 		methodForm ? handleCreateUser(data, event) : handleUpdateUser({ ...data, _id: userUpdate._id }, event)
 	}
+
+	console.log('userUpdate-->', userUpdate)
 
 	return (
 		<ModalComponent

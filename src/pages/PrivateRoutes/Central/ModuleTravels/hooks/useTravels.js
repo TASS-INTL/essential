@@ -2,9 +2,12 @@ import api from '@/Api/api'
 import { METHODS_API } from '@/Api/constantsApi'
 import { showToast } from '@/helpers/toast'
 import { queryClient } from '@/routes/AppRouter'
+import { travelsStore } from '@/store/travelsStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 export const useTravels = () => {
+	const coordinates = travelsStore((state) => state.coordinates)
+
 	const fetchDataTableTravels = (page, search) =>
 		useQuery({
 			queryKey: ['getTravelsList', page, search],
@@ -53,8 +56,12 @@ export const useTravels = () => {
 	})
 
 	const handleSendBinnacleTravel = async (data, idTravel) => {
+		data.coordinates = [coordinates.lat, coordinates.lng]
+
 		const response = await sendBinnacle.mutateAsync({ data, idTravel })
-		response?.completed && showToast('se a creado de manera exitosa la bitacora', 'success')
+		if (response?.completed) {
+			showToast('se a creado de manera exitosa la bitacora', 'success')
+		}
 		response?.error && showToast('❌ Algo ha salido mal al crear la bitacora: ' + response?.message, 'error')
 	}
 

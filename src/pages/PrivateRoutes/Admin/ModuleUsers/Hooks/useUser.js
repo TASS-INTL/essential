@@ -61,7 +61,10 @@ export const useUsers = () => {
 		event.preventDefault()
 
 		const response = await updateUser.mutateAsync({ idUser: data._id, data })
-		if (response.completed) {
+
+		console.log(' update user -->', response)
+
+		if (response?.completed) {
 			showToast('Se a Actualizado el usuario de manera exitosa', 'success')
 			setModalVisible(false)
 		}
@@ -71,7 +74,7 @@ export const useUsers = () => {
 	const handleOpen = () => setModalVisible(!modalVisible)
 
 	const onPressUpdateUser = (idUserUpdate) => {
-		const userUpdate = fetchUserList?.data?.data[0]?.users?.find((element) => element._id === idUserUpdate)
+		const userUpdate = fetchUserList?.data?.data?.results?.users?.find((element) => element._id === idUserUpdate)
 		setUserUpdate(userUpdate)
 		setMethodForm(false)
 		setModalVisible(true)

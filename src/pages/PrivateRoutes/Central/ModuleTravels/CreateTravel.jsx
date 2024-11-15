@@ -29,6 +29,7 @@ export const CreateTravel = ({ dataForm }) => {
 		handleCreateTravel,
 		serviceRouteInformation,
 		objectLocations,
+		handleChangeRadiusCircle,
 		handleChangePermissionsForLocationStartAndEnd,
 		handleChangeMarkerDraggable
 	} = useCreateTravel(dataForm)
@@ -58,6 +59,7 @@ export const CreateTravel = ({ dataForm }) => {
 									}
 									handleChangePermissions={handleChangePermissionsForLocationStartAndEnd}
 									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
+									handleChangeRadiusCircle={handleChangeRadiusCircle}
 								/>
 							)}
 							{/* marker and geofence of the location end */}
@@ -75,6 +77,7 @@ export const CreateTravel = ({ dataForm }) => {
 									}
 									handleChangePermissions={handleChangePermissionsForLocationStartAndEnd}
 									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
+									handleChangeRadiusCircle={handleChangeRadiusCircle}
 								/>
 							)}
 							{!!serviceRouteInformation?.data?.data?.coordinatesroute && (

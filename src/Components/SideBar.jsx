@@ -46,10 +46,10 @@ export const icons = {
 
 export const SideBarComponent = () => {
 	const { pathname } = useLocation()
-	const { logout } = useAuthProvider()
 	const [open, setOpen] = useState(false)
-	const [selectButton, setSelectButton] = useState(0)
 	const userData = userStore((state) => state.userData)
+
+	console.log()
 
 	return (
 		<aside
@@ -81,10 +81,6 @@ export const SideBarComponent = () => {
                             gap-x-4
                             ${menu.gap ? 'mt-9' : 'mt-2'}
 									 ${pathname.includes(menu.pathName) && 'bg-lightWhite'}`}
-								onClick={() => {
-									menu.title === 'Cerrar sesion' && logout()
-									setSelectButton(index)
-								}}
 							>
 								<div className='flex'>
 									<img

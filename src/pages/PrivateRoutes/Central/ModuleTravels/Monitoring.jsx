@@ -8,7 +8,7 @@ export const Monitoring = () => {
 	const { idTravel } = useParams()
 
 	return (
-		<div className='absolute top-0 right-0 bg-white h-full w-3/5 p-3'>
+		<div className='absolute top-0 right-0 bg-white h-full w-3/5 p-3 pt-6'>
 			<TapBottons
 				location={location}
 				idDevice={idTravel}

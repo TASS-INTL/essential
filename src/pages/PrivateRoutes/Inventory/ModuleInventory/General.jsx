@@ -2,7 +2,6 @@ import React from 'react'
 
 import { battery, padlockClose, padlockOpen } from '@/assets/assetsplatform'
 import { ErrorComponent, LoaderComponent } from '@/Components'
-import { Container } from '@/Components/Container'
 import { MapGoogle } from '@/Components/mapGoogle/Map'
 import { MarkerComponent } from '@/Components/mapGoogle/Marker'
 import { arrayTapInventory, TapBottons } from '@/Components/TapBottons'
@@ -80,8 +79,8 @@ export const General = () => {
 						<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
 							<MapGoogle width='100%'>
 								<MarkerComponent
-									lat={deviceInfo?.data.general?.last_location?.lat}
-									lng={deviceInfo?.data.general?.last_location?.lng}
+									lat={deviceInfo?.data.general?.last_location?.lng}
+									lng={deviceInfo?.data.general?.last_location?.lat}
 								/>
 							</MapGoogle>
 						</APIProvider>
@@ -143,12 +142,12 @@ export const General = () => {
 						</div>
 					</div>
 				</section>
-				{/* <section>
+				<section>
 					<h3 className='pt-10'>COMUNICATION</h3>
 				</section>
 				<section>
 					<h3 className='pt-10'>IOT CORE</h3>
-				</section> */}
+				</section>
 			</div>
 		</div>
 	)

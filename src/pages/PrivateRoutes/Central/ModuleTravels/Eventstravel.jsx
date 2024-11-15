@@ -17,7 +17,7 @@ export const EventsTravel = () => {
 	if (arrayTableTravelsEvents?.error) return <ErrorComponent error={arrayTableTravelsEvents.message} />
 
 	return (
-		<div className='absolute top-0 right-0 h-full bg-white w-3/5 p-3'>
+		<div className='absolute top-0 right-0 h-full bg-white w-3/5 p-3 pt-6'>
 			<TapBottons
 				location={location}
 				idDevice={idTravel}

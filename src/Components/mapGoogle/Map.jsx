@@ -20,7 +20,7 @@ export const MapGoogle = ({ width, state, dispatch, selectedPlace, showDrawingMa
 				{children}
 			</Map>
 			{!!showDrawingManager && (
-				<MapControl position={ControlPosition.TOP_CENTER}>
+				<MapControl position={ControlPosition.TOP_LEFT}>
 					<UndoRedoControl drawingManager={drawingManager} dispatch={dispatch} state={state} />
 				</MapControl>
 			)}

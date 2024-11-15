@@ -1,8 +1,9 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useReducer } from 'react'
 
 import { MapGoogle } from '@/Components/mapGoogle/Map'
 import { Polygon } from '@/Components/mapGoogle/Polygon'
 import { Polyline } from '@/Components/mapGoogle/Polyline'
+import { useMapLogic } from '@/hooks/map/useMap'
 import { travelsStore } from '@/store/travelsStore'
 import { userStore } from '@/store/userStore'
 import { APIProvider } from '@vis.gl/react-google-maps'
@@ -14,13 +15,15 @@ import { SocketContextForNameSpace } from '../../sockets/socketForNameSpace'
 
 export const DetailTravel = () => {
 	const { idTravel } = useParams()
+	const { state, dispatch } = useMapLogic()
+	const travelInfo = travelsStore((state) => state.travelInfo)
+	const setCoordinates = travelsStore((state) => state.setCoordinates)
 	const { uid, tokenSesion } = userStore((state) => state.userData)
 	const setTravelInfo = travelsStore((state) => state.setTravelInfo)
+	const { socketForNameSpace } = useContext(SocketContextForNameSpace)
+	const setRealTimeCoordinates = travelsStore((state) => state.setRealTimeCoordinates)
 	const setArrayTableTravelsEvents = travelsStore((state) => state.setArrayTableTravelsEvents)
 	const setArrayTableTravelsMonitoring = travelsStore((state) => state.setArrayTableTravelsMonitoring)
-	const setRealTimeCoordinates = travelsStore((state) => state.setRealTimeCoordinates)
-	const { socketForNameSpace } = useContext(SocketContextForNameSpace)
-	const travelInfo = travelsStore((state) => state.travelInfo)
 
 	// conexion con el socket para las diferentes salas
 	useEffect(() => {
@@ -101,11 +104,20 @@ export const DetailTravel = () => {
 		}
 	}, [])
 
+	useEffect(() => {
+		if (state?.now[0]?.geometry?.position) {
+			setCoordinates({
+				lat: state?.now[0]?.geometry?.position.lat(),
+				lng: state?.now[0]?.geometry?.position.lng()
+			})
+		}
+	}, [state])
+
 	return (
 		<>
-			<div className='h-full relative'>
+			<div className='h-full pt-5 pl-8 relative'>
 				<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
-					<MapGoogle>
+					<MapGoogle showDrawingManager state={state} dispatch={dispatch}>
 						{!!travelInfo?.data?.routing?.coordinatesroute && (
 							<Polyline
 								strokeWeight={7}

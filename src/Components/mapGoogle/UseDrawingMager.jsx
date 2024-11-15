@@ -19,7 +19,7 @@ export function useDrawingManager(showDrawingManager) {
 			drawingControlOptions: {
 				position: google.maps.ControlPosition.BLOCK_START_INLINE_START,
 				drawingModes: [
-					// google.maps.drawing.OverlayType.MARKER,
+					google.maps.drawing.OverlayType.MARKER,
 					// google.maps.drawing.OverlayType.CIRCLE,
 					google.maps.drawing.OverlayType.POLYGON
 					// google.maps.drawing.OverlayType.POLYLINE,
