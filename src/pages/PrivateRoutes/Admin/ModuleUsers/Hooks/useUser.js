@@ -62,8 +62,6 @@ export const useUsers = () => {
 
 		const response = await updateUser.mutateAsync({ idUser: data._id, data })
 
-		console.log(' update user -->', response)
-
 		if (response?.completed) {
 			showToast('Se a Actualizado el usuario de manera exitosa', 'success')
 			setModalVisible(false)

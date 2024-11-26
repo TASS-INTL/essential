@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useReducer } from 'react'
 import { MapGoogle } from '@/Components/mapGoogle/Map'
 import { Polygon } from '@/Components/mapGoogle/Polygon'
 import { Polyline } from '@/Components/mapGoogle/Polyline'
+import { showToast } from '@/helpers/toast'
 import { useMapLogic } from '@/hooks/map/useMap'
 import { travelsStore } from '@/store/travelsStore'
 import { userStore } from '@/store/userStore'
@@ -37,6 +38,7 @@ export const DetailTravel = () => {
 
 		// Me suscribo a la sala del dispositivo para que me mande la informacion en tiempo real
 		socketForNameSpace?.on(SOCKET_EVENTS.R_INFO_TRAVEL, (data) => {
+			showToast('envio nueva data a la info del viaje', 'success')
 			setTravelInfo(data)
 		})
 
@@ -71,12 +73,12 @@ export const DetailTravel = () => {
 		})
 
 		// emitir para pedir los datos en tiempo real de la latitud y logitud del device
-		socketForNameSpace?.emit(SOCKET_EVENTS.REAL_TIME_MONITORING, {
-			id_user: uid,
-			id_travel: idTravel,
-			x_access_token: tokenSesion,
-			type_join: SOCKETS_ROOMS.ROOM_REAL_TIME_JOIN
-		})
+		// socketForNameSpace?.emit(SOCKET_EVENTS.REAL_TIME_MONITORING, {
+		// 	id_user: uid,
+		// 	id_travel: idTravel,
+		// 	x_access_token: tokenSesion,
+		// 	type_join: SOCKETS_ROOMS.ROOM_REAL_TIME_JOIN
+		// })
 
 		socketForNameSpace?.on(SOCKET_EVENTS.R_TRAVEL_MONITORING_REAL_TIME, (data) => {
 			setRealTimeCoordinates(data)
@@ -88,11 +90,17 @@ export const DetailTravel = () => {
 
 		return () => {
 			// Desconexion con la sala para dejar de pedir informacion acerca del viaje
-			socketForNameSpace?.emit(SOCKET_EVENTS.REAL_TIME_MONITORING, {
-				id_user: uid,
-				id_travel: idTravel,
-				x_access_token: tokenSesion,
-				type_join: SOCKETS_ROOMS.ROOM_REAL_TIME_LEAVE
+			// socketForNameSpace?.emit(SOCKET_EVENTS.REAL_TIME_MONITORING, {
+			// 	id_user: uid,
+			// 	id_travel: idTravel,
+			// 	x_access_token: tokenSesion,
+			// 	type_join: SOCKETS_ROOMS.ROOM_REAL_TIME_LEAVE
+			// })
+
+			socketForNameSpace?.on(SOCKET_EVENTS.LEFT_ROOM, (data) => {
+				showToast('desconectado correctamente de la sala: ' + data.type_, 'success')
+				socketForNameSpace.off(SOCKET_EVENTS.R_INFO_TRAVEL)
+				socketForNameSpace.off(SOCKET_EVENTS.LEFT_ROOM)
 			})
 
 			socketForNameSpace?.emit(SOCKET_EVENTS.LEAVE_ROOM, {

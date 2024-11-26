@@ -44,6 +44,8 @@ export const routesPrivate = {
 	dashboardScreen: 'dashboard-screen',
 	monitoringScreen: 'monitoring-screen',
 	detailInventoryScreen: 'detail-inventory-screen',
+	// ROUTING
+	routingScreen: 'routing-screen',
 	// INSTALLERS
 	installersScreen: 'installers-screen'
 }

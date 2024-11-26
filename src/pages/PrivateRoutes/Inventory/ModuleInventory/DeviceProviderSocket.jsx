@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 
 import { Container } from '@/Components/Container'
+import { showToast } from '@/helpers/toast'
 import { inventoryStore } from '@/store/inventoryStore'
 import { userStore } from '@/store/userStore'
 import { Outlet, useParams } from 'react-router-dom'
@@ -69,6 +70,7 @@ export const DeviceProviderSocket = () => {
 				x_access_token: tokenSesion,
 				type_join: SOCKETS_ROOMS.ROOM_DEVICE
 			})
+			showToast('desconectado de la sala del dispositivo: ' + `${idDevice}`, 'success')
 		}
 	}, [])
 

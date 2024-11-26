@@ -22,6 +22,10 @@ export const Reports = () => {
 		formState: { errors }
 	} = useForm()
 
+	const sendBinnacle = (data) => {
+		handleSendBinnacleTravel(data, idTravel)
+	}
+
 	return (
 		<div className='absolute top-0 right-0 bg-white h-full w-3/5 p-3 pt-6'>
 			<TapBottons
@@ -31,13 +35,8 @@ export const Reports = () => {
 				data={arrayTapMonitoring}
 			/>
 			<div>
-				<form
-					className='flex flex-col md:px-20'
-					onSubmit={handleSubmit((data) => {
-						handleSendBinnacleTravel(data, idTravel)
-					})}
-				>
-					<RemarksInput text='!Bitacora del viaje!' register={register} nameRegister='log' />
+				<form className='flex flex-col md:px-20' onSubmit={handleSubmit(sendBinnacle)}>
+					<RemarksInput text='!Notas de seguimiento!' register={register} nameRegister='log' />
 					{errors.email && showToast('❌ Ingresa correctamente el email ', 'error')}
 
 					<div className='my-3 flex flex-row justify-center items-center'>
@@ -46,7 +45,7 @@ export const Reports = () => {
 				</form>
 			</div>
 			<div className='p-5'>
-				<TitleWithLive title='BITACORAS' inLive />
+				<TitleWithLive title='Notas de seguimiento' inLive />
 				<BoardDevice dataBody={travelInfo?.data?.logs_register} />
 			</div>
 		</div>

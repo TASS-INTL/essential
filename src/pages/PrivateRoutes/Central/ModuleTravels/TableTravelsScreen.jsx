@@ -56,7 +56,7 @@ export const TableTravelsScreen = () => {
 						</div>
 						<div className='flex mt-3'>
 							<div className='h-3 w-full border border-blue-600 rounded-full '>
-								<div className={`pl-3 w-[${item?.distance?.progress}%] h-3 bg-blue-600 rounded-full`} />
+								<div className={`pl-3 w-[10%] h-3 bg-blue-600 rounded-full`} />
 							</div>
 						</div>
 						<div className='flex gap-4'>

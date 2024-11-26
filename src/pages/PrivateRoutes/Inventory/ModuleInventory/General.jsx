@@ -79,8 +79,8 @@ export const General = () => {
 						<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
 							<MapGoogle width='100%'>
 								<MarkerComponent
-									lat={deviceInfo?.data.general?.last_location?.lng}
-									lng={deviceInfo?.data.general?.last_location?.lat}
+									lat={deviceInfo?.data.general?.last_location?.lat}
+									lng={deviceInfo?.data.general?.last_location?.lng}
 								/>
 							</MapGoogle>
 						</APIProvider>

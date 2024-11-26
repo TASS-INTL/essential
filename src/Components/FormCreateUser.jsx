@@ -20,8 +20,6 @@ export const FormCreateUser = ({
 		methodForm ? handleCreateUser(data, event) : handleUpdateUser({ ...data, _id: userUpdate._id }, event)
 	}
 
-	console.log('userUpdate-->', userUpdate)
-
 	return (
 		<ModalComponent
 			handleOpen={modalVisible}

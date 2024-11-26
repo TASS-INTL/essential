@@ -68,7 +68,6 @@
       "zustand": "^4.4.7"
    },
    "devDependencies": {
-      "@tanstack/eslint-plugin-query": "^5.17.7",
       "@types/react": "^18.3.10",
       "@types/react-dom": "^18.3.0",
       "@vitejs/plugin-react-swc": "^3.5.0",
@@ -79,6 +78,7 @@
       "vite": "^5.4.8",
       "@ianvs/prettier-plugin-sort-imports": "4.3.1",
       "eslint": "^8.57.1",
+      "@tanstack/eslint-plugin-query": "^5.17.7",
       "eslint-config-standard": "^17.1.0",
       "eslint-plugin-import": "^2.31.0",
       "eslint-plugin-n": "^16.6.2",

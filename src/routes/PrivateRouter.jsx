@@ -159,6 +159,10 @@ export const RoutesPrivate = () => {
 
 				{/* Account */}
 				<Route path={routesPrivate.accountScreen} element={<Account />} />
+				<Route
+					path={routesPrivate.routingScreen}
+					element={<CentralScreen NameMap='Routing' title='Modulo de rutas' />}
+				/>
 
 				{/* ============ MODULE NOTIFICATIONS =============== */}
 

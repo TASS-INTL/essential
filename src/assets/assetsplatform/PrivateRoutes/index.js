@@ -10,6 +10,7 @@ import Inventory from './Inventory.svg'
 import logoTass from './logoblanco.svg'
 import Monitoring from './Monitoring.svg'
 import Notification from './Notification.svg'
+import Routings from './Routings.svg'
 import Services from './Services.svg'
 import ServicesClient from './ServicesClient.svg'
 import SesionLeft from './SesionLeft.svg'
@@ -35,5 +36,6 @@ export {
 	SesionLeft,
 	Notification,
 	factorydevices,
-	ServicesClient
+	ServicesClient,
+	Routings
 }

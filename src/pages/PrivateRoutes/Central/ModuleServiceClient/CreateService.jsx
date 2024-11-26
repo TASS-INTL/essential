@@ -150,7 +150,7 @@ export const CreateService = () => {
 								</div>
 							</div>
 							{/* transportista */}
-							<h2 className='py-2 text-center'>DATOS DEL TRANSPORTISTA</h2>
+							<h2 className='py-2 text-center'>DATOS DE LA EMPRESA TRANSPORTADORA</h2>
 							<div className='flex justify-between mt-1'>
 								<div className='w-[48%]'>
 									<InputComponent

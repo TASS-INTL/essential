@@ -14,6 +14,7 @@ import {
 	Inventory,
 	Monitoring,
 	Notification,
+	Routings,
 	Services,
 	ServicesClient,
 	SesionLeft,
@@ -21,7 +22,6 @@ import {
 	Travels,
 	Users
 } from '../assets/assetsplatform/PrivateRoutes'
-import { useAuthProvider } from '../pages/auth/hooks/useAuthProvider'
 import { userStore } from '../store/userStore'
 
 export const icons = {
@@ -41,15 +41,14 @@ export const icons = {
 	Inventory,
 	Testing,
 	Central,
-	Admin
+	Admin,
+	Routings
 }
 
 export const SideBarComponent = () => {
 	const { pathname } = useLocation()
 	const [open, setOpen] = useState(false)
 	const userData = userStore((state) => state.userData)
-
-	console.log()
 
 	return (
 		<aside
