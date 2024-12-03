@@ -15,7 +15,6 @@ export const TableServicesMasterScreen = () => {
 
 	if (dataTableServicesMaster?.isLoading) return <LoaderComponent />
 
-	console.log(dataTableServicesMaster)
 	if (dataTableServicesMaster?.error) return <ErrorComponent error={dataTableServicesMaster.error.message} />
 
 	const handleSubmitPagination = () => {}
