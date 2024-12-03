@@ -1,6 +1,8 @@
+import { useAuthProvider } from '@/pages/auth/hooks/useAuthProvider'
+import { userStore } from '@/store/userStore'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-import { SideBarComponent } from '../Components'
+import { LoaderComponent, SideBarComponent } from '../Components'
 import Navbar from '../Components/navBar'
 import { pathNavigation } from '../pages/auth/constants'
 import { Account } from '../pages/PrivateRoutes/Account/ModuleAccount/Account'
@@ -54,6 +56,15 @@ export const PrivateRouter = ({ isAuthenticated }) => {
 export const RoutesPrivate = () => {
 	const setArrayTabledevice = deviceStore((state) => state.setArrayTabledevice)
 	const setArrayTableTravels = travelsStore((state) => state.setArrayTableTravels)
+	const { queryUserToken, logout } = useAuthProvider()
+
+	const userHasToken = queryUserToken()
+
+	if (userHasToken?.isLoading) return <LoaderComponent />
+
+	if (userHasToken.error) {
+		logout()
+	}
 
 	return (
 		<div className='flex relative h-screen w-screen bg-[#e6e6e6]'>

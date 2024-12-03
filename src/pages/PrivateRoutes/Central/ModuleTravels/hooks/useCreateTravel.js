@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import api from '@/Api/api'
 import { METHODS_API } from '@/Api/constantsApi'
+import { useApi } from '@/Api/useApi'
 import { calculateCircle } from '@/helpers/routes'
 import { showToast } from '@/helpers/toast'
 import { initialDataLocation } from '@/pages/PrivateRoutes/constants/constants'
@@ -14,6 +14,8 @@ import { useForm, useWatch } from 'react-hook-form'
 import { useTravels } from './useTravels'
 
 export const useCreateTravel = (dataForm) => {
+	const { requestApi } = useApi()
+
 	const { register, handleSubmit, control } = useForm(dataForm)
 	const [selectedPlace, setSelectedPlace] = useState(null)
 	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
@@ -58,7 +60,7 @@ export const useCreateTravel = (dataForm) => {
 	const getDataService = (idService) => {
 		return useQuery({
 			queryKey: ['getDataRoute', idService],
-			queryFn: async () => await api(METHODS_API.GET, `module/service/${idService}/routing`),
+			queryFn: async () => await requestApi(METHODS_API.GET, `module/service/${idService}/routing`),
 			enabled: !!idService
 		})
 	}
@@ -109,7 +111,7 @@ export const useCreateTravel = (dataForm) => {
 	}
 
 	const createTravelMutation = useMutation({
-		mutationFn: async (data) => await api(METHODS_API.POST, `module/travel/create`, data),
+		mutationFn: async (data) => await requestApi(METHODS_API.POST, `module/travel/create`, data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postCreateServiceClient'] })
 	})
 

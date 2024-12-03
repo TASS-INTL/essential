@@ -38,7 +38,6 @@ export const DetailTravel = () => {
 
 		// Me suscribo a la sala del dispositivo para que me mande la informacion en tiempo real
 		socketForNameSpace?.on(SOCKET_EVENTS.R_INFO_TRAVEL, (data) => {
-			showToast('envio nueva data a la info del viaje', 'success')
 			setTravelInfo(data)
 		})
 

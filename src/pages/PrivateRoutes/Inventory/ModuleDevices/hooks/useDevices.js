@@ -1,5 +1,5 @@
-import api from '@/Api/api'
 import { METHODS_API } from '@/Api/constantsApi'
+import { useApi } from '@/Api/useApi'
 import { showToast } from '@/helpers/toast'
 import { queryClient } from '@/routes/AppRouter'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -7,16 +7,18 @@ import { useForm } from 'react-hook-form'
 
 export const useDevice = () => {
 	const { register, handleSubmit } = useForm()
+	const { requestApi } = useApi()
+
 	//
 	const fetchTypeDevice = () =>
 		useQuery({
 			queryKey: ['getTypeDevice'],
-			queryFn: async () => await api(METHODS_API.GET, 'module/device-factory/get-info')
+			queryFn: async () => await requestApi(METHODS_API.GET, 'module/device-factory/get-info')
 		})
 	//
 
 	const assignDeviceMutate = useMutation({
-		mutationFn: async (data) => await api(METHODS_API.POST, 'module/device/assign', data),
+		mutationFn: async (data) => await requestApi(METHODS_API.POST, 'module/device/assign', data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postDevice'] })
 	})
 
@@ -30,7 +32,7 @@ export const useDevice = () => {
 
 	// Sincronizacion de dispositivo
 	const syncDevice = useMutation({
-		mutationFn: async (data) => await api(METHODS_API.POST, 'module/device-factory/create', data),
+		mutationFn: async (data) => await requestApi(METHODS_API.POST, 'module/device-factory/create', data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postSyncDevice'] })
 	})
 

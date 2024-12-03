@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import api from '@/Api/api'
+import { useApi } from '@/Api/useApi'
 import { queryClient } from '@/routes/AppRouter'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
@@ -14,12 +14,14 @@ import { SocketContextForNameSpace } from '../../../sockets/socketForNameSpace'
 export const useInventory = () => {
 	const { socketForNameSpace } = useContext(SocketContextForNameSpace)
 	const { uid, tokenSesion } = userStore((state) => state.userData)
+	const { requestApi } = useApi()
+
 	//
 	const fetchDataInventory = (page, search) =>
 		useQuery({
 			queryKey: ['getInventoryList', page, search],
 			queryFn: async () =>
-				await api(
+				await requestApi(
 					METHODS_API.GET,
 					`module/device-factory/inventory?page=${page}${search !== '' ? `&search=${search}` : ''}`
 				)
@@ -41,7 +43,7 @@ export const useInventory = () => {
 
 	const comandDevice = useMutation({
 		mutationFn: async ({ idDevice, typeComand, did, to }) =>
-			await api(
+			await requestApi(
 				METHODS_API.POST,
 				`module/device-factory/${idDevice}/command/${to}?${typeComand ? `tc=${typeComand}&` : ''}did=${did}`
 			),
@@ -55,7 +57,7 @@ export const useInventory = () => {
 
 	const comandDeviceTest = useMutation({
 		mutationFn: async ({ idDevice, did, to }) =>
-			await api(METHODS_API.POST, `module/device-factory/${idDevice}/testing/${to}?did=${did}`),
+			await requestApi(METHODS_API.POST, `module/device-factory/${idDevice}/testing/${to}?did=${did}`),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postComand'] })
 	})
 

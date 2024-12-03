@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import api from '@/Api/api'
 import { METHODS_API } from '@/Api/constantsApi'
+import { useApi } from '@/Api/useApi'
 import { showToast } from '@/helpers/toast'
 import { queryClient } from '@/routes/AppRouter'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -14,6 +14,8 @@ export const useServiceClient = () => {
 	const [dateStart, setDateStart] = useState(dayjs('2024-04-17T15:30'))
 	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
 	const [open, setOpen] = useState(false)
+	const { requestApi } = useApi()
+
 	const idRoute = useWatch({
 		control,
 		id_route: null
@@ -25,7 +27,7 @@ export const useServiceClient = () => {
 		useQuery({
 			queryKey: ['getDataTableServiceClient', page, search],
 			queryFn: async () =>
-				await api(
+				await requestApi(
 					METHODS_API.GET,
 					`module/service/client?page=${page}${search !== '' ? `&search=${search}` : ''}`
 				)
@@ -34,7 +36,7 @@ export const useServiceClient = () => {
 	const getDataPreCreateService = () =>
 		useQuery({
 			queryKey: ['getDataPreCreateService'],
-			queryFn: async () => await api(METHODS_API.GET, `module/service/precreate`)
+			queryFn: async () => await requestApi(METHODS_API.GET, `module/service/precreate`)
 		})
 
 	const dataPreCreateService = getDataPreCreateService()
@@ -42,7 +44,7 @@ export const useServiceClient = () => {
 	const getDataRoute = (idRoute) => {
 		return useQuery({
 			queryKey: ['getDataRoute', idRoute],
-			queryFn: async () => await api(METHODS_API.GET, `module/routing/find/${idRoute}`),
+			queryFn: async () => await requestApi(METHODS_API.GET, `module/routing/find/${idRoute}`),
 			enabled: !!idRoute
 		})
 	}
@@ -50,7 +52,7 @@ export const useServiceClient = () => {
 	const dataRoute = getDataRoute(idRoute?.id_route ? idRoute?.id_route : null)
 
 	const createServiceClient = useMutation({
-		mutationFn: async (data) => await api(METHODS_API.POST, `module/service/travel-client/create`, data),
+		mutationFn: async (data) => await requestApi(METHODS_API.POST, `module/service/travel-client/create`, data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postCreateServiceClient'] })
 	})
 

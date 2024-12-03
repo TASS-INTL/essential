@@ -1,7 +1,7 @@
 import { useReducer, useState } from 'react'
 
-import api from '@/Api/api'
 import { METHODS_API } from '@/Api/constantsApi'
+import { useApi } from '@/Api/useApi'
 import { DrawingActionKind, isCircle, isMarker, isPolygon, isPolyline, isRectangle } from '@/Components/mapGoogle/types'
 import { calculateCircle } from '@/helpers/routes'
 import { showToast } from '@/helpers/toast'
@@ -117,6 +117,8 @@ const reducer = (state, action) => {
 }
 
 export const useRouting = () => {
+	const { requestApi } = useApi()
+
 	// states
 	const { register, handleSubmit } = useForm()
 	const [state, dispatch] = useReducer(reducer, {
@@ -254,7 +256,7 @@ export const useRouting = () => {
 
 	// send create routing
 	const createRoutingClient = useMutation({
-		mutationFn: async (data) => await api(METHODS_API.POST, `module/routing/create-client`, data),
+		mutationFn: async (data) => await requestApi(METHODS_API.POST, `module/routing/create-client`, data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postCreateRoutingClient'] })
 	})
 
@@ -269,7 +271,7 @@ export const useRouting = () => {
 	const getPermissionsForRouting = () =>
 		useQuery({
 			queryKey: ['permissionsForRouting'],
-			queryFn: async () => await api(METHODS_API.GET, `module/routing/permissions/geofences`)
+			queryFn: async () => await requestApi(METHODS_API.GET, `module/routing/permissions/geofences`)
 		})
 
 	//
