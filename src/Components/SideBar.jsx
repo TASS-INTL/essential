@@ -14,6 +14,7 @@ import {
 	Inventory,
 	Monitoring,
 	Notification,
+	Routings,
 	Services,
 	ServicesClient,
 	SesionLeft,
@@ -21,7 +22,6 @@ import {
 	Travels,
 	Users
 } from '../assets/assetsplatform/PrivateRoutes'
-import { useAuthProvider } from '../pages/auth/hooks/useAuthProvider'
 import { userStore } from '../store/userStore'
 
 export const icons = {
@@ -41,14 +41,13 @@ export const icons = {
 	Inventory,
 	Testing,
 	Central,
-	Admin
+	Admin,
+	Routings
 }
 
 export const SideBarComponent = () => {
 	const { pathname } = useLocation()
-	const { logout } = useAuthProvider()
 	const [open, setOpen] = useState(false)
-	const [selectButton, setSelectButton] = useState(0)
 	const userData = userStore((state) => state.userData)
 
 	return (
@@ -81,10 +80,6 @@ export const SideBarComponent = () => {
                             gap-x-4
                             ${menu.gap ? 'mt-9' : 'mt-2'}
 									 ${pathname.includes(menu.pathName) && 'bg-lightWhite'}`}
-								onClick={() => {
-									menu.title === 'Cerrar sesion' && logout()
-									setSelectButton(index)
-								}}
 							>
 								<div className='flex'>
 									<img
@@ -99,27 +94,6 @@ export const SideBarComponent = () => {
 							</li>
 						</NavLink>
 					))}
-					<li
-						className={`
-                     flex 
-                     items-center 
-                     p-3  
-                     dark:text-white  
-                     rounded-lg 
-                     cursor-pointer 
-                     hover:bg-lightWhite 
-                     mt-1 ${selectButton === true && 'bg-lightWhite'} `}
-						onClick={logout}
-					>
-						<img
-							src={icons['SesionLeft']}
-							alt='icon'
-							className='w-[24px] h-[20px] object-contain cursor-pointer'
-						/>
-						<span className={`${!open && 'hidden'} origin-left duration-200 ms-3 text-sm`}>
-							Cerrar sesion
-						</span>
-					</li>
 				</ul>
 			</div>
 		</aside>

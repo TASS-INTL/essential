@@ -1,6 +1,8 @@
+import { useAuthProvider } from '@/pages/auth/hooks/useAuthProvider'
+import { userStore } from '@/store/userStore'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-import { SideBarComponent } from '../Components'
+import { LoaderComponent, SideBarComponent } from '../Components'
 import Navbar from '../Components/navBar'
 import { pathNavigation } from '../pages/auth/constants'
 import { Account } from '../pages/PrivateRoutes/Account/ModuleAccount/Account'
@@ -18,9 +20,10 @@ import {
 import {
 	CreateTravel,
 	DetailTravel,
-	Eventstravel,
+	EventsTravel,
 	GeneralTravel,
 	Monitoring,
+	Reports,
 	TableTravelsScreen,
 	TravelsScreen
 } from '../pages/PrivateRoutes/Central/ModuleTravels'
@@ -29,13 +32,7 @@ import { DevicesScreen } from '../pages/PrivateRoutes/Inventory/ModuleDevices/De
 import { FormAssignDeviceScreen } from '../pages/PrivateRoutes/Inventory/ModuleDevices/FormAssignDeviceScreen'
 import { TableDeviceScreen } from '../pages/PrivateRoutes/Inventory/ModuleDevices/TableDeviceScreen'
 import { FactoryDevicesScreen } from '../pages/PrivateRoutes/Inventory/ModuleFactoryDevices/FactoryDevicesScreen'
-import {
-	DeviceProviderSocket,
-	Events,
-	General,
-	InventoryScreen,
-	Test
-} from '../pages/PrivateRoutes/Inventory/ModuleInventory'
+import { DeviceProviderSocket, Events, General, Test } from '../pages/PrivateRoutes/Inventory/ModuleInventory'
 import { TestingScreen } from '../pages/PrivateRoutes/Inventory/ModuleTesting/TestingScreen'
 import { NotificationScreen } from '../pages/PrivateRoutes/Notification/ModuleNotification/NotificationScreen'
 import { TableNotification } from '../pages/PrivateRoutes/Notification/ModuleNotification/TableNotification'
@@ -59,6 +56,15 @@ export const PrivateRouter = ({ isAuthenticated }) => {
 export const RoutesPrivate = () => {
 	const setArrayTabledevice = deviceStore((state) => state.setArrayTabledevice)
 	const setArrayTableTravels = travelsStore((state) => state.setArrayTableTravels)
+	const { queryUserToken, logout } = useAuthProvider()
+
+	const userHasToken = queryUserToken()
+
+	if (userHasToken?.isLoading) return <LoaderComponent />
+
+	if (userHasToken.error) {
+		logout()
+	}
 
 	return (
 		<div className='flex relative h-screen w-screen bg-[#e6e6e6]'>
@@ -67,13 +73,11 @@ export const RoutesPrivate = () => {
 				<SideBarComponent />
 			</div>
 			<Routes>
-				{/* ============ MODULE CENTRAL =============== */}
-				<Route path={routesPrivate.centralScreen} element={<CentralScreen />} />
 				{/* Installers */}
 				<Route path={routesPrivate.installersScreen} element={<InstallersScreen />} />
 				{/* Monitoring */}
 				<Route path={routesPrivate.monitoringScreen} element={<MonitoringScreen />} />
-				{/* Service client*/}
+				{/* Service client */}
 				<Route path={routesPrivate.servicesClientScreen} element={<ServicesClientScreen />}>
 					<Route
 						index
@@ -92,6 +96,10 @@ export const RoutesPrivate = () => {
 				</Route>
 				{/* Travels */}
 				<Route
+					path={routesPrivate.centralScreen}
+					element={<CentralScreen NameMap='Central' title='Central' />}
+				/>
+				<Route
 					path={routesPrivate.travelsScreen}
 					element={
 						<SocketForNameSpace
@@ -109,7 +117,8 @@ export const RoutesPrivate = () => {
 					<Route path={routesPrivate.travelIdTravel} element={<DetailTravel />}>
 						<Route index path={routesPrivate.general} element={<GeneralTravel />} />
 						<Route path={routesPrivate.monitoring} element={<Monitoring />} />
-						<Route path={routesPrivate.events} element={<Eventstravel />} />
+						<Route path={routesPrivate.events} element={<EventsTravel />} />
+						<Route path={routesPrivate.reports} element={<Reports />} />
 					</Route>
 				</Route>
 
@@ -117,6 +126,7 @@ export const RoutesPrivate = () => {
 
 				{/* Users */}
 				<Route path={routesPrivate.usersScreen} element={<UsersScreen />} />
+				<Route path={'/admin-screen'} element={<CentralScreen NameMap='Admin' title='Administrador' />} />
 
 				{/* ============ MODULE CHAT =============== */}
 
@@ -126,9 +136,11 @@ export const RoutesPrivate = () => {
 				<Route path={routesPrivate.testingScreen} element={<TestingScreen />} />
 
 				{/* ============ MODULE INVENTORY =============== */}
-				<Route path={routesPrivate.inventoryScreen} element={<InventoryScreen />} />
-
 				{/* DEVICES OPERATOR - MASTER */}
+				<Route
+					path={routesPrivate.inventoryScreen}
+					element={<CentralScreen NameMap='Inventory' title='Inventario' />}
+				/>
 				<Route
 					path={routesPrivate.devicesScreen}
 					element={
@@ -158,6 +170,10 @@ export const RoutesPrivate = () => {
 
 				{/* Account */}
 				<Route path={routesPrivate.accountScreen} element={<Account />} />
+				<Route
+					path={routesPrivate.routingScreen}
+					element={<CentralScreen NameMap='Routing' title='Modulo de rutas' />}
+				/>
 
 				{/* ============ MODULE NOTIFICATIONS =============== */}
 

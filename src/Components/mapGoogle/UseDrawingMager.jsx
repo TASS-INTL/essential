@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 
 import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps'
 
-export function useDrawingManager() {
+export function useDrawingManager(showDrawingManager) {
+	if (showDrawingManager === undefined) return
+
 	const map = useMap()
 	const drawing = useMapsLibrary('drawing')
 
@@ -17,7 +19,7 @@ export function useDrawingManager() {
 			drawingControlOptions: {
 				position: google.maps.ControlPosition.BLOCK_START_INLINE_START,
 				drawingModes: [
-					// google.maps.drawing.OverlayType.MARKER,
+					google.maps.drawing.OverlayType.MARKER,
 					// google.maps.drawing.OverlayType.CIRCLE,
 					google.maps.drawing.OverlayType.POLYGON
 					// google.maps.drawing.OverlayType.POLYLINE,

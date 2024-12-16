@@ -1,16 +1,10 @@
 import React from 'react'
 
+import { ForgotPasswordScreen, LoginScreen, PersonalDataScreen, RegisterScreen, ValidateCodeScreen } from '@/pages/auth'
+import { pathNavigation } from '@/pages/auth/constants'
+import { userStore } from '@/store/userStore'
 import { Route, Routes, useLocation } from 'react-router-dom'
 
-import {
-	ForgotPasswordScreen,
-	LoginScreen,
-	PersonalDataScreen,
-	RegisterScreen,
-	ValidateCodeScreen
-} from '../pages/auth'
-import { pathNavigation } from '../pages/auth/constants'
-import { userStore } from '../store/userStore'
 import { RoutesPublic } from './constants'
 
 export const AuthRouter = () => {

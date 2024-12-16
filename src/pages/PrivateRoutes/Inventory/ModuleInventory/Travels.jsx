@@ -1,8 +1,7 @@
+import { TapBottons } from '@/Components/TapBottons'
 import React from 'react'
 
 import { useLocation, useParams } from 'react-router-dom'
-
-import { TapBottons } from '../../../../Components/TapBottons'
 
 export const Travels = () => {
 	const location = useLocation()

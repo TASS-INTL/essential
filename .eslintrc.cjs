@@ -3,32 +3,26 @@ module.exports = {
 		browser: true,
 		es2021: true
 	},
-	content: ['node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}'],
 	settings: {
 		react: {
 			version: 'detect'
 		}
 	},
-	extends: ['standard', 'plugin:react/recommended', 'plugin:prettier/recommended'],
-	overrides: [
-		{
-			env: {
-				node: true
-			},
-			files: ['.eslintrc.{js,cjs}'],
-			parserOptions: {
-				sourceType: 'script'
-			}
-		}
-	],
+	extends: ['plugin:react/recommended', 'standard', 'prettier'],
+	overrides: [],
 	parserOptions: {
 		ecmaVersion: 'latest',
 		sourceType: 'module'
 	},
-	plugins: ['react', 'prettier', require('flowbite/plugin')],
+	plugins: ['react'],
 	rules: {
-		'react/react-in-jsx-scope': 'off',
 		'react/prop-types': 'off',
-		'prettier/prettier': 0
+		'react/react-in-jsx-scope': 'off',
+		'@typescript-eslint/strict-boolean-expressions': 0,
+		'@typescript-eslint/explicit-function-return-type': 0,
+		'@typescript-eslint/restrict-template-expressions': 0,
+		'@typescript-eslint/no-confusing-void-expression': 0,
+		'@typescript-eslint/prefer-nullish-coalescing': 0,
+		'@typescript-eslint/no-misused-promises': 0
 	}
 }

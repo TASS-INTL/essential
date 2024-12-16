@@ -1,16 +1,17 @@
 import React from 'react'
 
-import { InputComponent, InputSubmitComponent, SelectComponent } from '@/Components'
+import { ErrorComponent, InputSubmitComponent, LoaderComponent, RemarksInput, SelectComponent } from '@/Components'
+import { MapGoogle } from '@/Components/mapGoogle/Map'
+import { MarkerWithInfowindow } from '@/Components/mapGoogle/MarkerWithInfowindow'
+import { PlaceAutocompleteClassic } from '@/Components/mapGoogle/PlaceAutocompleteClassic'
+import { Polygon } from '@/Components/mapGoogle/Polygon'
+import { Polyline } from '@/Components/mapGoogle/Polyline'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { APIProvider } from '@vis.gl/react-google-maps'
 
-import { ErrorComponent, LoaderComponent, RemarksInput } from '../../../../Components'
-import { MapGoogle } from '../../../../Components/mapGoogle/Map'
-import { MapHandler } from '../../../../Components/mapGoogle/MapHandler'
-import { PlaceAutocompleteClassic } from '../../../../Components/mapGoogle/PlaceAutocompleteClassic'
 import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
 import { useCreateTravel } from './hooks/useCreateTravel'
 
@@ -24,11 +25,12 @@ export const CreateTravel = ({ dataForm }) => {
 		setDateStart,
 		handleSubmit,
 		selectedPlace,
-		objectLocations,
 		dataPreCrateTravel,
 		handleCreateTravel,
 		serviceRouteInformation,
-		handleChangePermissions,
+		objectLocations,
+		handleChangeRadiusCircle,
+		handleChangePermissionsForLocationStartAndEnd,
 		handleChangeMarkerDraggable
 	} = useCreateTravel(dataForm)
 
@@ -38,45 +40,108 @@ export const CreateTravel = ({ dataForm }) => {
 		return <ErrorComponent error={dataPreCrateTravel.data?.message} />
 
 	return (
-		<div className='h-[95%]'>
-			<div className='flex h-full'>
-				<div className='w-[40%]'>
-					<MapGoogle
-						locations={objectLocations}
-						selectedPlace={selectedPlace}
-						permissionsData={dataPreCrateTravel?.data?.data?.permissions}
-						dataRoute={serviceRouteInformation?.data}
-						handleChangePermissions={handleChangePermissions}
-						handleChangeMarkerDraggable={handleChangeMarkerDraggable}
-						withDirecton={false}
-					/>
-				</div>
-				<div className='w-[60%] overflow-y-scroll'>
-					<form onSubmit={handleSubmit(handleCreateTravel)} className='flex flex-col'>
-						{/* DATES */}
-						<div className='flex mt-5'>
-							<LocalizationProvider dateAdapter={AdapterDayjs}>
-								<DemoContainer class='flex' components={['DateTimePicker', 'DateTimePicker']}>
-									<div className='flex gap-5'>
-										<DateTimePicker
-											label='Fecha de Instalacion'
-											value={dateStart}
-											onChange={(newValue) => setDateStart(newValue)}
+		<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
+			<div className='h-[95%]'>
+				<div className='flex h-full'>
+					<div className='w-[40%]'>
+						<MapGoogle width='95%' selectedPlace={selectedPlace}>
+							{!!objectLocations?.location_start?.market?.location?.coordinates[0] && (
+								<MarkerWithInfowindow
+									position={{
+										lat: objectLocations?.location_start?.market?.location?.coordinates[1],
+										lng: objectLocations?.location_start?.market?.location?.coordinates[0]
+									}}
+									location='location_start'
+									permissionsData={
+										objectLocations.location_start.permissions
+											? objectLocations.location_start.permissions
+											: dataPreCrateTravel?.data?.data?.permissions
+									}
+									handleChangePermissions={handleChangePermissionsForLocationStartAndEnd}
+									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
+									handleChangeRadiusCircle={handleChangeRadiusCircle}
+								/>
+							)}
+							{/* marker and geofence of the location end */}
+							{!!objectLocations?.location_end?.market?.location?.coordinates[1] && (
+								<MarkerWithInfowindow
+									position={{
+										lat: objectLocations?.location_end?.market?.location?.coordinates[1],
+										lng: objectLocations?.location_end?.market?.location?.coordinates[0]
+									}}
+									location='location_end'
+									permissionsData={
+										objectLocations.location_end.permissions
+											? objectLocations.location_end.permissions
+											: dataPreCrateTravel?.data?.data?.permissions
+									}
+									handleChangePermissions={handleChangePermissionsForLocationStartAndEnd}
+									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
+									handleChangeRadiusCircle={handleChangeRadiusCircle}
+								/>
+							)}
+							{!!serviceRouteInformation?.data?.data?.coordinatesroute && (
+								<Polyline
+									strokeWeight={7}
+									strokeColor={'#8a2be2'}
+									pathArray={serviceRouteInformation?.data?.data?.coordinatesroute}
+								/>
+							)}
+							{!!serviceRouteInformation?.data?.data?.stations?.length > 0 && (
+								<>
+									{serviceRouteInformation?.data?.data?.stations.map((item) => (
+										<Polygon
+											key={item._id}
+											strokeWeight={1.5}
+											pathsArray={item?.location?.coordinates[0]}
 										/>
-										<DateTimePicker
-											label='Fecha de Desinstalacion'
-											value={dateEnd}
-											onChange={(newValue) => setDateEnd(newValue)}
-										/>
-									</div>
-								</DemoContainer>
-							</LocalizationProvider>
-						</div>
-						{/* INPUTS TRAVELS */}
-						{dataForm.service && (
-							<div className='flex mt-5  justify-between'>
+									))}
+								</>
+							)}
+							{!!serviceRouteInformation?.data?.data?.location_start && (
+								<Polygon
+									strokeWeight={1.5}
+									pathsArray={
+										serviceRouteInformation?.data?.data?.location_start?.location.coordinates[0]
+									}
+								/>
+							)}
+							{!!serviceRouteInformation?.data?.data?.location_end && (
+								<Polygon
+									strokeWeight={1.5}
+									pathsArray={
+										serviceRouteInformation?.data?.data?.location_end?.location.coordinates[0]
+									}
+								/>
+							)}
+						</MapGoogle>
+					</div>
+					<div className='w-[60%] overflow-y-scroll'>
+						<form onSubmit={handleSubmit(handleCreateTravel)} className='flex flex-col'>
+							{/* DATES */}
+							<div className='flex mt-3'>
+								<LocalizationProvider dateAdapter={AdapterDayjs}>
+									<DemoContainer class='flex' components={['DateTimePicker', 'DateTimePicker']}>
+										<div className='flex gap-5'>
+											<DateTimePicker
+												label='Fecha de Instalacion'
+												value={dateStart}
+												onChange={(newValue) => setDateStart(newValue)}
+											/>
+											<DateTimePicker
+												label='Fecha de Desinstalacion'
+												value={dateEnd}
+												onChange={(newValue) => setDateEnd(newValue)}
+											/>
+										</div>
+									</DemoContainer>
+								</LocalizationProvider>
+							</div>
+							{/* INPUTS TRAVELS */}
+							<div className='flex mt-3  justify-between'>
 								<div className='w-[99%]'>
 									<SelectComponent
+										required
 										color
 										option='did'
 										name='service._id'
@@ -86,116 +151,70 @@ export const CreateTravel = ({ dataForm }) => {
 									/>
 								</div>
 							</div>
-						)}
-						{/* INPUTS PLACES */}
-						<div className='flex gap-4 mt-5'>
-							<div className='w-[48%]'>
-								<span className='mb-3'>Lugar de Instalacion</span>
-								<PlaceAutocompleteClassic addPlaces={addPlaces} location='location_start' />
+							{/* INPUTS TYPE TREVEL */}
+							<div className='flex mt-3 gap-4 '>
+								<div className='w-[99%]'>
+									<SelectComponent
+										required
+										color
+										register={register}
+										label='Selecciona el tipo de viaje'
+										name='type._id'
+										arrayOptions={dataPreCrateTravel?.data?.data?.types_travel}
+										option='name'
+									/>
+								</div>
 							</div>
-							<div className='w-[48%]'>
-								<span className='mb-3'>Lugar de Desinstalacion</span>
-								<PlaceAutocompleteClassic addPlaces={addPlaces} location='location_end' />
+							{/* INPUTS INTALLER */}
+							<div className='flex mt-3 gap-4 '>
+								<div className='w-[48%]'>
+									<SelectComponent
+										required
+										color
+										register={register}
+										label='Selecciona el instalador'
+										name='installers.id_installer'
+										arrayOptions={dataPreCrateTravel?.data?.data?.installers}
+										option='name'
+									/>
+								</div>
+								<div className='w-[48%]'>
+									<SelectComponent
+										required
+										color
+										register={register}
+										label='Selecciona la operacion'
+										name='installers.type_operation'
+										arrayOptions={dataPreCrateTravel?.data?.data?.type_operations}
+										option='name'
+									/>
+								</div>
 							</div>
-						</div>
-
-						{/* INPUTS TYPE TREVEL */}
-						<div className='flex mt-5 gap-4 '>
-							<div className='w-[99%]'>
-								<SelectComponent
-									color
-									register={register}
-									label='Selecciona el tipo de viaje'
-									name='type._id'
-									arrayOptions={dataPreCrateTravel?.data?.data?.types_travel}
-									option='name'
-								/>
+							{/* INPUTS PLACES */}
+							<div className='flex gap-4 mt-3'>
+								<div className='w-[48%]'>
+									<span className='mb-3'>Lugar de Instalacion</span>
+									<PlaceAutocompleteClassic addPlaces={addPlaces} location='location_start' />
+								</div>
+								<div className='w-[48%]'>
+									<span className='mb-3'>Lugar de Desinstalacion</span>
+									<PlaceAutocompleteClassic addPlaces={addPlaces} location='location_end' />
+								</div>
 							</div>
-						</div>
-
-						{/* INPUTS INTALLER */}
-						<div className='flex mt-5 gap-4 '>
-							<div className='w-[48%]'>
-								<SelectComponent
-									color
-									register={register}
-									label='Selecciona el instalador'
-									name='installers.id_installer'
-									arrayOptions={dataPreCrateTravel?.data?.data?.installers}
-									option='name'
-								/>
+							{/* COMENTS SERVICE */}
+							<RemarksInput
+								text='Quieres dar alguna indicacion adicional ?'
+								register={register}
+								nameRegister='remarks'
+							/>
+							{/* SEND FORM */}
+							<div className='flex justify-center pt-6 '>
+								<InputSubmitComponent text='CREAR VIAJE' />
 							</div>
-							<div className='w-[48%]'>
-								<SelectComponent
-									color
-									register={register}
-									label='Selecciona la operacion'
-									name='installers.type_operation'
-									arrayOptions={dataPreCrateTravel?.data?.data?.type_operations}
-									option='name'
-								/>
-							</div>
-						</div>
-						{/* DRIVER SERVICE */}
-						{dataForm.driver && (
-							<div>
-								<h4 className=' py-5'>Datos del conductor</h4>
-								<InputComponent
-									required
-									name='driver.email'
-									type='email'
-									register={register}
-									label='Correo electronico'
-									placeholder='name@gmail.com'
-									color
-								/>
-								<InputComponent
-									color
-									required
-									name='driver.license_plate'
-									type='text'
-									register={register}
-									label='Placa'
-									placeholder='XXXXX'
-								/>
-								<InputComponent
-									color
-									required
-									name='driver.name'
-									type='text'
-									register={register}
-									label='Nombre'
-									placeholder='jhondue'
-								/>
-								<InputComponent
-									color
-									required
-									name='driver.number_document'
-									type='number'
-									register={register}
-									label='Numero de documento'
-									placeholder='000 000 0000'
-								/>
-								<InputComponent
-									color
-									required
-									name='driver.phone'
-									type='number'
-									register={register}
-									label='Numero de celular'
-									placeholder='000 000 0000'
-								/>
-							</div>
-						)}
-						{/* COMENTS SERVICE */}
-						<RemarksInput text='Quieres dar alguna indicacion adicional ?' register={register} />
-						{/* SEND FORM */}
-						<div className='flex justify-center pt-6 '>
-							<InputSubmitComponent text='CREAR VIAJE' />
-						</div>
-					</form>
+						</form>
+					</div>
 				</div>
 			</div>
-		</div>
+		</APIProvider>
 	)
 }

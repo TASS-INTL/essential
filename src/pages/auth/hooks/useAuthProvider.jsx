@@ -1,17 +1,19 @@
+import { METHODS_API } from '@/Api/constantsApi'
+import { useApi } from '@/Api/useApi'
+import { userStore } from '@/store/userStore'
+import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 
-import api from '../../../Api/api'
-import { METHODS_API } from '../../../Api/constantsApi'
-import { userStore } from '../../../store/userStore'
 import { pathNavigation } from '../constants'
 
 export const useAuthProvider = () => {
 	const navigate = useNavigate()
+	const { requestApi } = useApi()
 	const userData = userStore((state) => state.userData)
 	const setUserData = userStore((state) => state.setUserData)
 
 	const login = async ({ email, password }) => {
-		const response = await api(METHODS_API.POST, 'auth2/login', {
+		const response = await requestApi(METHODS_API.POST, 'auth2/login', {
 			email,
 			password
 		})
@@ -49,7 +51,7 @@ export const useAuthProvider = () => {
 	const ValidateCodeApi = async ({ code, screen }) => {
 		const { email, tokenSesion } = userData
 
-		const response = await api(
+		const response = await requestApi(
 			METHODS_API.POST,
 			screen === 'login' ? `auth2/login/validateCode?to=${tokenSesion}` : 'singup/start/code',
 			{
@@ -76,7 +78,7 @@ export const useAuthProvider = () => {
 			} else {
 				setUserData({
 					...userData,
-					tokenRegister: response?.data?.token
+					tokenRegister: response?.data[0]?.token
 				})
 				navigate(pathNavigation.personalData)
 			}
@@ -86,7 +88,7 @@ export const useAuthProvider = () => {
 
 	const registerPersonalData = async (personalData) => {
 		const { tokenRegister } = userData
-		const response = await api(METHODS_API.POST, `singup/finalized/?to=${tokenRegister}`, personalData)
+		const response = await requestApi(METHODS_API.POST, `singup/finalized/?to=${tokenRegister}`, personalData)
 		if (response.completed) {
 			setUserData({
 				...userData,
@@ -100,7 +102,7 @@ export const useAuthProvider = () => {
 	}
 
 	const registerNameAndUserName = async ({ email, username }) => {
-		const response = await api(METHODS_API.POST, 'singup/start/email', {
+		const response = await requestApi(METHODS_API.POST, 'singup/start/email', {
 			email,
 			username
 		})
@@ -152,7 +154,7 @@ export const useAuthProvider = () => {
 
 	const resendCode = async () => {
 		const { email, tokenSesion } = userData
-		const response = await api(METHODS_API.POST, 'auth2/login/resendCode', {
+		const response = await requestApi(METHODS_API.POST, 'auth2/login/resendCode', {
 			email,
 			token: tokenSesion
 		})
@@ -161,7 +163,7 @@ export const useAuthProvider = () => {
 	}
 
 	const forgotPassword = async ({ email }) => {
-		const response = await api(METHODS_API.GET, `auth2/resetPassword/${email}`, {
+		const response = await requestApi(METHODS_API.GET, `auth2/resetPassword/${email}`, {
 			email
 		})
 
@@ -169,7 +171,7 @@ export const useAuthProvider = () => {
 	}
 
 	const logout = async () => {
-		const response = await api(METHODS_API.POST, 'auth2/logout')
+		const response = await requestApi(METHODS_API.POST, 'auth2/logout')
 
 		if (response?.completed || response?.type_ === 'ErrorServerGetCurrentSession') {
 			setUserData({
@@ -179,11 +181,19 @@ export const useAuthProvider = () => {
 				logged: false,
 				userName: null,
 				checking: false,
-				tokenSesion: null
+				tokenSesion: null,
+				modules: null,
+				typeUser: null
 			})
 			localStorage.removeItem('token')
 		}
 	}
+
+	const queryUserToken = () =>
+		useQuery({
+			queryKey: ['userHasToken'],
+			queryFn: async () => await requestApi(METHODS_API.GET, `auth2/validate-session`)
+		})
 
 	return {
 		login,
@@ -193,6 +203,7 @@ export const useAuthProvider = () => {
 		forgotPassword,
 		ValidateCodeApi,
 		registerPersonalData,
-		registerNameAndUserName
+		registerNameAndUserName,
+		queryUserToken
 	}
 }

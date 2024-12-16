@@ -1,29 +1,49 @@
 import { useState } from 'react'
 
+import { showToast } from '@/helpers/toast'
 import { InfoWindow } from '@vis.gl/react-google-maps'
 
 export const InfoWindowComponent = ({
 	marker,
 	maxWidth,
 	position,
+	location,
+	geoFences,
 	permission,
 	onCloseClick,
-	sendPermissionState,
-	handleCheckboxChange
+	handleChangePermissions
 }) => {
+	const copyArrayPermission = JSON.parse(JSON.stringify(permission))
+
+	const handleCheckboxChange = (event, _id) => {
+		const isChecked = event.target.checked
+		for (const permission of copyArrayPermission) {
+			if (permission._id === _id) {
+				permission.values.value = isChecked
+			}
+		}
+	}
+
+	const sendPermissionState = () => {
+		if (geoFences) {
+			handleChangePermissions(copyArrayPermission)
+		} else {
+			handleChangePermissions({ location, permissions: copyArrayPermission })
+		}
+		showToast('!se a guardado de manera exitosa!', 'success')
+	}
+
 	return (
 		<InfoWindow
 			headerContent={
-				<>
-					<button className='bg-black text-white p-2 rounded-lg' onClick={() => sendPermissionState()}>
-						Guardar
-					</button>
-				</>
+				<button className='bg-black text-white p-2 rounded-lg' onClick={sendPermissionState}>
+					Guardar
+				</button>
 			}
-			anchor={marker ? marker : ''}
+			anchor={marker || ''}
 			maxWidth={maxWidth}
 			onCloseClick={() => onCloseClick(false)}
-			position={position ? position : null}
+			position={position || null}
 		>
 			<div className='p-2 '>
 				{permission?.map((item) => (
@@ -31,7 +51,7 @@ export const InfoWindowComponent = ({
 						key={item._id}
 						_id={item._id}
 						handleCheckboxChange={handleCheckboxChange}
-						name_consult={item.name_consult}
+						nameConsult={item.name_consult}
 						value={item.values.value}
 					/>
 				))}
@@ -40,12 +60,12 @@ export const InfoWindowComponent = ({
 	)
 }
 
-const ListItems = ({ _id, handleCheckboxChange, name_consult, value }) => {
+const ListItems = ({ _id, handleCheckboxChange, nameConsult, value }) => {
 	const [stateItem, setStateItem] = useState(value)
 
 	return (
 		<div className='flex justify-center items-center'>
-			<div className='p-3'>{name_consult}</div>
+			<div className='p-3'>{nameConsult}</div>
 			<div className='relative inline-block w-11 h-5'>
 				<input
 					checked={stateItem}

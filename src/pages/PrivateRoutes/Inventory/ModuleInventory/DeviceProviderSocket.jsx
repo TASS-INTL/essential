@@ -1,9 +1,11 @@
 import React, { useContext, useEffect } from 'react'
 
+import { Container } from '@/Components/Container'
+import { showToast } from '@/helpers/toast'
+import { inventoryStore } from '@/store/inventoryStore'
+import { userStore } from '@/store/userStore'
 import { Outlet, useParams } from 'react-router-dom'
 
-import { inventoryStore } from '../../../../store/inventoryStore'
-import { userStore } from '../../../../store/userStore'
 import { SOCKET_EVENTS, SOCKETS_ROOMS } from '../../sockets/constants'
 import { SocketContextForNameSpace } from '../../sockets/socketForNameSpace'
 
@@ -42,7 +44,6 @@ export const DeviceProviderSocket = () => {
 
 		// Aqui trae la informacion de los eventos
 		socketForNameSpace?.on(SOCKET_EVENTS.R_TB_EVENTS_DEVICE, (data) => {
-			console.log('data events device -->', data)
 			setArrayTableInventoryEvents(data)
 		})
 
@@ -69,8 +70,13 @@ export const DeviceProviderSocket = () => {
 				x_access_token: tokenSesion,
 				type_join: SOCKETS_ROOMS.ROOM_DEVICE
 			})
+			showToast('desconectado de la sala del dispositivo: ' + `${idDevice}`, 'success')
 		}
 	}, [])
 
-	return <Outlet />
+	return (
+		<Container>
+			<Outlet />
+		</Container>
+	)
 }

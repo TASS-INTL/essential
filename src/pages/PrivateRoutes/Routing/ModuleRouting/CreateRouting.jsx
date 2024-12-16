@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { Fragment } from 'react'
 
+import { ErrorComponent, InputComponent, InputSubmitComponent, LoaderComponent } from '@/Components'
+import { Directions } from '@/Components/mapGoogle/Directions'
+import { InfoWindowComponent } from '@/Components/mapGoogle/InfoWindowComponent'
+import { MapGoogle } from '@/Components/mapGoogle/Map'
+import { MarkerWithInfowindow } from '@/Components/mapGoogle/MarkerWithInfowindow'
+import { PlaceAutocompleteClassic } from '@/Components/mapGoogle/PlaceAutocompleteClassic'
 import { APIProvider } from '@vis.gl/react-google-maps'
 
-import { ErrorComponent, InputComponent, InputSubmitComponent, LoaderComponent } from '../../../../Components'
-import { MapGoogle } from '../../../../Components/mapGoogle/Map'
-import { MapHandler } from '../../../../Components/mapGoogle/MapHandler'
-import { PlaceAutocompleteClassic } from '../../../../Components/mapGoogle/PlaceAutocompleteClassic'
 import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
 import { useRouting } from './hooks/useRouting'
 
@@ -19,9 +21,12 @@ export const CreateRouting = () => {
 		selectedPlace,
 		handleSendData,
 		objectLocations,
-		setDataDirections,
 		permissionsData,
-		handleChangePermissions,
+		setDataDirections,
+		changeStatePermission,
+		handleChangeRadiusCircle,
+		handleChangePermissionForGeoFences,
+		handleChangePermissionsForLocationStartAndEnd,
 		handleChangeMarkerDraggable
 	} = useRouting()
 
@@ -33,23 +38,70 @@ export const CreateRouting = () => {
 	return (
 		<div className='h-[95%]'>
 			<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
-				<MapHandler place={selectedPlace} />
-				<div className='flex h-full'>
+				<div className='flex h-full gap-3'>
 					{/* MAP */}
 					<div className='w-[40%]'>
-						<MapGoogle
-							state={state}
-							permissionsData={permissionsData?.data?.data}
-							dispatch={dispatch}
-							selectedPlace={selectedPlace}
-							locations={objectLocations}
-							dataPrintModals={state?.now}
-							setDataDirections={setDataDirections}
-							UndoRedoControlPermission
-							handleChangePermissions={handleChangePermissions}
-							handleChangeMarkerDraggable={handleChangeMarkerDraggable}
-							withDirecton={true}
-						/>
+						<MapGoogle state={state} dispatch={dispatch} selectedPlace={selectedPlace} showDrawingManager>
+							{!!objectLocations?.location_start?.name && objectLocations?.location_end?.name && (
+								<Directions
+									origin={objectLocations.location_start.name}
+									destination={objectLocations.location_end.name}
+									setDataDirections={setDataDirections}
+								/>
+							)}
+							{/* marker and geofence of the location start */}
+							{!!objectLocations?.location_start?.market?.location?.coordinates[0] && (
+								<MarkerWithInfowindow
+									position={{
+										lat: objectLocations?.location_start?.market?.location?.coordinates[1],
+										lng: objectLocations?.location_start?.market?.location?.coordinates[0]
+									}}
+									location='location_start'
+									permissionsData={
+										objectLocations?.location_start?.permissions || permissionsData?.data?.data
+									}
+									handleChangePermissions={handleChangePermissionsForLocationStartAndEnd}
+									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
+									handleChangeRadiusCircle={handleChangeRadiusCircle}
+								/>
+							)}
+							{/* marker and geofence of the location end */}
+							{!!objectLocations?.location_end?.market?.location?.coordinates[1] && (
+								<MarkerWithInfowindow
+									position={{
+										lat: objectLocations?.location_end?.market?.location?.coordinates[1],
+										lng: objectLocations?.location_end?.market?.location?.coordinates[0]
+									}}
+									location='location_end'
+									permissionsData={
+										objectLocations?.location_end?.permissions || permissionsData?.data?.data
+									}
+									handleChangePermissions={handleChangePermissionsForLocationStartAndEnd}
+									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
+									handleChangeRadiusCircle={handleChangeRadiusCircle}
+								/>
+							)}
+							{/* permissions modal in the geofences */}
+							{!!state?.now &&
+								state?.now?.map((item) => (
+									<Fragment key={item}>
+										{item.showPermission && (
+											<InfoWindowComponent
+												key={item._id}
+												maxWidth={400}
+												onCloseClick={() => changeStatePermission(item._id)}
+												permission={permissionsData?.data?.data}
+												position={{
+													lat: item.snapshot.path[0].lat(),
+													lng: item.snapshot.path[0].lng()
+												}}
+												handleChangePermissions={handleChangePermissionForGeoFences}
+												geoFences
+											/>
+										)}
+									</Fragment>
+								))}
+						</MapGoogle>
 					</div>
 					{/* FORM */}
 					<form onSubmit={handleSubmit(handleSendData)} className='w-[60%] overflow-y-scroll'>

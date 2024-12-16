@@ -60,7 +60,7 @@ const Navbar = () => {
 					dotColor='rgb(254, 201, 15)'
 					customFunc={() => handleClick('notification')}
 					color={currentColor}
-					icon={<RiNotification3Line color='black' />}
+					icon={<RiNotification3Line color='white' />}
 				/>
 				<TooltipComponent content='Profile' position='BottomCenter'>
 					<div

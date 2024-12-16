@@ -43,7 +43,7 @@ export const SOCKET_EVENTS = {
 	REAL_TIME_MONITORING: 'real_time_monitoring',
 	R_TRAVEL_MONITORING_REAL_TIME: 'r_travel_monitoring_real_time',
 
-	//PAGINATION
+	// PAGINATION
 	TB_DEVICES_FAC: 'tb_devices_fac'
 }
 

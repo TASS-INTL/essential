@@ -2,7 +2,8 @@ import React from 'react'
 
 export const TermsAndConditions = () => {
 	return (
-		<div className='h-[30rem] overflow-y-scroll'>
+		<div className='h-[100%] overflow-y-scroll'>
+			<h1 className='py-4 text-center'>TERMINOS Y CONDICIONES</h1>
 			1. POLITICA DE SEGURIDAD DE LA INFORMACIÓN TELEMETRY AND SECURITY SYSTEMS INTERNATIONAL SAS velamos por la
 			confidencialidad, disponibilidad e integridad de la información en todos nuestros procesos, por lo que
 			tomamos como referencia la normatividad nacional en materia de seguridad de la información con todas
@@ -19,6 +20,7 @@ export const TermsAndConditions = () => {
 			TELEMETRY AND SECURITY SYSTEMS INTERNATIONAL SAS en cumplimiento con los procesos internos se compromete a
 			realizar seguimiento y control a los servicios prestados por terceros relacionados con pasarela de pagos,
 			alojamiento de datos en la nube y sistemas de mensajería instantánea. <br />
+			<br />
 			2. POLITICA DE PROTECCIÓN DE DATOS TELEMETRY AND SECURITY SYSTEMS INTERNATIONAL SAS en responsabilidad con
 			su actuar, guiado por sus valores empresariales y en cumplimiento con la normatividad vigente sobre
 			protección de datos personales en especial la Ley 1581 de 2012 y su Decreto Reglamentario 1377 de 2013 y las
@@ -93,6 +95,7 @@ export const TermsAndConditions = () => {
 			finalizada su relación con alguna de las labores que comprende el tratamiento, pudiendo sólo realizar
 			suministro o comunicación de datos personales cuando ello corresponda al desarrollo de las actividades
 			autorizadas en la Ley 1581 de 2012 y en los términos de esta. <br />
+			<br />
 			3. AUTORIZACION PARA EL TRATAMIENDO DE DATOS Los Datos Personales que son incluidos en las Bases de Datos de
 			TELEMETRY AND SECURITY SYSTEMS INTERNATIONAL SAS provienen de la información recolectada en virtud de
 			vínculos propios del desarrollo de su objeto social, comérciales, contractuales, laborales, o de cualquier
@@ -108,6 +111,7 @@ export const TermsAndConditions = () => {
 			información requerida por una autoridad judicial o administrativa, en ejercicio de sus funciones. •
 			Tratamiento para fines históricos, estadísticos o científicos. • Tratamiento de Datos Personales de
 			naturaleza pública, o aquellos relacionados con el registro civil de las personas <br />
+			<br />
 			4. FINALIDADES Las siguientes son las finalidades de TELEMETRY AND SECURITY SYSTEMS INTERNATIONAL SAS para
 			el tratamiento de datos: Clientes • Realizar todas las gestiones necesarias tendientes a confirmar y
 			actualizar la información del cliente. • Validar y verificar la identidad del cliente para el ofrecimiento y
@@ -208,12 +212,14 @@ export const TermsAndConditions = () => {
 			transnacional y otras actividades ilegales. • El cumplimiento de las actividades y fines necesarios de la
 			relación emisor – accionistas. • Prevenir el lavado de activos, la financiación del terrorismo, así como
 			detectar el fraude, la corrupción y otras actividades ilegales. <br />
+			<br />
 			5. DURACION DE TRATAMIENTO DE DATOS TELEMETRY AND SECURITY SYSTEMS INTERNATIONAL SAS dará Tratamiento a los
 			Datos Personales por el término que sea razonable y necesario, el cual no será inferior al término de
 			duración de la respectiva Organización o de la relación contractual, legal o comercial que se tenga con el
 			Titular de los Datos Personales. Una vez cese la finalidad o la necesidad del Tratamiento de los Datos
 			Personales, los mismos serán eliminados de las Bases de Datos de la Compañía o serán archivados bajo medidas
 			de seguridad adecuadas, a efectos de sólo ser divulgados cuando la ley así lo exija. <br />
+			<br />
 			6. DERECHOS DE LOS TITULARES DE DATOS PERSONALES Los titulares de la información que es objeto de
 			tratamiento por TELEMETRY AND SECURITY SYSTEMS INTERNATIONAL SAS podrán: • Conocer, actualizar, rectificar,
 			suprimir o revocar sus datos personales y ser informados del tratamiento que TELEMETRY AND SECURITY SYSTEMS

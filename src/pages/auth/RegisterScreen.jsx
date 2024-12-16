@@ -1,9 +1,8 @@
+import { logoTass } from '@/assets/assetsplatform/PrivateRoutes'
 import { InputComponent, InputSubmitComponent } from '@/Components'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { emailSvg, user } from '../../assets/assetsplatform/index'
-import { logoTass } from '../../assets/assetsplatform/PrivateRoutes'
 import { pathNavigation } from './constants'
 import { useAuth } from './hooks/useLogin'
 
@@ -35,7 +34,6 @@ export const RegisterScreen = () => {
 							label='Correo electronico'
 							placeholder='correo@gmail.com'
 						/>
-
 						<InputComponent
 							color
 							required
@@ -45,7 +43,6 @@ export const RegisterScreen = () => {
 							placeholder='name123'
 							register={register}
 						/>
-
 						<div className='my-3 flex flex-row justify-center items-center'>
 							<InputSubmitComponent text='Verificar' />
 						</div>

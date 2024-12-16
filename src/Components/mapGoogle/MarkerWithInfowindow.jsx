@@ -10,13 +10,13 @@ export const MarkerWithInfowindow = ({
 	position,
 	permissionsData,
 	handleChangePermissions,
+	handleChangeRadiusCircle,
 	handleChangeMarkerDraggable
 }) => {
 	const [infowindowOpen, setInfowindowOpen] = useState(true)
 	const [markerRef, marker] = useAdvancedMarkerRef()
 	const [center, setCenter] = useState(null)
 	const [radius, setRadius] = useState(400)
-	const copyArrayPermission = JSON.parse(JSON.stringify(permissionsData))
 
 	const changeCenter = (newCenter) => {
 		if (!newCenter) return
@@ -24,21 +24,18 @@ export const MarkerWithInfowindow = ({
 	}
 
 	useEffect(() => {
-		center?.location && handleChangeMarkerDraggable({ location: center?.location, data: center })
+		if (center === null) return
+		handleChangeMarkerDraggable({ location, data: center })
 	}, [center])
 
-	const handleCheckboxChange = (event, _id) => {
-		const isChecked = event.target.checked
-		copyArrayPermission?.forEach((permission) => {
-			if (permission._id === _id) {
-				permission.values.value = isChecked
-			}
+	useEffect(() => {
+		handleChangeRadiusCircle({
+			location,
+			lat: center === null ? position.lat : center?.lat,
+			lng: center === null ? position.lng : center?.lng,
+			radius
 		})
-	}
-
-	const sendPermissionState = () => {
-		handleChangePermissions({ location, permissions: copyArrayPermission })
-	}
+	}, [radius, center])
 
 	return (
 		<>
@@ -48,30 +45,36 @@ export const MarkerWithInfowindow = ({
 				onClick={() => setInfowindowOpen(true)}
 				position={center === null ? { lat: position.lat, lng: position.lng } : center}
 				title={'AdvancedMarker that opens an Infowindow when clicked.'}
-				onDrag={(e) => setCenter({ location, lat: e.latLng?.lat() ?? 0, lng: e.latLng?.lng() ?? 0 })}
+				onDrag={(e) =>
+					setCenter({
+						location,
+						lat: e.latLng?.lat() ?? 0,
+						lng: e.latLng?.lng() ?? 0
+					})
+				}
 			/>
 			{infowindowOpen && (
 				<InfoWindowComponent
-					marker={marker}
 					maxWidth={400}
-					onCloseClick={() => setInfowindowOpen(false)}
+					marker={marker}
+					location={location}
 					permission={permissionsData}
-					handleCheckboxChange={handleCheckboxChange}
-					sendPermissionState={sendPermissionState}
+					onCloseClick={() => setInfowindowOpen(false)}
+					handleChangePermissions={handleChangePermissions}
 				/>
 			)}
 			<Circle
-				radius={radius}
-				center={center === null ? { lat: position.lat, lng: position.lng } : center}
-				onRadiusChanged={setRadius}
-				onCenterChanged={changeCenter}
-				strokeColor={location === 'location_start' ? '#0c4cb3' : '#0c3116'}
-				strokeOpacity={1}
-				strokeWeight={3}
-				fillColor={location === 'location_start' ? '#3b82f6' : '#e3f63b'}
-				fillOpacity={0.3}
 				editable
 				draggable
+				radius={radius}
+				fillOpacity={0.3}
+				strokeWeight={3}
+				strokeOpacity={1}
+				onRadiusChanged={setRadius}
+				onCenterChanged={changeCenter}
+				fillColor={location === 'location_start' ? '#3b82f6' : '#e3f63b'}
+				strokeColor={location === 'location_start' ? '#0c4cb3' : '#0c3116'}
+				center={center === null ? { lat: position.lat, lng: position.lng } : center}
 			/>
 		</>
 	)

@@ -1,19 +1,21 @@
 import { useState } from 'react'
 
+import { METHODS_API } from '@/Api/constantsApi'
+import { useApi } from '@/Api/useApi'
+import { calculateCircle } from '@/helpers/routes'
+import { showToast } from '@/helpers/toast'
+import { initialDataLocation } from '@/pages/PrivateRoutes/constants/constants'
+import { queryClient } from '@/routes/AppRouter'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import dayjs from 'dayjs'
 import { useForm, useWatch } from 'react-hook-form'
 
-import api from '../../../../../Api/api'
-import { METHODS_API } from '../../../../../Api/constantsApi'
-import { calculateCircle } from '../../../../../helpers/routes'
-import { showToast } from '../../../../../helpers/toast'
-import { queryClient } from '../../../../../routes/AppRouter'
-import { initialDataLocation } from '../../../constants/constants'
 import { useTravels } from './useTravels'
 
 export const useCreateTravel = (dataForm) => {
+	const { requestApi } = useApi()
+
 	const { register, handleSubmit, control } = useForm(dataForm)
 	const [selectedPlace, setSelectedPlace] = useState(null)
 	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
@@ -30,8 +32,12 @@ export const useCreateTravel = (dataForm) => {
 	})
 
 	// Adding places location start and location end
-	const addPlaces = ({ location, data }) => {
-		const { geometry } = calculateCircle(data?.geometry?.location?.lat(), data?.geometry?.location?.lng())
+	const addPlaces = ({ location, data, radius }) => {
+		const { geometry } = calculateCircle({
+			lat: data?.geometry?.location?.lat(),
+			lng: data?.geometry?.location?.lng(),
+			radius
+		})
 		setSelectedPlace(data)
 		setObjectLocations((state) => ({
 			...state,
@@ -54,7 +60,7 @@ export const useCreateTravel = (dataForm) => {
 	const getDataService = (idService) => {
 		return useQuery({
 			queryKey: ['getDataRoute', idService],
-			queryFn: async () => await api(METHODS_API.GET, `module/service/${idService}/routing`),
+			queryFn: async () => await requestApi(METHODS_API.GET, `module/service/${idService}/routing`),
 			enabled: !!idService
 		})
 	}
@@ -62,7 +68,7 @@ export const useCreateTravel = (dataForm) => {
 	const serviceRouteInformation = getDataService(idService?.service?._id ? idService?.service?._id : null)
 
 	// change permissions
-	const handleChangePermissions = ({ location, permissions }) => {
+	const handleChangePermissionsForLocationStartAndEnd = ({ location, permissions }) => {
 		setObjectLocations((state) => ({
 			...state,
 			[location]: {
@@ -89,8 +95,23 @@ export const useCreateTravel = (dataForm) => {
 		}))
 	}
 
+	const handleChangeRadiusCircle = ({ location, lat, lng, radius }) => {
+		const { geometry } = calculateCircle({
+			lat,
+			lng,
+			radius
+		})
+		setObjectLocations((state) => ({
+			...state,
+			[location]: {
+				...state[location],
+				location: geometry
+			}
+		}))
+	}
+
 	const createTravelMutation = useMutation({
-		mutationFn: async (data) => await api(METHODS_API.POST, `module/travel/create`, data),
+		mutationFn: async (data) => await requestApi(METHODS_API.POST, `module/travel/create`, data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postCreateServiceClient'] })
 	})
 
@@ -132,16 +153,19 @@ export const useCreateTravel = (dataForm) => {
 		data.installers = [sendInstaller]
 		data.type = typeTravel
 		data.periods = {
-			tx: 2,
-			sensing: ''
+			tx: 10,
+			sensing: 10
 		}
 
-		createTravel(data)
+		if (data.location_installation && data.location_finalization) {
+			createTravel(data)
+		}
 	}
 
 	return {
 		dateEnd,
 		register,
+		handleChangeRadiusCircle,
 		dateStart,
 		addPlaces,
 		setDateEnd,
@@ -152,7 +176,7 @@ export const useCreateTravel = (dataForm) => {
 		handleCreateTravel,
 		dataPreCrateTravel,
 		serviceRouteInformation,
-		handleChangePermissions,
-		handleChangeMarkerDraggable
+		handleChangeMarkerDraggable,
+		handleChangePermissionsForLocationStartAndEnd
 	}
 }

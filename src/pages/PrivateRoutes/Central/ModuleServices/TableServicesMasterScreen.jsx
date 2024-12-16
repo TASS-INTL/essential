@@ -1,37 +1,32 @@
-import React, { useState } from 'react'
+import React from 'react'
 
+import { ErrorComponent, LoaderComponent } from '@/Components'
+import { BoardDevice } from '@/Components/BoardDevice'
+import { InputSearch } from '@/Components/InputSearch'
 import { useForm } from 'react-hook-form'
 
-import { LoaderComponent } from '../../../../Components'
-import { BoardDevice } from '../../../../Components/BoardDevice'
-import { InputSearch } from '../../../../Components/InputSearch'
 import { useService } from './hooks/useService'
 
 export const TableServicesMasterScreen = () => {
-	const [page, setPage] = useState(1)
 	const { fetchDataService } = useService()
 	const { register, handleSubmit } = useForm()
-	const [dataSearch, setDataSearch] = useState('')
-	const [array, setArray] = useState([1, 2, 3, 4, 5])
 
-	const dataTableServices = fetchDataService(page, '')
+	const dataTableServicesMaster = fetchDataService(1, '')
 
-	dataTableServices.isLoading && <LoaderComponent />
+	if (dataTableServicesMaster?.isLoading) return <LoaderComponent />
 
-	const handleSubmitPagination = (data) => {
-		setPageSelected(1)
-		setArray([1, 2, 3, 4, 5])
-		setDataSearch(data.search)
-	}
+	if (dataTableServicesMaster?.error) return <ErrorComponent error={dataTableServicesMaster.error.message} />
+
+	const handleSubmitPagination = () => {}
 
 	return (
-		<div className=''>
+		<div className='px-16'>
 			<div className='flex justify-end py-2'>
 				<form onSubmit={handleSubmit(handleSubmitPagination)}>
 					<InputSearch register={register} />
 				</form>
 			</div>
-			<BoardDevice dataBody={dataTableServices?.data?.data?.results} />
+			<BoardDevice dataBody={dataTableServicesMaster?.data?.data?.results} />
 		</div>
 	)
 }

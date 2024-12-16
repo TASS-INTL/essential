@@ -1,22 +1,14 @@
 import { useReducer, useState } from 'react'
 
+import { METHODS_API } from '@/Api/constantsApi'
+import { useApi } from '@/Api/useApi'
+import { DrawingActionKind, isCircle, isMarker, isPolygon, isPolyline, isRectangle } from '@/Components/mapGoogle/types'
+import { calculateCircle } from '@/helpers/routes'
+import { showToast } from '@/helpers/toast'
+import { initialDataLocation } from '@/pages/PrivateRoutes/constants/constants'
+import { queryClient } from '@/routes/AppRouter'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-
-import api from '../../../../../Api/api'
-import { METHODS_API } from '../../../../../Api/constantsApi'
-import {
-	DrawingActionKind,
-	isCircle,
-	isMarker,
-	isPolygon,
-	isPolyline,
-	isRectangle
-} from '../../../../../Components/mapGoogle/types'
-import { calculateCircle } from '../../../../../helpers/routes'
-import { showToast } from '../../../../../helpers/toast'
-import { queryClient } from '../../../../../routes/AppRouter'
-import { initialDataLocation, permission } from '../../../constants/constants'
 
 const reducer = (state, action) => {
 	switch (action.type) {
@@ -51,15 +43,12 @@ const reducer = (state, action) => {
 				future: []
 			}
 		}
-
 		// This action is called when a new overlay is added to the map.
 		// We then take a snapshot of the relevant values of the new overlay and
 		// add it to the "now" state. The old "now" is added to the "past" stack
 		case DrawingActionKind.SET_OVERLAY: {
 			const { overlay, _id } = action.payload
-
 			const snapshot = {}
-
 			if (isCircle(overlay)) {
 				snapshot.center = overlay.getCenter()?.toJSON()
 				snapshot.radius = overlay.getRadius()
@@ -70,7 +59,6 @@ const reducer = (state, action) => {
 			} else if (isRectangle(overlay)) {
 				snapshot.bounds = overlay.getBounds()?.toJSON()
 			}
-
 			const objChange = state.now.find((item) => item._id === _id)
 			if (objChange) {
 				const position = state.now.findIndex((element) => element._id === objChange?._id)
@@ -99,7 +87,6 @@ const reducer = (state, action) => {
 				}
 			}
 		}
-
 		// This action is called when the undo button is clicked.
 		// Get the top item from the "past" stack and set it as the new "now".
 		// Add the old "now" to the "future" stack to enable redo functionality
@@ -114,15 +101,12 @@ const reducer = (state, action) => {
 				future: state.now ? [...state.future, state.now] : state.future
 			}
 		}
-
 		// This action is called when the redo button is clicked.
 		// Get the top item from the "future" stack and set it as the new "now".
 		// Add the old "now" to the "past" stack to enable undo functionality
 		case DrawingActionKind.REDO: {
 			const next = state.future.slice(-1)[0]
-
 			if (!next) return state
-
 			return {
 				past: state.now ? [...state.past, state.now] : state.past,
 				now: next,
@@ -133,6 +117,8 @@ const reducer = (state, action) => {
 }
 
 export const useRouting = () => {
+	const { requestApi } = useApi()
+
 	// states
 	const { register, handleSubmit } = useForm()
 	const [state, dispatch] = useReducer(reducer, {
@@ -143,10 +129,16 @@ export const useRouting = () => {
 	const [selectedPlace, setSelectedPlace] = useState(null)
 	const [dataDirections, setDataDirections] = useState(null)
 	const [objectLocations, setObjectLocations] = useState(initialDataLocation)
+	const [permissionForGeoFences, setPermissionForGeoFences] = useState([])
 
 	// Adding places location start and location end
-	const addPlaces = ({ location, data }) => {
-		const { geometry } = calculateCircle(data?.geometry?.location?.lat(), data?.geometry?.location?.lng())
+	const addPlaces = ({ location, data, radius }) => {
+		const { geometry } = calculateCircle({
+			lat: data?.geometry?.location?.lat(),
+			lng: data?.geometry?.location?.lng(),
+			radius
+		})
+
 		setSelectedPlace(data)
 		setObjectLocations((state) => ({
 			...state,
@@ -166,6 +158,10 @@ export const useRouting = () => {
 		}))
 	}
 
+	const handleChangePermissionForGeoFences = (permission) => {
+		setPermissionForGeoFences((prevState) => [...prevState, permission])
+	}
+
 	// change values merker when draggable is activate
 	const handleChangeMarkerDraggable = ({ location, data }) => {
 		setObjectLocations((state) => ({
@@ -183,8 +179,23 @@ export const useRouting = () => {
 		}))
 	}
 
+	const handleChangeRadiusCircle = ({ location, lat, lng, radius }) => {
+		const { geometry } = calculateCircle({
+			lat,
+			lng,
+			radius
+		})
+		setObjectLocations((state) => ({
+			...state,
+			[location]: {
+				...state[location],
+				location: geometry
+			}
+		}))
+	}
+
 	// change permissions
-	const handleChangePermissions = ({ location, permissions }) => {
+	const handleChangePermissionsForLocationStartAndEnd = ({ location, permissions }) => {
 		setObjectLocations((state) => ({
 			...state,
 			[location]: {
@@ -193,12 +204,13 @@ export const useRouting = () => {
 			}
 		}))
 	}
+
 	// processing stations
 	const processingStations = () => {
 		const stationProcesed = []
 		let count = 2
-		if (state.now.length > 0) {
-			state.now.forEach((element) => {
+		if (state.now?.length > 0) {
+			state.now.forEach((element, index) => {
 				const locationCoordinates = []
 				element.snapshot.path.forEach((item) => {
 					locationCoordinates.push([item.lng(), item.lat()])
@@ -209,7 +221,7 @@ export const useRouting = () => {
 						type: 'Polygon',
 						coordinates: [locationCoordinates]
 					},
-					permissions: permission,
+					permissions: permissionForGeoFences[index],
 					name: `station-${count}`,
 					market: {
 						location: {
@@ -244,7 +256,7 @@ export const useRouting = () => {
 
 	// send create routing
 	const createRoutingClient = useMutation({
-		mutationFn: async (data) => await api(METHODS_API.POST, `module/routing/create-client`, data),
+		mutationFn: async (data) => await requestApi(METHODS_API.POST, `module/routing/create-client`, data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postCreateRoutingClient'] })
 	})
 
@@ -259,9 +271,10 @@ export const useRouting = () => {
 	const getPermissionsForRouting = () =>
 		useQuery({
 			queryKey: ['permissionsForRouting'],
-			queryFn: async () => await api(METHODS_API.GET, `module/routing/permissions/geofences`)
+			queryFn: async () => await requestApi(METHODS_API.GET, `module/routing/permissions/geofences`)
 		})
 
+	//
 	const permissionsData = getPermissionsForRouting()
 
 	// Sending all the information collected for the route
@@ -290,6 +303,11 @@ export const useRouting = () => {
 		}
 	}
 
+	const changeStatePermission = (idPermission) => {
+		const position = state.now.findIndex((element) => element._id === idPermission)
+		state.now[position].showPermission = false
+	}
+
 	return {
 		state,
 		dispatch,
@@ -301,8 +319,11 @@ export const useRouting = () => {
 		permissionsData,
 		objectLocations,
 		setDataDirections,
-		handleChangePermissions,
+		changeStatePermission,
 		getPermissionsForRouting,
-		handleChangeMarkerDraggable
+		handleChangeRadiusCircle,
+		handleChangeMarkerDraggable,
+		handleChangePermissionForGeoFences,
+		handleChangePermissionsForLocationStartAndEnd
 	}
 }

@@ -1,8 +1,14 @@
 import { showToast } from '@/helpers/toast'
+import { useForm } from 'react-hook-form'
 
 import { useAuthProvider } from './useAuthProvider'
 
 export const useAuth = () => {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors }
+	} = useForm()
 	const { login, ValidateCodeApi, registerPersonalData, registerNameAndUserName, resendCode, forgotPassword } =
 		useAuthProvider()
 
@@ -67,6 +73,11 @@ export const useAuth = () => {
 			return showToast('❌ Debes ingresar todos los campos', 'error')
 		}
 
+		valuePersonalData.phone_number = {
+			code: '+57',
+			number: '3225713623'
+		}
+
 		const response = await registerPersonalData(valuePersonalData)
 
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
@@ -89,6 +100,9 @@ export const useAuth = () => {
 		submitFormRegister,
 		submitFormValidateData,
 		submitFormValidateCode,
-		submitFormForgotPassword
+		submitFormForgotPassword,
+		errors,
+		handleSubmit,
+		register
 	}
 }

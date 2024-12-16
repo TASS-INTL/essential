@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react'
 
 import 'react-phone-number-input/style.css'
 
-import { InputComponent, InputSubmitComponent, SelectComponent } from '@/Components'
+import { logoTass } from '@/assets/assetsplatform/PrivateRoutes'
+import { InputComponent, InputSubmitComponent, ModalComponent, SelectComponent } from '@/Components'
 import { useForm } from 'react-hook-form'
 import PhoneInput from 'react-phone-number-input'
 
-import { logoTass } from '../../assets/assetsplatform/PrivateRoutes'
-import { ModalComponent } from '../../Components'
 import { arrayOptions, typeDocument, typeUser } from './constants'
 import { useAuth } from './hooks/useLogin'
 import { TermsAndConditions } from './TermsAndConditions'
@@ -31,13 +30,13 @@ export const PersonalDataScreen = () => {
 	const [flagInput, setFlagInput] = useState(false)
 	const { submitFormValidateData } = useAuth()
 	const { register, handleSubmit, watch } = useForm()
-	const [modal, setModal] = useState(false)
+
+	const [open, setOpen] = useState(false)
+	const handleOpen = () => setOpen(!open)
 
 	useEffect(() => {
 		watch().type_person === 'Juridica' ? setFlagInput(true) : setFlagInput(false)
 	}, [watch().type_person])
-
-	const setModalVisible = () => setModal(true)
 
 	return (
 		<div className='w-full min-h-screen  items-center justify-center  space-x-6 '>
@@ -55,7 +54,7 @@ export const PersonalDataScreen = () => {
 								color
 								required
 								register={register}
-								label='nombre'
+								label='Nombre'
 								name='name'
 								type='text'
 								placeholder='yondoe'
@@ -64,7 +63,7 @@ export const PersonalDataScreen = () => {
 								color
 								required
 								register={register}
-								label='email'
+								label='Correo Electronico'
 								name='email'
 								type='text'
 								placeholder='yondoe@gmail.com'
@@ -73,7 +72,7 @@ export const PersonalDataScreen = () => {
 								color
 								required
 								register={register}
-								label='username'
+								label='Nombre de usuario'
 								name='username'
 								type='text'
 								placeholder='yondoe'
@@ -96,7 +95,7 @@ export const PersonalDataScreen = () => {
 								color
 								required
 								register={register}
-								label='numero de documento'
+								label='Numero de documento'
 								name='number_document_personal'
 								type='text'
 							/>
@@ -113,7 +112,7 @@ export const PersonalDataScreen = () => {
 										color
 										required
 										register={register}
-										label='numero de documento de la compañia'
+										label='Numero de documento de la compañia'
 										name='number_document_company'
 										type='text'
 									/>
@@ -123,7 +122,7 @@ export const PersonalDataScreen = () => {
 								color
 								required
 								register={register}
-								label='country'
+								label='Pais'
 								name='country'
 								type='text'
 							/>
@@ -131,11 +130,11 @@ export const PersonalDataScreen = () => {
 								color
 								required
 								register={register}
-								label='region'
+								label='Region'
 								name='region'
 								type='text'
 							/>
-							<InputComponent color required register={register} label='city' name='city' type='text' />
+							<InputComponent color required register={register} label='Ciudad' name='city' type='text' />
 							<InputComponent
 								color
 								required
@@ -148,7 +147,7 @@ export const PersonalDataScreen = () => {
 								color
 								required
 								register={register}
-								label='estado o provincia'
+								label='Estado o provincia'
 								name='state_province'
 								type='text'
 							/>
@@ -156,7 +155,7 @@ export const PersonalDataScreen = () => {
 								color
 								required
 								register={register}
-								label='codigo postal'
+								label='Codigo postal'
 								name='code_postal'
 								type='text'
 							/>
@@ -172,7 +171,7 @@ export const PersonalDataScreen = () => {
 								<PhoneInput
 									international
 									countryCallingCodeEditable={false}
-									defaultCountry='US'
+									defaultCountry='CO'
 									placeholder='Enter phone number'
 									value={value}
 									onChange={setValue}
@@ -183,7 +182,7 @@ export const PersonalDataScreen = () => {
 								color
 								required
 								register={register}
-								label='password'
+								label='Contraseña'
 								name='key'
 								type='password'
 								placeholder='•••••••••'
@@ -191,7 +190,7 @@ export const PersonalDataScreen = () => {
 							<SelectComponent
 								register={register}
 								label='Tipo de usuario'
-								name='type_role'
+								name='type_master'
 								arrayOptions={typeUser}
 								option='name'
 							/>
@@ -207,7 +206,7 @@ export const PersonalDataScreen = () => {
 							</div>
 							<label className='ms-2 text-sm font-medium text-gray-900'>
 								Al continuar Acepta los terminos y condiciones de uso de TASS INTL y las
-								<span onClick={setModalVisible} className='text-blue-600 hover:underline'>
+								<span onClick={handleOpen} className='text-blue-600 hover:underline'>
 									{' '}
 									Politica de privacidad
 								</span>
@@ -219,11 +218,9 @@ export const PersonalDataScreen = () => {
 						</div>
 					</form>
 
-					{modal && (
-						<ModalComponent textModal='Terminos y condiciones' handleClose={setModal}>
-							<TermsAndConditions />
-						</ModalComponent>
-					)}
+					<ModalComponent handleOpen={open} HandleClose={handleOpen} textModal='Terminos y condiciones'>
+						<TermsAndConditions />
+					</ModalComponent>
 				</div>
 			</div>
 		</div>

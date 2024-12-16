@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 
+import { LoaderComponent, ModalComponent } from '@/Components'
+import { InputSearch } from '@/Components/InputSearch'
 import { travelsStore } from '@/store/travelsStore'
 import Button from '@mui/material/Button'
 import { useForm } from 'react-hook-form'
 import { NavLink } from 'react-router-dom'
 
 import { CreateTravel } from '.'
-import { LoaderComponent, ModalComponent } from '../../../../Components'
-import { InputSearch } from '../../../../Components/InputSearch'
-import { initialStateTravel } from '../../constants/constants'
+import { dataForCreateTravel } from '../../constants/constants'
 
 export const TableTravelsScreen = () => {
 	const [open, setOpen] = useState(false)
@@ -16,17 +16,13 @@ export const TableTravelsScreen = () => {
 	const { register, handleSubmit } = useForm()
 	const arrayTableTravels = travelsStore((state) => state.arrayTableTravels)
 
-	const handlePagination = (data) => {
-		setPageSelected(1)
-		setArray([1, 2, 3, 4, 5])
-		setDataSearch(data.search)
-	}
+	const handlePagination = (data) => {}
 
 	if (arrayTableTravels === null) return <LoaderComponent />
 
 	return (
-		<>
-			<div className='flex justify-between pt-5 py-10'>
+		<div className='px-16 py-4'>
+			<div className='flex justify-between pt-5 py-5'>
 				<Button variant='contained' onClick={handleOpen}>
 					Crear Viaje
 				</Button>
@@ -36,7 +32,7 @@ export const TableTravelsScreen = () => {
 			</div>
 			<div>
 				{arrayTableTravels?.results?.map((item) => (
-					<div key={item._id} className='p-4 bg-white rounded-xl'>
+					<div key={item._id} className='p-4 bg-white rounded-xl my-3'>
 						<div className='flex justify-between'>
 							<div className=''>
 								<div className='flex flex-col'>
@@ -60,7 +56,7 @@ export const TableTravelsScreen = () => {
 						</div>
 						<div className='flex mt-3'>
 							<div className='h-3 w-full border border-blue-600 rounded-full '>
-								<div className={`pl-3 w-[${item?.distance?.progress}%] h-3 bg-blue-600 rounded-full`} />
+								<div className={`pl-3 w-[10%] h-3 bg-blue-600 rounded-full`} />
 							</div>
 						</div>
 						<div className='flex gap-4'>
@@ -89,8 +85,8 @@ export const TableTravelsScreen = () => {
 				))}
 			</div>
 			<ModalComponent handleOpen={open} HandleClose={handleOpen} titleModal='Creacion del Viaje'>
-				<CreateTravel dataForm={initialStateTravel} />
+				<CreateTravel dataForm={dataForCreateTravel} />
 			</ModalComponent>
-		</>
+		</div>
 	)
 }

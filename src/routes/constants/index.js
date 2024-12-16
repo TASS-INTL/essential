@@ -18,6 +18,7 @@ export const routesPrivate = {
 	tableServicesMasterScreen: 'table-services-master-screen',
 	tableServicesClientScreen: 'table-services-client-screen',
 	// TRAVELS
+	reports: 'reports',
 	travels: 'travels',
 	monitoring: 'monitoring',
 	createTravel: 'create-travel',
@@ -43,6 +44,8 @@ export const routesPrivate = {
 	dashboardScreen: 'dashboard-screen',
 	monitoringScreen: 'monitoring-screen',
 	detailInventoryScreen: 'detail-inventory-screen',
+	// ROUTING
+	routingScreen: 'routing-screen',
 	// INSTALLERS
 	installersScreen: 'installers-screen'
 }

@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { ErrorComponent, LoaderComponent, TitleWithLive } from '@/Components'
+import { BoardDevice } from '@/Components/BoardDevice'
+import { Container } from '@/Components/Container'
+import { arrayTapInventory, TapBottons } from '@/Components/TapBottons'
+import { inventoryStore } from '@/store/inventoryStore'
 import { useLocation, useParams } from 'react-router-dom'
-
-import { ErrorComponent, LoaderComponent, TitleWithLive } from '../../../../Components'
-import { BoardDevice } from '../../../../Components/BoardDevice'
-import { arrayTapInventory, TapBottons } from '../../../../Components/TapBottons'
-import { inventoryStore } from '../../../../store/inventoryStore'
 
 export const Events = () => {
 	const { idDevice } = useParams()
@@ -17,10 +17,10 @@ export const Events = () => {
 	if (arrayTableInventoryEvents.error) return <ErrorComponent error={arrayTableInventoryEvents.message} />
 
 	return (
-		<>
+		<div className='px-10'>
 			<TapBottons location={location} idDevice={idDevice} path='devices-screen/device' data={arrayTapInventory} />
 			<TitleWithLive title='EVENTOS' inLive />
 			<BoardDevice dataBody={arrayTableInventoryEvents?.data?.results} />
-		</>
+		</div>
 	)
 }

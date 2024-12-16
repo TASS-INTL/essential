@@ -1,38 +1,27 @@
-import React, { useState } from 'react'
+import React from 'react'
 
+import { ErrorComponent, LoaderComponent, TitleWithLive } from '@/Components'
+import { BoardDevice } from '@/Components/BoardDevice'
+import { InputSearch } from '@/Components/InputSearch'
+import { deviceStore } from '@/store/deviceStore'
+import { userStore } from '@/store/userStore'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { BoardDevice } from '../../../../Components/BoardDevice.jsx'
-import { ErrorComponent } from '../../../../Components/ErrorComponent.jsx'
-import { InputSearch } from '../../../../Components/InputSearch.jsx'
-import { LoaderComponent } from '../../../../Components/LoaderComponent.jsx'
-import { TitleWithLive } from '../../../../Components/TitleWithLive.jsx'
-import { deviceStore } from '../../../../store/deviceStore.js'
-import { userStore } from '../../../../store/userStore.js'
-
 export const TableDeviceScreen = () => {
 	const { register, handleSubmit } = useForm()
-	const [dataSearch, setDataSearch] = useState('')
-	// const { paginationEmit } = useInventorySocket()
-	const [pageSelected, setPageSelected] = useState(1)
-	const [array, setArray] = useState([1, 2, 3, 4, 5])
 	const arrayTabledevice = deviceStore((state) => state.arrayTabledevice)
 
 	const userData = userStore((state) => state.userData)
 
-	const handlePagination = () => {
-		setPageSelected(1)
-		setArray([1, 2, 3, 4, 5])
-		setDataSearch(data.search)
-	}
+	const handlePagination = (data) => {}
 
 	if (arrayTabledevice === null) return <LoaderComponent />
 
-	if (arrayTabledevice.error) return <ErrorComponent error={arrayTabledevice.message} />
+	if (arrayTabledevice?.error) return <ErrorComponent error={arrayTabledevice.message} />
 
 	return (
-		<>
+		<div className='px-16 py-4'>
 			<div className='flex justify-between px-0 py-3 pt-2'>
 				<Link
 					to={
@@ -51,9 +40,9 @@ export const TableDeviceScreen = () => {
 				</div>
 			</div>
 			<TitleWithLive title='DISPOSITIVOS' inLive />
-			{arrayTabledevice.results.length > 0 && (
+			{arrayTabledevice?.results?.length > 0 && (
 				<BoardDevice dataBody={arrayTabledevice?.results} to='devices-screen/device' />
 			)}
-		</>
+		</div>
 	)
 }

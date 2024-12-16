@@ -1,22 +1,16 @@
 import React from 'react'
 
+import { logoTass } from '@/assets/assetsplatform/PrivateRoutes'
 import { InputComponent, InputSubmitComponent } from '@/Components'
+import { showToast } from '@/helpers/toast'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { emailSvg } from '../../assets/assetsplatform'
-import { logoTass } from '../../assets/assetsplatform/PrivateRoutes'
 import { pathNavigation } from './constants'
 import { useAuth } from './hooks/useLogin'
 
 export const ForgotPasswordScreen = () => {
-	const { submitFormForgotPassword } = useAuth()
-
-	const {
-		register,
-		handleSubmit,
-		formState: { errors }
-	} = useForm()
+	const { submitFormForgotPassword, register, handleSubmit, errors } = useAuth()
 
 	return (
 		<div className=' w-full min-h-screen  items-center justify-center  space-x-6'>
@@ -40,7 +34,6 @@ export const ForgotPasswordScreen = () => {
 							required
 							name='email'
 							type='email'
-							svg={emailSvg}
 							register={register}
 							label='Correo electronico'
 							placeholder='name@gmail.com'

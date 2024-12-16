@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
 import { NavLink } from 'react-router-dom'
 
+import { NoData } from '.'
+
 export const BoardDevice = ({ dataBody, to }) => {
+	if (dataBody?.length === 0) return <NoData />
+
 	return (
-		<div className='relative overflow-x-scrolling overflow-y-scrolling shadow-md sm:rounded-lg w-full '>
+		<div className='overflow-x-scrolling overflow-y-scrolling shadow-md sm:rounded-lg w-full '>
 			<div className='overflow-scroll'>
 				<table className='w-full text-sm text-left rtl:text-right text-gray-500'>
 					<thead className='text-[0.8rem] text-gray-700 uppercase bg-gray-50'>
@@ -19,8 +23,8 @@ export const BoardDevice = ({ dataBody, to }) => {
 					</thead>
 					<tbody>
 						{dataBody.map((item, index) => (
-							<>
-								<tr key={item._id} className='bg-white border-b hover:bg-gray-100 '>
+							<Fragment key={item._id}>
+								<tr className='bg-white border-b hover:bg-gray-100 '>
 									{Object.values(dataBody[index])?.map((itemObj, i) => (
 										<th
 											key={i}
@@ -37,7 +41,7 @@ export const BoardDevice = ({ dataBody, to }) => {
 										<NavLink to={`/user/${to}/${item._id}/general`}>Ver</NavLink>
 									</th>
 								</tr>
-							</>
+							</Fragment>
 						))}
 					</tbody>
 				</table>

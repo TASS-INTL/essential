@@ -1,35 +1,33 @@
 import React from 'react'
 
+import { ErrorComponent, LoaderComponent, TitleWithLive } from '@/Components'
+import { BoardDevice } from '@/Components/BoardDevice'
+import { arrayTapMonitoring, TapBottons } from '@/Components/TapBottons'
+import { travelsStore } from '@/store/travelsStore'
 import { useLocation, useParams } from 'react-router-dom'
 
-import { LoaderComponent } from '../../../../Components'
-import { BoardDevice } from '../../../../Components/BoardDevice'
-import { ErrorComponent } from '../../../../Components/ErrorComponent'
-import { arrayTapMonitoring, TapBottons } from '../../../../Components/TapBottons'
-import { travelsStore } from '../../../../store/travelsStore'
-
-export const Eventstravel = () => {
+export const EventsTravel = () => {
 	const location = useLocation()
 	const { idTravel } = useParams()
 
 	const arrayTableTravelsEvents = travelsStore((state) => state.arrayTableTravelsEvents)
 
-	// console.log(arrayTableTravelsEvents)
-
 	if (arrayTableTravelsEvents === null) return <LoaderComponent />
 
-	// if (arrayTableTravelsEvents.error) return <ErrorComponent error={arrayTableTravelsEvents.message} />
+	if (arrayTableTravelsEvents?.error) return <ErrorComponent error={arrayTableTravelsEvents.message} />
 
 	return (
-		<>
+		<div className='absolute top-0 right-0 h-full bg-white w-3/5 p-3 pt-6'>
 			<TapBottons
 				location={location}
 				idDevice={idTravel}
 				path='travels-screen/travel'
 				data={arrayTapMonitoring}
 			/>
-			<h2 className='text-normal py-3 pl-5'>Eventos en tiempo real</h2>
-			{/* <BoardDevice dataBody={arrayTableTravelsEvents?.results} /> */}
-		</>
+			<div className='h-[81%]'>
+				<TitleWithLive title='EVENTOS' inLive />
+				<BoardDevice dataBody={arrayTableTravelsEvents?.results} />
+			</div>
+		</div>
 	)
 }

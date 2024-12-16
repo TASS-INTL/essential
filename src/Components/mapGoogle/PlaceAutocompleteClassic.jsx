@@ -9,19 +9,16 @@ export const PlaceAutocompleteClassic = ({ addPlaces, location }) => {
 
 	useEffect(() => {
 		if (!places || !inputRef.current) return
-
 		const options = {
 			fields: ['geometry', 'name', 'formatted_address']
 		}
-
 		setPlaceAutocomplete(new places.Autocomplete(inputRef.current, options))
 	}, [places])
 
 	useEffect(() => {
 		if (!placeAutocomplete) return
-
 		placeAutocomplete.addListener('place_changed', () => {
-			addPlaces({ location, data: placeAutocomplete.getPlace() })
+			addPlaces({ location, data: placeAutocomplete.getPlace(), radius: 400 })
 		})
 	}, [addPlaces, placeAutocomplete])
 

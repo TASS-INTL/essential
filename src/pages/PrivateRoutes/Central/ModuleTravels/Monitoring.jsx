@@ -1,43 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
+import { arrayTapMonitoring, TapBottons } from '@/Components/TapBottons'
 import { useLocation, useParams } from 'react-router-dom'
-
-import { arrayTapMonitoring, TapBottons } from '../../../../Components/TapBottons'
-import { travelsStore } from '../../../../store/travelsStore'
-import { tableTitleInventory } from '../../constants/constants'
-import { useMap } from '../../Hooks/useMap'
 
 export const Monitoring = () => {
 	const location = useLocation()
 	const { idTravel } = useParams()
-	const [markers, setMarkers] = useState(null)
-	const { createMarkerMap, deleteMarkerMap, mapGlobal } = useMap()
-	const realTimeCoordinates = travelsStore((state) => state.realTimeCoordinates)
-	const arrayTableTravelsMonitoring = travelsStore((state) => state.arrayTableTravelsMonitoring)
-
-	useEffect(() => {
-		if (realTimeCoordinates?.loc_clean?.lat) {
-			if (markers) {
-				deleteMarkerMap(markers)
-				setMarkers(null)
-			}
-			if (mapGlobal) {
-				const marker = createMarkerMap(
-					realTimeCoordinates?.loc_clean.lng,
-					realTimeCoordinates?.loc_clean.lat,
-					mapGlobal,
-					false
-				)
-				mapGlobal.flyTo({
-					center: [realTimeCoordinates?.loc_clean.lng, realTimeCoordinates?.loc_clean.lat]
-				})
-				setMarkers(marker)
-			}
-		}
-	}, [realTimeCoordinates?.loc_clean?.lat, realTimeCoordinates?.loc_clean?.lng, mapGlobal])
 
 	return (
-		<>
+		<div className='absolute top-0 right-0 bg-white h-full w-3/5 p-3 pt-6'>
 			<TapBottons
 				location={location}
 				idDevice={idTravel}
@@ -76,6 +47,6 @@ export const Monitoring = () => {
 					))}
 				</tbody>
 			</table> */}
-		</>
+		</div>
 	)
 }

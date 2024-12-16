@@ -14,7 +14,7 @@ export const FormCreateUser = ({
 	handleCreateUser,
 	handleUpdateUser
 }) => {
-	const { register, handleSubmit } = useForm()
+	const { register, handleSubmit } = useForm(userUpdate ? userUpdate : '')
 
 	const handleSendDataNewUser = (data, event) => {
 		methodForm ? handleCreateUser(data, event) : handleUpdateUser({ ...data, _id: userUpdate._id }, event)
@@ -24,7 +24,7 @@ export const FormCreateUser = ({
 		<ModalComponent
 			handleOpen={modalVisible}
 			HandleClose={HandleClose}
-			titleModal={methodForm ? 'Creacion de nuevo Usuario' : 'Actlializacion de usuario'}
+			titleModal={methodForm ? 'Creacion de nuevo Usuario' : 'Actualizacion de usuario'}
 		>
 			<form onSubmit={handleSubmit(handleSendDataNewUser)}>
 				<div className='grid grid-cols-2 gap-5 mx-10'>
@@ -140,7 +140,7 @@ export const FormCreateUser = ({
 					/>
 				</div>
 				<div className='my-3 flex flex-row justify-center items-center'>
-					<InputSubmitComponent text='Crear usuario' />
+					<InputSubmitComponent text={methodForm ? 'Crear Usuario' : 'Actualizar Usuario'} />
 				</div>
 			</form>
 		</ModalComponent>
