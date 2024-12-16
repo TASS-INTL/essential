@@ -7,7 +7,7 @@ import { showToast } from '@/helpers/toast'
 import { useMapLogic } from '@/hooks/map/useMap'
 import { travelsStore } from '@/store/travelsStore'
 import { userStore } from '@/store/userStore'
-import { APIProvider } from '@vis.gl/react-google-maps'
+import { APIProvider, useMap } from '@vis.gl/react-google-maps'
 import { Outlet, useParams } from 'react-router-dom'
 
 import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
@@ -120,11 +120,14 @@ export const DetailTravel = () => {
 		}
 	}, [state])
 
+	console.log('travelInfo?.data?.routing? -->', travelInfo?.data?.routing)
+
 	return (
 		<>
 			<div className='h-full pt-5 pl-8 relative'>
 				<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
-					<MapGoogle showDrawingManager state={state} dispatch={dispatch}>
+					<MapGoogle width={'40%'} showDrawingManager state={state} dispatch={dispatch}>
+						<MapHandlerBoundliteral viewport={travelInfo?.data?.routing?.viewport} />
 						{!!travelInfo?.data?.routing?.coordinatesroute && (
 							<Polyline
 								strokeWeight={7}
@@ -150,4 +153,18 @@ export const DetailTravel = () => {
 			</div>
 		</>
 	)
+}
+
+export const MapHandlerBoundliteral = ({ viewport }) => {
+	const map = useMap()
+
+	useEffect(() => {
+		if (!map || !viewport) return
+
+		if (viewport) {
+			map.fitBounds(viewport, 50)
+		}
+	}, [map, viewport])
+
+	return null
 }

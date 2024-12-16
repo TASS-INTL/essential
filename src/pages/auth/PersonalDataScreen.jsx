@@ -5,7 +5,7 @@ import 'react-phone-number-input/style.css'
 import { logoTass } from '@/assets/assetsplatform/PrivateRoutes'
 import { InputComponent, InputSubmitComponent, ModalComponent, SelectComponent } from '@/Components'
 import { useForm } from 'react-hook-form'
-import PhoneInput, { formatPhoneNumberIntl } from 'react-phone-number-input'
+import PhoneInput from 'react-phone-number-input'
 
 import { arrayOptions, typeDocument, typeUser } from './constants'
 import { useAuth } from './hooks/useLogin'
