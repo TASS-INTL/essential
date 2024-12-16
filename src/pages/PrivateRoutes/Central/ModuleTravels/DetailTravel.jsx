@@ -120,8 +120,6 @@ export const DetailTravel = () => {
 		}
 	}, [state])
 
-	console.log('travelInfo?.data?.routing? -->', travelInfo?.data?.routing)
-
 	return (
 		<>
 			<div className='h-full pt-5 pl-8 relative'>
