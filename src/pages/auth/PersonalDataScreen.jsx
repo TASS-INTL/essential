@@ -4,6 +4,7 @@ import 'react-phone-number-input/style.css'
 
 import { logoTass } from '@/assets/assetsplatform/PrivateRoutes'
 import { InputComponent, InputSubmitComponent, ModalComponent, SelectComponent } from '@/Components'
+import { userStore } from '@/store/userStore'
 import { useForm } from 'react-hook-form'
 import PhoneInput from 'react-phone-number-input'
 
@@ -29,14 +30,42 @@ export const PersonalDataScreen = () => {
 	const [value, setValue] = useState()
 	const [flagInput, setFlagInput] = useState(false)
 	const { submitFormValidateData } = useAuth()
-	const { register, handleSubmit, watch } = useForm()
+	const userData = userStore((state) => state.userData)
+
+	const { register, handleSubmit, watch } = useForm({
+		defaultValues: {
+			name: '',
+			type_person: '',
+			type_document_personal: 'CC',
+			number_document_personal: '',
+			type_document_company: 'NN',
+			number_document_company: '',
+			phone_number: {
+				code: '',
+				number: ''
+			},
+			country: '',
+			region: '',
+			city: '',
+			address: '',
+			code_postal: '',
+			terms_conditions: false,
+			email: userData.email,
+			username: userData.userName,
+			key: '',
+			id_profile: '',
+			type_role_system: 'client'
+		}
+	})
 
 	const [open, setOpen] = useState(false)
 	const handleOpen = () => setOpen(!open)
 
 	useEffect(() => {
-		watch().type_person === 'Juridica' ? setFlagInput(true) : setFlagInput(false)
+		watch().type_person === 'juridica' ? setFlagInput(true) : setFlagInput(false)
 	}, [watch().type_person])
+
+	console.log(watch().type_person)
 
 	return (
 		<div className='w-full min-h-screen  items-center justify-center  space-x-6 '>
@@ -147,8 +176,8 @@ export const PersonalDataScreen = () => {
 								color
 								required
 								register={register}
-								label='Estado o provincia'
-								name='state_province'
+								label='Id perfil'
+								name='id_profile'
 								type='text'
 							/>
 							<InputComponent
@@ -190,11 +219,12 @@ export const PersonalDataScreen = () => {
 							<SelectComponent
 								register={register}
 								label='Tipo de usuario'
-								name='type_master'
+								name='type_role_system'
 								arrayOptions={typeUser}
 								option='name'
 							/>
 						</div>
+						{/* Terminos y condiciones */}
 						<div className='flex items-start justify-center mb-2'>
 							<div className='flex items-center h-5'>
 								<input
@@ -213,6 +243,7 @@ export const PersonalDataScreen = () => {
 								.
 							</label>
 						</div>
+						{/* Envio de datos */}
 						<div className=' flex flex-row justify-center mb-9'>
 							<InputSubmitComponent text='Finalizar' />
 						</div>

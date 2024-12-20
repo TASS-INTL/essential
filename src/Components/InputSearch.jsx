@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const InputSearch = ({ register }) => {
+export const InputSearch = ({ register, placeholder }) => {
 	return (
 		<div className='w-full flex flex-row justify-end'>
 			<div className='relative '>
@@ -24,7 +24,7 @@ export const InputSearch = ({ register }) => {
 					type='text'
 					id='table-search'
 					className='block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 '
-					placeholder='Search for items'
+					placeholder={placeholder}
 				/>
 			</div>
 		</div>

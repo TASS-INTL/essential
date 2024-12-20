@@ -1,5 +1,6 @@
 import { useAuthProvider } from '@/pages/auth/hooks/useAuthProvider'
-import { userStore } from '@/store/userStore'
+import { PoliciesScreen } from '@/pages/PrivateRoutes/Admin/ModulePolicies/PoliciesScreen'
+import { ProfilesScreen } from '@/pages/PrivateRoutes/Admin/ModuleProfiles/ProfilesScreen'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { LoaderComponent, SideBarComponent } from '../Components'
@@ -125,8 +126,13 @@ export const RoutesPrivate = () => {
 				{/* ============ MODULE ADMIN =============== */}
 
 				{/* Users */}
+				<Route
+					path={routesPrivate.adminScreen}
+					element={<CentralScreen NameMap='Admin' title='Administrador' />}
+				/>
 				<Route path={routesPrivate.usersScreen} element={<UsersScreen />} />
-				<Route path={'/admin-screen'} element={<CentralScreen NameMap='Admin' title='Administrador' />} />
+				<Route path={routesPrivate.profilesScreen} element={<ProfilesScreen />} />
+				<Route path={routesPrivate.policiesScreen} element={<PoliciesScreen />} />
 
 				{/* ============ MODULE CHAT =============== */}
 

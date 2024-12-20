@@ -49,17 +49,26 @@ export const useAuthProvider = () => {
 	}
 
 	const ValidateCodeApi = async ({ code, screen }) => {
-		const { email, tokenSesion } = userData
+		const { email, tokenSesion, userName } = userData
+
+		const dataSend = {
+			code,
+			email
+		}
+
+		if (screen === 'register') {
+			dataSend.username = userName
+		}
 
 		const response = await requestApi(
 			METHODS_API.POST,
 			screen === 'login' ? `auth2/login/validateCode?to=${tokenSesion}` : 'singup/start/code',
-			{
-				code,
-				email
-			}
+			dataSend
 		)
+
 		if (response?.completed) {
+			console.log(response?.data)
+
 			if (screen === 'login') {
 				localStorage.setItem('token', response?.data?.token)
 				setUserData({
@@ -72,13 +81,13 @@ export const useAuthProvider = () => {
 					state: response?.data?.state,
 					userName: response?.data?.username,
 					tokenSesion: response?.data?.token,
-					modules: response?.data?.user_policies.modules,
-					typeUser: response?.data?.type_master
+					typeUser: response?.data?.type_master,
+					modules: response?.data?.user_policies.modules
 				})
 			} else {
 				setUserData({
 					...userData,
-					tokenRegister: response?.data[0]?.token
+					tokenRegister: response?.data?.key_process
 				})
 				navigate(pathNavigation.personalData)
 			}
@@ -88,6 +97,8 @@ export const useAuthProvider = () => {
 
 	const registerPersonalData = async (personalData) => {
 		const { tokenRegister } = userData
+
+		console.log('tokenRegister -->', userData)
 		const response = await requestApi(METHODS_API.POST, `singup/finalized/?to=${tokenRegister}`, personalData)
 		if (response.completed) {
 			setUserData({

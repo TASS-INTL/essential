@@ -36,6 +36,8 @@ export const routesPrivate = {
 	// CHAT
 	chatScreen: 'chat-screen',
 	usersScreen: 'users-screen',
+	policiesScreen: 'policies-screen',
+	profilesScreen: 'profiles-screen',
 	groupScreen: 'group-screen',
 	testingScreen: 'testing-screen',
 	accountScreen: 'account-screen',
@@ -47,7 +49,8 @@ export const routesPrivate = {
 	// ROUTING
 	routingScreen: 'routing-screen',
 	// INSTALLERS
-	installersScreen: 'installers-screen'
+	installersScreen: 'installers-screen',
+	adminScreen: 'admin-screen'
 }
 
 export const RoutesPublic = {

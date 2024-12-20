@@ -69,10 +69,6 @@ export const useAuth = () => {
 	const submitFormValidateData = async (valuePersonalData, event) => {
 		event.preventDefault()
 
-		if (Object.values(valuePersonalData).some((value) => value === '')) {
-			return showToast('❌ Debes ingresar todos los campos', 'error')
-		}
-
 		valuePersonalData.phone_number = {
 			code: '+57',
 			number: '3225713623'

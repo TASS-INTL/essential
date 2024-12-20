@@ -4,6 +4,7 @@ import { METHODS_API } from '@/Api/constantsApi'
 import { useApi } from '@/Api/useApi'
 import { showToast } from '@/helpers/toast'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { useForm } from 'react-hook-form'
 
 import { queryClient } from '../../../../../routes/AppRouter'
 
@@ -11,15 +12,25 @@ export const useUsers = () => {
 	const [methodForm, setMethodForm] = useState(true)
 	const [userUpdate, setUserUpdate] = useState(null)
 	const [modalVisible, setModalVisible] = useState(false)
+	const { register, handleSubmit } = useForm()
+
+	const [search, setSearch] = useState('')
+	const [page, setPage] = useState(1)
+	const [limit, setLimit] = useState(10)
+
 	const { requestApi } = useApi()
 
-	const fetchDataUser = () =>
+	const fetchDataUser = ({ page, limit, search }) =>
 		useQuery({
-			queryKey: ['getUserList'],
-			queryFn: async () => await requestApi(METHODS_API.GET, 'module/users')
+			queryKey: ['getUserList', page, limit, search],
+			queryFn: async () =>
+				await requestApi(
+					METHODS_API.GET,
+					`module/users/master?page=${page}&limit=${limit}&search=${search === '' ? '' : search}`
+				)
 		})
 
-	const fetchUserList = fetchDataUser()
+	const fetchUserList = fetchDataUser({ page, limit, search })
 
 	const createUser = useMutation({
 		mutationFn: async (data) => await requestApi(METHODS_API.POST, 'module/users/create', data),
@@ -55,7 +66,7 @@ export const useUsers = () => {
 
 	const handleDeleteUser = async (idUserDelete) => {
 		const response = await deleteUser.mutateAsync(idUserDelete)
-		response.completed && showToast('Se a Eliminado el usuario de manera exitosa', 'success')
+		response.completed && showToast('Se a eliminado el usuario de manera exitosa', 'success')
 		response?.error && showToast('❌ Algo ha salido mal ' + response?.message, 'error')
 	}
 
@@ -85,17 +96,26 @@ export const useUsers = () => {
 		setModalVisible(true)
 	}
 
+	const handleSubmitPagination = (data) => {
+		setSearch(data.search)
+	}
+
 	return {
 		methodForm,
 		userUpdate,
 		modalVisible,
-		fetchUserList,
 		handleOpen,
 		fetchDataUser,
 		handleCreateUser,
 		handleDeleteUser,
 		handleUpdateUser,
 		onPressUpdateUser,
-		onPressCreateUser
+		onPressCreateUser,
+		handleSubmit,
+		search,
+		setSearch,
+		register,
+		fetchUserList,
+		handleSubmitPagination
 	}
 }

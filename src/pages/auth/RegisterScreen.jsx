@@ -28,8 +28,8 @@ export const RegisterScreen = () => {
 						<InputComponent
 							color
 							required
-							name='email'
 							type='text'
+							name='email'
 							register={register}
 							label='Correo electronico'
 							placeholder='correo@gmail.com'
@@ -37,11 +37,11 @@ export const RegisterScreen = () => {
 						<InputComponent
 							color
 							required
-							label='Nombre de usuario'
-							name='username'
 							type='text'
-							placeholder='name123'
+							name='username'
 							register={register}
+							placeholder='name123'
+							label='Nombre de usuario'
 						/>
 						<div className='my-3 flex flex-row justify-center items-center'>
 							<InputSubmitComponent text='Verificar' />

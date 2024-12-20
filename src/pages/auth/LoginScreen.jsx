@@ -63,9 +63,6 @@ export const LoginScreen = () => {
 				<p className='text-md font-normal text-blue-500 underline py-2 text-center'>
 					<Link to={pathNavigation.forgotPassword}>¿Has olvidado la contraseña?</Link>
 				</p>
-				<p className='text-md font-normal text-blue-500 underline py-2 text-center'>
-					<Link to={pathNavigation.personalData}>¿Has olvidado la contraseña?</Link>
-				</p>
 			</div>
 		</div>
 	)
