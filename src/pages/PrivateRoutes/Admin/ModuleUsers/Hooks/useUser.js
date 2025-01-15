@@ -30,7 +30,16 @@ export const useUsers = () => {
 				)
 		})
 
+	const fetchDataPreCreateUser = () =>
+		useQuery({
+			queryKey: ['getDataPreCreateUser', page, limit, search],
+			queryFn: async () => await requestApi(METHODS_API.GET, `module/users/info-for-create`)
+		})
+
 	const fetchUserList = fetchDataUser({ page, limit, search })
+
+	const dataPreCreateUser = fetchDataPreCreateUser()
+	console.log(dataPreCreateUser)
 
 	const createUser = useMutation({
 		mutationFn: async (data) => await requestApi(METHODS_API.POST, 'module/users/create', data),

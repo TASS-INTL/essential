@@ -40,13 +40,15 @@ export const PoliciesScreen = () => {
 							</tr>
 						</thead>
 						<tbody>
-							<tr className='bg-white border-b  '>
-								{Object.values(listPolicies?.data?.data?.result[0]).map((keys, i) => (
-									<td key={i} scope='col' className='px-6 py-3'>
-										{keys}
-									</td>
-								))}
-							</tr>
+							{listPolicies?.data?.data?.result.map((item, i) => (
+								<tr key={item._id} className='bg-white border-b  '>
+									{Object.values(listPolicies?.data?.data?.result[i]).map((keys, i) => (
+										<td key={i} scope='col' className='px-6 py-3'>
+											{keys}
+										</td>
+									))}
+								</tr>
+							))}
 						</tbody>
 					</table>
 				</div>

@@ -49,16 +49,36 @@ export const useCreatePolicie = () => {
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postCreatePolicie'] })
 	})
 
+	const CreateArrayWithPoliciesSelected = (arrayAllPolicies) => {
+		const arrayElements = []
+		let cont = 0
+		for (let index = 0; index < arrayAllPolicies.length; index++) {
+			const element = arrayAllPolicies[index]
+			if (element.isActive) {
+				const elementSendToArray = { ...element, submodules: [] }
+				arrayElements.push(elementSendToArray)
+				for (let index2 = 0; index2 < element.submodules.length; index2++) {
+					const element2 = element.submodules[index2]
+					if (element2.isActive) {
+						arrayElements[cont].submodules = [...arrayElements[cont].submodules, element2]
+					}
+				}
+				cont++
+			}
+		}
+		const arraySend = arrayElements.filter((item) => item.submodules.length !== 0)
+		return arraySend
+	}
+
 	const handleCreatePolicies = async (data) => {
-		console.log('data -->', data)
+		const arrayItemsSelected = CreateArrayWithPoliciesSelected(dataProcessinForCreatePolicies)
+
 		const dataSend = {
 			...data,
-			modules: dataProcessinForCreatePolicies
+			modules: arrayItemsSelected
 		}
 
 		const response = await createPolicies.mutateAsync(dataSend)
-
-		console.log(response)
 		response?.completed && showToast('Se a creado de manera exito la politica', 'success')
 		response?.error && showToast('❌ Algo ha salido mal al momento de crear la' + response?.message, 'error')
 	}

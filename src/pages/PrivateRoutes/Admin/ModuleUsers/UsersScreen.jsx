@@ -27,29 +27,29 @@ export const UsersScreen = () => {
 
 	if (fetchUserList.isLoading) return <LoaderComponent />
 
-	if (fetchUserList.isError) return <ErrorComponent error={fetchUserList.error.message} />
+	if (fetchUserList.isError) return <ErrorComponent error={fetchUserList?.error?.message} />
 
 	return (
 		<Container>
-			<div className='m-auto mt-8 mx-16 rounded-1xl'>
+			<div className='pl-[5%] px-7 py-4'>
 				<div className='flex justify-between'>
-					<div className='flex justify-end py-2'>
-						<form onSubmit={handleSubmit(handleSubmitPagination)}>
-							<InputSearch register={register} placeholder='Buscar usuario' />
-						</form>
-						<div>
-							<input type='text' placeholder='limite' />
-						</div>
-					</div>
-					<div className='flex justify-between px-0 py-2'>
+					<form className='flex gap-3' onSubmit={handleSubmit(handleSubmitPagination)}>
+						<InputSearch register={register} placeholder='Buscar usuario' nameRegister='search' icon />
+						<InputSearch register={register} placeholder='Limite de busqueda' nameRegister='limit' />
+					</form>
+					<div className=' flex justify-between px-0 py-2'>
 						<button
 							onClick={onPressCreateUser}
-							className='bg-primary shadow-lg   px-8 rounded-md text-white'
+							className='bg-primary shadow-lg  py-1 px-8 rounded-md text-white'
 						>
-							+ Craer Usuario
+							+ Craer usuario
 						</button>
 					</div>
 				</div>
+			</div>
+
+			{/* ---------- */}
+			<div className='m-auto mt-8 mx-16 rounded-1xl'>
 				<div className='bg-zinc-100 py-5'>
 					<div className=' flex justify-between items-center px-6'>
 						<strong className=''>Nombre</strong>

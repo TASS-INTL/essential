@@ -50,8 +50,6 @@ export const SideBarComponent = () => {
 	const [open, setOpen] = useState(false)
 	const userData = userStore((state) => state.userData)
 
-	console.log(userData)
-
 	return (
 		<aside
 			id='separator-sidebar'
