@@ -58,6 +58,7 @@ export const RoutesPublic = {
 	registerScreen: 'register-screen',
 	PersonalDataScreen: 'personal-data-screen',
 	validateCodeScreen: 'validate-code-screen',
+	validateCodeRegisterScreen: 'validate-code-register-screen',
 	forgotPasswordScreen: 'forgot-password-screen'
 }
 

@@ -2,6 +2,7 @@ export const pathNavigation = {
 	login: '/auth/login-screen',
 	register: '/auth/register-screen',
 	validateCode: '/auth/validate-code-screen',
+	validateCodeRegister: '/auth/validate-code-register-screen',
 	personalData: '/auth/personal-data-screen',
 	forgotPassword: '/auth/forgot-password-screen'
 }

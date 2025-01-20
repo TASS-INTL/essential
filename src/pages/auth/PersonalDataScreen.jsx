@@ -5,6 +5,7 @@ import 'react-phone-number-input/style.css'
 import { logoTass } from '@/assets/assetsplatform/PrivateRoutes'
 import { InputComponent, InputSubmitComponent, ModalComponent, SelectComponent } from '@/Components'
 import { userStore } from '@/store/userStore'
+import { userMasterRegisterStore } from '@/store/users/userMasterRegisterStore'
 import { useForm } from 'react-hook-form'
 import PhoneInput from 'react-phone-number-input'
 
@@ -27,10 +28,12 @@ const stylesInput = {
 }
 
 export const PersonalDataScreen = () => {
+
 	const [value, setValue] = useState()
 	const [flagInput, setFlagInput] = useState(false)
 	const { submitFormValidateData } = useAuth()
 	const userData = userStore((state) => state.userData)
+	const { email, username } = userMasterRegisterStore((state) => state)
 
 	const { register, handleSubmit, watch } = useForm({
 		defaultValues: {
@@ -50,8 +53,8 @@ export const PersonalDataScreen = () => {
 			address: '',
 			code_postal: '',
 			terms_conditions: false,
-			email: userData.email,
-			username: userData.userName,
+			email: email,
+			username: username,
 			key: '',
 			id_profile: '',
 			type_role_system: 'client'
@@ -66,6 +69,7 @@ export const PersonalDataScreen = () => {
 	}, [watch().type_person])
 
 	console.log(watch().type_person)
+
 
 	return (
 		<div className='w-full min-h-screen  items-center justify-center  space-x-6 '>

@@ -9,7 +9,7 @@ export const useAuth = () => {
 		handleSubmit,
 		formState: { errors }
 	} = useForm()
-	const { login, ValidateCodeApi, registerPersonalData, registerNameAndUserName, resendCode, forgotPassword } =
+	const { login, ValidateCodeApi, registerPersonalData, registerNameAndUserName, resendCode, forgotPassword, ValidateCodeRegisterApi } =
 		useAuthProvider()
 
 	// Login
@@ -35,6 +35,20 @@ export const useAuth = () => {
 		const response = await ValidateCodeApi({
 			code,
 			screen
+		})
+
+		response?.error && showToast('Algo ha salido mal ' + response?.message, 'error')
+		response.success && showToast('Codigo ingresado con exito ' + response?.message, 'success')
+	}
+
+	// Validate Code Register page
+	const submitFormValidateCodeRegister = async (valueValidateCode, event) => {
+		event.preventDefault()
+
+		const { code } = valueValidateCode
+
+		const response = await ValidateCodeRegisterApi({
+			code
 		})
 
 		response?.error && showToast('Algo ha salido mal ' + response?.message, 'error')
@@ -69,9 +83,11 @@ export const useAuth = () => {
 	const submitFormValidateData = async (valuePersonalData, event) => {
 		event.preventDefault()
 
+		console.log(`valuePersonalData -->`, valuePersonalData)
+
 		valuePersonalData.phone_number = {
 			code: '+57',
-			number: '3225713623'
+			number: '000000000'
 		}
 
 		const response = await registerPersonalData(valuePersonalData)
@@ -99,6 +115,7 @@ export const useAuth = () => {
 		submitFormForgotPassword,
 		errors,
 		handleSubmit,
-		register
+		register,
+		submitFormValidateCodeRegister
 	}
 }
