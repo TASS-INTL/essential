@@ -4,6 +4,7 @@ import { ErrorComponent, LoaderComponent } from '@/Components'
 import { Container } from '@/Components/Container'
 import { FormCreateUser } from '@/Components/FormCreateUser'
 import { InputSearch } from '@/Components/InputSearch'
+import { DynamicTable } from '@/Components/DynamicTable'
 
 import { useUsers } from './Hooks/useUser'
 
@@ -29,6 +30,8 @@ export const UsersScreen = () => {
 
 	if (fetchUserList.isError) return <ErrorComponent error={fetchUserList?.error?.message} />
 
+	console.log('Data consult users',fetchUserList?.data)
+
 	return (
 		<Container>
 			<div className='pl-[5%] px-7 py-4'>
@@ -47,9 +50,9 @@ export const UsersScreen = () => {
 					</div>
 				</div>
 			</div>
-
+			<DynamicTable dataBody={fetchUserList?.data?.data?.results} />
 			{/* ---------- */}
-			<div className='m-auto mt-8 mx-16 rounded-1xl'>
+			{/* <div className='m-auto mt-8 mx-16 rounded-1xl'>
 				<div className='bg-zinc-100 py-5'>
 					<div className=' flex justify-between items-center px-6'>
 						<strong className=''>Nombre</strong>
@@ -90,7 +93,7 @@ export const UsersScreen = () => {
 						})}
 					</div>
 				</div>
-			</div>
+			</div> */}
 			<FormCreateUser
 				userUpdate={userUpdate}
 				fetchUserList={fetchUserList}

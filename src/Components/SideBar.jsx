@@ -20,7 +20,10 @@ import {
 	SesionLeft,
 	Testing,
 	Travels,
-	Users
+	Users,
+	Centers,
+	Policies,
+	Profiles
 } from '../assets/assetsplatform/PrivateRoutes'
 import { userStore } from '../store/userStore'
 
@@ -42,7 +45,10 @@ export const icons = {
 	Testing,
 	Central,
 	Admin,
-	Routings
+	Routings,
+	Centers,
+	Policies,
+	Profiles
 }
 
 export const SideBarComponent = () => {

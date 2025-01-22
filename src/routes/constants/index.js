@@ -11,6 +11,8 @@ export const routesPrivate = {
 	events: 'events',
 	general: 'general',
 	centralScreen: 'central-screen',
+	// CENTERS
+	centersScreen: 'centers-screen',
 	// SERVICES
 	createService: 'create-service',
 	servicesMasterScreen: 'services-master-screen',

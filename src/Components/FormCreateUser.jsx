@@ -107,6 +107,13 @@ export const FormCreateUser = ({
 					/>
 					<SelectComponent
 						register={register}
+						label='Centrales'
+						name='id_central'
+						arrayOptions={fetchUserList?.data?.data?.results?.centers}
+						option='name'
+					/>
+					<SelectComponent
+						register={register}
 						label='Tipo de usuario'
 						name='id_type_user'
 						arrayOptions={fetchUserList?.data?.data?.results?.types_profiles}

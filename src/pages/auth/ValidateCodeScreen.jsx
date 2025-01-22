@@ -18,9 +18,9 @@ export function cn(...inputs) {
 export const ValidateCodeScreen = () => {
 	const { handleFormValidateCode, submitFormValidateCode, submitResendCode } = useAuth()
 
-	const {
-		state: { screen }
-	} = useLocation()
+	// const {
+	// 	state: { screen }
+	// } = useLocation()
 	const { register, handleSubmit } = useForm()
 
 	return (
@@ -40,7 +40,7 @@ export const ValidateCodeScreen = () => {
 				</div>
 				<form
 					action='flex flex-col md:px-20'
-					onSubmit={handleSubmit((data, event) => submitFormValidateCode(data, event, screen))}
+					onSubmit={handleSubmit((data, event) => submitFormValidateCode(data, event))}
 				>
 					<InputComponent
 						color

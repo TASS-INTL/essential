@@ -30,5 +30,10 @@ export const useProfile = () => {
 
 	const listProfiles = getProfiles({ page, limit, search })
 
-	return { listProfiles, handleSubmitPagination, open, setOpen, handleOpen, register, handleSubmit }
+	const refetchListProfiles = () => {
+		listProfiles.refetch()
+		handleOpen()
+	}
+
+	return { listProfiles, handleSubmitPagination, open, setOpen, handleOpen, register, handleSubmit, refetchListProfiles }
 }

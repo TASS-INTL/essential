@@ -2,6 +2,7 @@ import { METHODS_API } from '@/Api/constantsApi'
 import { useApi } from '@/Api/useApi'
 import { userStore } from '@/store/userStore'
 import { userMasterRegisterStore } from '@/store/users/userMasterRegisterStore'
+import { userLoginStore } from '@/store/users/userLoginStore'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 
@@ -12,10 +13,15 @@ export const useAuthProvider = () => {
 	const { requestApi } = useApi()
 	const userData = userStore((state) => state.userData)
 	const userMasterRegister = userMasterRegisterStore((state) => state)
+	const userLogin = userLoginStore((state) => state)
 	const setUserData = userStore((state) => state.setUserData)
 
 	const setFieldChangeUserMasterRegisterStore = (field, value) => {
 		userMasterRegister.setField(field, value)
+	}
+
+	const setFieldChangeUserLoginStore = (field, value) => {
+		userLogin.setField(field, value)
 	}
 
 	const resetFieldsUserMasterRegisterStore = () => {
@@ -50,13 +56,16 @@ export const useAuthProvider = () => {
 				})
 			} else {
 				localStorage.setItem('token', response?.data?.token)
-				setUserData({
-					...userData,
-					checking: false,
-					email,
-					tokenSesion: response?.data?.token
-				})
-				navigate(pathNavigation.validateCode, { state: { screen: 'login' } })
+				setFieldChangeUserLoginStore('email', email)
+				setFieldChangeUserLoginStore('token', response?.data?.token)
+				
+				// setUserData({
+				// 	...userData,
+				// 	checking: false,
+				// 	email,
+				// 	tokenSesion: response?.data?.token
+				// })
+				navigate(pathNavigation.validateCode)
 			}
 		}
 		return response
@@ -73,9 +82,6 @@ export const useAuthProvider = () => {
 			email,
 			username: userName
 		}
-
-		console.log('dataSend -->', dataSend)
-
 		const response = await requestApi(
 			METHODS_API.POST,
 			'singup/start/code',
@@ -85,59 +91,45 @@ export const useAuthProvider = () => {
 		
 
 		if (response?.completed) {
-			console.log(' validate code register response -->', response?.data)
 
 			setFieldChangeUserMasterRegisterStore('validated', true)
 			setFieldChangeUserMasterRegisterStore('token', response?.data?.key_process)
-			console.log('userMasterRegister -->', userMasterRegister.token)
 			navigate(pathNavigation.personalData)
 		}
 		return response
 	}
 
-	const ValidateCodeApi = async ({ code, screen }) => {
-		const { email, tokenSesion, userName } = userData
+	const ValidateCodeApi = async ({ code }) => {
+		const { email, token } = userLogin
 
 		const dataSend = {
 			code,
 			email
 		}
 
-		if (screen === 'register') {
-			dataSend.username = userName
-		}
-
 		const response = await requestApi(
 			METHODS_API.POST,
-			screen === 'login' ? `auth2/login/validateCode?to=${tokenSesion}` : 'singup/start/code',
+			`auth2/login/validateCode?to=${token}`,
 			dataSend
 		)
 
+		console.log('response validate code api', response)
 		if (response?.completed) {
-			console.log(response?.data)
 
-			if (screen === 'login') {
-				localStorage.setItem('token', response?.data?.token)
-				setUserData({
-					...userData,
-					logged: true,
-					checking: false,
-					uid: response?.data?._id,
-					name: response?.data?.name,
-					email: response?.data?.email,
-					state: response?.data?.state,
-					userName: response?.data?.username,
-					tokenSesion: response?.data?.token,
-					typeUser: response?.data?.type_master,
-					modules: response?.data?.user_policies.modules
-				})
-			} else {
-				setUserData({
-					...userData,
-					tokenRegister: response?.data?.key_process
-				})
-				navigate(pathNavigation.personalData)
-			}
+			localStorage.setItem('token', response?.data?.token)
+			setUserData({
+				...userData,
+				logged: true,
+				checking: false,
+				uid: response?.data?._id,
+				name: response?.data?.name,
+				email: response?.data?.email,
+				state: response?.data?.state,
+				userName: response?.data?.username,
+				tokenSesion: response?.data?.token,
+				typeUser: response?.data?.type_master,
+				modules: response?.data?.user_policies.modules
+			})
 		}
 		return response
 	}
@@ -153,7 +145,6 @@ export const useAuthProvider = () => {
 	}
 
 	const registerNameAndUserName = async ({ email, username }) => {
-		console.log('email, username -->', email, username)
 		const response = await requestApi(METHODS_API.POST, 'singup/start/email', {
 			email,
 			username

@@ -47,6 +47,7 @@ export const SocketProvider = ({ children }) => {
 	const setArrayNotification = notificationStore((state) => state.setArrayNotification)
 
 	const connnectSocket = useCallback(() => {
+		console.log('urlSocketSession', urlSocketSession)
 		const socketTemp = io(urlSocketSession, {
 			transports: [TRANSPORT_SOCKET.WEBSOCKET, TRANSPORT_SOCKET.POLLING],
 			auth: { x_access_token: tokenSesion }

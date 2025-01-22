@@ -13,7 +13,7 @@ export const SocketForNameSpace = ({ children, nameSpace, typeJoin, socketsEvent
 	const [socketForNameSpace, setSocketForNameSpace] = useState(null)
 
 	const connnectSocketForNameSpace = () => {
-		const socketTemp = io(`https://skolympo.tassintl.com/${nameSpace}`, {
+		const socketTemp = io(`http://localhost:8003/${nameSpace}`, {
 			reconnectionDelayMax: 9000,
 			transports: [TRANSPORT_SOCKET.WEBSOCKET, TRANSPORT_SOCKET.POLLING],
 			autoConnect: true,

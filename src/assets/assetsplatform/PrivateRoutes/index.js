@@ -17,6 +17,9 @@ import SesionLeft from './SesionLeft.svg'
 import Testing from './Testing.svg'
 import Travels from './Travels.svg'
 import Users from './Users.svg'
+import Centers from './Centers.svg'
+import Policies from './Policies.svg'
+import Profiles from './Profiles.svg'
 
 export {
 	Users,
@@ -37,5 +40,8 @@ export {
 	Notification,
 	factorydevices,
 	ServicesClient,
-	Routings
+	Routings,
+	Centers,
+	Policies,
+	Profiles
 }

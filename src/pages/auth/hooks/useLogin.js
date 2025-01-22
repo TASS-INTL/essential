@@ -27,14 +27,13 @@ export const useAuth = () => {
 	}
 
 	// Validate Code
-	const submitFormValidateCode = async (valueValidateCode, event, screen) => {
+	const submitFormValidateCode = async (valueValidateCode, event) => {
 		event.preventDefault()
 
 		const { code } = valueValidateCode
 
 		const response = await ValidateCodeApi({
-			code,
-			screen
+			code
 		})
 
 		response?.error && showToast('Algo ha salido mal ' + response?.message, 'error')
