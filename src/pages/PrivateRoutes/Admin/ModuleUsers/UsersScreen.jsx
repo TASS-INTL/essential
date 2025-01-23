@@ -5,6 +5,7 @@ import { Container } from '@/Components/Container'
 import { FormCreateUser } from '@/Components/FormCreateUser'
 import { InputSearch } from '@/Components/InputSearch'
 import { DynamicTable } from '@/Components/DynamicTable'
+import { CardsUsersScreen } from './CardsUsersScreen'
 
 import { useUsers } from './Hooks/useUser'
 
@@ -23,14 +24,14 @@ export const UsersScreen = () => {
 		handleUpdateUser,
 		onPressUpdateUser,
 		onPressCreateUser,
-		handleSubmitPagination
+		handleSubmitPagination,
+		dataPreCreateUser
 	} = useUsers()
 
 	if (fetchUserList.isLoading) return <LoaderComponent />
 
 	if (fetchUserList.isError) return <ErrorComponent error={fetchUserList?.error?.message} />
 
-	console.log('Data consult users',fetchUserList?.data)
 
 	return (
 		<Container>
@@ -50,7 +51,8 @@ export const UsersScreen = () => {
 					</div>
 				</div>
 			</div>
-			<DynamicTable dataBody={fetchUserList?.data?.data?.results} />
+			<CardsUsersScreen dataList={fetchUserList?.data?.data?.results} />
+			{/* <DynamicTable dataBody={fetchUserList?.data?.data?.results} /> */}
 			{/* ---------- */}
 			{/* <div className='m-auto mt-8 mx-16 rounded-1xl'>
 				<div className='bg-zinc-100 py-5'>
@@ -96,7 +98,7 @@ export const UsersScreen = () => {
 			</div> */}
 			<FormCreateUser
 				userUpdate={userUpdate}
-				fetchUserList={fetchUserList}
+				InfoPrecreateUser={dataPreCreateUser}
 				modalVisible={modalVisible}
 				methodForm={methodForm}
 				HandleClose={handleOpen}

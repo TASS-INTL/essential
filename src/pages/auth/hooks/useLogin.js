@@ -82,7 +82,6 @@ export const useAuth = () => {
 	const submitFormValidateData = async (valuePersonalData, event) => {
 		event.preventDefault()
 
-		console.log(`valuePersonalData -->`, valuePersonalData)
 
 		valuePersonalData.phone_number = {
 			code: '+57',

@@ -69,14 +69,14 @@ export const SocketProvider = ({ children }) => {
 
 	useEffect(() => {
 		// capture connection with room socket
-		socket?.on(SOCKET_EVENTS.JOINED_ROOM, (data) => {
+		socket?.on(SOCKET_EVENTS.JOINED_ROOM_SESSION_INFO, (data) => {
 			showToast('conectado a: ' + data.type_, 'success')
 		})
 
-		socket?.emit(SOCKET_EVENTS.JOIN_ROOM, {
+		socket?.emit(SOCKET_EVENTS.JOIN_ROOM_SESSION_INFO, {
 			id_user: uid,
 			id_room: tokenSesion,
-			type_join: SOCKETS_ROOMS.ROOM_SESSION,
+			type_join: SOCKETS_ROOMS.SESSION_INFO,
 			x_access_token: tokenSesion
 		})
 
@@ -88,16 +88,16 @@ export const SocketProvider = ({ children }) => {
 
 		return () => {
 			// When the component is disassembled, the room output is sent
-			socket?.emit(SOCKET_EVENTS.LEAVE_ROOM, {
+			socket?.on(SOCKET_EVENTS.LEFT_ROOM_SESSION_INFO, (data) => {
+				showToast('desconectado de la sala: ' + data.type_, 'warning')
+			})
+			socket?.emit(SOCKET_EVENTS.LEAVE_ROOM_SESSION_INFO, {
 				id_user: uid,
 				id_room: tokenSesion,
-				type_join: SOCKETS_ROOMS.ROOM_SESSION,
+				type_leave: SOCKETS_ROOMS.SESSION_INFO,
 				x_access_token: tokenSesion
 			})
 			// The exit from the room is reported
-			socket?.on(SOCKET_EVENTS.LEFT_ROOM, (data) => {
-				showToast('desconectado de la sala: ' + data.type_, 'warning')
-			})
 		}
 	}, [socket])
 

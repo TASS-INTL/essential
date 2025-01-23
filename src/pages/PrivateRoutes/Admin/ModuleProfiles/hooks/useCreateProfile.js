@@ -24,7 +24,6 @@ export const useCreateProfile = () => {
 
 	const handleCreateProfile = async (data) => {
 		const response = await createProfile.mutateAsync(data)
-		console.log(response)
 		response?.completed && showToast('Se a creado de manera exito la politica', 'success')
 		response?.error && showToast('❌ Algo ha salido mal al momento de crear la' + response?.message, 'error')
 	}

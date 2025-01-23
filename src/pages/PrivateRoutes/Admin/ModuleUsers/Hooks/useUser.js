@@ -39,7 +39,6 @@ export const useUsers = () => {
 	const fetchUserList = fetchDataUser({ page, limit, search })
 
 	const dataPreCreateUser = fetchDataPreCreateUser()
-	console.log(dataPreCreateUser)
 
 	const createUser = useMutation({
 		mutationFn: async (data) => await requestApi(METHODS_API.POST, 'module/users/create', data),
@@ -65,6 +64,7 @@ export const useUsers = () => {
 			number: '123456789'
 		}
 		const newUser = data
+
 		const response = await createUser.mutateAsync(newUser)
 		if (response.completed) {
 			showToast('Se a Creado el usuario de manera exitosa', 'success')
@@ -125,6 +125,7 @@ export const useUsers = () => {
 		setSearch,
 		register,
 		fetchUserList,
-		handleSubmitPagination
+		handleSubmitPagination,
+		dataPreCreateUser
 	}
 }

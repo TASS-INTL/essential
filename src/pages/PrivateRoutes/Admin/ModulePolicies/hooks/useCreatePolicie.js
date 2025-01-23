@@ -55,24 +55,23 @@ export const useCreatePolicie = () => {
 		for (let index = 0; index < arrayAllPolicies.length; index++) {
 			const element = arrayAllPolicies[index]
 			if (element.isActive) {
+				arrayElements.push(element)
 				const elementSendToArray = { ...element, submodules: [] }
-				arrayElements.push(elementSendToArray)
 				for (let index2 = 0; index2 < element.submodules.length; index2++) {
 					const element2 = element.submodules[index2]
 					if (element2.isActive) {
-						arrayElements[cont].submodules = [...arrayElements[cont].submodules, element2]
+						arrayElements.push(element2)
 					}
 				}
 				cont++
 			}
 		}
-		const arraySend = arrayElements.filter((item) => item.submodules.length !== 0)
-		return arraySend
+		// const arraySend = arrayElements.filter((item) => item.submodules.length !== 0)
+		return arrayElements
 	}
 
 	const handleCreatePolicies = async (data) => {
 		const arrayItemsSelected = CreateArrayWithPoliciesSelected(dataProcessinForCreatePolicies)
-
 		const dataSend = {
 			...data,
 			modules: arrayItemsSelected

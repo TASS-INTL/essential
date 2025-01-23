@@ -30,7 +30,7 @@ export const TableServiceClientScreen = () => {
 					Crear Servicio
 				</Button>
 				<form onSubmit={handleSubmit(HandlePagination)}>
-					<InputSearch register={register} />
+					<InputSearch register={register} nameRegister='search' />
 				</form>
 			</div>
 			<BoardDevice dataBody={dataTableServicesClient?.data?.data?.results} />

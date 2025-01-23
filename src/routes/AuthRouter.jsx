@@ -15,9 +15,8 @@ export const AuthRouter = () => {
 	const { tokenRegister } = userStore((state) => state.userData)
 	const userMasterRegister = userMasterRegisterStore((state) => state)
 
-	
+
 	if (location.pathname === pathNavigation.personalData && userMasterRegister.token === '') {
-		console.log('tokenRegister', userMasterRegister.token)
 		return <LoginScreen />
 	}
 

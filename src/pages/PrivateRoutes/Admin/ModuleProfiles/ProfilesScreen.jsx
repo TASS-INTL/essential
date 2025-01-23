@@ -11,7 +11,6 @@ import { CardsProfilesScreen } from './CardProfileScreen'
 export const ProfilesScreen = () => {
 	const { listProfiles, handleSubmitPagination, open, setOpen, handleOpen, register, handleSubmit, refetchListProfiles } = useProfile()
 
-	console.log(listProfiles)
 
 	if (listProfiles.isLoading) return <LoaderComponent />
 

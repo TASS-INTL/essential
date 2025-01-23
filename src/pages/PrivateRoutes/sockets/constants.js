@@ -5,7 +5,7 @@ export const SOCKETS_ROOMS = {
 	ROOM_DEVICE_CLI: 'room_device_cli',
 	ROOM_TRAVELS: 'room_travels',
 	ROOM_TRAVEL_INFO: 'room_travel_info',
-	ROOM_SESSION: 'room_session',
+	SESSION_INFO: 'SESSION_INFO',
 	ROOM_MONITORING: 'room_monitoring',
 	ROOM_INVENTORY: 'room_inventory',
 	ROOM_REAL_TIME_JOIN: 'room_real_time_join',
@@ -13,10 +13,14 @@ export const SOCKETS_ROOMS = {
 }
 
 export const SOCKET_EVENTS = {
+	// SESSION
+	JOIN_ROOM_SESSION_INFO : 'join_room_session_info',
+	LEAVE_ROOM_SESSION_INFO : 'leave_room_session_info',
+	JOINED_ROOM_SESSION_INFO: 'joined_room_session_info',
+	LEAVE_ROOM_SESSION_INFO: 'leave_room_session_info',
+	LEFT_ROOM_SESSION_INFO: 'left_room_session_info',
+	
 	JOIN_ROOM: 'join_room',
-	LEFT_ROOM: 'left_room',
-	LEAVE_ROOM: 'leave_room',
-	JOINED_ROOM: 'joined_room',
 
 	// NOTIFICATION
 	R_NOTIFICATION_RECEIVE: 'r_notificatio_receive',

@@ -10,7 +10,7 @@ export const FormCreateUser = ({
 	methodForm,
 	modalVisible,
 	HandleClose,
-	fetchUserList,
+	InfoPrecreateUser,
 	handleCreateUser,
 	handleUpdateUser
 }) => {
@@ -100,25 +100,25 @@ export const FormCreateUser = ({
 					/>
 					<SelectComponent
 						register={register}
-						label='Politicas'
-						name='id_policies'
-						arrayOptions={fetchUserList?.data?.data?.results?.policies}
+						label='Profiles'
+						name='id_profile'
+						arrayOptions={InfoPrecreateUser?.data?.data?.profiles}
 						option='name'
 					/>
 					<SelectComponent
 						register={register}
 						label='Centrales'
 						name='id_central'
-						arrayOptions={fetchUserList?.data?.data?.results?.centers}
+						arrayOptions={InfoPrecreateUser?.data?.data?.centers}
 						option='name'
 					/>
-					<SelectComponent
+					{/* <SelectComponent
 						register={register}
 						label='Tipo de usuario'
 						name='id_type_user'
-						arrayOptions={fetchUserList?.data?.data?.results?.types_profiles}
+						arrayOptions={InfoPrecreateUser?.data?.data?.results?.types_profiles}
 						option='name'
-					/>
+					/> */}
 					<SelectComponent
 						register={register}
 						label='Tipo de documento'

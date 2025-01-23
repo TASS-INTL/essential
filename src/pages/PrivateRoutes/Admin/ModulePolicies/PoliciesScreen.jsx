@@ -11,7 +11,6 @@ import { CardsPoliciesScreen } from './CardsPoliciesScreen'
 export const PoliciesScreen = () => {
 	const { listPolicies, handleSubmit, handleSubmitPagination, register, open, handleOpen, refetchListPolicies } = usePolicies()
 	
-	console.log('Data consult policies PoliciesScreen', listPolicies)
 	if (listPolicies.isLoading) return <LoaderComponent />
 
 	if (listPolicies.isError || listPolicies.data.error)

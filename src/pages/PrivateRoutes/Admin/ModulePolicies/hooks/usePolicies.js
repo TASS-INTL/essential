@@ -30,10 +30,8 @@ export const usePolicies = () => {
 	}
 
 	const listPolicies = getPolicies({ page, limit, search })
-	console.log(`listPolicies ${JSON.stringify(listPolicies)}`)
 
 	const refetchListPolicies = () => {
-		console.log('refetchListPolicies')
 		handleOpen()
 		listPolicies.refetch()
 	}

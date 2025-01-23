@@ -113,7 +113,6 @@ export const useAuthProvider = () => {
 			dataSend
 		)
 
-		console.log('response validate code api', response)
 		if (response?.completed) {
 
 			localStorage.setItem('token', response?.data?.token)

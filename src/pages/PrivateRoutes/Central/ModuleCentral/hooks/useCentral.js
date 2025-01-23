@@ -31,7 +31,6 @@ export const useCentral = () => {
         })
 
     const actionFetchCentersMaster = fetchDataCentersMaster({ page, limit, search })
-    console.log(`actionFetchCentersMaster ${JSON.stringify(actionFetchCentersMaster)}`)
 
     const createCentralMaster = useMutation({
         mutationFn: async (data) => await requestApi(METHODS_API.POST, 'module/centers/create', data),
@@ -42,9 +41,7 @@ export const useCentral = () => {
         event.preventDefault()
 
         const newCentral = data
-        console.log(`newCentral ${newCentral}`)
         const response = await createCentralMaster.mutateAsync(newCentral)
-        console.log(`response handleCreateCentral ${response}`)
 
         if (response.completed) {
             showToast('Central creada correctamente', 'success')

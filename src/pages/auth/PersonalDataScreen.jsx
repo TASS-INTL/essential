@@ -68,7 +68,6 @@ export const PersonalDataScreen = () => {
 		watch().type_person === 'juridica' ? setFlagInput(true) : setFlagInput(false)
 	}, [watch().type_person])
 
-	console.log(watch().type_person)
 
 
 	return (

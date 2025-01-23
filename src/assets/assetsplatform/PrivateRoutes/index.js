@@ -20,6 +20,7 @@ import Users from './Users.svg'
 import Centers from './Centers.svg'
 import Policies from './Policies.svg'
 import Profiles from './Profiles.svg'
+import User from './User.svg'
 
 export {
 	Users,
@@ -43,5 +44,6 @@ export {
 	Routings,
 	Centers,
 	Policies,
-	Profiles
+	Profiles,
+	User
 }

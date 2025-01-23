@@ -28,7 +28,6 @@ export const CentersScreen = () => {
 
     if (actionFetchCentersMaster.isError) return <ErrorComponent error={actionFetchCentersMaster?.error?.message} />
 
-    console.log('Data consult centers', actionFetchCentersMaster)
 
     return (
         <Container>

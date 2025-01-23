@@ -23,7 +23,8 @@ import {
 	Users,
 	Centers,
 	Policies,
-	Profiles
+	Profiles,
+	User
 } from '../assets/assetsplatform/PrivateRoutes'
 import { userStore } from '../store/userStore'
 
@@ -48,7 +49,8 @@ export const icons = {
 	Routings,
 	Centers,
 	Policies,
-	Profiles
+	Profiles,
+	User
 }
 
 export const SideBarComponent = () => {

@@ -6,7 +6,6 @@ import { NoData } from '.'
 
 export const DynamicTable = ({ dataBody, to }) => {
 
-    console.log('dataBody ==> ', dataBody)
 	if (dataBody === undefined || dataBody?.length === 0) return <NoData />
 
 	return (

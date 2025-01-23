@@ -9,7 +9,6 @@ export const useApi = () => {
 		try {
 			if (method === METHODS_API.GET) {
 				const response = await AXIOS_INSTANCE.get(endpoint)
-				console.log('response', JSON.stringify(response.data))
 
 				return response.data
 			}

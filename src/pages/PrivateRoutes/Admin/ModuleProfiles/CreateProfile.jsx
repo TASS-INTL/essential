@@ -14,7 +14,6 @@ import { useCreateProfile } from './hooks/useCreateProfile'
 export const CreateProfile = ( {refetchProfiles}) => {
 	const { dataPreCreate, register, handleSubmit, handleCreateProfile } = useCreateProfile()
 
-	console.log(dataPreCreate?.data?.data)
 
 	if (dataPreCreate.isLoading) return <LoaderComponent />
 
@@ -22,7 +21,6 @@ export const CreateProfile = ( {refetchProfiles}) => {
 		return <ErrorComponent error={dataPreCreate?.error?.message || dataPreCreate?.data?.message} />
 
 	const handleCreate = async (data, event) => {
-		console.log(`Data create profile ${data}`)
 		await handleCreateProfile(data, event)
 		refetchProfiles()
 	}
