@@ -5,8 +5,8 @@ import { Outlet } from 'react-router-dom'
 
 export const TravelsScreen = () => {
 	return (
-		<Container>
+		<div className='relative flex flex-col w-full h-full'>
 			<Outlet />
-		</Container>
+		</div>
 	)
 }

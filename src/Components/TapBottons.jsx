@@ -12,7 +12,10 @@ export const arrayTapMonitoring = [
 	{ _id: 1, title: 'general', name: 'General' },
 	{ _id: 2, title: 'events', name: 'Eventos' },
 	{ _id: 3, title: 'monitoring', name: 'Monitoreo' },
-	{ _id: 4, title: 'reports', name: 'Reportes' }
+	{ _id: 4, title: 'reports', name: 'Reportes' },
+	{ _id: 6, title: 'devices', name: 'Dispositivos' },
+	{ _id: 7, title: 'operations', name: 'Operaciones' }
+
 ]
 
 export const TapBottons = ({ location, idDevice, path, data }) => {

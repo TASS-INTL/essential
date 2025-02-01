@@ -23,7 +23,7 @@ export const TableServicesMasterScreen = () => {
 		<div className='px-16'>
 			<div className='flex justify-end py-2'>
 				<form onSubmit={handleSubmit(handleSubmitPagination)}>
-					<InputSearch register={register} />
+					<InputSearch register={register} nameRegister={'search'} />
 				</form>
 			</div>
 			<BoardDevice dataBody={dataTableServicesMaster?.data?.data?.results} />

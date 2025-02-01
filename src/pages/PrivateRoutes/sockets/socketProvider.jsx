@@ -52,7 +52,7 @@ export const SocketProvider = ({ children }) => {
 			transports: [TRANSPORT_SOCKET.WEBSOCKET, TRANSPORT_SOCKET.POLLING],
 			auth: { x_access_token: tokenSesion }
 		})
-
+		console.log('CONECTANDO AL SOCKET SESSION GENERAL')
 		return socketTemp
 	}, [])
 

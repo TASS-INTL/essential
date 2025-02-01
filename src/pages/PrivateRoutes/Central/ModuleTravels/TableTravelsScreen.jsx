@@ -2,24 +2,28 @@ import React, { useState } from 'react'
 
 import { LoaderComponent, ModalComponent } from '@/Components'
 import { InputSearch } from '@/Components/InputSearch'
-import { travelsStore } from '@/store/travelsStore'
+// import { travelsStore } from '@/store/travelsStore'
+import { travelsDetailsStore } from '@/store/travels/travelsDetailsStore'
 import Button from '@mui/material/Button'
 import { useForm } from 'react-hook-form'
 import { NavLink } from 'react-router-dom'
 
 import { CreateTravel } from '.'
 import { dataForCreateTravel } from '../../constants/constants'
-
+import { NoData } from '@/Components'
+	
 export const TableTravelsScreen = () => {
 	const [open, setOpen] = useState(false)
 	const handleOpen = () => setOpen(!open)
 	const { register, handleSubmit } = useForm()
-	const arrayTableTravels = travelsStore((state) => state.arrayTableTravels)
+	// const arrayTableTravels = travelsStore((state) => state.arrayTableTravels)
+	const travelsDetails = travelsDetailsStore((state) => state.travelsDetails)
 
 	const handlePagination = (data) => {}
 
-	if (arrayTableTravels === null) return <LoaderComponent />
+	if (travelsDetails === null) return <LoaderComponent />
 
+	if(travelsDetails?.data?.results?.length === 0) return <NoData/>
 	return (
 		<div className='px-16 py-4'>
 			<div className='flex justify-between pt-5 py-5'>
@@ -27,11 +31,11 @@ export const TableTravelsScreen = () => {
 					Crear Viaje
 				</Button>
 				<form onSubmit={handleSubmit(handlePagination)}>
-					<InputSearch register={register} />
+					<InputSearch register={register} nameRegister='search'/>
 				</form>
 			</div>
 			<div>
-				{arrayTableTravels?.results?.map((item) => (
+				{travelsDetails?.data?.results?.map((item) => (
 					<div key={item._id} className='p-4 bg-white rounded-xl my-3'>
 						<div className='flex justify-between'>
 							<div className=''>

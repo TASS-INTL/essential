@@ -11,6 +11,8 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 
 const reducer = (state, action) => {
+	console.log('STATE', state)
+	console.log('ACTION', action)
 	switch (action.type) {
 		// This action is called whenever anything changes on any overlay.
 		// We then take a snapshot of the relevant values of each overlay and
@@ -164,6 +166,7 @@ export const useRouting = () => {
 
 	// change values merker when draggable is activate
 	const handleChangeMarkerDraggable = ({ location, data }) => {
+		console.log('DATA', data)
 		setObjectLocations((state) => ({
 			...state,
 			[location]: {

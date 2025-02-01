@@ -15,7 +15,8 @@ import { useTravels } from './useTravels'
 
 export const useCreateTravel = (dataForm) => {
 	const { requestApi } = useApi()
-
+    const [selectedInstallers, setSelectedInstallers] = useState([])
+	const [idService, setIdService] = useState(null)
 	const { register, handleSubmit, control } = useForm(dataForm)
 	const [selectedPlace, setSelectedPlace] = useState(null)
 	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
@@ -24,12 +25,12 @@ export const useCreateTravel = (dataForm) => {
 	const dataPreCrateTravel = getDataPreCreateTravel()
 	const [objectLocations, setObjectLocations] = useState(initialDataLocation)
 
-	const idService = useWatch({
-		control,
-		service: {
-			_id: null
-		}
-	})
+	// const idService = useWatch({
+	// 	control,
+	// 	service: {
+	// 		_id: null
+	// 	}
+	// })
 
 	// Adding places location start and location end
 	const addPlaces = ({ location, data, radius }) => {
@@ -58,14 +59,30 @@ export const useCreateTravel = (dataForm) => {
 	}
 	//
 	const getDataService = (idService) => {
+		console.log(`GETDATASERVICE ${idService}`)
 		return useQuery({
 			queryKey: ['getDataRoute', idService],
 			queryFn: async () => await requestApi(METHODS_API.GET, `module/service/${idService}/routing`),
 			enabled: !!idService
 		})
 	}
+
+	// const { serviceRouteInformation, isLoading } = useQuery({
+	// 	queryKey: ['getDataInfoRegister', idService],
+	// 	queryFn: async () => {
+	// 		if(idService){
+	// 			return await requestApi(METHODS_API.GET, `module/service/${idService}/routing`)
+	// 		}
+	// 	}
+	// })
+	// console.log(`SERVICE ROUTE INFORMATION ${JSON.stringify(serviceRouteInformation, null, 2)}`)
 	//
-	const serviceRouteInformation = getDataService(idService?.service?._id ? idService?.service?._id : null)
+	const serviceRouteInformation = getDataService(idService)
+	console.log("serviceRouteInformation: ", serviceRouteInformation)
+	const hendleServiceRoute = (idService) => {
+		console.log(`HANDLE SERVICEROUTE ${idService}`)
+		setIdService(idService)
+	}
 
 	// change permissions
 	const handleChangePermissionsForLocationStartAndEnd = ({ location, permissions }) => {
@@ -122,15 +139,16 @@ export const useCreateTravel = (dataForm) => {
 	}
 
 	const handleCreateTravel = (data) => {
+		console.log(`HANDLECREATETRAVEL ${JSON.stringify(data, null, 2) }`)
 		const service = dataPreCrateTravel.data.data.services.find((item) => item._id === data.service._id)
-		const installer = dataPreCrateTravel.data.data.installers.find(
-			(item) => item._id === data.installers.id_installer
-		)
+		console.log(`SERVICE ${JSON.stringify(service, null, 2) }`)
+		const installer = selectedInstallers.length > 0 ? selectedInstallers : null
+		console.log(`INSTALLER ${JSON.stringify(installer, null, 2) }`)
 		const typeTravel = dataPreCrateTravel.data.data.types_travel.find((item) => item._id === data.type._id)
 
-		const typeOperationInstaller = dataPreCrateTravel.data.data.type_operations.find(
-			(item) => item._id === data.installers.type_operation
-		)
+		// const typeOperationInstaller = dataPreCrateTravel.data.data.type_operations.find(
+		// 	(item) => item._id === data.installers.type_operation
+		// )
 
 		const serviceSend = {
 			_id: service._id,
@@ -138,11 +156,19 @@ export const useCreateTravel = (dataForm) => {
 			status: service.status
 		}
 
-		const sendInstaller = {
-			_id: installer._id,
-			name: installer.name,
-			status: 'CREATED',
-			type_operation: typeOperationInstaller.name
+		let sendInstaller = null;
+		if(installer){
+			sendInstaller = installer.map((item) => {
+				const typeOperationInstaller = dataPreCrateTravel.data.data.type_operations.find(
+					(itemType) => itemType._id === item.type_operation
+				)
+				return {
+					_id: item._id,
+					name: item.name,
+					status: 'CREATED',
+					type_operation: typeOperationInstaller.name
+				}
+			})
 		}
 
 		data.date_installation = format(dateStart.$d, 'yyyy-MM-dd hh:mm:ss')
@@ -150,12 +176,13 @@ export const useCreateTravel = (dataForm) => {
 		data.location_installation = objectLocations.location_start
 		data.location_finalization = objectLocations.location_end
 		data.service = serviceSend
-		data.installers = [sendInstaller]
+		data.installers = sendInstaller
 		data.type = typeTravel
 		data.periods = {
 			tx: 10,
 			sensing: 10
 		}
+		console.log(" Data for create: " + JSON.stringify(data, null, 2))
 
 		if (data.location_installation && data.location_finalization) {
 			createTravel(data)
@@ -177,6 +204,9 @@ export const useCreateTravel = (dataForm) => {
 		dataPreCrateTravel,
 		serviceRouteInformation,
 		handleChangeMarkerDraggable,
-		handleChangePermissionsForLocationStartAndEnd
+		handleChangePermissionsForLocationStartAndEnd,
+		setSelectedInstallers,
+		selectedInstallers,
+		hendleServiceRoute
 	}
 }

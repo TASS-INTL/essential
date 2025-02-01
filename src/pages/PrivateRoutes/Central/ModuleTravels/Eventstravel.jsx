@@ -5,28 +5,34 @@ import { BoardDevice } from '@/Components/BoardDevice'
 import { arrayTapMonitoring, TapBottons } from '@/Components/TapBottons'
 import { travelsStore } from '@/store/travelsStore'
 import { useLocation, useParams } from 'react-router-dom'
+import { travelInfoStore } from '@/store/travels/travelInfoStore'
 
 export const EventsTravel = () => {
 	const location = useLocation()
 	const { idTravel } = useParams()
 
-	const arrayTableTravelsEvents = travelsStore((state) => state.arrayTableTravelsEvents)
+	const eventsTravelInfo = travelInfoStore((state) => state.events)
+	console.log("EventsTravelInfo: ", eventsTravelInfo)
 
-	if (arrayTableTravelsEvents === null) return <LoaderComponent />
+	// if (arrayTableTravelsEvents === null) return <LoaderComponent />
 
-	if (arrayTableTravelsEvents?.error) return <ErrorComponent error={arrayTableTravelsEvents.message} />
+	// if (arrayTableTravelsEvents?.error) return <ErrorComponent error={arrayTableTravelsEvents.message} />
 
 	return (
-		<div className='absolute top-0 right-0 h-full bg-white w-3/5 p-3 pt-6'>
+		<div className='bg-white p-3 pt-6 min-w-[500px]'>
 			<TapBottons
 				location={location}
 				idDevice={idTravel}
 				path='travels-screen/travel'
 				data={arrayTapMonitoring}
 			/>
+			{/* Translado el componente de loader con un if  */}
+			
 			<div className='h-[81%]'>
 				<TitleWithLive title='EVENTOS' inLive />
-				<BoardDevice dataBody={arrayTableTravelsEvents?.results} />
+				{ eventsTravelInfo === null ? <LoaderComponent /> : <BoardDevice dataBody={eventsTravelInfo?.data.results} /> }
+				{/* { arrayTableTravelsEvents?.error ? <ErrorComponent error={arrayTableTravelsEvents.message} /> : null }  */}
+				{/* <BoardDevice dataBody={arrayTableTravelsEvents?.results} /> */}
 			</div>
 		</div>
 	)

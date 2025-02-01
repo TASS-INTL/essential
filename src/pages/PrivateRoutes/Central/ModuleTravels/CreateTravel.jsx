@@ -15,7 +15,10 @@ import { APIProvider } from '@vis.gl/react-google-maps'
 import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
 import { useCreateTravel } from './hooks/useCreateTravel'
 
+import { useState } from 'react'
+
 export const CreateTravel = ({ dataForm }) => {
+
 	const {
 		dateEnd,
 		register,
@@ -31,13 +34,91 @@ export const CreateTravel = ({ dataForm }) => {
 		objectLocations,
 		handleChangeRadiusCircle,
 		handleChangePermissionsForLocationStartAndEnd,
-		handleChangeMarkerDraggable
+		handleChangeMarkerDraggable,
+		setSelectedInstallers,
+		selectedInstallers,
+		hendleServiceRoute
 	} = useCreateTravel(dataForm)
+	// Add this state near your other const declarations
+
+	// Add these states at the top with other states
+	const [selectedInstaller, setSelectedInstaller] = useState(null)
+	const [selectedOperation, setSelectedOperation] = useState(null)
+
+	// Modify the installer selection handler
+	// Remove duplicate declaration and merge functionality
+	// Modify the handlers to only set the state
+	const handleInstallerSelectionAndAdd = (e) => {
+		const installerId = e.target.value
+		const installer = dataPreCrateTravel?.data?.data?.installers.find(
+			inst => inst._id === installerId
+		)
+		console.log("Selected Installer", selectedInstaller)
+		setSelectedInstaller(installer)
+	}
+
+	const handleOperationSelection = (e) => {
+		const operationId = e.target.value
+		const operation = dataPreCrateTravel?.data?.data?.type_operations.find(
+			op => op._id === operationId
+		)
+		console.log("Selected Operation", selectedOperation)
+		setSelectedOperation(operation)
+	}
+
+	// Add new function to handle the addition of installer with operation
+	const handleAddInstallerWithOperation = () => {
+		if (selectedInstaller && selectedOperation) {
+			const newInstaller = {
+				...selectedInstaller,
+				operation: selectedOperation
+			}
+			if (!selectedInstallers.find(si => si._id === selectedInstaller._id)) {
+				setSelectedInstallers([...selectedInstallers, newInstaller])
+				// Reset selections after adding
+				setSelectedInstaller(null)
+				setSelectedOperation(null)
+			}
+		}
+	}
+
+	const handleAddInstaller = () => {
+		if (selectedInstaller && selectedOperation) {
+			const newInstaller = {
+				...selectedInstaller,
+				operation: selectedOperation
+			}
+			setSelectedInstallers([...selectedInstallers, newInstaller])
+			// Reset selections after adding
+			setSelectedInstaller(null)
+			setSelectedOperation(null)
+		}
+	}
+
+	// Add this function to handle installer selection
+	const handleInstallerSelection = (e) => {
+		const installerId = e.target.value
+		const installer = dataPreCrateTravel?.data?.data?.installers.find(
+			inst => inst._id === installerId
+		)
+		if (installer && !selectedInstallers.find(si => si._id === installerId)) {
+			setSelectedInstallers([...selectedInstallers, installer])
+		}
+	}
+
+	// Add this function to remove installers
+	const removeInstaller = (installerId) => {
+		setSelectedInstallers(selectedInstallers.filter(inst => inst._id !== installerId))
+	}
+
+
 
 	if (dataPreCrateTravel.isLoading) return <LoaderComponent />
 
 	if (dataPreCrateTravel.error || dataPreCrateTravel.data?.error)
 		return <ErrorComponent error={dataPreCrateTravel.data?.message} />
+
+	console.log("DataPreCrateTravel", dataPreCrateTravel)
 
 	return (
 		<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
@@ -91,6 +172,7 @@ export const CreateTravel = ({ dataForm }) => {
 								<>
 									{serviceRouteInformation?.data?.data?.stations.map((item) => (
 										<Polygon
+											draggable
 											key={item._id}
 											strokeWeight={1.5}
 											pathsArray={item?.location?.coordinates[0]}
@@ -108,6 +190,8 @@ export const CreateTravel = ({ dataForm }) => {
 							)}
 							{!!serviceRouteInformation?.data?.data?.location_end && (
 								<Polygon
+									editable
+									draggable
 									strokeWeight={1.5}
 									pathsArray={
 										serviceRouteInformation?.data?.data?.location_end?.location.coordinates[0]
@@ -148,6 +232,9 @@ export const CreateTravel = ({ dataForm }) => {
 										register={register}
 										label='Selecciona el servicio'
 										arrayOptions={dataPreCrateTravel?.data?.data?.services}
+										onChange={(e) => {
+											hendleServiceRoute(e.target.value)
+										}}
 									/>
 								</div>
 							</div>
@@ -166,29 +253,73 @@ export const CreateTravel = ({ dataForm }) => {
 								</div>
 							</div>
 							{/* INPUTS INTALLER */}
-							<div className='flex mt-3 gap-4 '>
-								<div className='w-[48%]'>
-									<SelectComponent
-										required
-										color
-										register={register}
-										label='Selecciona el instalador'
-										name='installers.id_installer'
-										arrayOptions={dataPreCrateTravel?.data?.data?.installers}
-										option='name'
-									/>
+							<div className='flex mt-3 gap-4 flex-col'>
+								<div className='flex gap-4'>
+									<div className='w-[48%]'>
+										<SelectComponent
+											required
+											color
+											register={register}
+											label='Selecciona el instalador'
+											name='installers.id_installer'
+											arrayOptions={dataPreCrateTravel?.data?.data?.installers}
+											option='name'
+											onChange={handleInstallerSelectionAndAdd}
+											value={selectedInstaller?._id || ''}
+										/>
+									</div>
+									<div className='w-[48%]'>
+										<SelectComponent
+											required
+											color
+											register={register}
+											label='Selecciona la operacion'
+											name='installers.type_operation'
+											arrayOptions={dataPreCrateTravel?.data?.data?.type_operations}
+											option='name'
+											onChange={handleOperationSelection}
+											value={selectedOperation?._id || ''}
+										/>
+									</div>
 								</div>
-								<div className='w-[48%]'>
-									<SelectComponent
-										required
-										color
-										register={register}
-										label='Selecciona la operacion'
-										name='installers.type_operation'
-										arrayOptions={dataPreCrateTravel?.data?.data?.type_operations}
-										option='name'
-									/>
+								<div className='flex justify-end mt-2'>
+									<button
+										type="button"
+										onClick={handleAddInstallerWithOperation}
+										disabled={!selectedInstaller || !selectedOperation}
+										className={`px-4 py-2 rounded-lg ${selectedInstaller && selectedOperation
+												? 'bg-blue-600 hover:bg-blue-700 text-white'
+												: 'bg-gray-300 text-gray-500 cursor-not-allowed'
+											} transition-colors`}
+									>
+										Agregar Instalador
+									</button>
 								</div>
+
+								{selectedInstallers.length > 0 && (
+									<div className='w-full p-4 border rounded-lg mt-4'>
+										<h3 className='font-semibold mb-2'>Instaladores Seleccionados:</h3>
+										<div className='space-y-2'>
+											{selectedInstallers.map((installer) => (
+												<div key={installer._id} className='flex items-center justify-between bg-gray-50 p-2 rounded'>
+													<div>
+														<span className="font-medium">{installer.name}</span>
+														<span className="text-gray-500 ml-2">- {installer.operation.name}</span>
+													</div>
+													<button
+														type="button"
+														onClick={() => removeInstaller(installer._id)}
+														className='text-red-500 hover:text-red-700'
+													>
+														✕
+													</button>
+												</div>
+											))}
+										</div>
+									</div>
+								)}
+
+
 							</div>
 							{/* INPUTS PLACES */}
 							<div className='flex gap-4 mt-3'>

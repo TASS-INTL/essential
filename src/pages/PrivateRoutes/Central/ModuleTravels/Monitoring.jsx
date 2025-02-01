@@ -2,20 +2,26 @@ import React from 'react'
 
 import { arrayTapMonitoring, TapBottons } from '@/Components/TapBottons'
 import { useLocation, useParams } from 'react-router-dom'
+import { travelInfoStore } from '@/store/travels/travelInfoStore'
+import { TitleWithLive } from '@/Components'
 
 export const Monitoring = () => {
 	const location = useLocation()
 	const { idTravel } = useParams()
+	const monitoringsTravelInfo = travelInfoStore((state) => state.monitoring)
 
 	return (
-		<div className='absolute top-0 right-0 bg-white h-full w-3/5 p-3 pt-6'>
+		<div className='bg-white p-3 pt-6 min-w-[500px]'>
 			<TapBottons
 				location={location}
 				idDevice={idTravel}
 				path='travels-screen/travel'
 				data={arrayTapMonitoring}
 			/>
-			<h1 className=' text-center py-4 text-3xl'>Monitoreo en tiempo real</h1>
+			<div className='h-[81%]'>
+				<TitleWithLive title='MONITOREO' inLive />
+				{monitoringsTravelInfo === null ? <LoaderComponent /> : null}
+			</div>
 			{/* <Map
 				width='100'
 				height='100'

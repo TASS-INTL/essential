@@ -68,11 +68,38 @@ export const useTravels = () => {
 		response?.error && showToast('❌ Algo ha salido mal al crear la bitacora: ' + response?.message, 'error')
 	}
 
+	const addOperation = useMutation({
+		mutationFn: async ({ data, idTravel }) =>
+			await requestApi(METHODS_API.POST, `module/travel/${idTravel}/add-operation-service`, data),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postAddOperation'] })
+	})
+
+	const addOperationHandler = async (data, idTravel) => {
+		const response = await addOperation.mutateAsync({ data, idTravel })
+		response?.completed && showToast('Se a creado de manera exitosa la operacion', 'success')
+		response?.error && showToast('❌ Algo ha salido mal al crear la operacion: ' + response?.message, 'error')
+	}
+
+	const bondingDeviceTravelService = useMutation({
+		mutationFn: async ({ didDevice, idTravel }) =>
+			await requestApi(METHODS_API.POST, `module/device/${didDevice}/bonding-service-travel/${idTravel}`),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postBondingDeviceTravelService'] })
+	})
+
+	const handleBondigDeviceTravelService = async (idTravel, didDevice) => {
+		const response = await bondingDeviceTravelService.mutateAsync({ didDevice, idTravel })
+		response?.completed && showToast('Se a vinculado el dispositivo al viaje de manera exitosa', 'success')
+		response?.error && showToast('❌ Algo ha salido mal al enviar el comando :' + response?.message, 'error')
+		return response
+	}
+
 	return {
 		handleCreateTravel,
 		handleActivateTravel,
 		fetchDataTableTravels,
 		getDataPreCreateTravel,
-		handleSendBinnacleTravel
+		handleSendBinnacleTravel,
+		handleBondigDeviceTravelService,
+		addOperationHandler
 	}
 }

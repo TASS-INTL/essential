@@ -30,10 +30,10 @@ export const CreateRouting = () => {
 		handleChangeMarkerDraggable
 	} = useRouting()
 
-	if (permissionsData.isLoading) return <LoaderComponent />
+	// if (permissionsData.isLoading) return <LoaderComponent />
 
-	if (permissionsData.error || permissionsData.data?.error)
-		return <ErrorComponent error={permissionsData.data?.message} />
+	// if (permissionsData.error || permissionsData.data?.error)
+	// 	return <ErrorComponent error={permissionsData.data?.message} />
 
 	return (
 		<div className='h-[95%]'>

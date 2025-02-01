@@ -1,11 +1,12 @@
 import React from 'react'
 
-import { InputComponent, InputSubmitComponent, RemarksInput, TitleWithLive } from '@/Components'
+import { InputComponent, InputSubmitComponent, RemarksInput, TitleWithLive, LoaderComponent } from '@/Components'
 import { BoardDevice } from '@/Components/BoardDevice'
 import { arrayTapMonitoring, TapBottons } from '@/Components/TapBottons'
 import { travelsStore } from '@/store/travelsStore'
 import { useForm } from 'react-hook-form'
 import { useLocation, useParams } from 'react-router-dom'
+import { travelInfoStore } from '@/store/travels/travelInfoStore'
 
 import { useTravels } from './hooks/useTravels'
 
@@ -13,6 +14,7 @@ export const Reports = () => {
 	const location = useLocation()
 	const { idTravel } = useParams()
 	const { handleSendBinnacleTravel } = useTravels()
+	const reportsLogsTravelInfo = travelInfoStore((state) => state.reports)
 
 	const travelInfo = travelsStore((state) => state.travelInfo)
 
@@ -27,7 +29,7 @@ export const Reports = () => {
 	}
 
 	return (
-		<div className='absolute top-0 right-0 bg-white h-full w-3/5 p-3 pt-6'>
+		<div className='bg-white p-3 pt-6 min-w-[500px]'>
 			<TapBottons
 				location={location}
 				idDevice={idTravel}
@@ -46,7 +48,8 @@ export const Reports = () => {
 			</div>
 			<div className='p-5'>
 				<TitleWithLive title='Notas de seguimiento' inLive />
-				<BoardDevice dataBody={travelInfo?.data?.logs_register} />
+				{reportsLogsTravelInfo === null ? <LoaderComponent /> : null}
+				{/* <BoardDevice dataBody={travelInfo?.data?.logs_register} /> */}
 			</div>
 		</div>
 	)

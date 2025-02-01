@@ -67,6 +67,7 @@ function usePolyline(props) {
 		].forEach(([eventName, eventCallback]) => {
 			gme.addListener(polyline, eventName, (e) => {
 				const callback = callbacks.current[eventCallback]
+				console.log('callback', callback)
 				if (callback) callback(e)
 			})
 		})

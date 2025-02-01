@@ -14,14 +14,15 @@ function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispat
 		const addUpdateListener = (eventName, drawResult, dispatch) => {
 			const updateListener = google.maps.event.addListener(drawResult.overlay, eventName, () => {
 				if (eventName === 'dragstart') {
-					overlaysShouldUpdateRef.current = false
+					overlaysShouldUpdateRef.current = true
 				}
 
 				if (eventName === 'dragend') {
 					overlaysShouldUpdateRef.current = true
 				}
-
+				
 				if (eventName === 'click') {
+					console.log("CLICK", drawResult.overlay)
 					dispatch({
 						type: DrawingActionKind.SET_OVERLAY,
 						payload: { overlay: drawResult.overlay, _id: drawResult._id }
@@ -41,6 +42,7 @@ function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispat
 			'overlaycomplete',
 			(drawResult) => {
 				drawResult._id = crypto.randomUUID()
+				console.log("DRAWWWWWW", drawResult)
 				switch (drawResult.type) {
 					case google.maps.drawing.OverlayType.CIRCLE:
 						;['center_changed', 'radius_changed'].forEach((eventName) =>
@@ -55,7 +57,7 @@ function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispat
 
 					case google.maps.drawing.OverlayType.POLYGON:
 					case google.maps.drawing.OverlayType.POLYLINE:
-						;['mouseup', 'click'].forEach((eventName) => addUpdateListener(eventName, drawResult, dispatch))
+						;['mouseup', 'click','dragend'].forEach((eventName) => addUpdateListener(eventName, drawResult, dispatch))
 
 					case google.maps.drawing.OverlayType.RECTANGLE:
 						;['bounds_changed', 'dragstart', 'dragend'].forEach((eventName) =>

@@ -34,7 +34,7 @@ export function useDrawingManager(showDrawingManager) {
 			},
 			polygonOptions: {
 				editable: true,
-				draggable: false
+				draggable: true
 			},
 			rectangleOptions: {
 				editable: true,

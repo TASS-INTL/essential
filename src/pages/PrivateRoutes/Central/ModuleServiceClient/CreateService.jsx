@@ -18,6 +18,8 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { APIProvider } from '@vis.gl/react-google-maps'
 import { MdOutlineReadMore } from 'react-icons/md'
 
+// New map
+
 import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
 import { CreateRouting } from '../../Routing/ModuleRouting'
 import { useServiceClient } from './hooks/useServiceClient'

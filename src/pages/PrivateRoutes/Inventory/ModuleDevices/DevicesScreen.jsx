@@ -6,8 +6,8 @@ import { Outlet } from 'react-router-dom'
 
 export const DevicesScreen = () => {
 	return (
-		<Container>
+		<div className='relative flex flex-col w-full h-full'>
 			<Outlet />
-		</Container>
+		</div>
 	)
 }

@@ -61,12 +61,12 @@ export const SideBarComponent = () => {
 	return (
 		<aside
 			id='separator-sidebar'
-			className={`${open ? 'md:w-[20%] xl:w-[15%]' : 'w-[4.5rem]'} absolute duration-300 top-0 left-0 h-screen`}
+			className={`${open ? 'md:w-[100%] xl:w-[15%]' : 'w-[5rem]'} duration-200 h-screen`}
 			aria-label='Sidebar'
 		>
 			<img
 				src='../src/assets/img/control.png'
-				className={`absolute cursor-pointer -right-3 top-16 w-7 border-primary
+				className={`cursor-pointer -right-3 top-16 w-7 border-primary
            border-2 rounded-full  ${!open && 'rotate-180'}`}
 				onClick={() => setOpen(!open)}
 			/>

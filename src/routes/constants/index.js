@@ -23,6 +23,8 @@ export const routesPrivate = {
 	reports: 'reports',
 	travels: 'travels',
 	monitoring: 'monitoring',
+	devices: 'devices',
+	operations: 'operations',
 	createTravel: 'create-travel',
 	travelsScreen: 'travels-screen',
 	travelIdTravel: 'travel/:idTravel',

@@ -17,6 +17,8 @@ export const MarkerWithInfowindow = ({
 	const [markerRef, marker] = useAdvancedMarkerRef()
 	const [center, setCenter] = useState(null)
 	const [radius, setRadius] = useState(400)
+	// Random id for the market
+	const [idMarket, setIdMarket] = useState(Math.random().toString(36).substring(7))
 
 	const changeCenter = (newCenter) => {
 		if (!newCenter) return
@@ -37,10 +39,15 @@ export const MarkerWithInfowindow = ({
 		})
 	}, [radius, center])
 
+	const onClickCircle = (e) => {
+		console.log(e)
+		console.log('Id Market:', idMarket)
+	}
+
 	return (
 		<>
 			<Marker
-				draggable={true}
+				draggable={false}
 				ref={markerRef}
 				onClick={() => setInfowindowOpen(true)}
 				position={center === null ? { lat: position.lat, lng: position.lng } : center}
@@ -66,6 +73,7 @@ export const MarkerWithInfowindow = ({
 			<Circle
 				editable
 				draggable
+				onClick={onClickCircle}
 				radius={radius}
 				fillOpacity={0.3}
 				strokeWeight={3}
