@@ -4,9 +4,9 @@ import { MapHandler } from './MapHandler'
 import { UndoRedoControl } from './UndoRedoControl'
 import { useDrawingManager } from './UseDrawingMager'
 
-export const MapGoogle = ({ width, state, dispatch, selectedPlace, showDrawingManager, children }) => {
-	const drawingManager = useDrawingManager(showDrawingManager)
-
+export const MapGoogle = ({ width, handleFuntionDrawingMap, selectedPlace, showDrawingManager, children }) => {
+	const drawingManager = useDrawingManager(showDrawingManager, handleFuntionDrawingMap)
+	console.log("SELEC PLACEEEEE: ", selectedPlace)
 	return (
 		<>
 			<MapHandler place={selectedPlace} />
@@ -19,11 +19,11 @@ export const MapGoogle = ({ width, state, dispatch, selectedPlace, showDrawingMa
 			>
 				{children}
 			</Map>
-			{!!showDrawingManager && (
+			{/* {!!showDrawingManager && (
 				<MapControl position={ControlPosition.TOP_LEFT}>
 					<UndoRedoControl drawingManager={drawingManager} dispatch={dispatch} state={state} />
 				</MapControl>
-			)}
+			)} */}
 		</>
 	)
 }

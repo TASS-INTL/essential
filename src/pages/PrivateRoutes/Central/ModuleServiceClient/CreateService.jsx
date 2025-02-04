@@ -18,16 +18,17 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { APIProvider } from '@vis.gl/react-google-maps'
 import { MdOutlineReadMore } from 'react-icons/md'
 
-// New map
+// // New map
+// import { Map}
 
 import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
 import { CreateRouting } from '../../Routing/ModuleRouting'
 import { useServiceClient } from './hooks/useServiceClient'
+import { GeofenceMapComponent } from '../../Routing/ModuleGeofence/GeofenceMapComponent'
 
 export const CreateService = () => {
 	const {
 		open,
-		dataRoute,
 		dateEnd,
 		register,
 		dateStart,
@@ -36,13 +37,37 @@ export const CreateService = () => {
 		handleSubmit,
 		setDateStart,
 		handleCreateService,
-		dataPreCreateService
+		dataPreCreateService,
+		routingInformation,
+		handleRoutingInformation
 	} = useServiceClient()
 
-	if (dataPreCreateService?.isLoading || dataRoute?.isLoading) return <LoaderComponent />
+	if (dataPreCreateService?.isLoading) return <LoaderComponent />
 
-	if (dataPreCreateService?.isError || dataRoute?.isError)
+	if (dataPreCreateService?.isError)
 		return <ErrorComponent error={dataPreCreateService.massage} />
+
+
+	const handleUpdatePolygon = (id) => (data) => {
+        console.log('handleUpdatePolygon:', { id, data });
+    };
+
+    const handleUpdateGeoCircle = (id) => (data) => {
+        console.log('handleUpdateGeoCircle:', { id, data });
+    };
+
+    const handleClickGeo = () => {
+        console.log('handleClickGeo: Geocerca clickeada');
+    };
+
+    const handleSavePermissions = (data) => {
+        console.log('handleSavePermissions:', data);
+    };
+
+    const handleClosePermissions = (data) => {
+        console.log('handleClosePermissions:', data);
+    };
+	console.log("Data route: ", routingInformation?.data) 
 
 	return (
 		<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
@@ -53,36 +78,31 @@ export const CreateService = () => {
 				<div className='flex h-full'>
 					<div className='w-[40%]'>
 						<MapGoogle>
-							{dataRoute?.data?.data?.coordinatesroute && (
-								<Polyline
-									strokeWeight={7}
+							{routingInformation?.data?.data &&
+								<GeofenceMapComponent
+									key={routingInformation?.data.data.location_start.id}
+                                    geofence={routingInformation?.data.data.location_start}
+                                />
+							}
+							{routingInformation?.data?.data &&
+								<GeofenceMapComponent
+									key={routingInformation?.data.data.location_end.id}
+                                    geofence={routingInformation?.data.data.location_end}
+                                />
+							}
+							{routingInformation?.data?.data &&
+							 	<Polyline
+									strokeWeight={3}
 									strokeColor={'#8a2be2'}
-									pathArray={dataRoute?.data?.data?.coordinatesroute}
-								/>
-							)}
-							{dataRoute?.data?.data?.stations?.length > 0 && (
-								<>
-									{dataRoute?.data?.data?.stations.map((item) => (
-										<Polygon
-											key={item._id}
-											strokeWeight={1.5}
-											pathsArray={item?.location?.coordinates[0]}
-										/>
-									))}
-								</>
-							)}
-							{dataRoute?.data?.data?.location_start && (
-								<Polygon
-									strokeWeight={1.5}
-									pathsArray={dataRoute?.data?.data?.location_start?.location.coordinates[0]}
-								/>
-							)}
-							{dataRoute?.data?.data?.location_end && (
-								<Polygon
-									strokeWeight={1.5}
-									pathsArray={dataRoute?.data?.data?.location_end?.location.coordinates[0]}
-								/>
-							)}
+									pathArray={routingInformation?.data?.data?.coordinatesroute}
+								/> 
+							}
+							{routingInformation?.data?.data && routingInformation?.data.data.stations && routingInformation?.data.data.stations.length > 0 && routingInformation?.data.data.stations.map((geo) => (
+									<GeofenceMapComponent
+										key={geo.id}
+										geofence={geo}
+									/>
+							))}
 						</MapGoogle>
 					</div>
 					<div className='w-[60%] overflow-y-scroll px-3'>
@@ -116,6 +136,10 @@ export const CreateService = () => {
 										register={register}
 										label='Rutas para el viaje'
 										arrayOptions={dataPreCreateService?.data?.data?.routes}
+										onChange={(e) => {
+											console.log("Cliccccc", e.target.value)
+											handleRoutingInformation(e.target.value)
+										}}
 									/>
 								</div>
 								<div className='w-[30%] flex items-end justify-center text-sm'>
@@ -138,6 +162,7 @@ export const CreateService = () => {
 										register={register}
 										label='tipo de servicio'
 										arrayOptions={dataPreCreateService?.data?.data?.types_services}
+										
 									/>
 								</div>
 								<div className='w-[48%]'>

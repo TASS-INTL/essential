@@ -52,12 +52,9 @@ export const MarkerWithInfowindow = ({
 				onClick={() => setInfowindowOpen(true)}
 				position={center === null ? { lat: position.lat, lng: position.lng } : center}
 				title={'AdvancedMarker that opens an Infowindow when clicked.'}
-				onDrag={(e) =>
-					setCenter({
-						location,
-						lat: e.latLng?.lat() ?? 0,
-						lng: e.latLng?.lng() ?? 0
-					})
+				onDrag={(e) => {
+					console.log("Cambio marker")
+				}
 				}
 			/>
 			{infowindowOpen && (

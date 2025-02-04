@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react'
 
 import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps'
 
-export function useDrawingManager(showDrawingManager) {
+export function useDrawingManager(showDrawingManager, handleNewData) {
 	if (showDrawingManager === undefined) return
 
 	const map = useMap()
 	const drawing = useMapsLibrary('drawing')
 
 	const [drawingManager, setDrawingManager] = useState()
+
+	
 
 	useEffect(() => {
 		if (!map || !drawing) return
@@ -47,6 +49,75 @@ export function useDrawingManager(showDrawingManager) {
 		})
 
 		setDrawingManager(newDrawingManager)
+
+		const polygonCompleteListener = google.maps.event.addListener(
+			newDrawingManager,
+			'polygoncomplete',
+			(drawResult) => {
+				drawResult._id = crypto.randomUUID()
+				const events = ['click', 'dragend', 'dragstart', 'mouseup']
+
+				const calculateCentroid = (coords) => {
+                    let area = 0;
+                    let cx = 0;
+                    let cy = 0;
+                    
+                    for (let i = 0; i < coords.length; i++) {
+                        const j = (i + 1) % coords.length;
+                        const [xi, yi] = coords[i];
+                        const [xj, yj] = coords[j];
+                        
+                        const factor = (xi * yj - xj * yi);
+                        area += factor;
+                        cx += (xi + xj) * factor;
+                        cy += (yi + yj) * factor;
+                    }
+                    
+                    area /= 2;
+                    const f = area * 6;
+                    return [cx / f, cy / f];
+                };
+
+				const locationCoordinates = []
+				drawResult.getPath().forEach((coordinate) => {
+					locationCoordinates.push([coordinate.lng(), coordinate.lat()])
+				})
+
+				const [centerLng, centerLat] = calculateCentroid(locationCoordinates)
+				const geoFence = {
+					id: crypto.randomUUID(),
+					type: 'Polygon',
+					name: "New Station",
+					location: {
+						type: "Polygon",
+						coordinates: [locationCoordinates]
+					},
+					market: {
+						location: {
+							type: "Point",
+							coordinates: [centerLng, centerLat]
+						},
+						status: 'none'
+					},
+					permissions: [],
+					info: {
+						status: 'created',
+						order: 0,
+						radius: 0,
+						editable: true,
+						name_map: "",
+						coordinates_center: [ centerLng, centerLat]
+					},
+					select: true
+				};
+
+				handleNewData({
+					geofence: geoFence,
+					type: 'Polygon'
+				})
+
+				drawResult.setMap(null)
+			})
 
 		return () => {
 			newDrawingManager.setMap(null)

@@ -128,37 +128,96 @@ export const useRouting = () => {
 		now: [],
 		future: []
 	})
+
+	const [geofences, setGeofences] = useState({});
+	const [selectedGeofenceId, setSelectedGeofenceId] = useState(null);
+
+
 	const [selectedPlace, setSelectedPlace] = useState(null)
 	const [dataDirections, setDataDirections] = useState(null)
 	const [objectLocations, setObjectLocations] = useState(initialDataLocation)
 	const [permissionForGeoFences, setPermissionForGeoFences] = useState([])
 
+
+	const handleAddGeofence = ({geofence, type}) => {
+		console.log("GEOFENCE", geofence)
+		console.log("TYPE: ", type)
+		setGeofences(prev => ({
+			...prev,
+			[geofence.id]: geofence
+		}));
+	};
+
 	// Adding places location start and location end
 	const addPlaces = ({ location, data, radius }) => {
-		const { geometry } = calculateCircle({
-			lat: data?.geometry?.location?.lat(),
-			lng: data?.geometry?.location?.lng(),
-			radius
-		})
+        const { geometry } = calculateCircle({
+            lat: data?.geometry?.location?.lat(),
+            lng: data?.geometry?.location?.lng(),
+            radius
+        });
 
-		setSelectedPlace(data)
-		setObjectLocations((state) => ({
-			...state,
-			[location]: {
-				location: geometry,
-				permissions: null,
-				name: data?.formatted_address,
-				info: { status: location === 'location_start' ? 'current' : 'created', order: 1 },
-				market: {
-					location: {
-						type: 'Point',
-						coordinates: [data?.geometry?.location?.lng(), data?.geometry?.location?.lat()]
-					},
-					status: 'create'
-				}
-			}
-		}))
-	}
+        // Usar una función de callback en setGeofences para asegurar el último estado
+        setGeofences(prevGeofences => {
+            console.log("Previous Geofences:", prevGeofences);
+            const existingGeofence = Object.values(prevGeofences)
+                .find(geofence => geofence.name === location);
+
+            if (existingGeofence) {
+                console.log("Found existing geofence:", existingGeofence);
+                return {
+                    ...prevGeofences,
+                    [existingGeofence.id]: {
+                        ...existingGeofence,
+                        location: geometry,
+                        market: {
+                            ...existingGeofence.market,
+                            location: {
+                                ...existingGeofence.market.location,
+                                coordinates: [data?.geometry?.location?.lng(), data?.geometry?.location?.lat()]
+                            }
+                        },
+                        info: {
+                            ...existingGeofence.info,
+                            name_map: data?.formatted_address,
+                            coordinates_center: [data?.geometry?.location?.lng(), data?.geometry?.location?.lat()]
+                        }
+                    }
+                };
+            }
+
+            // Si no existe, crear nuevo geofence
+            const newGeoFence = {
+                id: crypto.randomUUID(),
+                type: 'Circle',
+                name: location,
+                location: geometry,
+                market: {
+                    location: {
+                        type: "Point",
+                        coordinates: [data?.geometry?.location?.lng(), data?.geometry?.location?.lat()]
+                    },
+                    status: 'create'
+                },
+                permissions: [],
+                info: {
+                    editable: true,
+                    status: 'created',
+                    order: 1,
+                    radius: radius,
+                    name_map: data?.formatted_address,
+                    coordinates_center: [data?.geometry?.location?.lng(), data?.geometry?.location?.lat()]
+                },
+                select: true
+            };
+
+            return {
+                ...prevGeofences,
+                [newGeoFence.id]: newGeoFence
+            };
+        });
+
+        setSelectedPlace(data);
+    };
 
 	const handleChangePermissionForGeoFences = (permission) => {
 		setPermissionForGeoFences((prevState) => [...prevState, permission])
@@ -166,7 +225,6 @@ export const useRouting = () => {
 
 	// change values merker when draggable is activate
 	const handleChangeMarkerDraggable = ({ location, data }) => {
-		console.log('DATA', data)
 		setObjectLocations((state) => ({
 			...state,
 			[location]: {
@@ -279,25 +337,48 @@ export const useRouting = () => {
 
 	//
 	const permissionsData = getPermissionsForRouting()
+	console.log('PERMISSIONS', permissionsData.data)
 
 	// Sending all the information collected for the route
 	const handleSendData = (data) => {
 		try {
+			console.log('DATA', data)
+			console.log("Objet geofences", geofences)
+
+			const copyGeofences = { ...geofences }
+			// Find id location_start location_end
+			const geoLocationStart = Object.values(copyGeofences).find((item) => item.name === 'location_start')
+			const geoLocationEnd = Object.values(copyGeofences).find((item) => item.name === 'location_end')
+			data.location_end = copyGeofences[geoLocationEnd?.id]
+			data.location_start = copyGeofences[geoLocationStart?.id]
+
+			delete copyGeofences[geoLocationStart?.id]
+			delete copyGeofences[geoLocationEnd?.id]
+			console.log("Geofences new", geofences)
+			// quitar del array el location_start y el location_end
+			
+
+			if(Object.values(copyGeofences).length > 0) {
+				Object.values(copyGeofences).forEach((item, index) => {
+					const arrayLocation = item.location.coordinates[0]
+					arrayLocation.push(arrayLocation[0])
+					item.location.coordinates[0] = arrayLocation
+				})
+			}
+
 			// stations
-			const { stationProcesed, count } = processingStations()
+			// const { stationProcesed, count } = processingStations()
 
-			// coordinates, distance, duration
+			// // coordinates, distance, duration
 			const cooordinatesProcessind = processingCoordinates()
-
-			// data send
-			data.stations = stationProcesed
+			console.log('COORDINATES ROUTE', cooordinatesProcessind)
+			// // data send
+			data.stations = Object.values(copyGeofences).length > 0 ? Object.values(copyGeofences) : []
 			data.coordinatesroute = cooordinatesProcessind
-			data.location_end = objectLocations?.location_end
 			data.distance = dataDirections?.legs[0]?.distance
 			data.duration = dataDirections?.legs[0]?.duration
-			data.location_start = objectLocations?.location_start
-			data.location_end.info.order = count
 			data.viewport = dataDirections?.bounds
+			console.log('DATA SEND', data)
 			showToast('Se a enviado a crear la ruta', 'warning')
 			handleCreateRoutingClient(data)
 		} catch (error) {
@@ -314,8 +395,10 @@ export const useRouting = () => {
 	return {
 		state,
 		dispatch,
+		handleAddGeofence,
 		register,
 		addPlaces,
+		geofences,
 		handleSubmit,
 		selectedPlace,
 		handleSendData,
@@ -327,6 +410,8 @@ export const useRouting = () => {
 		handleChangeRadiusCircle,
 		handleChangeMarkerDraggable,
 		handleChangePermissionForGeoFences,
-		handleChangePermissionsForLocationStartAndEnd
+		handleChangePermissionsForLocationStartAndEnd,
+		setGeofences,
+		setSelectedPlace
 	}
 }

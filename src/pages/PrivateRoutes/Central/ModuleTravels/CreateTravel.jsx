@@ -16,6 +16,7 @@ import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
 import { useCreateTravel } from './hooks/useCreateTravel'
 
 import { useState } from 'react'
+import { GeofenceMapComponent } from '../../Routing/ModuleGeofence/GeofenceMapComponent'
 
 export const CreateTravel = ({ dataForm }) => {
 
@@ -37,7 +38,9 @@ export const CreateTravel = ({ dataForm }) => {
 		handleChangeMarkerDraggable,
 		setSelectedInstallers,
 		selectedInstallers,
-		hendleServiceRoute
+		hendleServiceRoute,
+		geofences,
+		setGeofences
 	} = useCreateTravel(dataForm)
 	// Add this state near your other const declarations
 
@@ -64,6 +67,81 @@ export const CreateTravel = ({ dataForm }) => {
 		)
 		console.log("Selected Operation", selectedOperation)
 		setSelectedOperation(operation)
+	}
+
+	const handleUpdatePolygon = (id) => (data) => {
+		console.log("data lats lngs", data)
+		const locationCoordinates = []
+		data.coordinates.forEach((coordinate) => {
+			locationCoordinates.push([coordinate.lng, coordinate.lat])
+		})
+		setGeofences(prev => ({
+			...prev,
+			[id]: {
+				...prev[id],
+				location: {
+					...prev[id].location,
+					coordinates: [locationCoordinates]
+				}
+			}
+		}));
+
+
+	}
+
+	const handleUpdateGeoCircle = (id) => (data) => {
+        const { center, type } = data;
+        setGeofences(prev => ({
+            ...prev,
+            [id]: {
+                ...prev[id],
+                info: {
+                    ...prev[id].info,
+                    coordinates_center: [center.lng, center.lat]
+                },
+                market: {
+                    ...prev[id].market,
+                    location: {
+                        ...prev[id].market.location,
+                        coordinates: [center.lng, center.lat]
+                    }
+                }
+            }
+        }));
+    };
+
+	const handleClickGeo = () => {
+        console.log("Clic geo")
+	}
+
+	const handleSavePermissions = ({geofenceId, permissions}) => {
+		console.log("permisossssssss: ", geofenceId, permissions)
+		setGeofences(prev => ({
+           ...prev,
+            [geofenceId]: {
+               ...prev[geofenceId],
+                permissions: permissions,
+                info: {
+                    ...prev[geofenceId].info,
+                    editable:!prev[geofenceId].info.editable
+                },
+				select:!prev[geofenceId].select
+            }
+        }));
+    }
+
+	const handleClosePermissions = ({geofenceId}) => {
+        setGeofences(prev => ({
+          ...prev,
+            [geofenceId]: {
+              ...prev[geofenceId],
+                info: {
+                   ...prev[geofenceId].info,
+                    editable:!prev[geofenceId].info.editable
+                },
+				select: !prev[geofenceId].select
+            }
+        }));
 	}
 
 	// Add new function to handle the addition of installer with operation
@@ -126,7 +204,20 @@ export const CreateTravel = ({ dataForm }) => {
 				<div className='flex h-full'>
 					<div className='w-[40%]'>
 						<MapGoogle width='95%' selectedPlace={selectedPlace}>
-							{!!objectLocations?.location_start?.market?.location?.coordinates[0] && (
+						{dataPreCrateTravel.data?.data?.permissions && geofences && Object.entries(geofences).length > 0 && Object.entries(geofences).map(([id, geo]) => (
+                                <GeofenceMapComponent
+                                    key={id}
+                                    geofence={geo}
+                                    handleUpdateGeoPolygon={handleUpdatePolygon}
+                                    handleUpdateGeoCircle={handleUpdateGeoCircle}
+                                    handleClickGeo={handleClickGeo}
+									permissions={dataPreCrateTravel?.data?.data?.permissions}
+									handleClickSavePermissions={handleSavePermissions}
+									handleClickClosePermissions={handleClosePermissions}
+									use={true}
+                                />
+                            ))}
+							{/* {!!objectLocations?.location_start?.market?.location?.coordinates[0] && (
 								<MarkerWithInfowindow
 									position={{
 										lat: objectLocations?.location_start?.market?.location?.coordinates[1],
@@ -142,9 +233,9 @@ export const CreateTravel = ({ dataForm }) => {
 									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
 									handleChangeRadiusCircle={handleChangeRadiusCircle}
 								/>
-							)}
+							)} */}
 							{/* marker and geofence of the location end */}
-							{!!objectLocations?.location_end?.market?.location?.coordinates[1] && (
+							{/* {!!objectLocations?.location_end?.market?.location?.coordinates[1] && (
 								<MarkerWithInfowindow
 									position={{
 										lat: objectLocations?.location_end?.market?.location?.coordinates[1],
@@ -160,10 +251,10 @@ export const CreateTravel = ({ dataForm }) => {
 									handleChangeMarkerDraggable={handleChangeMarkerDraggable}
 									handleChangeRadiusCircle={handleChangeRadiusCircle}
 								/>
-							)}
+							)} */}
 							{!!serviceRouteInformation?.data?.data?.coordinatesroute && (
 								<Polyline
-									strokeWeight={7}
+									strokeWeight={3}
 									strokeColor={'#8a2be2'}
 									pathArray={serviceRouteInformation?.data?.data?.coordinatesroute}
 								/>
@@ -171,31 +262,23 @@ export const CreateTravel = ({ dataForm }) => {
 							{!!serviceRouteInformation?.data?.data?.stations?.length > 0 && (
 								<>
 									{serviceRouteInformation?.data?.data?.stations.map((item) => (
-										<Polygon
-											draggable
-											key={item._id}
-											strokeWeight={1.5}
-											pathsArray={item?.location?.coordinates[0]}
+										<GeofenceMapComponent
+											key={item.id}
+											geofence={item}
 										/>
 									))}
 								</>
 							)}
 							{!!serviceRouteInformation?.data?.data?.location_start && (
-								<Polygon
-									strokeWeight={1.5}
-									pathsArray={
-										serviceRouteInformation?.data?.data?.location_start?.location.coordinates[0]
-									}
+								<GeofenceMapComponent
+									key={serviceRouteInformation?.data?.data?.location_start.id}
+									geofence={serviceRouteInformation?.data?.data?.location_start}
 								/>
 							)}
 							{!!serviceRouteInformation?.data?.data?.location_end && (
-								<Polygon
-									editable
-									draggable
-									strokeWeight={1.5}
-									pathsArray={
-										serviceRouteInformation?.data?.data?.location_end?.location.coordinates[0]
-									}
+								<GeofenceMapComponent
+									key={serviceRouteInformation?.data?.data?.location_end.id}
+									geofence={serviceRouteInformation?.data?.data?.location_end}
 								/>
 							)}
 						</MapGoogle>

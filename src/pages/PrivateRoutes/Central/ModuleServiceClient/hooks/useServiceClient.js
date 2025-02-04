@@ -12,14 +12,15 @@ import { useForm, useWatch } from 'react-hook-form'
 export const useServiceClient = () => {
 	const { register, handleSubmit, control } = useForm()
 	const [dateStart, setDateStart] = useState(dayjs('2024-04-17T15:30'))
+	const [idRouter, setIdRouter] = useState(null)
 	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
 	const [open, setOpen] = useState(false)
 	const { requestApi } = useApi()
 
-	const idRoute = useWatch({
-		control,
-		id_route: null
-	})
+	// const idRoute = useWatch({
+	// 	control,
+	// 	id_route: null
+	// })
 
 	const handleOpen = () => setOpen(!open)
 
@@ -49,7 +50,13 @@ export const useServiceClient = () => {
 		})
 	}
 
-	const dataRoute = getDataRoute(idRoute?.id_route ? idRoute?.id_route : null)
+	// const dataRoute = getDataRoute(idRoute?.id_route ? idRoute?.id_route : null)
+
+	const routingInformation = getDataRoute(idRouter)
+
+	const handleRoutingInformation = (idRouter) => {
+		setIdRouter(idRouter)
+	}
 
 	const createServiceClient = useMutation({
 		mutationFn: async (data) => await requestApi(METHODS_API.POST, `module/service/travel-client/create`, data),
@@ -63,6 +70,7 @@ export const useServiceClient = () => {
 	}
 
 	const handleCreateService = (data) => {
+		console.log("Data create service: ",data)
 		data.date_end = format(dateStart.$d, 'yyyy-MM-dd hh:mm:ss')
 		data.date_start = format(dateEnd.$d, 'yyyy-MM-dd hh:mm:ss')
 		data.information_aditional = [{}]
@@ -80,7 +88,6 @@ export const useServiceClient = () => {
 
 	return {
 		open,
-		dataRoute,
 		register,
 		handleOpen,
 		getDataRoute,
@@ -90,6 +97,8 @@ export const useServiceClient = () => {
 		setDateStart,
 		dataPreCreateService,
 		getDataTableServiceClient,
-		handleCreateServiceClient
+		handleCreateServiceClient,
+		routingInformation,
+		handleRoutingInformation
 	}
 }

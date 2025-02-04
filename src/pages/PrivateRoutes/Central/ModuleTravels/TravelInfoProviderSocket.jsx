@@ -32,8 +32,63 @@ export const TravelInfoProviderSocket = () => {
         socketTravelNameSpace?.on(SOCKET_EVENTS.JOINED_ROOM_TRAVEL_INFO, (data) => {
             showToast('conectado a la sala:'+ data.type_,'success', 'bottom-right', 2000)
             setInRealTime(true)
+            socketTravelNameSpace?.on(SOCKET_EVENTS.R_TB_EVENTS_TRAVEL_INFO, (data) => {
+                console.log('data R_TB_EVENTS_TRAVEL_INFO', data)
+                setTravelInfoEvents(data)
+            })
+            socketTravelNameSpace?.emit(SOCKET_EVENTS.TB_EVENTS_TRAVEL, {
+                id_room: idTravel,
+                x_access_token: tokenSesion,
+                info: {
+                    page: 1,
+                    limit: 10,
+                    search: ""
+                }
+            })
+
+            socketTravelNameSpace?.on(SOCKET_EVENTS.R_TB_LOGS_REGISTER_TRAVEL_INFO, (data) => {
+                setTravelInfoReports(data)
+            })
+    
+            socketTravelNameSpace?.on(SOCKET_EVENTS.R_TRAVEL_INFO, (data) => {
+                console.log('data R_TRAVEL_INFO', data)
+                setTravelInfoGeneral(data)
+            })
+
+
+            socketTravelNameSpace?.emit(SOCKET_EVENTS.TB_LOGS_REGISTER, {
+                id_room: idTravel,
+                x_access_token: tokenSesion,
+                info: {
+                    page: 1,
+                    limit: 10,
+                    search: ""
+                }
+            })
+    
+            socketTravelNameSpace?.on(SOCKET_EVENTS.R_TB_PROCESSES_TRAVEL_INFO, (data) => {
+                setTravelInfoProcess(data)
+            })
+    
+            socketTravelNameSpace?.on(SOCKET_EVENTS.R_TB_MONITORING_TRAVEL_INFO, (data) => {
+                setTravelInfoMonitoring(data)
+            })
+    
+            // emits
+            
+    
+            socketTravelNameSpace?.emit(SOCKET_EVENTS.TB_MONITORING_TRAVEL, {
+                id_room: idTravel,
+                x_access_token: tokenSesion,
+                info: {
+                    page: 1,
+                    limit: 10,
+                    search: ""
+                }
+            })
         })
 
+        
         socketTravelNameSpace?.emit(SOCKET_EVENTS.JOIN_ROOM_TRAVEL_INFO, {
             id_user: uid,
             id_room: idTravel,
@@ -41,62 +96,7 @@ export const TravelInfoProviderSocket = () => {
             type_join: SOCKETS_ROOMS.TRAVEL_INFO
         })
 
-
-        socketTravelNameSpace?.on(SOCKET_EVENTS.R_TB_LOGS_REGISTER_TRAVEL_INFO, (data) => {
-            setTravelInfoReports(data)
-        })
-
-        socketTravelNameSpace?.on(SOCKET_EVENTS.R_TRAVEL_INFO, (data) => {
-            console.log('data R_TRAVEL_INFO', data)
-            setTravelInfoGeneral(data)
-        })
-
-        socketTravelNameSpace?.on(SOCKET_EVENTS.R_TB_EVENTS_TRAVEL_INFO, (data) => {
-            setTravelInfoEvents(data)
-        })
-
-        socketTravelNameSpace?.on(SOCKET_EVENTS.R_TB_LOGS_REGISTER_TRAVEL_INFO, (data) => {
-            setTravelInfoReports(data)
-        })
-
-        socketTravelNameSpace?.on(SOCKET_EVENTS.R_TB_PROCESSES_TRAVEL_INFO, (data) => {
-            setTravelInfoProcess(data)
-        })
-
-        socketTravelNameSpace?.on(SOCKET_EVENTS.R_TB_MONITORING_TRAVEL_INFO, (data) => {
-            setTravelInfoMonitoring(data)
-        })
-
-        // emits
-        socketTravelNameSpace?.emit(SOCKET_EVENTS.TB_EVENTS_TRAVEL, {
-            id_room: idTravel,
-            x_access_token: tokenSesion,
-            info: {
-                page: 1,
-                limit: 10,
-                search: ""
-            }
-        })
-
-        socketTravelNameSpace?.emit(SOCKET_EVENTS.TB_MONITORING_TRAVEL, {
-            id_room: idTravel,
-            x_access_token: tokenSesion,
-            info: {
-                page: 1,
-                limit: 10,
-                search: ""
-            }
-        })
-
-        socketTravelNameSpace?.emit(SOCKET_EVENTS.TB_LOGS_REGISTER, {
-            id_room: idTravel,
-            x_access_token: tokenSesion,
-            info: {
-                page: 1,
-                limit: 10,
-                search: ""
-            }
-        })
+        
 
         return () => {
             
@@ -118,7 +118,14 @@ export const TravelInfoProviderSocket = () => {
             socketTravelNameSpace?.off(SOCKET_EVENTS.R_TB_PROCESSES_TRAVEL_INFO)
             socketTravelNameSpace?.off(SOCKET_EVENTS.R_TB_LOGS_REGISTER_TRAVEL_INFO)
             socketTravelNameSpace?.off(SOCKET_EVENTS.R_TRAVEL_INFO)
-            socketTravelNameSpace?.off(SOCKET_EVENTS.R_TB_EVENTS_TRAVEL_INFO)
+            socketTravelNameSpace?.off(SOCKET_EVENTS.R_TB_EVENTS_TRAVEL_INFO)   
+            setTravelInfoGeneral(null)
+            setTravelInfoEvents(null)
+            setTravelInfoReports(null)
+            setTravelInfoProcess(null)
+            setTravelInfoMonitoring(null)
+            setTravelInfoCoordinates(null)
+
         }
     }, [])
 

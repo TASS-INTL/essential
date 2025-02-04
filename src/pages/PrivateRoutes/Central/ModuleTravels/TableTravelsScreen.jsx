@@ -23,7 +23,7 @@ export const TableTravelsScreen = () => {
 
 	if (travelsDetails === null) return <LoaderComponent />
 
-	if(travelsDetails?.data?.results?.length === 0) return <NoData/>
+	// if(travelsDetails?.data?.results?.length === 0) return <NoData/>
 	return (
 		<div className='px-16 py-4'>
 			<div className='flex justify-between pt-5 py-5'>
@@ -35,7 +35,7 @@ export const TableTravelsScreen = () => {
 				</form>
 			</div>
 			<div>
-				{travelsDetails?.data?.results?.map((item) => (
+				{travelsDetails?.data?.results?.length === 0 ? (<NoData/>) : travelsDetails?.data?.results?.map((item) => (
 					<div key={item._id} className='p-4 bg-white rounded-xl my-3'>
 						<div className='flex justify-between'>
 							<div className=''>

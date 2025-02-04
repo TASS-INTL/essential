@@ -80,7 +80,7 @@ export const OperationsTravelInfo = () => {
         created_at: '2023-10-01T10:00:00Z',
         updated_at: '2023-10-01T14:00:00Z',
     }]
-    console.log('generalTravelInfo operations', generalTravelInfo?.data?.operations.length)
+    console.log('generalTravelInfo operations', generalTravelInfo?.data?.operations)
     const handleGoToOperation = () => {
         console.log('Ir a la operación')
         dataPreCrateTravel.refetch()
@@ -122,93 +122,102 @@ export const OperationsTravelInfo = () => {
                     text={'Añadir operacion'}
                 />
                 {generalTravelInfo === null ? <LoaderComponent /> : generalTravelInfo?.data?.operations.length === 0 ? null : generalTravelInfo?.data?.operations.map((operation) => (
-                    <div key={operation._id} className="bg-white rounded-lg shadow-md p-6 w-96 border-l-4 border-purple-500 hover:shadow-lg transition-shadow duration-300">
-                        {/* Información principal */}
-                        <div className="space-y-2 mb-4">
-                            <p className="text-gray-700">
-                                <span className="font-bold">ID:</span> {operation._id}
-                            </p>
-                            <p className="text-gray-700">
-                                <span className="font-bold">DID:</span> {operation.did}
-                            </p>
-                            <p className="text-gray-700">
-                                <span className="font-bold">Estado:</span>{' '}
-                                <span
-                                    className={`font-semibold ${operation.status === 'completed'
-                                        ? 'text-green-500'
-                                        : operation.status === 'in_progress'
-                                            ? 'text-yellow-500'
-                                            : 'text-red-500'
-                                        }`}
-                                >
-                                    {operation.status}
-                                </span>
-                            </p>
-                            <p className="text-gray-700">
-                                <span className="font-bold">Información:</span> {operation.information}
-                            </p>
-                        </div>
+                    <div key={operation._id} className="bg-white rounded-lg shadow-md p-4 w-96 border-l-4 border-purple-500 hover:shadow-lg transition-shadow duration-300 mt-4">
+                        {/* Header with main info */}
+                        <div className="flex justify-between items-start mb-3">
+                            <div>
+                                <h2 className="font-bold text-lg">{operation.did}</h2>
+                                <h3 className="font-bold text-lg">{operation.type}</h3>
+                                <p className="text-sm text-gray-500">ID: {operation._id}</p>
+                                <p className="text-sm text-gray-500">User: {operation.name_installer}</p>
 
-                        {/* Procesos */}
-                        <div className="mb-4">
-                            <h3 className="font-bold text-lg text-gray-800 mb-2">Procesos</h3>
-                            <div className="space-y-3">
-                                {operation.process.map((proc, index) => (
-                                    <div key={index} className="bg-gray-50 p-3 rounded-lg">
-                                        <p className="text-gray-700">
-                                            <span className="font-bold">Tipo:</span> {proc.type}
-                                        </p>
-                                        <p className="text-gray-700">
-                                            <span className="font-bold">Descripción:</span> {proc.description}
-                                        </p>
-                                        <p className="text-gray-700">
-                                            <span className="font-bold">Número:</span> {proc.number}
-                                        </p>
-                                        <p className="text-gray-700">
-                                            <span className="font-bold">Estado:</span>{' '}
-                                            <span
-                                                className={`font-semibold ${proc.status === 'completed'
-                                                    ? 'text-green-500'
-                                                    : proc.status === 'in_progress'
-                                                        ? 'text-yellow-500'
-                                                        : 'text-red-500'
-                                                    }`}
-                                            >
-                                                {proc.status}
-                                            </span>
-                                        </p>
-                                        <p className="text-gray-700">
-                                            <span className="font-bold">Creado:</span>{' '}
-                                            {new Date(proc.created_at).toLocaleString()}
-                                        </p>
-                                        <p className="text-gray-700">
-                                            <span className="font-bold">Actualizado:</span>{' '}
-                                            {new Date(proc.updated_at).toLocaleString()}
-                                        </p>
-                                    </div>
-                                ))}
                             </div>
+                            <span
+                                className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                    operation.status === 'completed'
+                                        ? 'bg-green-100 text-green-800'
+                                        : operation.status === "IN_PROGRESS"
+                                            ? 'bg-yellow-100 text-yellow-800'
+                                            : 'bg-red-100 text-red-800'
+                                }`}
+                            >
+                                {operation.status}
+                            </span>
                         </div>
 
-                        {/* Fechas de creación y actualización */}
-                        <div className="text-sm text-gray-600 mb-4">
-                            <p>
-                                <span className="font-bold">Creado:</span>{' '}
-                                {new Date(operation.created_at).toLocaleString()}
+                        {/* Info and dates in compact form */}
+                        <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                            <p className="text-gray-600">
+                                <span className="font-medium">Creado:</span>{' '}
+                                {operation.created_at}
                             </p>
-                            <p>
-                                <span className="font-bold">Actualizado:</span>{' '}
-                                {new Date(operation.updated_at).toLocaleString()}
+                            <p className="text-gray-600">
+                                <span className="font-medium">Actualizado:</span>{' '}
+                                {operation.updated_at}
                             </p>
                         </div>
 
-                        {/* Botón para ir a la operación */}
-                        <button
-                            onClick={handleGoToOperation}
-                            className="w-full bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition-colors duration-300"
-                        >
-                            Ver Operación
-                        </button>
+                        {/* Procesos with accordion */}
+                        <div className="mb-3">
+                            <details className="group">
+                                <summary className="flex justify-between items-center cursor-pointer list-none p-2 bg-gray-50 rounded-lg">
+                                    <span className="font-medium">Procesos ({operation.process.length})</span>
+                                    <span className="transform group-open:rotate-180 transition-transform">
+                                        ▼
+                                    </span>
+                                </summary>
+                                <div className="mt-2 space-y-2">
+                                    {operation.process.map((proc, index) => (
+                                        <div key={index} className="bg-white p-3 rounded-lg border border-gray-100">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <div>
+                                                    <p className="font-medium">{proc.type_}</p>
+                                                    <p className="text-sm text-gray-600">{proc.description}</p>
+                                                </div>
+                                                <span
+                                                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                                        proc.status === 'completed'
+                                                            ? 'bg-green-100 text-green-800'
+                                                            : proc.status === "PENDING"
+                                                                ? 'bg-yellow-100 text-yellow-800'
+                                                                : 'bg-red-100 text-red-800'
+                                                    }`}
+                                                >
+                                                    {proc.status}
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between items-center mt-2">
+                                                <span className="text-xs text-gray-500">
+                                                    Actualizado: {new Date(proc.updated_at).toLocaleDateString()}
+                                                </span>
+                                                <button
+                                                    onClick={() => console.log('Process clicked:', proc)}
+                                                    className="text-xs px-3 py-1 bg-blue-500 text-white rounded-20 hover:bg-black hover:text-white hover:shadow-md transition-all duration-300"
+                                                >
+                                                    Validar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </details>
+                        </div>
+
+                        {/* Action buttons */}
+                        <div className="flex gap-2">
+                            <button
+                                onClick={handleGoToOperation}
+                                className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-black transition-colors duration-300 text-sm"
+                            >
+                                Ver Operación
+                            </button>
+                            <button
+                                onClick={() => console.log('Operation details:', operation)}
+                                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors duration-300"
+                            >
+                                ⋮
+                            </button>
+                        </div>
                     </div>
                 ))}
                 <ModalOlympo isOpen={isOpen} onClose={handleCloseModal} higth={70} width={70} modalTitle={'Agregar operacion'}>

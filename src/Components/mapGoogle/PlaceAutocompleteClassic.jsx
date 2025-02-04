@@ -17,10 +17,11 @@ export const PlaceAutocompleteClassic = ({ addPlaces, location }) => {
 
 	useEffect(() => {
 		if (!placeAutocomplete) return
+		console.log("PASO POR AQUI ")
 		placeAutocomplete.addListener('place_changed', () => {
 			addPlaces({ location, data: placeAutocomplete.getPlace(), radius: 400 })
 		})
-	}, [addPlaces, placeAutocomplete])
+	}, [placeAutocomplete])
 
 	return (
 		<div className='autocomplete-container'>

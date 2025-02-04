@@ -5,75 +5,113 @@ import { useMap } from '@vis.gl/react-google-maps'
 import { DrawingActionKind, isCircle, isMarker, isPolygon, isPolyline, isRectangle } from './types'
 
 // Handle drawing manager events
-function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispatch) {
+function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispatch, map) {
 	useEffect(() => {
 		if (!drawingManager) return
 
 		const eventListeners = []
 
 		const addUpdateListener = (eventName, drawResult, dispatch) => {
-			const updateListener = google.maps.event.addListener(drawResult.overlay, eventName, () => {
+			console.log("DRAW")
+			const updateListener = google.maps.event.addListener(drawResult, eventName, () => {
 				if (eventName === 'dragstart') {
-					overlaysShouldUpdateRef.current = true
+					// Empieza a dibujar
 				}
 
 				if (eventName === 'dragend') {
-					overlaysShouldUpdateRef.current = true
+					// Termina de dibujar
 				}
 				
 				if (eventName === 'click') {
-					console.log("CLICK", drawResult.overlay)
-					dispatch({
-						type: DrawingActionKind.SET_OVERLAY,
-						payload: { overlay: drawResult.overlay, _id: drawResult._id }
-					})
+					// Hace click en el dibujo
+					// dispatch({
+					// 	type: DrawingActionKind.SET_OVERLAY,
+					// 	payload: { overlay: drawResult.overlay, _id: drawResult._id }
+					// })
+				}
+				if (eventName === 'mouseup') {
+					// Configura la geocerca
+					// dispatch({
+					// 	type: DrawingActionKind.SET_OVERLAY,
+					// 	payload: { overlay: drawResult.overlay, _id: drawResult._id }
+					// })
 				}
 
 				if (overlaysShouldUpdateRef.current) {
-					dispatch({ type: DrawingActionKind.UPDATE_OVERLAYS })
+					console.log("OVERLAY SHOULD UPDATE")
+					// dispatch({ type: DrawingActionKind.UPDATE_OVERLAYS })
 				}
+				// Limpio el mapa
+
 			})
 
 			eventListeners.push(updateListener)
 		}
 
-		const overlayCompleteListener = google.maps.event.addListener(
+		const polygonCompleteListener = google.maps.event.addListener(
 			drawingManager,
-			'overlaycomplete',
+			'polygoncomplete',
 			(drawResult) => {
+				console.log("POLYGONCOMPLETE", drawResult)
 				drawResult._id = crypto.randomUUID()
-				console.log("DRAWWWWWW", drawResult)
-				switch (drawResult.type) {
-					case google.maps.drawing.OverlayType.CIRCLE:
-						;['center_changed', 'radius_changed'].forEach((eventName) =>
-							addUpdateListener(eventName, drawResult)
-						)
-						break
+				const events = ['click', 'dragend', 'dragstart', 'mouseup']
+				console.log("POLYGONCOMPLETE", drawResult)
+				// limpio el mapa
+				drawResult.setMap(null)
+				// events.forEach((eventName) => addUpdateListener(eventName, drawResult, dispatch))
+				// dispatch({
+				// 	type: DrawingActionKind.SET_OVERLAY,
+				// 	payload: { overlay: drawResult, _id: drawResult._id }
+				// })
+				// ;['mouseup', 'click','dragend'].forEach((eventName) => addUpdateListener(eventName, drawResult, dispatch))
+			})
 
-					case google.maps.drawing.OverlayType.MARKER:
-						;['dragend'].forEach((eventName) => addUpdateListener(eventName, drawResult))
+		const markerCompleteListener = google.maps.event.addListener(
+			drawingManager,
+			'markercomplete',
+			(drawResult) => {
+				console.log("MARKERCOMPLETE", drawResult)
+			})
 
-						break
+		eventListeners.push(polygonCompleteListener)
 
-					case google.maps.drawing.OverlayType.POLYGON:
-					case google.maps.drawing.OverlayType.POLYLINE:
-						;['mouseup', 'click','dragend'].forEach((eventName) => addUpdateListener(eventName, drawResult, dispatch))
+		// const overlayCompleteListener = google.maps.event.addListener(
+		// 	drawingManager,
+		// 	'overlaycomplete',
+		// 	(drawResult) => {
+		// 		drawResult._id = crypto.randomUUID()
+		// 		switch (drawResult.type) {
+		// 			case google.maps.drawing.OverlayType.CIRCLE:
+		// 				;['center_changed', 'radius_changed'].forEach((eventName) =>
+		// 					addUpdateListener(eventName, drawResult)
+		// 				)
+		// 				break
 
-					case google.maps.drawing.OverlayType.RECTANGLE:
-						;['bounds_changed', 'dragstart', 'dragend'].forEach((eventName) =>
-							addUpdateListener(eventName, drawResult)
-						)
+		// 			case google.maps.drawing.OverlayType.MARKER:
+		// 				;['dragend'].forEach((eventName) => addUpdateListener(eventName, drawResult))
 
-						break
-				}
-				dispatch({
-					type: DrawingActionKind.SET_OVERLAY,
-					payload: { overlay: drawResult.overlay, _id: drawResult._id }
-				})
-			}
-		)
+		// 				break
 
-		eventListeners.push(overlayCompleteListener)
+		// 			case google.maps.drawing.OverlayType.POLYGON:
+		// 				;['mouseup', 'click','dragend'].forEach((eventName) => addUpdateListener(eventName, drawResult, dispatch))
+		// 			case google.maps.drawing.OverlayType.POLYLINE:
+		// 				;['mouseup', 'click','dragend'].forEach((eventName) => addUpdateListener(eventName, drawResult, dispatch))
+
+		// 			case google.maps.drawing.OverlayType.RECTANGLE:
+		// 				;['bounds_changed', 'dragstart', 'dragend'].forEach((eventName) =>
+		// 					addUpdateListener(eventName, drawResult)
+		// 				)
+
+		// 				break
+		// 		}
+		// 		// dispatch({
+		// 		// 	type: DrawingActionKind.SET_OVERLAY,
+		// 		// 	payload: { overlay: drawResult.overlay, _id: drawResult._id }
+		// 		// })
+		// 	}
+		// )
+
+		// eventListeners.push(overlayCompleteListener)
 
 		return () => {
 			eventListeners.forEach((listener) => google.maps.event.removeListener(listener))
@@ -85,10 +123,10 @@ function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispat
 function useOverlaySnapshots(map, state, overlaysShouldUpdateRef) {
 	useEffect(() => {
 		if (!map || !state.now) return
-
+		console.log("useOverlaySnapshots", state.now)
 		for (const overlay of state.now) {
 			overlaysShouldUpdateRef.current = false
-
+			console.log("OVERLAY GEOMETRY", overlay.geometry)
 			overlay.geometry.setMap(map)
 
 			const { radius, center, position, path, bounds } = overlay.snapshot
@@ -124,7 +162,7 @@ export const UndoRedoControl = ({ drawingManager, dispatch, state }) => {
 	// off the "updating" when snapshot changes are applied back to the overlays.
 	const overlaysShouldUpdateRef = useRef(false)
 
-	useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispatch)
+	useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispatch, map)
 	useOverlaySnapshots(map, state, overlaysShouldUpdateRef)
 
 	return (

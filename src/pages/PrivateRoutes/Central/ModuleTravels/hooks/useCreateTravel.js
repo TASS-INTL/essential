@@ -16,6 +16,8 @@ import { useTravels } from './useTravels'
 export const useCreateTravel = (dataForm) => {
 	const { requestApi } = useApi()
     const [selectedInstallers, setSelectedInstallers] = useState([])
+	const [geofences, setGeofences] = useState({});
+
 	const [idService, setIdService] = useState(null)
 	const { register, handleSubmit, control } = useForm(dataForm)
 	const [selectedPlace, setSelectedPlace] = useState(null)
@@ -35,27 +37,72 @@ export const useCreateTravel = (dataForm) => {
 	// Adding places location start and location end
 	const addPlaces = ({ location, data, radius }) => {
 		const { geometry } = calculateCircle({
-			lat: data?.geometry?.location?.lat(),
-			lng: data?.geometry?.location?.lng(),
-			radius
-		})
-		setSelectedPlace(data)
-		setObjectLocations((state) => ({
-			...state,
-			[location]: {
-				location: geometry,
-				permissions: null,
-				name: data?.formatted_address,
-				info: { status: location === 'location_start' ? 'current' : 'created', order: 1 },
-				market: {
-					location: {
-						type: 'Point',
-						coordinates: [data?.geometry?.location?.lng(), data?.geometry?.location?.lat()]
-					},
-					status: 'create'
-				}
-			}
-		}))
+            lat: data?.geometry?.location?.lat(),
+            lng: data?.geometry?.location?.lng(),
+            radius
+        });
+
+        // Usar una función de callback en setGeofences para asegurar el último estado
+        setGeofences(prevGeofences => {
+            console.log("Previous Geofences:", prevGeofences);
+            const existingGeofence = Object.values(prevGeofences)
+                .find(geofence => geofence.name === location);
+
+            if (existingGeofence) {
+                console.log("Found existing geofence:", existingGeofence);
+                return {
+                    ...prevGeofences,
+                    [existingGeofence.id]: {
+                        ...existingGeofence,
+                        location: geometry,
+                        market: {
+                            ...existingGeofence.market,
+                            location: {
+                                ...existingGeofence.market.location,
+                                coordinates: [data?.geometry?.location?.lng(), data?.geometry?.location?.lat()]
+                            }
+                        },
+                        info: {
+                            ...existingGeofence.info,
+                            name_map: data?.formatted_address,
+                            coordinates_center: [data?.geometry?.location?.lng(), data?.geometry?.location?.lat()]
+                        }
+                    }
+                };
+            }
+
+            // Si no existe, crear nuevo geofence
+            const newGeoFence = {
+                id: crypto.randomUUID(),
+                type: 'Circle',
+                name: location,
+                location: geometry,
+                market: {
+                    location: {
+                        type: "Point",
+                        coordinates: [data?.geometry?.location?.lng(), data?.geometry?.location?.lat()]
+                    },
+                    status: 'create'
+                },
+                permissions: [],
+                info: {
+                    editable: true,
+                    status: 'created',
+                    order: 1,
+                    radius: radius,
+                    name_map: data?.formatted_address,
+                    coordinates_center: [data?.geometry?.location?.lng(), data?.geometry?.location?.lat()]
+                },
+                select: true
+            };
+
+            return {
+                ...prevGeofences,
+                [newGeoFence.id]: newGeoFence
+            };
+        });
+
+        setSelectedPlace(data);
 	}
 	//
 	const getDataService = (idService) => {
@@ -142,9 +189,11 @@ export const useCreateTravel = (dataForm) => {
 		console.log(`HANDLECREATETRAVEL ${JSON.stringify(data, null, 2) }`)
 		const service = dataPreCrateTravel.data.data.services.find((item) => item._id === data.service._id)
 		console.log(`SERVICE ${JSON.stringify(service, null, 2) }`)
-		const installer = selectedInstallers.length > 0 ? selectedInstallers : null
-		console.log(`INSTALLER ${JSON.stringify(installer, null, 2) }`)
+		// const installer = selectedInstallers.length > 0 ? selectedInstallers : null
+		// console.log(`INSTALLER ${JSON.stringify(installer, null, 2) }`)
 		const typeTravel = dataPreCrateTravel.data.data.types_travel.find((item) => item._id === data.type._id)
+
+		console.log("selectedInstallers: ", selectedInstallers)
 
 		// const typeOperationInstaller = dataPreCrateTravel.data.data.type_operations.find(
 		// 	(item) => item._id === data.installers.type_operation
@@ -157,24 +206,24 @@ export const useCreateTravel = (dataForm) => {
 		}
 
 		let sendInstaller = null;
-		if(installer){
-			sendInstaller = installer.map((item) => {
-				const typeOperationInstaller = dataPreCrateTravel.data.data.type_operations.find(
-					(itemType) => itemType._id === item.type_operation
-				)
+		if(selectedInstallers){
+			sendInstaller = selectedInstallers.map((item) => {
 				return {
 					_id: item._id,
 					name: item.name,
 					status: 'CREATED',
-					type_operation: typeOperationInstaller.name
+					type_operation: item.operation.name
 				}
 			})
 		}
 
+		console.log("sendInstaller: ", sendInstaller)
+		const geoLocationStart = Object.values(geofences).find((item) => item.name === 'location_start')
+		const geoLocationEnd = Object.values(geofences).find((item) => item.name === 'location_end')
 		data.date_installation = format(dateStart.$d, 'yyyy-MM-dd hh:mm:ss')
 		data.date_finalization = format(dateEnd.$d, 'yyyy-MM-dd hh:mm:ss')
-		data.location_installation = objectLocations.location_start
-		data.location_finalization = objectLocations.location_end
+		data.location_installation = geofences[geoLocationStart?.id]
+		data.location_finalization = geofences[geoLocationEnd?.id]
 		data.service = serviceSend
 		data.installers = sendInstaller
 		data.type = typeTravel
@@ -182,8 +231,9 @@ export const useCreateTravel = (dataForm) => {
 			tx: 10,
 			sensing: 10
 		}
-		console.log(" Data for create: " + JSON.stringify(data, null, 2))
-
+		// console.log(" Data for create: " + JSON.stringify(data, null, 2))
+		console.log("data.date_installation:" , data.location_installation)
+		console.log("data.date_finalli: ", data.location_finalization)
 		if (data.location_installation && data.location_finalization) {
 			createTravel(data)
 		}
@@ -207,6 +257,9 @@ export const useCreateTravel = (dataForm) => {
 		handleChangePermissionsForLocationStartAndEnd,
 		setSelectedInstallers,
 		selectedInstallers,
-		hendleServiceRoute
+		geofences,
+		setGeofences,
+		hendleServiceRoute,
+		selectedInstallers
 	}
 }
