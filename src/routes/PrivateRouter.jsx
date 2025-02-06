@@ -44,6 +44,7 @@ import { SocketTravelsProvider } from '@/pages/PrivateRoutes/sockets/socketTrave
 import { DeviceProviderSocket, Events, General, Test } from '../pages/PrivateRoutes/Inventory/ModuleInventory'
 import { DeviceInfoProviderSocket } from '@/pages/PrivateRoutes/Inventory/ModuleDevices/DeviceInfoProviderSocket'
 import { TravelInfoProviderSocket } from '@/pages/PrivateRoutes/Central/ModuleTravels/TravelInfoProviderSocket'
+import { MapTravelInfo } from '@/pages/PrivateRoutes/Central/ModuleTravels/mapsTravelInfo'
 import { DeviceInfoEvents } from '@/pages/PrivateRoutes/Inventory/ModuleDevices/DeviceInfoEvents'
 import { DeviceInfoGeneral } from '@/pages/PrivateRoutes/Inventory/ModuleDevices/DeviceInfoGeneral'
 import { DeviceInfoTests } from '@/pages/PrivateRoutes/Inventory/ModuleDevices/DeviceInfoTests'

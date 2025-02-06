@@ -11,8 +11,6 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 
 const reducer = (state, action) => {
-	console.log('STATE', state)
-	console.log('ACTION', action)
 	switch (action.type) {
 		// This action is called whenever anything changes on any overlay.
 		// We then take a snapshot of the relevant values of each overlay and
@@ -140,8 +138,6 @@ export const useRouting = () => {
 
 
 	const handleAddGeofence = ({geofence, type}) => {
-		console.log("GEOFENCE", geofence)
-		console.log("TYPE: ", type)
 		setGeofences(prev => ({
 			...prev,
 			[geofence.id]: geofence
@@ -158,12 +154,10 @@ export const useRouting = () => {
 
         // Usar una función de callback en setGeofences para asegurar el último estado
         setGeofences(prevGeofences => {
-            console.log("Previous Geofences:", prevGeofences);
             const existingGeofence = Object.values(prevGeofences)
                 .find(geofence => geofence.name === location);
 
             if (existingGeofence) {
-                console.log("Found existing geofence:", existingGeofence);
                 return {
                     ...prevGeofences,
                     [existingGeofence.id]: {
@@ -337,14 +331,11 @@ export const useRouting = () => {
 
 	//
 	const permissionsData = getPermissionsForRouting()
-	console.log('PERMISSIONS', permissionsData.data)
 
 	// Sending all the information collected for the route
 	const handleSendData = (data) => {
 		try {
-			console.log('DATA', data)
-			console.log("Objet geofences", geofences)
-
+			
 			const copyGeofences = { ...geofences }
 			// Find id location_start location_end
 			const geoLocationStart = Object.values(copyGeofences).find((item) => item.name === 'location_start')
@@ -354,7 +345,6 @@ export const useRouting = () => {
 
 			delete copyGeofences[geoLocationStart?.id]
 			delete copyGeofences[geoLocationEnd?.id]
-			console.log("Geofences new", geofences)
 			// quitar del array el location_start y el location_end
 			
 
@@ -371,14 +361,12 @@ export const useRouting = () => {
 
 			// // coordinates, distance, duration
 			const cooordinatesProcessind = processingCoordinates()
-			console.log('COORDINATES ROUTE', cooordinatesProcessind)
 			// // data send
 			data.stations = Object.values(copyGeofences).length > 0 ? Object.values(copyGeofences) : []
 			data.coordinatesroute = cooordinatesProcessind
 			data.distance = dataDirections?.legs[0]?.distance
 			data.duration = dataDirections?.legs[0]?.duration
 			data.viewport = dataDirections?.bounds
-			console.log('DATA SEND', data)
 			showToast('Se a enviado a crear la ruta', 'warning')
 			handleCreateRoutingClient(data)
 		} catch (error) {

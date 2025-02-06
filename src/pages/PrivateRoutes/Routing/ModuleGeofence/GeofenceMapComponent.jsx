@@ -7,8 +7,7 @@ import { Marker, useAdvancedMarkerRef } from '@vis.gl/react-google-maps'
 
 export const GeofenceMapComponent = ({geofence, handleUpdateGeoPolygon, handleUpdateGeoCircle, handleClickGeo, handleClickSavePermissions, handleClickClosePermissions, use, permissions={data: []}}) => {
     const [markerRef, marker] = useAdvancedMarkerRef()
-    // console.log("Geofence:", "permissions: ", permissions);
-    console.log("Geofence:", geofence);
+    
     const handleMarkerDragEnd = (e) => {
         const newPosition = {
             lat: e.latLng.lat(),
@@ -46,7 +45,6 @@ export const GeofenceMapComponent = ({geofence, handleUpdateGeoPolygon, handleUp
             geofenceId: geofence.id,
             permissions: permissions
         })
-        console.log("permissions sendir: ", permissions);
     }
 
     const handleClosePermissions = () => {
@@ -57,7 +55,6 @@ export const GeofenceMapComponent = ({geofence, handleUpdateGeoPolygon, handleUp
     }
 
     const handlePolygonChange = (polygon) => {
-        console.log("Polygon event:", polygon);
         // Obtener las coordenadas directamente del evento
         const paths = polygon.getPath();
         const coordinates = [];
@@ -70,7 +67,6 @@ export const GeofenceMapComponent = ({geofence, handleUpdateGeoPolygon, handleUp
             });
         }
         
-        console.log("New coordinates:", coordinates);
         if(!use){
             return;
         }
@@ -124,7 +120,7 @@ export const GeofenceMapComponent = ({geofence, handleUpdateGeoPolygon, handleUp
                     onDragEnd={handleMarkerDragEnd}
                 />
             }
-            {geofence.info.editable &&
+            {geofence.info.editable && geofence.type != 'Marker' &&
                 <InfoWindowComponent
                     maxWidth={400}
                     marker={marker}

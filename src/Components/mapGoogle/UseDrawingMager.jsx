@@ -50,6 +50,50 @@ export function useDrawingManager(showDrawingManager, handleNewData) {
 
 		setDrawingManager(newDrawingManager)
 
+		const markerCompleteListener = google.maps.event.addListener(
+			newDrawingManager,
+			'markercomplete',
+			(drawResult) => {
+				drawResult._id = crypto.randomUUID()
+				const location = {
+					lat: drawResult.getPosition().lat(),
+					lng: drawResult.getPosition().lng()
+				}
+				const geoFence = {
+					id: crypto.randomUUID(),
+					type: 'Marker',
+					name: "New Station",
+					location: {
+						type: "Point",
+						coordinates: null
+					},
+					market: {
+						location: {
+							type: "Point",
+							coordinates: [location.lng, location.lat]
+						},
+						status: 'create'
+					},
+					permissions: [],
+					info: {
+						status: 'created',
+						order: 0,
+						radius: 0,
+						editable: true,
+						name_map: "",
+						coordinates_center: [location.lng, location.lat]
+					},
+					select: true 
+				};
+
+				handleNewData({
+					geofence: geoFence,
+					type: 'Marker'
+				})
+
+				drawResult.setMap(null)
+			})
+
 		const polygonCompleteListener = google.maps.event.addListener(
 			newDrawingManager,
 			'polygoncomplete',

@@ -17,7 +17,7 @@ export const travelInfoStore = create(
             setProcess: (value) => set(() => ({ process: value })),
             setMonitoring: (value) => set(() => ({ monitoring: value })),
             setCoordinates: (value) => set(() => ({ coordinates: value })),
-            setInRealTimeTravelInfo: (value) => set(() => ({ inRealTimeTravelInfo: value }))
+            setInRealTimeTravelInfo: (value) => set(() => ({ inRealTimeTravelInfo: value })),
         }),
         { name: 'travel-info-storage' }
     )

@@ -2,13 +2,12 @@ import { METHODS_API } from '@/Api/constantsApi'
 import { useApi } from '@/Api/useApi'
 import { showToast } from '@/helpers/toast'
 import { queryClient } from '@/routes/AppRouter'
-import { travelsStore } from '@/store/travelsStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 
 export const useTravels = () => {
 	const { requestApi } = useApi()
-
-	const coordinates = travelsStore((state) => state.coordinates)
+	const [isExpandedLogRegister, setIsExpandedLogRegister] = useState(false)
 
 	const fetchDataTableTravels = (page, search) =>
 		useQuery({
@@ -52,16 +51,14 @@ export const useTravels = () => {
 		response?.error && showToast('❌ Algo ha salido mal al enviar el comando :' + response?.message, 'error')
 	}
 
-	const sendBinnacle = useMutation({
+	const sendLogregisterTravel = useMutation({
 		mutationFn: async ({ data, idTravel }) =>
 			await requestApi(METHODS_API.POST, `module/travel/${idTravel}/logs`, data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['postSendBinnacle'] })
 	})
 
-	const handleSendBinnacleTravel = async (data, idTravel) => {
-		data.coordinates = [coordinates.lat, coordinates.lng]
-
-		const response = await sendBinnacle.mutateAsync({ data, idTravel })
+	const handleSendLogRegisterTravel = async ({ data, idTravel }) => {
+		const response = await sendLogregisterTravel.mutateAsync({ data, idTravel })
 		if (response?.completed) {
 			showToast('se a creado de manera exitosa la bitacora', 'success')
 		}
@@ -98,8 +95,10 @@ export const useTravels = () => {
 		handleActivateTravel,
 		fetchDataTableTravels,
 		getDataPreCreateTravel,
-		handleSendBinnacleTravel,
+		handleSendLogRegisterTravel,
 		handleBondigDeviceTravelService,
-		addOperationHandler
+		addOperationHandler,
+		isExpandedLogRegister,
+		setIsExpandedLogRegister,
 	}
 }

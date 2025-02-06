@@ -7,38 +7,37 @@ import { Polyline } from '@/Components/mapGoogle/Polyline'
 import { API_KEY_GOOGLE_MAPS } from '../../constants/constants'
 import { useMapLogic } from '@/hooks/map/useMap'
 import { travelInfoStore } from "@/store/travels/travelInfoStore";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { GeofenceMapComponent } from "../../Routing/ModuleGeofence/GeofenceMapComponent";
+import { useTravels } from "./hooks/useTravels";
 
 
 
-
-export const MapTravelInfo = () => {
-    const { state, dispatch } = useMapLogic()
+export const MapTravelInfo = ({onAddGeoFence, isLogEnabled, handleToggleLog, geofence, handleCleanGeo}) => {
     const travelInfoGeneral = travelInfoStore((state) => state.general)
     const onClickPolygon = (e) => {
         console.log('click polygon', e)
     }
-    console.log("TRAVEL INFO: ", travelInfoGeneral)
+
     return (
         <div className="grid grid-cols-2 h-full pl-8">
             <div className="relative bg-white p-3 pt-6">
                 <APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
-                    <MapGoogle width={'100%'} showDrawingManager state={state} dispatch={dispatch}>
+                    <MapGoogle width={'100%'} showDrawingManager handleFuntionDrawingMap={onAddGeoFence}>
                         <MapHandlerBoundliteral viewport={travelInfoGeneral?.data?.routing?.viewport} />
                         {!!travelInfoGeneral?.data?.location_finalization &&
                             <GeofenceMapComponent
                                 key={travelInfoGeneral?.data?.location_finalization?.id}
                                 geofence={travelInfoGeneral?.data?.location_finalization}
                             />
-                            
+
                         }
                         {!!travelInfoGeneral?.data?.location_installation &&
                             <GeofenceMapComponent
                                 key={travelInfoGeneral?.data?.location_installation?.id}
                                 geofence={travelInfoGeneral?.data?.location_installation}
                             />
-                            
+
                         }
                         {!!travelInfoGeneral?.data?.routing?.coordinatesroute && (
                             <Polyline
@@ -49,25 +48,32 @@ export const MapTravelInfo = () => {
                             />
                         )}
                         {!!travelInfoGeneral?.data?.routing?.location_start && (
-                             <GeofenceMapComponent
+                            <GeofenceMapComponent
                                 key={travelInfoGeneral?.data?.routing?.location_start.id}
                                 geofence={travelInfoGeneral?.data?.routing?.location_start}
                             />
                         )}
                         {!!travelInfoGeneral?.data?.routing?.location_end && (
-                           <GeofenceMapComponent
+                            <GeofenceMapComponent
                                 key={travelInfoGeneral?.data?.routing?.location_end.id}
                                 geofence={travelInfoGeneral?.data?.routing?.location_end}
                             />
                         )}
 
-                        {!!travelInfoGeneral?.data?.routing?.stations && 
+                        {!!travelInfoGeneral?.data?.routing?.stations &&
                             travelInfoGeneral?.data?.routing?.stations.map((station, index) => (
                                 <GeofenceMapComponent
                                     key={station.id}
                                     geofence={station}
                                 />
                             ))
+                        }
+                        {geofence && Object.keys(geofence).map((key) => (
+                            <GeofenceMapComponent
+                                key={geofence[key].id}
+                                geofence={geofence[key]}
+                            />
+                        ))
                         }
                     </MapGoogle>
                     {/* cuadrado */}
@@ -76,7 +82,7 @@ export const MapTravelInfo = () => {
                     </div> */}
                 </APIProvider>
             </div>
-            <Outlet />
+            <Outlet context={{ isLogEnabled, handleToggleLog, geofence, handleCleanGeo}} />
         </div>
     );
 }

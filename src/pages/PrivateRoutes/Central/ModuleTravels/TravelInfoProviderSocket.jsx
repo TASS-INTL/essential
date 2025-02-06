@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect, useState, useRef} from 'react'
 import { userStore } from '@/store/userStore'
 import { travelInfoStore } from '@/store/travels/travelInfoStore'
 import { showToast } from '@/helpers/toast'
@@ -21,19 +21,44 @@ export const TravelInfoProviderSocket = () => {
     const setTravelInfoMonitoring = travelInfoStore((state) => state.setMonitoring)
     const setTravelInfoCoordinates = travelInfoStore((state) => state.setCoordinates)
     const setInRealTime = travelInfoStore((state) => state.setInRealTimeTravelInfo)
+	const [geoFenceLog, setGeoFenceLog] = useState({})
+    
 
+    const [isLogEnabled, setIsLogEnabled] = useState(false);
+    const isLogEnabledRef = useRef(isLogEnabled);
+    // Actualiza la referencia cuando cambia el estado
+    useEffect(() => {
+        isLogEnabledRef.current = isLogEnabled;
+    }, [isLogEnabled]);
+
+    const handleToggleLog = useCallback(() => {
+        setIsLogEnabled(prev => {
+            return !prev
+        })
+    }, [])
+
+    const cleanGeofenceLog = useCallback(() => {
+        setGeoFenceLog(geo => {
+            return {}
+        })
+    }, [])
+
+    const handleAddGeofence = useCallback(({geofence, type}) => {
+
+        if (isLogEnabledRef.current) {
+            setGeoFenceLog({
+                ...geoFenceLog,
+                [geofence.id]: geofence
+            })
+        }
+    }, [])
 
     useEffect(() => {
-
-        
-        console.log("Travel: ", idTravel)
-        
 
         socketTravelNameSpace?.on(SOCKET_EVENTS.JOINED_ROOM_TRAVEL_INFO, (data) => {
             showToast('conectado a la sala:'+ data.type_,'success', 'bottom-right', 2000)
             setInRealTime(true)
             socketTravelNameSpace?.on(SOCKET_EVENTS.R_TB_EVENTS_TRAVEL_INFO, (data) => {
-                console.log('data R_TB_EVENTS_TRAVEL_INFO', data)
                 setTravelInfoEvents(data)
             })
             socketTravelNameSpace?.emit(SOCKET_EVENTS.TB_EVENTS_TRAVEL, {
@@ -51,7 +76,6 @@ export const TravelInfoProviderSocket = () => {
             })
     
             socketTravelNameSpace?.on(SOCKET_EVENTS.R_TRAVEL_INFO, (data) => {
-                console.log('data R_TRAVEL_INFO', data)
                 setTravelInfoGeneral(data)
             })
 
@@ -76,7 +100,6 @@ export const TravelInfoProviderSocket = () => {
     
             // emits
             
-    
             socketTravelNameSpace?.emit(SOCKET_EVENTS.TB_MONITORING_TRAVEL, {
                 id_room: idTravel,
                 x_access_token: tokenSesion,
@@ -101,7 +124,6 @@ export const TravelInfoProviderSocket = () => {
         return () => {
             
             socketTravelNameSpace?.on(SOCKET_EVENTS.LEFT_ROOM_TRAVEL_INFO, (data) => {
-                console.log('data', data)
                 showToast('desconectado de la sala:'+ data.type_, 'info', 'bottom-right', 2000)
                 setInRealTime(false)
                 socketTravelNameSpace?.off(SOCKET_EVENTS.LEFT_ROOM_TRAVEL_INFO)
@@ -112,7 +134,6 @@ export const TravelInfoProviderSocket = () => {
                 x_access_token: tokenSesion,
                 type_leave: SOCKETS_ROOMS.TRAVEL_INFO
             })
-            console.log("ADIOSSS TRAVEEL INFO ")
             
             socketTravelNameSpace?.off(SOCKET_EVENTS.JOINED_ROOM_TRAVEL_INFO)
             socketTravelNameSpace?.off(SOCKET_EVENTS.R_TB_PROCESSES_TRAVEL_INFO)
@@ -127,10 +148,15 @@ export const TravelInfoProviderSocket = () => {
             setTravelInfoCoordinates(null)
 
         }
-    }, [])
+    }, [handleAddGeofence])
 
     return (
-        <MapTravelInfo></MapTravelInfo>
-            
+        <MapTravelInfo 
+            onAddGeoFence={handleAddGeofence}
+            isLogEnabled={isLogEnabled}
+            handleToggleLog={handleToggleLog}
+            geofence={geoFenceLog}
+            handleCleanGeo={cleanGeofenceLog}
+        />
     )
 }

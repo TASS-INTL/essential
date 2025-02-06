@@ -6,7 +6,6 @@ import { useDrawingManager } from './UseDrawingMager'
 
 export const MapGoogle = ({ width, handleFuntionDrawingMap, selectedPlace, showDrawingManager, children }) => {
 	const drawingManager = useDrawingManager(showDrawingManager, handleFuntionDrawingMap)
-	console.log("SELEC PLACEEEEE: ", selectedPlace)
 	return (
 		<>
 			<MapHandler place={selectedPlace} />
