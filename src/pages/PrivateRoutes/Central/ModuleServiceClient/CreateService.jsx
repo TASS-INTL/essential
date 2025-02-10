@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import {
 	ErrorComponent,
@@ -39,7 +39,14 @@ export const CreateService = () => {
 		handleCreateService,
 		dataPreCreateService,
 		routingInformation,
-		handleRoutingInformation
+		handleRoutingInformation,
+		handleAddCustomField,
+		handleRemoveCustomField,
+		customFields,
+		setNewFieldKey,
+		setNewFieldValue,
+		newFieldKey,
+		newFieldValue
 	} = useServiceClient()
 
 	if (dataPreCreateService?.isLoading) return <LoaderComponent />
@@ -47,27 +54,31 @@ export const CreateService = () => {
 	if (dataPreCreateService?.isError)
 		return <ErrorComponent error={dataPreCreateService.massage} />
 
+	
 
+	// EVENTOS PARA EL MAPA, YA QUE TIENE GEOCERCAS DE INSTLACCION O DESINGTALCION
 	const handleUpdatePolygon = (id) => (data) => {
-        console.log('handleUpdatePolygon:', { id, data });
-    };
+		console.log('handleUpdatePolygon:', { id, data });
+	};
 
-    const handleUpdateGeoCircle = (id) => (data) => {
-        console.log('handleUpdateGeoCircle:', { id, data });
-    };
+	const handleUpdateGeoCircle = (id) => (data) => {
+		console.log('handleUpdateGeoCircle:', { id, data });
+	};
 
-    const handleClickGeo = () => {
-        console.log('handleClickGeo: Geocerca clickeada');
-    };
+	const handleClickGeo = () => {
+		console.log('handleClickGeo: Geocerca clickeada');
+	};
 
-    const handleSavePermissions = (data) => {
-        console.log('handleSavePermissions:', data);
-    };
+	const handleSavePermissions = (data) => {
+		console.log('handleSavePermissions:', data);
+	};
 
-    const handleClosePermissions = (data) => {
-        console.log('handleClosePermissions:', data);
-    };
-	console.log("Data route: ", routingInformation?.data) 
+	const handleClosePermissions = (data) => {
+		console.log('handleClosePermissions:', data);
+	};
+
+	// PARA LOS CAMPOS EXTRAS QUE SE QUIERA O DEBAN DE AGREGAR
+	
 
 	return (
 		<APIProvider apiKey={API_KEY_GOOGLE_MAPS}>
@@ -81,27 +92,27 @@ export const CreateService = () => {
 							{routingInformation?.data?.data &&
 								<GeofenceMapComponent
 									key={routingInformation?.data.data.location_start.id}
-                                    geofence={routingInformation?.data.data.location_start}
-                                />
+									geofence={routingInformation?.data.data.location_start}
+								/>
 							}
 							{routingInformation?.data?.data &&
 								<GeofenceMapComponent
 									key={routingInformation?.data.data.location_end.id}
-                                    geofence={routingInformation?.data.data.location_end}
-                                />
+									geofence={routingInformation?.data.data.location_end}
+								/>
 							}
 							{routingInformation?.data?.data &&
-							 	<Polyline
+								<Polyline
 									strokeWeight={3}
 									strokeColor={'#8a2be2'}
 									pathArray={routingInformation?.data?.data?.coordinatesroute}
-								/> 
+								/>
 							}
 							{routingInformation?.data?.data && routingInformation?.data.data.stations && routingInformation?.data.data.stations.length > 0 && routingInformation?.data.data.stations.map((geo) => (
-									<GeofenceMapComponent
-										key={geo.id}
-										geofence={geo}
-									/>
+								<GeofenceMapComponent
+									key={geo.id}
+									geofence={geo}
+								/>
 							))}
 						</MapGoogle>
 					</div>
@@ -113,11 +124,13 @@ export const CreateService = () => {
 									<DemoContainer class='flex' components={['DateTimePicker', 'DateTimePicker']}>
 										<div className='flex gap-5'>
 											<DateTimePicker
+												required
 												label='fecha de inicio'
 												value={dateStart}
 												onChange={(newValue) => setDateStart(newValue)}
 											/>
 											<DateTimePicker
+												required
 												label='fecha de final'
 												value={dateEnd}
 												onChange={(newValue) => setDateEnd(newValue)}
@@ -162,7 +175,7 @@ export const CreateService = () => {
 										register={register}
 										label='tipo de servicio'
 										arrayOptions={dataPreCreateService?.data?.data?.types_services}
-										
+
 									/>
 								</div>
 								<div className='w-[48%]'>
@@ -181,7 +194,6 @@ export const CreateService = () => {
 							<div className='flex justify-between mt-1'>
 								<div className='w-[48%]'>
 									<InputComponent
-										required
 										name='carrier.name'
 										type='text'
 										register={register}
@@ -193,7 +205,6 @@ export const CreateService = () => {
 								<div className='w-[48%]'>
 									<InputComponent
 										color
-										required
 										name='carrier.phone_number'
 										type='number'
 										register={register}
@@ -206,7 +217,6 @@ export const CreateService = () => {
 							<h2 className='py-2 text-center'>DATOS DEL CONDUCTOR</h2>
 							<div className='flex gap-2 flex-wrap'>
 								<InputComponent
-									required
 									name='carrier.driver.email'
 									type='email'
 									register={register}
@@ -216,16 +226,14 @@ export const CreateService = () => {
 								/>
 								<InputComponent
 									color
-									required
-									name='carrier.driver.licence_plate'
+									name='carrier.driver.license_plate'
 									type='text'
 									register={register}
-									label='Placa'
+									label='Placa vehiculo'
 									placeholder='XXXXX'
 								/>
 								<InputComponent
 									color
-									required
 									name='carrier.driver.name'
 									type='text'
 									register={register}
@@ -234,7 +242,6 @@ export const CreateService = () => {
 								/>
 								<InputComponent
 									color
-									required
 									name='carrier.driver.number_document'
 									type='number'
 									register={register}
@@ -243,7 +250,6 @@ export const CreateService = () => {
 								/>
 								<InputComponent
 									color
-									required
 									name='carrier.driver.phone'
 									type='number'
 									register={register}
@@ -256,16 +262,14 @@ export const CreateService = () => {
 							<div className='flex gap-4 flex-wrap'>
 								<InputComponent
 									color
-									required
 									name='carrier.information_container.licence_plate'
 									type='text'
 									register={register}
-									label='Placa'
+									label='Placa contenedor'
 									placeholder='XXXXX'
 								/>
 								<InputComponent
 									color
-									required
 									name='carrier.information_container.type'
 									type='text'
 									register={register}
@@ -274,13 +278,57 @@ export const CreateService = () => {
 								/>
 								<InputComponent
 									color
-									required
 									name='carrier.information_container.number'
 									type='number'
 									register={register}
 									label='Numero del contenedor'
 									placeholder='000 000 0000'
 								/>
+							</div>
+							{/* Custom Fields */}
+							<div className="space-y-4 mt-4">
+								<h2 className="py-2 text-center">CAMPOS PERSONALIZADOS</h2>
+
+								{/* Campos existentes */}
+								{customFields.map((field, index) => (
+									<div key={index} className="flex gap-2 items-center">
+										<div className="flex-1 bg-gray-50 p-2 rounded-md">
+											<span className="font-medium">{field.key}:</span> {field.value}
+										</div>
+										<button
+											type="button"
+											onClick={() => handleRemoveCustomField(index)}
+											className="text-red-500 hover:text-red-700"
+										>
+											×
+										</button>
+									</div>
+								))}
+
+								{/* Agregar nuevo campo */}
+								<div className="flex gap-2">
+									<input
+										type="text"
+										value={newFieldKey}
+										onChange={(e) => setNewFieldKey(e.target.value)}
+										placeholder="Nombre del campo"
+										className="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm"
+									/>
+									<input
+										type="text"
+										value={newFieldValue}
+										onChange={(e) => setNewFieldValue(e.target.value)}
+										placeholder="Valor del campo"
+										className="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm"
+									/>
+									<button
+										type="button"
+										onClick={handleAddCustomField}
+										className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-600"
+									>
+										Agregar
+									</button>
+								</div>
 							</div>
 							{/* remarks */}
 							<RemarksInput

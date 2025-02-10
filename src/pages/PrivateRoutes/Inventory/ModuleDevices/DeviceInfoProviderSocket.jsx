@@ -22,7 +22,9 @@ export const DeviceInfoProviderSocket = () => {
 
     // conexion con el socket para las diferentes salas
     useEffect(() => {
-
+        setDeviceInfoGeneral(null)
+        setDeviceInfoEvents(null)
+        setInRealTime(false)
         console.log('idDevice', idDevice)
         const socket = socketDeviceNameSpace
         setInRealTime(true)
@@ -32,58 +34,58 @@ export const DeviceInfoProviderSocket = () => {
             showToast('conectado a la sala: ' + data.type_, 'success')
             console.log('data de la sala del dispositivo: '+ data)
             setInRealTime(true)
+            // Me suscribo dentro de la sala del device al evento de la informacion general del dispositivo
+            socket?.on(SOCKET_EVENTS.R_DEVICE_INFO, (data) => {
+                console.log('data de la sala del dispositivo: '+ data)
+                setDeviceInfoGeneral(data)
+                setInRealTime(true)
+            })
+
+            // Se subcribe dentro de la sala del dispositivo al evento de la informacion de los eventos del dispositivo
+            socket?.on(SOCKET_EVENTS.R_TB_EVENTS_DEVICE_INFO, (data) => {
+                setDeviceInfoEvents(data)
+                setInRealTime(true)
+            })
+
+            // Luego de haber ingresado correctamente se emite la solisitud de los eventos
+            socket?.emit(SOCKET_EVENTS.TB_EVENTS_DEVICE_INFO, {
+                info: {
+                    page: 1,
+                    limit: 10,
+                    search: "",
+                },
+                id_room: idDevice,
+                x_access_token: tokenSesion,
+            })
+
+            // // emitir a la tabla de test
+            // SocketDeviceProvider?.emit(SOCKET_EVENTS.TB_TESTINGS_DEVICE, {
+            //     page: 1,
+            //     search: null,
+            //     id_user: uid,
+            //     id_room: idDevice,
+            //     x_access_token: tokenSesion,
+            //     type_join: SOCKETS_ROOMS.ROOM_DEVICE
+            // })
+
+            // // suscripcion a la tabla de test
+            // SocketDeviceProvider?.on(SOCKET_EVENTS.R_TB_TESTINGS_DEVICE, (data) => {
+            //     setArrayTableInventoryTest(data)
+            // })
         })
 
-        // Ingreso a la sala del dispositivo para que me manden la informacion
+        // Emito solisitud de ingreso a la sala del dispositvo para la comunicacion con el mismo
         socket?.emit(SOCKET_EVENTS.JOIN_ROOM_DEVICE_INFO, {
             id_user: uid,
             id_room: idDevice,
             x_access_token: tokenSesion,
             type_join: SOCKETS_ROOMS.DEVICE_INFO
         })
-
-        // Me suscribo a la sala del dispositivo para que me mande la informacion en tiempo real
-        socket?.on(SOCKET_EVENTS.R_DEVICE_INFO, (data) => {
-            console.log('data de la sala del dispositivo: '+ data)
-            setDeviceInfoGeneral(data)
-            setInRealTime(true)
-
-        })
-
-
-        // Aqui trae la informacion de los eventos
-        socket?.on(SOCKET_EVENTS.R_TB_EVENTS_DEVICE_INFO, (data) => {
-            setDeviceInfoEvents(data)
-            setInRealTime(true)
-        })
-
-        // emitir a la tabla de eventos
-        socket?.emit(SOCKET_EVENTS.TB_EVENTS_DEVICE_INFO, {
-            info: {
-                page: 1,
-                limit: 10,
-                search: "",
-            },
-            id_room: idDevice,
-            x_access_token: tokenSesion,
-        })
+        
 
         
 
-        // // emitir a la tabla de test
-        // SocketDeviceProvider?.emit(SOCKET_EVENTS.TB_TESTINGS_DEVICE, {
-        //     page: 1,
-        //     search: null,
-        //     id_user: uid,
-        //     id_room: idDevice,
-        //     x_access_token: tokenSesion,
-        //     type_join: SOCKETS_ROOMS.ROOM_DEVICE
-        // })
-
-        // // suscripcion a la tabla de test
-        // SocketDeviceProvider?.on(SOCKET_EVENTS.R_TB_TESTINGS_DEVICE, (data) => {
-        //     setArrayTableInventoryTest(data)
-        // })
+        
 
         return () => {
             socket?.on(SOCKET_EVENTS.LEFT_ROOM_DEVICE_INFO, (data) => {
@@ -106,6 +108,9 @@ export const DeviceInfoProviderSocket = () => {
             socket?.off(SOCKET_EVENTS.JOINED_ROOM_DEVICE_INFO)
             socket?.off(SOCKET_EVENTS.R_TB_EVENTS_DEVICE_INFO)
             // showToast('desconectado de la sala del dispositivo: ' + `${idDevice}`, 'success')
+            // vamos a limpiar el storage de zustand
+
+
         }
     }, [socketDeviceNameSpace])
 

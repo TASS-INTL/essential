@@ -53,7 +53,7 @@ export const icons = {
 	User
 }
 
-export const SideBarComponent = () => {
+export const SideBarComponent = ({ sidebarToggle, setSidebarToggle }) => {
 	const { pathname } = useLocation()
 	const [open, setOpen] = useState(false)
 	const userData = userStore((state) => state.userData)
@@ -61,16 +61,18 @@ export const SideBarComponent = () => {
 	return (
 		<aside
 			id='separator-sidebar'
-			className={`${open ? 'md:w-[100%] xl:w-[15%]' : 'w-[5rem]'} duration-200 h-screen`}
+			className={`relative ${sidebarToggle ? 'md:w-[100%] xl:w-[100%]' : 'w-[5rem]'} duration-200 h-screen z-30`}
 			aria-label='Sidebar'
 		>
 			<img
-				src='../src/assets/img/control.png'
-				className={`cursor-pointer -right-3 top-16 w-7 border-primary
-           border-2 rounded-full  ${!open && 'rotate-180'}`}
-				onClick={() => setOpen(!open)}
-			/>
-			<div className='h-full px-3 py-4 overflow-y-auto bg-black'>
+					src='../src/assets/img/control.png'
+					className={`absolute cursor-pointer -right-3 top-16 w-7 border-primary
+           border-2 rounded-full  ${!sidebarToggle && 'rotate-180'}`}
+					onClick={() => setSidebarToggle(!sidebarToggle)}
+				/>
+
+			<div className='h-full px-3 py-4 bg-black'>
+				
 				<ul className='space-y-2 font-medium'>
 					{userData?.modules?.map((menu, index) => (
 						<NavLink key={index} to={`${menu.pathName}`}>
@@ -95,7 +97,7 @@ export const SideBarComponent = () => {
 										alt='icon'
 										className='w-[24px] h-[20px] object-contain cursor-pointer'
 									/>
-									<span className={`${!open && 'hidden'} origin-left duration-200 ms-3 text-sm`}>
+									<span className={`${!sidebarToggle && 'hidden'} origin-left duration-200 ms-3 text-sm`}>
 										{menu.name}
 									</span>
 								</div>

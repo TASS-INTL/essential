@@ -58,6 +58,7 @@ import { SocketProvider } from '../pages/PrivateRoutes/sockets/socketProvider'
 import { deviceStore } from '../store/deviceStore'
 import { travelsStore } from '../store/travelsStore'
 import { routesPrivate } from './constants'
+import { useState } from 'react'
 
 export const PrivateRouter = ({ isAuthenticated }) => {
 	return isAuthenticated ? (
@@ -73,6 +74,7 @@ export const RoutesPrivate = () => {
 	const setArrayTabledevice = deviceStore((state) => state.setArrayTabledevice)
 	const setArrayTableTravels = travelsStore((state) => state.setArrayTableTravels)
 	const { queryUserToken, logout } = useAuthProvider()
+	const [sidebarToggle, setSidebarToggle] = useState(false);
 
 	const userHasToken = queryUserToken()
 
@@ -83,15 +85,14 @@ export const RoutesPrivate = () => {
 	}
 	
 	return (
-		<div className='flex h-screen w-screen bg-[#e6e6e6]'>
-			<div className='h-full w-36'>
-				<SideBarComponent />
-
+		<div className='flex h-screen w-screen bg-[#ffffff]'>
+			<div className='flex h-full w-50'>
+				<SideBarComponent sidebarToggle={sidebarToggle} setSidebarToggle={setSidebarToggle}/>
 			</div>
-			<div className='w-full z-10'>
+			<div className={`flex-1 flex flex-col`}>
 
 				<Navbar />
-				{/* <div className='flex w-full h-full z-0'> */}
+				<div className='flex-1'>
 					<Routes>
 						{/* Installers */}
 						<Route path={routesPrivate.installersScreen} element={<InstallersScreen />} />
@@ -209,6 +210,6 @@ export const RoutesPrivate = () => {
 				</div>
 			</div>
 			
-		// </div>
+		</div>
 	)
 }

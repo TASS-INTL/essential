@@ -10,6 +10,7 @@ import { Modal } from 'flowbite-react'
 import { ModalOlympo } from '@/Components/ui/ModalOlympo'
 import { SelectComponent } from '@/Components'
 import { useTravels } from './hooks/useTravels'
+import { LoaderComponent } from '@/Components'
 
 
 export const OperationsTravelInfo = () => {
@@ -23,6 +24,32 @@ export const OperationsTravelInfo = () => {
 
     const [selectedInstaller, setSelectedInstaller] = useState(null)
     const [selectedOperation, setSelectedOperation] = useState(null)
+
+    const [deviceId, setDeviceId] = useState('')
+    const [formFields, setFormFields] = useState({})
+    const [photos, setPhotos] = useState([])
+
+
+    const handleDeviceAssignment = (procId, action) => {
+        if (!deviceId.trim()) return
+        console.log(`${action} device:`, { procId, deviceId })
+        // Aquí iría la lógica para asignar/desvincular el dispositivo
+    }
+
+    const handleFieldChange = (key, subKey, value) => {
+        setFormFields(prev => ({
+            ...prev,
+            [key]: {
+                ...prev[key],
+                [subKey]: value
+            }
+        }))
+    }
+
+    const handlePhotoUpload = (e) => {
+        const files = Array.from(e.target.files)
+        setPhotos(prev => [...prev, ...files])
+    }
 
     const handleCloseModal = () => {
         setIsOpen(false)
@@ -80,7 +107,6 @@ export const OperationsTravelInfo = () => {
         created_at: '2023-10-01T10:00:00Z',
         updated_at: '2023-10-01T14:00:00Z',
     }]
-    console.log('generalTravelInfo operations', generalTravelInfo?.data?.operations)
     const handleGoToOperation = () => {
         console.log('Ir a la operación')
         dataPreCrateTravel.refetch()
@@ -133,13 +159,12 @@ export const OperationsTravelInfo = () => {
 
                             </div>
                             <span
-                                className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                                    operation.status === 'completed'
-                                        ? 'bg-green-100 text-green-800'
-                                        : operation.status === "IN_PROGRESS"
-                                            ? 'bg-yellow-100 text-yellow-800'
-                                            : 'bg-red-100 text-red-800'
-                                }`}
+                                className={`px-2 py-1 rounded-full text-xs font-semibold ${operation.status === 'completed'
+                                    ? 'bg-green-100 text-green-800'
+                                    : operation.status === "IN_PROGRESS"
+                                        ? 'bg-yellow-100 text-yellow-800'
+                                        : 'bg-red-100 text-red-800'
+                                    }`}
                             >
                                 {operation.status}
                             </span>
@@ -174,18 +199,112 @@ export const OperationsTravelInfo = () => {
                                                     <p className="font-medium">{proc.type_}</p>
                                                     <p className="text-sm text-gray-600">{proc.description}</p>
                                                 </div>
-                                                <span
-                                                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                                                        proc.status === 'completed'
-                                                            ? 'bg-green-100 text-green-800'
-                                                            : proc.status === "PENDING"
-                                                                ? 'bg-yellow-100 text-yellow-800'
-                                                                : 'bg-red-100 text-red-800'
-                                                    }`}
-                                                >
+                                                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${proc.status === 'completed'
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : proc.status === "PENDING"
+                                                        ? 'bg-yellow-100 text-yellow-800'
+                                                        : 'bg-red-100 text-red-800'
+                                                    }`}>
                                                     {proc.status}
                                                 </span>
                                             </div>
+
+                                            {/* Campos específicos según el tipo de proceso */}
+                                            {(proc.type_ === 'ASSIGING_DEVICE' || proc.type_ === 'UNLINK_DEVICE') && (
+                                                <div className="mt-3 flex gap-2">
+                                                    <input
+                                                        type="text"
+                                                        value={deviceId}
+                                                        onChange={(e) => setDeviceId(e.target.value)}
+                                                        placeholder="ID del dispositivo"
+                                                        className="flex-1 border rounded-md px-3 py-1 text-sm"
+                                                    />
+                                                    <button
+                                                        onClick={() => handleDeviceAssignment(proc._id, proc.type_)}
+                                                        className="bg-blue-500 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-600"
+                                                    >
+                                                        {proc.type_ === 'ASSIGING_DEVICE' ? 'Asignar' : 'Desvincular'}
+                                                    </button>
+                                                </div>
+                                            )}
+
+                                            {proc.type_ === 'COMPLETED_INFORMATION' && operation.fields_incomplete && (
+                                                <div className="mt-3 space-y-3">
+                                                    {Object.entries(operation.fields_incomplete).map(([key, value]) => {
+                                                        if (typeof value === 'object') {
+                                                            return (
+                                                                <div key={key} className="space-y-2">
+                                                                    <h4 className="font-medium text-sm">{key}</h4>
+                                                                    {Object.entries(value).map(([subKey, subValue]) => (
+                                                                        <div key={`${key}-${subKey}`} className="flex gap-2">
+                                                                            <label className="text-sm text-gray-600 min-w-[120px]">
+                                                                                {subKey}:
+                                                                            </label>
+                                                                            <input
+                                                                                type="text"
+                                                                                defaultValue={subValue}
+                                                                                onChange={(e) => handleFieldChange(key, subKey, e.target.value)}
+                                                                                className="flex-1 border rounded-md px-2 py-1 text-sm"
+                                                                            />
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            )
+                                                        } else {
+                                                            return (
+                                                                <div key={key} className="flex gap-2">
+                                                                    <label className="text-sm text-gray-600 min-w-[120px]">
+                                                                        {key}:
+                                                                    </label>
+                                                                    <input
+                                                                        type="text"
+                                                                        defaultValue={value}
+                                                                        onChange={(e) => handleFieldChange(key, null, e.target.value)}
+                                                                        className="flex-1 border rounded-md px-2 py-1 text-sm"
+                                                                    />
+                                                                </div>
+                                                            )
+                                                        }
+                                                    })}
+                                                </div>
+                                            )}
+
+                                            {proc.type_ === 'PHOTOS_TAKEN' && (
+                                                <div className="mt-3 space-y-2">
+                                                    <input
+                                                        type="file"
+                                                        multiple
+                                                        accept="image/*"
+                                                        onChange={handlePhotoUpload}
+                                                        className="block w-full text-sm text-gray-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-blue-50 file:text-blue-700
+                        hover:file:bg-blue-100"
+                                                    />
+                                                    {photos.length > 0 && (
+                                                        <div className="flex gap-2 flex-wrap">
+                                                            {photos.map((photo, idx) => (
+                                                                <div key={idx} className="relative">
+                                                                    <img
+                                                                        src={URL.createObjectURL(photo)}
+                                                                        alt={`Preview ${idx + 1}`}
+                                                                        className="w-20 h-20 object-cover rounded"
+                                                                    />
+                                                                    <button
+                                                                        onClick={() => setPhotos(prev => prev.filter((_, i) => i !== idx))}
+                                                                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                                                                    >
+                                                                        ×
+                                                                    </button>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+
                                             <div className="flex justify-between items-center mt-2">
                                                 <span className="text-xs text-gray-500">
                                                     Actualizado: {new Date(proc.updated_at).toLocaleDateString()}

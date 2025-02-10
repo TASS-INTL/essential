@@ -53,8 +53,8 @@ const Navbar = () => {
 	const handleActiveMenu = () => setActiveMenu(!activeMenu)
 
 	return (
-		<div className='flex bg-black justify-end z-20'>
-			<div className='flex'>
+		<div className='flex relative h-11 bg-black justify-end z-20'>
+			<div className='flex absolute top-0 right-0'>
 				<NavButton
 					title='Notification'
 					dotColor='rgb(254, 201, 15)'

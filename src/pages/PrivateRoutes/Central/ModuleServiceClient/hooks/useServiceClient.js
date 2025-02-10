@@ -15,6 +15,23 @@ export const useServiceClient = () => {
 	const [idRouter, setIdRouter] = useState(null)
 	const [dateEnd, setDateEnd] = useState(dayjs('2024-04-17T15:30'))
 	const [open, setOpen] = useState(false)
+	const [customFields, setCustomFields] = useState([]);
+	const [newFieldKey, setNewFieldKey] = useState('');
+	const [newFieldValue, setNewFieldValue] = useState('');
+	const handleAddCustomField = () => {
+		if (newFieldKey.trim() && newFieldValue.trim()) {
+			setCustomFields([
+				...customFields,
+				{ key: newFieldKey.trim(), value: newFieldValue.trim() }
+			]);
+			setNewFieldKey('');
+			setNewFieldValue('');
+		}
+	};
+
+	const handleRemoveCustomField = (index) => {
+		setCustomFields(customFields.filter((_, i) => i !== index));
+	};
 	const { requestApi } = useApi()
 
 	// const idRoute = useWatch({
@@ -73,7 +90,7 @@ export const useServiceClient = () => {
 		console.log("Data create service: ",data)
 		data.date_end = format(dateStart.$d, 'yyyy-MM-dd hh:mm:ss')
 		data.date_start = format(dateEnd.$d, 'yyyy-MM-dd hh:mm:ss')
-		data.information_aditional = [{}]
+		data.information_aditional = customFields.length > 0 ? customFields : []
 
 		const typeDevice = dataPreCreateService?.data?.data?.types_devices.find((e) => e._id === data.type_device._id)
 		const typeService = dataPreCreateService?.data?.data?.types_services.find(
@@ -82,7 +99,7 @@ export const useServiceClient = () => {
 
 		data.type_device = typeDevice
 		data.type_service = typeService
-
+		console.log("CREACION DE SERVICIO: ", data)
 		handleCreateServiceClient(data)
 	}
 
@@ -99,6 +116,13 @@ export const useServiceClient = () => {
 		getDataTableServiceClient,
 		handleCreateServiceClient,
 		routingInformation,
-		handleRoutingInformation
+		handleRoutingInformation,
+		handleAddCustomField,
+		handleRemoveCustomField,
+		customFields,
+		setNewFieldKey,
+		setNewFieldValue,
+		newFieldKey,
+		newFieldValue
 	}
 }

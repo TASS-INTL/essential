@@ -10,6 +10,7 @@ import { ButtonOlympoUI } from '@/Components/ui/ButtonOlympoUI'
 import { ModalOlympo } from '@/Components/ui/ModalOlympo'
 import { useForm } from 'react-hook-form'
 import { useTravels } from './hooks/useTravels'
+import { LoaderComponent } from '@/Components'
 
 export const DevicesTravelInfo = () => {
     const location = useLocation()
@@ -58,7 +59,7 @@ export const DevicesTravelInfo = () => {
                 path='travels-screen/travel'
                 data={arrayTapMonitoring}
             />
-            <div className='relative h-[81%]' key={idTravel}>
+            <div className='relative h-[81%]'>
                 <TitleWithLive title='DISPOSITIVOS' inLive />
                 <ButtonOlympoUI
                     handleOnClick={() => setIsOpen(true)}

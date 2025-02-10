@@ -10,7 +10,7 @@ export const CentralScreen = ({ NameMap, title }) => {
 
   return (
     <Container>
-      <h1 className="text-center text-5xl font-bold mt-12 mb-8 text-gray-700">
+      <h1 className="text-center text-5xl font-bold mt-2 mb-11 text-gray-700">
         {title}
       </h1>
       <div className="flex flex-wrap justify-center items-center gap-6 px-4">
